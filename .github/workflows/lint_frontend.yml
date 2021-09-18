@@ -39,5 +39,5 @@ jobs:
         run: |
           cd frontend
           yarn eslint '*/**/*.{js,jsx,ts,tsx}' --color
-          yarn prettier --check \"src/**/*.{ts,tsx,js,jsx}\" --tab-width 2
+          yarn prettier --check 'src/**/*.{ts,tsx,js,jsx}' --tab-width 2
           yarn stylelint '**/*.{scss,sass}' --allow-empty-input --color
