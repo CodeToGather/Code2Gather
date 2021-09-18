@@ -38,6 +38,6 @@ jobs:
       - name: Run linters
         run: |
           cd frontend
-          eslint '*/**/*.{js,jsx,ts,tsx}' --color
-          prettier --check \"src/**/*.{ts,tsx,js,jsx}\" --tab-width 2
-          stylelint '**/*.{scss,sass}' --allow-empty-input --color
+          yarn eslint '*/**/*.{js,jsx,ts,tsx}' --color
+          yarn prettier --check \"src/**/*.{ts,tsx,js,jsx}\" --tab-width 2
+          yarn stylelint '**/*.{scss,sass}' --allow-empty-input --color
