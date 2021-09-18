@@ -53,7 +53,9 @@ poetry self update
 
 Poetry is our choice of dependency manager for our Python packages.
 
-## Setting Up
+## Contributing to Code2Gather
+
+### Installation
 
 First, clone this repository:
 
@@ -70,7 +72,9 @@ yarn install
 
 > Please do not navigate to the packages/services individually! This single `yarn install` will do the trick.
 
-## Committing
+### Committing
+
+Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) for our commit guidelines.
 
 The easiest way to start committing is to run the following command anywhere within the project directory:
 
@@ -79,3 +83,52 @@ yarn commit
 ```
 
 You will be guided through an interactive prompt that will help you craft a beautiful commit message, using `commitizen`.
+
+### Adding a New Package/Service
+
+First, create a new directory and add a `package.json` file there:
+
+```sh
+mkdir package
+cd package
+touch package.json
+```
+
+Then copy the following content into the new `package.json`:
+
+```json
+{
+  "name": "",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "devDependencies": {
+    "lint-staged": "^11.1.2"
+  },
+  "scripts": {
+    "preinstall": ""
+  },
+  "lint-staged": {}
+}
+```
+
+The above is the bare minimum you must have for the new package. Do fill in the remaining parts.
+
+The `"preinstall"` script is utilised if you are not using Node for the package. Insert your installation commands there, e.g. `poetry install`. Otherwise, feel free to delete it.
+
+The `"lint-staged"` section is to be filled with linting commands that will run against staged files.
+
+You can refer to [Pairing Service's `package.json`](pairing/package.json) for an example.
+
+Finally, you will need to add the new package to the root `package.json` under `"workspaces"`.
+
+```json
+  "workspaces": [
+    "frontend",
+    "pairing",
+    "package",
+    // ...
+  ],
+```
+
+Now, `yarn install` and `yarn workspaces run lint-staged` at the project root should work for all packages!
