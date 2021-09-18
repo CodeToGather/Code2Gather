@@ -60,6 +60,7 @@ jobs:
 
       - name: Lint files
         run: |
+          cd pairing
           poetry run black --check .
           poetry run isort --diff --check-only .
           poetry run flake8 --select=F
