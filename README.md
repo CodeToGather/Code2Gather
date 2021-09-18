@@ -1,4 +1,6 @@
-# CS3219 Team 32
+# Code2Gather
+
+## CS3219 Team 32
 
 Members:
 
