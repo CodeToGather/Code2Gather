@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "Pairing"
+name = "pairing"
 version = "0.0.1"
 description = "Pairing service for Code2Gather"
 authors = ["Your Name <you@example.com>"]

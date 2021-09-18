@@ -1,12 +1,13 @@
 {
-  "name": "Code2Gather",
+  "name": "code2gather",
   "version": "0.0.1",
   "description": "Code2Gather, GetHired2Gather",
   "repository": "https://github.com/CS3219-SE-Principles-and-Patterns/cs3219-project-ay2122-2122-s1-g32",
   "author": "Team 32",
   "private": true,
   "workspaces": [
-    "frontend"
+    "frontend",
+    "pairing"
   ],
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
