@@ -1,0 +1,21 @@
+{
+  "name": "Pairing",
+  "version": "0.0.1",
+  "description": "Pairing service for Code2Gather",
+  "private": true,
+  "devDependencies": {
+    "lint-staged": "^11.1.2"
+  },
+  "scripts": {
+    "preinstall": "poetry install",
+    "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt"
+  },
+  "lint-staged": {
+    "**/*.py": [
+      "poetry run black",
+      "poetry run isort",
+      "poetry run flake8 --select=F",
+      "poetry run mypy"
+    ]
+  }
+}
