@@ -9,9 +9,19 @@
     "frontend"
   ],
   "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "@commitlint/cz-commitlint": "^13.1.0",
+    "commitizen": "^4.2.4",
     "husky": "^7.0.1"
   },
   "scripts": {
+    "commit": "git-cz",
     "prepare": "husky install"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
   }
 }
