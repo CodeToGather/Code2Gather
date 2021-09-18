@@ -7,6 +7,7 @@ module.exports = {
     'plugin:jsx-a11y/strict',
     'eslint:recommended',
     'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
     'plugin:@typescript-eslint/recommended',
     'prettier',
   ],
