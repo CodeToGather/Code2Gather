@@ -1,27 +1,31 @@
-import { FC } from 'react';
+import { FC, lazy, Suspense, useEffect } from 'react';
 
-import logo from 'assets/images/logo.svg';
+import { retryPromise } from 'utils/promiseUtils';
 
-import './App.scss';
+// Code splitting with React.lazy and Suspense
+type ModuleType = typeof import('./AuthenticatedApp');
+
+const loadAuthenticatedApp = (): Promise<ModuleType> =>
+  import('./AuthenticatedApp');
+const AuthenticatedApp = lazy(
+  () => retryPromise(loadAuthenticatedApp) as Promise<ModuleType>,
+);
+const UnauthenticatedApp = lazy(() => import('./UnauthenticatedApp'));
 
 const App: FC = () => {
+  // TODO: Add user data fetching here
+  const user = null;
+
+  useEffect(() => {
+    loadAuthenticatedApp();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img alt="logo" className="App-logo" src={logo} />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // TODO: Add a proper loading animation/element
+    <Suspense fallback={<>Loading...</>}>
+      {/* Renders the appropriate app */}
+      {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+    </Suspense>
   );
 };
 
