@@ -3,11 +3,13 @@
 .landing {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 200px);
+  margin-bottom: 2rem;
+  min-height: calc(100vh - 180px);
 
   @include media('>desktop') {
     align-items: center;
     flex-direction: row;
+    margin-bottom: 0;
   }
 
   &__left {
@@ -47,6 +49,7 @@
       }
       @include media('>desktop') {
         font-size: 4rem;
+        margin-top: 0;
       }
     }
 
