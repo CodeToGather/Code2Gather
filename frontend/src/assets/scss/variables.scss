@@ -1,1 +1,40 @@
+// General colors
 $background-color: #1e2126;
+
+// Text colors
+$text-primary-color: #fff;
+$text-secondary-color: #7b7a7f;
+$text-success-color: #5f9d50;
+$text-danger-color: #b8594c;
+
+// Button colors
+$primary-button-background-color: #24282d;
+$primary-button-text-color: #fff;
+$secondary-button-text-color: #aeacb2;
+$primary-border-button-border-color: #2f353b;
+$success-border-button-border-color: #5f9d50;
+$success-border-button-text-color: #5f9d50;
+$danger-border-button-border-color: #b8594c;
+$danger-border-button-text-color: #b8594c;
+
+// Tab colors
+$tab-unselected-color: #7b7a7f;
+
+// Code editor colors
+$code-editor-bottom-bar-background-color: #22262b;
+$code-editor-separator-background-color: #24282d; // Separator between code and right panel
+$code-editor-question-text-color: #bcbcbe;
+$code-editor-interviewer-notes-placeholder-text-color: #6d6e72;
+
+// Misc. colors
+$landing-bg-curves-color: #4d4d4d;
+$scrollbar-color: #4c5057;
+$code-dark-background-color: #191a1c;
+$modal-background-color: #1e2126;
+
+// Opacities
+$video-bottom-bar-opacity: 0.4;
+$modal-overlay-opacity: 0.4;
+
+// Border radius
+$button-border-radius: 5px;
