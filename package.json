@@ -18,6 +18,7 @@
   },
   "scripts": {
     "commit": "git-cz",
+    "frontend": "yarn workspace frontend",
     "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || is-ci || husky install"
   },
   "config": {
