@@ -46,8 +46,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:ci": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix && stylelint '**/*.{scss,sass}' --fix"
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix && prettier --write 'src/**/*.{ts,tsx,js,jsx}' --tab-width 2 && stylelint '**/*.{scss,sass}' --fix",
+    "lint:ci": "eslint '*/**/*.{js,ts,tsx}' --color && yarn prettier --check 'src/**/*.{ts,tsx,js,jsx}' --tab-width 2 && stylelint '**/*.{scss,sass}' --color"
   },
   "browserslist": {
     "production": [
