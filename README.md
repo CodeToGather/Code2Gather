@@ -112,11 +112,10 @@ Then copy the following content into the new `package.json`:
 }
 ```
 
-The above is the bare minimum you must have for the new package. Do fill in the remaining parts.
+The above is the bare minimum you must have for the new package. Do fill in the remaining parts:
 
-The `"preinstall"` script is utilised if you are not using Node for the package. Insert your installation commands there, e.g. `poetry install`. Otherwise, feel free to delete it.
-
-The `"lint-staged"` section is to be filled with linting commands that will run against staged files.
+- The `"preinstall"` script is utilised if you are not using Node for the package. Insert your installation commands there, e.g. `poetry install`. Otherwise, feel free to delete it.
+- The `"lint-staged"` section is to be filled with linting commands that will run against staged files.
 
 You can refer to [Pairing Service's `package.json`](pairing/package.json) for an example.
 
@@ -126,8 +125,7 @@ Finally, you will need to add the new package to the root `package.json` under `
   "workspaces": [
     "frontend",
     "pairing",
-    "package",
-    // ...
+    "package"
   ],
 ```
 
