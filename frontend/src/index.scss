@@ -6,13 +6,52 @@ html {
 }
 
 body {
+  color: $text-primary-color;
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-weight: 500;
   margin: 0;
 }
 
 code {
   font-family: 'Roboto Mono', monospace;
   font-weight: 500;
+}
+
+// Text styles
+.is-regular {
+  font-weight: 400;
+}
+
+.is-bold {
+  font-weight: 700;
+}
+
+// Button styles
+// Only provides colors + border styles + some default padding
+
+button {
+  display: block;
+  font-family: inherit;
+  font-weight: inherit;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+button.primary-button {
+  background-color: $primary-button-background-color;
+  border: 0;
+  border-radius: $button-border-radius;
+  color: $primary-button-text-color;
+  padding: 1rem;
+}
+
+button.secondary-button {
+  background: none;
+  border: 0;
+  color: $secondary-button-text-color;
+  padding: 0;
 }
