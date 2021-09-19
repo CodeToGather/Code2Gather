@@ -35,6 +35,7 @@ button {
   display: block;
   font-family: inherit;
   font-weight: inherit;
+  padding: 1rem;
 
   &:hover {
     cursor: pointer;
@@ -46,7 +47,6 @@ button.primary-button {
   border: 0;
   border-radius: $button-border-radius;
   color: $primary-button-text-color;
-  padding: 1rem;
 }
 
 button.secondary-button {
