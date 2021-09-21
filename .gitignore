@@ -119,3 +119,7 @@ dist
 
 # Local scripts
 **/*_local.sh
+
+
+# Python
+*.pyc
