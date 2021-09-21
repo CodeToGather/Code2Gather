@@ -25,6 +25,8 @@ class CodeExecutor(object):
         Code Executor.
         Sends code execution instructions to remote Judge0 API
         """
+        if len(judge_url) == 0:
+            raise ValueError("URL cannot be empty")
         self._url = judge_url
         self._languages = self._set_supported_languages()
 
