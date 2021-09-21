@@ -8,6 +8,8 @@ from utils.bimap import Bimap
 class CodeExecutor(object):
     SUBMISSION_RETRIEVAL_URL = "{url}/submissions/{submission_id}?base64_encoded=true"
     SUBMISSIONS_SEND_URL = "{url}/submissions/?base64_encoded=false&wait=false"
+    LANGUAGES_URL = "{url}/languages"
+
     JSON_HEADERS = {"Content-Type": "application/json"}
     TOKEN_KEY = 'token'
     STATUS_KEY = 'status'
@@ -19,7 +21,6 @@ class CodeExecutor(object):
     BASE64_RESULTS_FIELDS = ['stderr', 'stdout', 'compile_output']
 
     def __init__(self, judge_url: str):
-        self._valueStore = {}
         self._url = judge_url
         self._languages = self._set_supported_languages()
 
@@ -67,7 +68,7 @@ class CodeExecutor(object):
 
     def _set_supported_languages(self) -> Bimap:
         """Returns a Bimap of lanaguage that is supported by the executor."""
-        response = requests.get(f"{self._url}/languages")
+        response = requests.get(self.LANGUAGES_URL.format(url = self._url))
         languageList = json.loads(response.content)
         return Bimap(
             list(map(
