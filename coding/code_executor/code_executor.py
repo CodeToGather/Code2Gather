@@ -21,6 +21,10 @@ class CodeExecutor(object):
     BASE64_RESULTS_FIELDS = ['stderr', 'stdout', 'compile_output']
 
     def __init__(self, judge_url: str):
+        """
+        Code Executor.
+        Sends code execution instructions to remote Judge0 API
+        """
         self._url = judge_url
         self._languages = self._set_supported_languages()
 
