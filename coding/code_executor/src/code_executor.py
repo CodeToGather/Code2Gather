@@ -102,13 +102,12 @@ class CodeExecutor(object):
 
 
 if __name__ == "__main__":
-    URL = ""
     codeExecutor = CodeExecutor(URL)
-    language = codeExecutor.get_supported_languages()[10]
+    language = codeExecutor.get_supported_languages()[-9]
     lang_id = codeExecutor.get_id_from_language(language)
     print(f"{language}: {lang_id}")
     submission_id = codeExecutor.send_to_execute(
-        "#include <stdio.h>\nint main(){printf(\"Hello world! This is run on the executor\");}", lang_id, "")
+        "import ctypes\nx = ctypes.c_double.from_param(1e300)\nrepr(x)", lang_id, "hello\n")
     print(submission_id)
     results = codeExecutor.get_results(submission_id)
     pprint(results)
