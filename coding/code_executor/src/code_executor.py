@@ -102,6 +102,7 @@ class CodeExecutor(object):
 
 
 if __name__ == "__main__":
+    URL = ""
     codeExecutor = CodeExecutor(URL)
     language = codeExecutor.get_supported_languages()[-9]
     lang_id = codeExecutor.get_id_from_language(language)
