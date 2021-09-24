@@ -64,4 +64,4 @@ jobs:
           poetry run black --check .
           poetry run isort --diff --check-only .
           poetry run flake8 --select=F
-          poetry run mypy .
+          poetry run mypy --namespace-packages .
