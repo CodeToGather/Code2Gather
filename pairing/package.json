@@ -4,6 +4,7 @@
   "description": "Pairing service for Code2Gather",
   "private": true,
   "devDependencies": {
+    "is-ci": "^3.0.0",
     "lint-staged": "^11.1.2"
   },
   "scripts": {
