@@ -4,13 +4,13 @@ on:
   push:
     branches: [main]
     paths:
-      - '.github/workflows/lint_pairing.yml'
-      - 'pairing/**/*'
+      - '.github/workflows/lint_code_executor.yml'
+      - 'code-executor/**/*'
   pull_request:
     branches: [main]
     paths:
-      - '.github/workflows/lint_pairing.yml'
-      - 'pairing/**/*'
+      - '.github/workflows/lint_code_executor.yml'
+      - 'code-executor/**/*'
 
 jobs:
   lint:
@@ -55,12 +55,12 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          cd pairing
+          cd code-executor
           poetry install
 
       - name: Lint files
         run: |
-          cd pairing
+          cd code-executor
           poetry run black --check .
           poetry run isort --diff --check-only .
           poetry run flake8 --select=F
