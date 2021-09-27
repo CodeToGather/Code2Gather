@@ -8,7 +8,7 @@
     "lint-staged": "^11.1.2"
   },
   "scripts": {
-    "preinstall": "is-ci || poetry install",
+    "postinstall": "is-ci || poetry install",
     "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt",
     "lint": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages ."
   },
