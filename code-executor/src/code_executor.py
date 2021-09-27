@@ -66,7 +66,7 @@ class CodeExecutor:
 
     # TODO: Type the return type more explicitly
     def _get_results(self, submission_id: str) -> dict:
-        """Retrieves result from the server 1 time"""
+        """Retrieves result from the server 1 time."""
         response = requests.get(
             self.SUBMISSION_RETRIEVAL_URL.format(
                 url=self._url, submission_id=submission_id
