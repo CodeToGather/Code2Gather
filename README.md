@@ -103,6 +103,7 @@ Then copy the following content into the new `package.json`:
   "description": "",
   "private": true,
   "devDependencies": {
+    "is-ci": "^3.0.0",
     "lint-staged": "^11.1.2"
   },
   "scripts": {
@@ -115,6 +116,7 @@ Then copy the following content into the new `package.json`:
 The above is the bare minimum you must have for the new package. Do fill in the remaining parts:
 
 - The `"postinstall"` script is utilised if you are not using Node for the package. Insert your installation commands there, e.g. `poetry install`. Otherwise, feel free to delete it.
+  - If you're using Poetry, make sure to do a `is-ci` check (see [`pairing`](pairing/package.json)), since the Poetry installation requires additional steps during CI runs.
 - The `"lint-staged"` section is to be filled with linting commands that will run against staged files.
 
 You can refer to [Pairing Service's `package.json`](pairing/package.json) for an example.
