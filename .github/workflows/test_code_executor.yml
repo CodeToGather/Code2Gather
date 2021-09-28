@@ -60,4 +60,5 @@ jobs:
 
       - name: Run tests
         run: |
+          cd code-executor
           poetry run pytest --cov-report html --cov=src
