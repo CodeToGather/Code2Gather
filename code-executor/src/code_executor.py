@@ -5,18 +5,38 @@ from typing import Optional, Union
 import requests
 
 try:
-    from src.constants import (BASE64_RESULTS_FIELDS, ID_KEY, JSON_HEADERS,
-                               LANGUAGE_ID_KEY, LANGUAGES_URL, NAME_KEY,
-                               SOURCE_CODE_KEY, STATUS_KEY, STDIN_KEY,
-                               SUBMISSION_RETRIEVAL_URL, SUBMISSIONS_SEND_URL,
-                               TOKEN_KEY, URL)
+    from src.constants import (
+        BASE64_RESULTS_FIELDS,
+        ID_KEY,
+        JSON_HEADERS,
+        LANGUAGE_ID_KEY,
+        LANGUAGES_URL,
+        NAME_KEY,
+        SOURCE_CODE_KEY,
+        STATUS_KEY,
+        STDIN_KEY,
+        SUBMISSION_RETRIEVAL_URL,
+        SUBMISSIONS_SEND_URL,
+        TOKEN_KEY,
+        URL,
+    )
     from src.utils.bimap import Bimap
 except ImportError:
-    from constants import (BASE64_RESULTS_FIELDS, ID_KEY, JSON_HEADERS,
-                           LANGUAGE_ID_KEY, LANGUAGES_URL, NAME_KEY,
-                           SOURCE_CODE_KEY, STATUS_KEY, STDIN_KEY,
-                           SUBMISSION_RETRIEVAL_URL, SUBMISSIONS_SEND_URL,
-                           TOKEN_KEY, URL)
+    from constants import (
+        BASE64_RESULTS_FIELDS,
+        ID_KEY,
+        JSON_HEADERS,
+        LANGUAGE_ID_KEY,
+        LANGUAGES_URL,
+        NAME_KEY,
+        SOURCE_CODE_KEY,
+        STATUS_KEY,
+        STDIN_KEY,
+        SUBMISSION_RETRIEVAL_URL,
+        SUBMISSIONS_SEND_URL,
+        TOKEN_KEY,
+        URL,
+    )
     from utils.bimap import Bimap
 
 
