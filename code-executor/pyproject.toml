@@ -2,11 +2,12 @@
 name = "code_executor"
 version = "0.1.0"
 description = "Code executor for code2gather"
-authors = ["Your Name <you@example.com>"]
+authors = ["Junhua <wen_junhua@u.nus.edu>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
 requests = "^2.26.0"
+pytest = "^6.2.5"
 
 [tool.poetry.dev-dependencies]
 black = "^21.4b2"
