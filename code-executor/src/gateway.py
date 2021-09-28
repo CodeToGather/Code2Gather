@@ -15,15 +15,14 @@ def get_languages():
     return jsonify(executor.get_supported_languages())
 
 
-@app.route('/submission', methods="POST")
+@app.route("/submission", methods="POST")
 def submission():
     """
     Execute code and returns a submission tag
     """
     data = request.get_json()
     result = executor.send_to_execute(**data)
-    return jsonify({'result': result})
-
+    return jsonify({"result": result})
 
 
 if __name__ == "__main__":

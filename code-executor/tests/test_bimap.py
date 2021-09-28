@@ -1,5 +1,6 @@
 from src.utils.bimap import Bimap
 
+
 class TestBimap(object):
     def test_retrieval(self):
         m = Bimap([("hi", "hello")])
@@ -11,7 +12,7 @@ class TestBimap(object):
     def test_get_keys(self):
         m = Bimap([("hi", "hello"), ("hello", "hi")])
         assert sorted(m.get_keys()) == ["hello", "hi"]
-    
+
     def test_get_values(self):
         m = Bimap([("hi", "hello"), ("hello1", "hi")])
         assert sorted(m.get_values()) == ["hello", "hi"]

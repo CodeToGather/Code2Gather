@@ -1,7 +1,9 @@
-import pytest
 import multiprocessing as mp
 from typing import Any
+
+import pytest
 from src.code_executor import CodeExecutor
+
 try:
     from tests.judge0stub.app import start_app
 except ImportError:
@@ -24,20 +26,30 @@ def url():
 
 
 class TestCodeExecutor(object):
-    PYTHON = 'Python (3.8.1)'
-    EMPTY_STRING = ''
+    PYTHON = "Python (3.8.1)"
+    EMPTY_STRING = ""
 
     def create_executor(self, url: str) -> CodeExecutor:
         return CodeExecutor(url)
 
-    def check_result(self, result: dict[str, Any], token_id: str, stdout: str = None, stderr: str = None, message: str = None, compile_output: str = None) -> bool:
-        assert result['token'] == token_id
-        assert result['stdout'] == stdout, f"Stdout is suppose to be '{stdout}' but got '{result[stdout]}'"
-        assert result['stderr'] == stderr
-        assert result['message'] == message
-        assert len(result['time']) > 0
-        assert result['memory'] > 0
-        assert result['status'] is not None
+    def check_result(
+        self,
+        result: dict[str, Any],
+        token_id: str,
+        stdout: str = None,
+        stderr: str = None,
+        message: str = None,
+        compile_output: str = None,
+    ) -> bool:
+        assert result["token"] == token_id
+        assert (
+            result["stdout"] == stdout
+        ), f"Stdout is suppose to be '{stdout}' but got '{result[stdout]}'"
+        assert result["stderr"] == stderr
+        assert result["message"] == message
+        assert len(result["time"]) > 0
+        assert result["memory"] > 0
+        assert result["status"] is not None
 
     def test_get_languages(self, url):
         executor = self.create_executor(url)
@@ -53,7 +65,7 @@ class TestCodeExecutor(object):
             assert executor.get_id_from_language(language) is not None
 
     def test_get_results(self, url):
-        python_hello_world = "print(\"Hello World!\")"
+        python_hello_world = 'print("Hello World!")'
         executor = self.create_executor(url)
 
         # Check for correct id
@@ -62,7 +74,8 @@ class TestCodeExecutor(object):
 
         # Check for correct execution result id
         results_id = executor.send_to_execute(
-            python_hello_world, language_id, self.EMPTY_STRING)
+            python_hello_world, language_id, self.EMPTY_STRING
+        )
         assert len(results_id) > 0
 
         # Check for correct execution result

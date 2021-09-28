@@ -1,18 +1,26 @@
 import base64
 import json
-import requests
 from typing import Optional, Union
 
+import requests
+
 try:
-    from src.constants import URL, SOURCE_CODE_KEY, STATUS_KEY, STDIN_KEY, SUBMISSION_RETRIEVAL_URL, SUBMISSIONS_SEND_URL, LANGUAGE_ID_KEY, LANGUAGES_URL, JSON_HEADERS, TOKEN_KEY, ID_KEY, BASE64_RESULTS_FIELDS, NAME_KEY
+    from src.constants import (BASE64_RESULTS_FIELDS, ID_KEY, JSON_HEADERS,
+                               LANGUAGE_ID_KEY, LANGUAGES_URL, NAME_KEY,
+                               SOURCE_CODE_KEY, STATUS_KEY, STDIN_KEY,
+                               SUBMISSION_RETRIEVAL_URL, SUBMISSIONS_SEND_URL,
+                               TOKEN_KEY, URL)
     from src.utils.bimap import Bimap
 except ImportError:
-    from constants import URL, SOURCE_CODE_KEY, STATUS_KEY, STDIN_KEY, SUBMISSION_RETRIEVAL_URL, SUBMISSIONS_SEND_URL, LANGUAGE_ID_KEY, LANGUAGES_URL, JSON_HEADERS, TOKEN_KEY, ID_KEY, BASE64_RESULTS_FIELDS, NAME_KEY
+    from constants import (BASE64_RESULTS_FIELDS, ID_KEY, JSON_HEADERS,
+                           LANGUAGE_ID_KEY, LANGUAGES_URL, NAME_KEY,
+                           SOURCE_CODE_KEY, STATUS_KEY, STDIN_KEY,
+                           SUBMISSION_RETRIEVAL_URL, SUBMISSIONS_SEND_URL,
+                           TOKEN_KEY, URL)
     from utils.bimap import Bimap
 
 
 class CodeExecutor:
-
     def __init__(self, judge_url: str) -> None:
         """
         Code Executor.
@@ -57,13 +65,13 @@ class CodeExecutor:
     def _get_results(self, submission_id: str) -> dict:
         """Retrieves result from the server 1 time."""
         response = requests.get(
-            SUBMISSION_RETRIEVAL_URL.format(
-                url=self._url, submission_id=submission_id
-            )
+            SUBMISSION_RETRIEVAL_URL.format(url=self._url, submission_id=submission_id)
         )
         return dict(json.loads(response.content))
 
-    def get_results(self, submission_id: str, block: bool = True) -> dict[str, Optional[Union[str, None, int]]]:
+    def get_results(
+        self, submission_id: str, block: bool = True
+    ) -> dict[str, Optional[Union[str, None, int]]]:
         """This method will block and return the submission"""
         result = self._get_results(submission_id)
 
@@ -78,10 +86,7 @@ class CodeExecutor:
         """Returns a Bimap of language that is supported by the executor."""
         response = requests.get(LANGUAGES_URL.format(url=self._url))
         languageList = json.loads(response.content)
-        return Bimap(
-            list(
-                map(lambda x: (x[ID_KEY], x[NAME_KEY]), languageList))
-        )
+        return Bimap(list(map(lambda x: (x[ID_KEY], x[NAME_KEY]), languageList)))
 
     def get_language_from_id(self, id: int) -> Optional[str]:
         """
