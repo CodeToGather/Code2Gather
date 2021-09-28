@@ -2,16 +2,14 @@
 import base64
 import json
 import time
+from typing import Any
 import uuid
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 
 from flask import Flask, request
 
-try:
-    from tests.judge0stub.constants import LANGUAGE_ID_LIST
-except ImportError:
-    from constants import LANGUAGE_ID_LIST
+from tests.judge0stub.constants import LANGUAGE_ID_LIST
 
 # Create app
 app = Flask(__name__)
@@ -25,7 +23,7 @@ def supported_languages() -> str:
     return json.dumps(LANGUAGE_ID_LIST)
 
 
-def eval_program(source_code: str) -> tuple[str, str, int]:
+def eval_program(source_code: str) -> tuple[str, str, float]:
     stdout = StringIO()
     stderr = StringIO()
     with redirect_stdout(stdout):
@@ -43,6 +41,9 @@ def eval_program(source_code: str) -> tuple[str, str, int]:
 @app.route("/submissions/", methods=["POST"])
 def submission() -> str:
     args = request.get_json()
+    if args is None:
+        return json.dumps({"error": "Invalid input"})
+
     errval, output, runtime = eval_program(args.get("source_code", ""))
     uid = uuid.uuid4().__str__()
     d[uid] = {
@@ -58,7 +59,7 @@ def submission() -> str:
     return json.dumps({"token": uid})
 
 
-def serialise_key(result, key) -> dict:
+def b64_encode_key(result: dict[Any, Any], key: str) -> dict:
     result[key] = (
         base64.b64encode(result[key].encode()).decode()
         if result.get(key, None) is not None
@@ -68,14 +69,14 @@ def serialise_key(result, key) -> dict:
 
 
 @app.route("/submissions/<path:path>")
-def submission_with_id(path) -> str:
+def submission_with_id(path: str) -> str:
     result = d.get(path, {"error": "Invalid submission id"})
     url_args = request.args
     if url_args.get("base64_encoded", "false") == "true":
-        serialise_key(result, "stderr")
-        serialise_key(result, "stdout")
-        serialise_key(result, "message")
-        serialise_key(result, "compile_output")
+        b64_encode_key(result, "stderr")
+        b64_encode_key(result, "stdout")
+        b64_encode_key(result, "message")
+        b64_encode_key(result, "compile_output")
     return json.dumps(result)
 
 

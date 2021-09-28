@@ -4,11 +4,7 @@ from typing import Any
 import pytest
 
 from src.code_executor import CodeExecutor
-
-try:
-    from tests.judge0stub.app import start_app
-except ImportError:
-    from judge0stub.app import start_app
+from tests.judge0stub.app import start_app
 
 
 @pytest.fixture
@@ -41,22 +37,20 @@ class TestCodeExecutor(object):
         stderr: str = None,
         message: str = None,
         compile_output: str = None,
-    ) -> bool:
+    ) -> None:
         assert result["token"] == token_id
-        assert (
-            result["stdout"] == stdout
-        ), f"Stdout is suppose to be '{stdout}' but got '{result[stdout]}'"
+        assert result["stdout"] == stdout
         assert result["stderr"] == stderr
         assert result["message"] == message
         assert len(result["time"]) > 0
         assert result["memory"] > 0
         assert result["status"] is not None
 
-    def test_get_languages(self, url):
+    def test_get_languages(self, url: str) -> None:
         executor = self.create_executor(url)
         assert len(executor.get_supported_languages()) >= 0
 
-    def test_language_to_id(self, url):
+    def test_language_to_id(self, url) -> None:
         executor = self.create_executor(url)
         supported_languages = executor.get_supported_languages()
 
@@ -65,7 +59,7 @@ class TestCodeExecutor(object):
         for language in supported_languages:
             assert executor.get_id_from_language(language) is not None
 
-    def test_get_results(self, url):
+    def test_get_results(self, url) -> None:
         python_hello_world = 'print("Hello World!")'
         executor = self.create_executor(url)
 
@@ -77,6 +71,7 @@ class TestCodeExecutor(object):
         results_id = executor.send_to_execute(
             python_hello_world, language_id, self.EMPTY_STRING
         )
+        assert results_id is not None
         assert len(results_id) > 0
 
         # Check for correct execution result
