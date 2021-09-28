@@ -39,11 +39,3 @@ class Bimap(Generic[KT, VT]):
         Returns None if the value is not found.
         """
         return self._reverse_map.get(value, None)
-
-
-if __name__ == "__main__":
-    m = Bimap([("hi", "hello")])
-    assert m.get_key_from_value("hello") == "hi"
-    assert m.get_key_from_value("hi") is None
-    assert m.get_value_from_key("hi") == "hello"
-    assert m.get_value_from_key("hello") is None

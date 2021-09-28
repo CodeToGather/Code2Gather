@@ -1,27 +1,17 @@
 import base64
 import json
-from pprint import pprint
+import requests
 from typing import Optional, Union
 
-import requests
-
-from src.utils.bimap import Bimap
+try:
+    from src.constants import URL, SOURCE_CODE_KEY, STATUS_KEY, STDIN_KEY, SUBMISSION_RETRIEVAL_URL, SUBMISSIONS_SEND_URL, LANGUAGE_ID_KEY, LANGUAGES_URL, JSON_HEADERS, TOKEN_KEY, ID_KEY, BASE64_RESULTS_FIELDS, NAME_KEY
+    from src.utils.bimap import Bimap
+except ImportError:
+    from constants import URL, SOURCE_CODE_KEY, STATUS_KEY, STDIN_KEY, SUBMISSION_RETRIEVAL_URL, SUBMISSIONS_SEND_URL, LANGUAGE_ID_KEY, LANGUAGES_URL, JSON_HEADERS, TOKEN_KEY, ID_KEY, BASE64_RESULTS_FIELDS, NAME_KEY
+    from utils.bimap import Bimap
 
 
 class CodeExecutor:
-    SUBMISSION_RETRIEVAL_URL = "{url}/submissions/{submission_id}?base64_encoded=true"
-    SUBMISSIONS_SEND_URL = "{url}/submissions/?base64_encoded=false&wait=false"
-    LANGUAGES_URL = "{url}/languages"
-
-    JSON_HEADERS = {"Content-Type": "application/json"}
-    TOKEN_KEY = "token"
-    STATUS_KEY = "status"
-    ID_KEY = "id"
-    NAME_KEY = "name"
-    SOURCE_CODE_KEY = "source_code"
-    LANGUAGE_ID_KEY = "language_id"
-    STDIN_KEY = "stdin"
-    BASE64_RESULTS_FIELDS = ["stderr", "stdout", "compile_output", "message"]
 
     def __init__(self, judge_url: str) -> None:
         """
@@ -37,9 +27,9 @@ class CodeExecutor:
         self, code: str, language_id: int, input: str
     ) -> dict[str, Union[str, int]]:
         return {
-            self.SOURCE_CODE_KEY: code,
-            self.LANGUAGE_ID_KEY: language_id,
-            self.STDIN_KEY: input,
+            SOURCE_CODE_KEY: code,
+            LANGUAGE_ID_KEY: language_id,
+            STDIN_KEY: input,
         }
 
     def send_to_execute(self, code: str, language_id: int, input: str) -> Optional[str]:
@@ -52,11 +42,11 @@ class CodeExecutor:
         On error returns None
         """
         response = requests.post(
-            self.SUBMISSIONS_SEND_URL.format(url=self._url),
+            SUBMISSIONS_SEND_URL.format(url=self._url),
             json.dumps(self._create_send_payload(code, language_id, input)),
-            headers=self.JSON_HEADERS,
+            headers=JSON_HEADERS,
         )
-        submission_id = json.loads(response.content).get(self.TOKEN_KEY, None)
+        submission_id = json.loads(response.content).get(TOKEN_KEY, None)
         return str(submission_id) if submission_id is not None else None
 
     def _convert_from_base64(self, result: dict, key: str) -> None:
@@ -64,32 +54,33 @@ class CodeExecutor:
         if key in result and result[key] is not None:
             result[key] = base64.b64decode(result[key]).decode()
 
-    # TODO: Type the return type more explicitly
     def _get_results(self, submission_id: str) -> dict:
         """Retrieves result from the server 1 time."""
         response = requests.get(
-            self.SUBMISSION_RETRIEVAL_URL.format(
+            SUBMISSION_RETRIEVAL_URL.format(
                 url=self._url, submission_id=submission_id
             )
         )
         return dict(json.loads(response.content))
 
-    # TODO: Type the return type more explicitly
-    def get_results(self, submission_id: str) -> dict:
+    def get_results(self, submission_id: str, block: bool = True) -> dict[str, Optional[Union[str, None, int]]]:
         """This method will block and return the submission"""
         result = self._get_results(submission_id)
-        while result.get(self.STATUS_KEY, {}).get(self.ID_KEY, None) == 1:
+
+        while block and result.get(STATUS_KEY, {}).get(ID_KEY, None) == 1:
             result = self._get_results(submission_id)
-        for b64_attr in self.BASE64_RESULTS_FIELDS:
+
+        for b64_attr in BASE64_RESULTS_FIELDS:
             self._convert_from_base64(result, b64_attr)
         return result
 
     def _set_supported_languages(self) -> Bimap:
         """Returns a Bimap of language that is supported by the executor."""
-        response = requests.get(self.LANGUAGES_URL.format(url=self._url))
+        response = requests.get(LANGUAGES_URL.format(url=self._url))
         languageList = json.loads(response.content)
         return Bimap(
-            list(map(lambda x: (x[self.ID_KEY], x[self.NAME_KEY]), languageList))
+            list(
+                map(lambda x: (x[ID_KEY], x[NAME_KEY]), languageList))
         )
 
     def get_language_from_id(self, id: int) -> Optional[str]:
@@ -112,16 +103,17 @@ class CodeExecutor:
 
 
 def main():
-    URL = ""
     codeExecutor = CodeExecutor(URL)
-    language = codeExecutor.get_supported_languages()[-9]
+    languages = codeExecutor.get_supported_languages()
+    language = languages[-9]
     lang_id = codeExecutor.get_id_from_language(language)
     print(f"{language}: {lang_id}")
     if lang_id is None:
         return
 
     submission_id = codeExecutor.send_to_execute(
-        "import ctypes\nx = ctypes.c_double.from_param(1e300)\nrepr(x)",
+        # "import ctypes\nx = ctypes.c_double.from_param(1e300)\nrepr(x)",
+        "print('hello world')",
         lang_id,
         "hello\n",
     )
@@ -130,7 +122,7 @@ def main():
         return
 
     results = codeExecutor.get_results(submission_id)
-    pprint(results)
+    print(results)
 
 
 if __name__ == "__main__":
