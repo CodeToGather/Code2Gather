@@ -19,7 +19,8 @@ def url():
     yield f"http://{host}:{port}"
 
     # Tear down
-    process.kill()
+    process.terminate()
+    process.join()
 
 
 class TestCodeExecutor(object):
@@ -38,6 +39,7 @@ class TestCodeExecutor(object):
         message: str = None,
         compile_output: str = None,
     ) -> None:
+        assert result["compile_output"] == compile_output
         assert result["token"] == token_id
         assert result["stdout"] == stdout
         assert result["stderr"] == stderr
