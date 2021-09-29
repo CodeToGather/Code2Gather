@@ -34,15 +34,17 @@ class CodeExecutor:
         self._languages: Bimap[int, str] = self._set_supported_languages()
 
     def _create_send_payload(
-        self, code: str, language_id: int, input: str
-    ) -> dict[str, Union[str, int]]:
+        self, code: str, language_id: int, input: Optional[str]
+    ) -> dict[str, Optional[Union[str, int]]]:
         return {
             SOURCE_CODE_KEY: code,
             LANGUAGE_ID_KEY: language_id,
             STDIN_KEY: input,
         }
 
-    def send_to_execute(self, code: str, language_id: int, input: str) -> Optional[str]:
+    def send_to_execute(
+        self, code: str, language_id: int, input: Optional[str]
+    ) -> Optional[str]:
         """
         Sends the code to an executor to be executed.
         Language is based on the language id that is provided
@@ -85,10 +87,13 @@ class CodeExecutor:
         return result
 
     def _set_supported_languages(self) -> Bimap:
-        """Returns a Bimap of language that is supported by the executor."""
+        """
+        Returns a Bimap of language that is supported by the executor.
+        Throws an error if there is a connection error.
+        """
         response = requests.get(LANGUAGES_URL.format(url=self._url))
         languageList = json.loads(response.content)
-        return Bimap(list(map(lambda x: (x[ID_KEY], x[NAME_KEY]), languageList)))
+        return Bimap(map(lambda x: (x[ID_KEY], x[NAME_KEY]), languageList))
 
     def get_language_from_id(self, id: int) -> Optional[str]:
         """
@@ -122,7 +127,7 @@ def main():
         # "import ctypes\nx = ctypes.c_double.from_param(1e300)\nrepr(x)",
         "print('hello world')",
         lang_id,
-        "hello\n",
+        None,
     )
     print(submission_id)
     if submission_id is None:

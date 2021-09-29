@@ -1,11 +1,11 @@
-from typing import Generic, Optional, TypeVar
+from typing import Generic, Iterable, Optional, TypeVar
 
 KT = TypeVar("KT")
 VT = TypeVar("VT")
 
 
 class Bimap(Generic[KT, VT]):
-    def __init__(self, entries: list[tuple[KT, VT]]) -> None:
+    def __init__(self, entries: Iterable[tuple[KT, VT]]) -> None:
         """
         A bidirectional map for lookup.
         Not meant to be mutated.
