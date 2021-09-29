@@ -1,15 +1,14 @@
 from typing import Any
 
 from pytest_mock import MockerFixture
-
 from src.code_executor import CodeExecutor
 from tests.utils.request_mock import (
     generate_lang_mock_success,
-    generate_send_mock_success,
-    generate_send_mock_failure_missing_field,
-    generate_send_mock_failure_error,
-    generate_result_mock_success,
     generate_result_mock_failure_error,
+    generate_result_mock_success,
+    generate_send_mock_failure_error,
+    generate_send_mock_failure_missing_field,
+    generate_send_mock_success,
 )
 
 
@@ -62,7 +61,9 @@ class TestCodeExecutor(object):
 
     def test_submit_result_failure_missing_field(self, mocker: MockerFixture):
         mocker.patch("requests.get", return_value=generate_lang_mock_success())
-        mocker.patch("requests.post", return_value=generate_send_mock_failure_missing_field())
+        mocker.patch(
+            "requests.post", return_value=generate_send_mock_failure_missing_field()
+        )
         python_hello_world = 'print("Hello World!")'
         executor = self.create_executor(self.URL)
 
@@ -114,7 +115,7 @@ class TestCodeExecutor(object):
         results = executor.get_results(results_id)
         self.check_result(results, results_id, "Hello World!\n")
 
-    def test_get_results_failure(self, mocker:MockerFixture):
+    def test_get_results_failure(self, mocker: MockerFixture):
         mocker.patch("requests.get", return_value=generate_lang_mock_success())
         mocker.patch("requests.post", return_value=generate_send_mock_success())
         python_hello_world = 'print("Hello World!")'
