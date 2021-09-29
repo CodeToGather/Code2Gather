@@ -1,11 +1,15 @@
 import { FC } from 'react';
+import { useHistory } from 'react-router';
 
 import DemoImage from 'assets/images/demo.png';
 import Container from 'components/container';
+import { CODE_EDITOR } from 'constants/routes';
 
 import './Landing.scss';
 
 const Landing: FC = () => {
+  const history = useHistory();
+
   return (
     <Container hasBackground={true}>
       <main className="landing">
@@ -19,7 +23,12 @@ const Landing: FC = () => {
               <i className="fab fa-github" />
               <div>Sign in with GitHub</div>
             </button>
-            <button className="secondary-button landing__guest-button">
+            <button
+              className="secondary-button landing__guest-button"
+              onClick={() => {
+                history.push(CODE_EDITOR);
+              }}
+            >
               Sign in as guest instead
             </button>
           </div>
