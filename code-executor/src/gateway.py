@@ -34,14 +34,14 @@ def submission() -> Response:
     data = request.get_json()
 
     if data is None:
-        return jsonify({"error": "invalid request"})
+        return jsonify({"error": "invalid request or not json request"})
 
     # Check for valid args
     code = data.get(CODE_KEY, None)
     language = data.get(LANGUAGE_KEY, None)
     stdin = data.get(INPUT_KEY, None)
     if None in (code, language):
-        return jsonify({"error": "missing either code, language or input"})
+        return jsonify({"error": "missing either code, language"})
 
     executor = get_executor()
     language_id = executor.get_id_from_language(language)
