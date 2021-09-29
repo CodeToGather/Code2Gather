@@ -2,6 +2,9 @@ import base64
 import json
 from typing import Any
 
+LANGUAGES = [{"id": 71, "name": "Python (3.8.1)"}]
+TOKEN_RETURN = {"token": "this_is_uuid_example"}
+
 
 class MockResponseObj(object):
     def __init__(self, content: str, args: str = None):
@@ -19,7 +22,7 @@ def b64_encode_key(result: dict[Any, Any], key: str) -> dict:
 
 
 def generate_lang_mock_success() -> MockResponseObj:
-    return MockResponseObj(json.dumps([{"id": 71, "name": "Python (3.8.1)"}]))
+    return MockResponseObj(json.dumps(LANGUAGES))
 
 
 def generate_send_mock_failure_missing_field() -> MockResponseObj:
@@ -37,7 +40,7 @@ def generate_send_mock_failure_error() -> MockResponseObj:
 
 
 def generate_send_mock_success() -> MockResponseObj:
-    return MockResponseObj(json.dumps({"token": "this_is_uuid_example"}))
+    return MockResponseObj(json.dumps(TOKEN_RETURN))
 
 
 def generate_result_mock_success() -> MockResponseObj:
