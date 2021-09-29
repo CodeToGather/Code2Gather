@@ -1,31 +1,19 @@
-import multiprocessing as mp
 from typing import Any
 
-import pytest
+from pytest_mock import MockerFixture
 
 from src.code_executor import CodeExecutor
-from tests.judge0stub.app import start_app
-
-
-@pytest.fixture
-def url():
-    # Set up
-    host = "localhost"
-    port = 2358
-    process = mp.Process(target=start_app, args=(host, port))
-    process.start()
-
-    # Yield stub url
-    yield f"http://{host}:{port}"
-
-    # Tear down
-    process.terminate()
-    process.join()
+from tests.utils.request_mock import (
+    generate_lang_mock,
+    generate_result_mock,
+    generate_send_mock,
+)
 
 
 class TestCodeExecutor(object):
     PYTHON = "Python (3.8.1)"
     EMPTY_STRING = ""
+    URL = "mockurl"
 
     def create_executor(self, url: str) -> CodeExecutor:
         return CodeExecutor(url)
@@ -48,12 +36,20 @@ class TestCodeExecutor(object):
         assert result["memory"] > 0
         assert result["status"] is not None
 
-    def test_get_languages(self, url: str) -> None:
-        executor = self.create_executor(url)
+    def test_get_languages(self, mocker: MockerFixture) -> None:
+        mocker.patch(
+            "requests.get",
+            return_value=generate_lang_mock(),
+        )
+        executor = self.create_executor(self.URL)
         assert len(executor.get_supported_languages()) >= 0
 
-    def test_language_to_id(self, url) -> None:
-        executor = self.create_executor(url)
+    def test_language_to_id(self, mocker: MockerFixture) -> None:
+        mocker.patch(
+            "requests.get",
+            return_value=generate_lang_mock(),
+        )
+        executor = self.create_executor(self.URL)
         supported_languages = executor.get_supported_languages()
 
         assert self.PYTHON in supported_languages
@@ -61,9 +57,11 @@ class TestCodeExecutor(object):
         for language in supported_languages:
             assert executor.get_id_from_language(language) is not None
 
-    def test_get_results(self, url) -> None:
+    def test_get_results(self, mocker: MockerFixture) -> None:
+        mocker.patch("requests.get", return_value=generate_lang_mock())
+        mocker.patch("requests.post", return_value=generate_send_mock())
         python_hello_world = 'print("Hello World!")'
-        executor = self.create_executor(url)
+        executor = self.create_executor(self.URL)
 
         # Check for correct id
         language_id = executor.get_id_from_language(self.PYTHON)
@@ -77,5 +75,6 @@ class TestCodeExecutor(object):
         assert len(results_id) > 0
 
         # Check for correct execution result
+        mocker.patch("requests.get", return_value=generate_result_mock())
         results = executor.get_results(results_id)
         self.check_result(results, results_id, "Hello World!\n")
