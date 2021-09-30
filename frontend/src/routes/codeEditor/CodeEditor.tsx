@@ -15,18 +15,13 @@ const CodeEditor: FC = () => {
 
   return (
     <div>
-      <select
-        className="form-control"
-        id="languageSelect"
-        onBlur={(event) => {
-          console.log(event.target.value);
-          setLanguage(event.target.value);
-        }}
-      >
-        <option value="python">Python</option>
-        <option value="java">Java</option>
-        <option value="javascript">JavaScript</option>
-      </select>
+      <div className="select">
+        <select onBlur={(e) => setLanguage(e.target.value)}>
+          <option value="python">Python</option>
+          <option value="javascript">JavaScript</option>
+          <option value="java">Java</option>
+        </select>
+      </div>
       <AceEditor
         height={'100vh'}
         mode={language}

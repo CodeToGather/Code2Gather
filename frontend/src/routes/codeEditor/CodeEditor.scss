@@ -1,0 +1,39 @@
+select {
+  appearance: none;
+  background-color: var(--darkgray);
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+  color: #fff;
+  cursor: pointer;
+  flex: 1;
+  outline: 0;
+  padding: 0 1em;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.select {
+  border-radius: 0.25em;
+  display: flex;
+  height: 3em;
+  overflow: hidden;
+  position: relative;
+  width: 10em;
+}
+
+.select::after {
+  content: '\2304';
+  padding: 0.75em;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 0.25s all ease;
+}
+
+.select:hover::after {
+  color: #f39c12;
+}
