@@ -1,4 +1,4 @@
-name: Lint Pairing
+name: Lint Code Executor
 
 on:
   push:
