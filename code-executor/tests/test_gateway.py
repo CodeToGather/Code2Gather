@@ -2,7 +2,6 @@ import json
 from unittest.mock import patch
 
 import pytest
-from flask.app import Flask
 from flask.testing import FlaskClient
 from pytest_mock import MockerFixture
 

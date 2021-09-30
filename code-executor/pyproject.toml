@@ -7,7 +7,6 @@ authors = ["Junhua <wen_junhua@u.nus.edu>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 requests = "^2.26.0"
-pytest = "^6.2.5"
 Flask = "^2.0.1"
 
 [tool.poetry.dev-dependencies]

@@ -1,6 +1,6 @@
 from typing import Any, Union
 
-from flask import Blueprint, Response, g, json, jsonify, request
+from flask import Blueprint, Response, g, jsonify, request
 
 from src.code_executor import CodeExecutor
 from src.constants import CODE_KEY, INPUT_KEY, LANGUAGE_KEY, URL
