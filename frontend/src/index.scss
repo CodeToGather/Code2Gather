@@ -86,3 +86,12 @@ button.border-button.is-danger {
     background-color: $danger-border-button-background-hover-color;
   }
 }
+
+button.border-button.is-success {
+  border: 1px solid $success-border-button-border-color;
+  color: $success-border-button-text-color;
+
+  &:hover {
+    background-color: $success-border-button-background-hover-color;
+  }
+}
