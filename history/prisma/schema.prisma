@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                   String          @id
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  githubUsername       String          @unique
+  ratingsGivenToOthers Rating[]        @relation("ratingUser")
+  ratingsGivenByOthers Rating[]        @relation("ratedUser")
+  interviewerRecords   MeetingRecord[] @relation("interviewer")
+  intervieweeRecords   MeetingRecord[] @relation("interviewee")
+}
+
+model Rating {
+  id              Int           @id @default(autoincrement())
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  rating          Float
+  ratingUser      User          @relation("ratingUser", fields: [ratingUserId], references: [id], onDelete: Cascade)
+  ratingUserId    String
+  ratedUser       User          @relation("ratedUser", fields: [ratedUserId], references: [id], onDelete: Cascade)
+  ratedUserId     String
+  meetingRecord   MeetingRecord @relation(fields: [meetingRecordId], references: [id])
+  meetingRecordId Int
+}
+
+model MeetingRecord {
+  id                    Int      @id @default(autoincrement())
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  interviewer           User     @relation("interviewer", fields: [interviewerId], references: [id])
+  interviewerId         String
+  interviewee           User     @relation("interviewee", fields: [intervieweeId], references: [id])
+  intervieweeId         String
+  duration              Float
+  questionId            String
+  language              Language
+  codeWritten           String // Code written by interviewee
+  isSolved              Boolean
+  feedbackToInterviewee String // Markdown notes by interviewer
+  rating                Rating?
+}
+
+enum Language {
+  PYTHON
+  JAVA
+  JAVASCRIPT
+}
