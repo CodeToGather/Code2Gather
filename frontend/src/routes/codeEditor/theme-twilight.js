@@ -6,17 +6,19 @@ ace.define(
     exports.isDark = true;
     exports.cssClass = 'ace-twilight';
     exports.cssText =
-      '.ace-twilight .ace_gutter {\
-background: #1e2126;\
-color: #E2E2E2\
+      ".ace-twilight .ace_gutter {\
+background: #1E2126;\
+color: #78797D;\
+font-weight: bold;\
 }\
 .ace-twilight .ace_print-margin {\
 width: 1px;\
-background: #232323\
+background: #1E2126\
 }\
 .ace-twilight {\
-background-color: #141414;\
-color: #F8F8F8\
+background-color: #1E2126;\
+color: #F8F8F8;\
+font: 14px/normal 'Roboto Mono', monospace !important;\
 }\
 .ace-twilight .ace_cursor {\
 color: #A7A7A7\
@@ -106,7 +108,7 @@ color: #494949\
 }\
 .ace-twilight .ace_indent-guide {\
 background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWMQERFpYLC1tf0PAAgOAnPnhxyiAAAAAElFTkSuQmCC) right repeat-y\
-}';
+}";
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     var dom = require('../lib/dom');
