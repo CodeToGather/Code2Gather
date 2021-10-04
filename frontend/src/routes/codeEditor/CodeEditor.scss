@@ -1,39 +1,64 @@
-select {
-  appearance: none;
-  background-color: var(--darkgray);
-  background-image: none;
-  border: 0;
-  box-shadow: none;
-  color: #fff;
-  cursor: pointer;
-  flex: 1;
-  outline: 0;
-  padding: 0 1em;
-}
+@import '../../assets/scss/variables';
 
-select::-ms-expand {
-  display: none;
-}
-
-.select {
-  border-radius: 0.25em;
+.editor {
   display: flex;
-  height: 3em;
+  flex-direction: column;
+  height: 100vh;
   overflow: hidden;
+  width: 100vw;
+
+  &--top {
+    display: flex;
+    font-size: 0.9rem;
+    justify-content: space-between;
+    max-width: 100%;
+    padding: 0.5rem;
+
+    &__left-buttons {
+      display: flex;
+    }
+
+    &__language-button {
+      display: flex;
+      justify-content: space-between;
+      margin-right: 0.7rem;
+    }
+
+    &__help-button i {
+      margin-left: 0.3rem;
+    }
+  }
+
+  .ace_editor {
+    flex: 1;
+  }
+}
+
+.language-dropdown {
   position: relative;
-  width: 10em;
-}
 
-.select::after {
-  content: '\2304';
-  padding: 0.75em;
-  pointer-events: none;
-  position: absolute;
-  right: 0;
-  top: 0;
-  transition: 0.25s all ease;
-}
+  button {
+    width: 8rem;
+  }
 
-.select:hover::after {
-  color: #f39c12;
+  &__dropdown {
+    border-radius: $dropdown-border-radius;
+    margin-top: 0.5rem;
+    overflow: hidden;
+    position: absolute;
+    z-index: 5;
+
+    button {
+      background-color: $dropdown-background-color;
+      border: 0;
+      border-radius: 0;
+      color: $dropdown-text-color;
+      padding: 0.7rem 0.8rem;
+      text-align: left;
+
+      &:hover {
+        background-color: $dropdown-background-hover-color;
+      }
+    }
+  }
 }
