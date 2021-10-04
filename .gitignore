@@ -120,6 +120,8 @@ dist
 # Local scripts
 **/*_local.sh
 
-
 # Python
 *.pyc
+
+# DS_Store
+.DS_Store

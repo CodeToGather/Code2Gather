@@ -9,13 +9,23 @@ $text-danger-color: #b8594c;
 
 // Button colors
 $primary-button-background-color: #24282d;
+$primary-button-background-hover-color: #34383d;
 $primary-button-text-color: #fff;
+
 $secondary-button-text-color: #aeacb2;
-$primary-border-button-border-color: #2f353b;
-$success-border-button-border-color: #5f9d50;
+$secondary-button-text-hover-color: #c6c4ca;
+
+$border-button-background-hover-color: #282e34;
+$border-button-border-color: #2f353b;
+$border-button-text-color: #fff;
+
+$success-border-button-background-hover-color: #2a3428;
 $success-border-button-text-color: #5f9d50;
-$danger-border-button-border-color: #b8594c;
+$success-border-button-border-color: #5f9d50;
+
+$danger-border-button-background-hover-color: #34282d;
 $danger-border-button-text-color: #b8594c;
+$danger-border-button-border-color: #b8594c;
 
 // Tab colors
 $tab-unselected-color: #7b7a7f;
@@ -38,3 +48,9 @@ $modal-overlay-opacity: 0.4;
 
 // Border radius
 $button-border-radius: 5px;
+
+// Dropdown
+$dropdown-background-color: #2f353b;
+$dropdown-background-hover-color: #4d555d;
+$dropdown-text-color: #fff;
+$dropdown-border-radius: 5px;
