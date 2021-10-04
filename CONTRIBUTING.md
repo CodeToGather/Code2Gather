@@ -38,7 +38,7 @@ Any line of the commit message cannot be longer than 100 characters.
   │       │             │
   │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
   │       │
-  │       └─⫸ Commit Scope: frontend|auth|pairing|coding|video|room|history
+  │       └─⫸ Commit Scope: frontend|auth|pairing|coding|code-executor|video|room|history
   │
   └─⫸ Commit Type: build|ci|docs|feat|fix|perf|refactor|test
 ```
