@@ -17,9 +17,9 @@ CREATE TABLE "Rating" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "rating" DOUBLE PRECISION NOT NULL,
-    "ratingUserId" TEXT NOT NULL,
+    "ratingUserId" TEXT,
     "ratedUserId" TEXT NOT NULL,
-    "meetingRecordId" INTEGER NOT NULL,
+    "meetingRecordId" INTEGER,
 
     CONSTRAINT "Rating_pkey" PRIMARY KEY ("id")
 );
@@ -29,7 +29,7 @@ CREATE TABLE "MeetingRecord" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "interviewerId" TEXT NOT NULL,
+    "interviewerId" TEXT,
     "intervieweeId" TEXT NOT NULL,
     "duration" DOUBLE PRECISION NOT NULL,
     "questionId" TEXT NOT NULL,
@@ -48,16 +48,16 @@ CREATE UNIQUE INDEX "User_githubUsername_key" ON "User"("githubUsername");
 CREATE UNIQUE INDEX "Rating_meetingRecordId_unique" ON "Rating"("meetingRecordId");
 
 -- AddForeignKey
-ALTER TABLE "Rating" ADD CONSTRAINT "Rating_ratingUserId_fkey" FOREIGN KEY ("ratingUserId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Rating" ADD CONSTRAINT "Rating_ratingUserId_fkey" FOREIGN KEY ("ratingUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Rating" ADD CONSTRAINT "Rating_ratedUserId_fkey" FOREIGN KEY ("ratedUserId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Rating" ADD CONSTRAINT "Rating_meetingRecordId_fkey" FOREIGN KEY ("meetingRecordId") REFERENCES "MeetingRecord"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Rating" ADD CONSTRAINT "Rating_meetingRecordId_fkey" FOREIGN KEY ("meetingRecordId") REFERENCES "MeetingRecord"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MeetingRecord" ADD CONSTRAINT "MeetingRecord_interviewerId_fkey" FOREIGN KEY ("interviewerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MeetingRecord" ADD CONSTRAINT "MeetingRecord_interviewerId_fkey" FOREIGN KEY ("interviewerId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MeetingRecord" ADD CONSTRAINT "MeetingRecord_intervieweeId_fkey" FOREIGN KEY ("intervieweeId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MeetingRecord" ADD CONSTRAINT "MeetingRecord_intervieweeId_fkey" FOREIGN KEY ("intervieweeId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

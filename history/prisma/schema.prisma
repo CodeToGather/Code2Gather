@@ -22,25 +22,25 @@ model User {
 }
 
 model Rating {
-  id              Int           @id @default(autoincrement())
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id              Int            @id @default(autoincrement())
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
   rating          Float
-  ratingUser      User          @relation("ratingUser", fields: [ratingUserId], references: [id], onDelete: Cascade)
-  ratingUserId    String
-  ratedUser       User          @relation("ratedUser", fields: [ratedUserId], references: [id], onDelete: Cascade)
+  ratingUser      User?          @relation("ratingUser", fields: [ratingUserId], references: [id], onDelete: SetNull)
+  ratingUserId    String?
+  ratedUser       User           @relation("ratedUser", fields: [ratedUserId], references: [id], onDelete: Cascade)
   ratedUserId     String
-  meetingRecord   MeetingRecord @relation(fields: [meetingRecordId], references: [id])
-  meetingRecordId Int
+  meetingRecord   MeetingRecord? @relation(fields: [meetingRecordId], references: [id], onDelete: SetNull)
+  meetingRecordId Int?
 }
 
 model MeetingRecord {
   id                    Int      @id @default(autoincrement())
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
-  interviewer           User     @relation("interviewer", fields: [interviewerId], references: [id])
-  interviewerId         String
-  interviewee           User     @relation("interviewee", fields: [intervieweeId], references: [id])
+  interviewer           User?    @relation("interviewer", fields: [interviewerId], references: [id], onDelete: SetNull)
+  interviewerId         String?
+  interviewee           User     @relation("interviewee", fields: [intervieweeId], references: [id], onDelete: Cascade)
   intervieweeId         String
   duration              Float
   questionId            String
