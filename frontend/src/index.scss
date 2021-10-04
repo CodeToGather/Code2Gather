@@ -32,10 +32,13 @@ code {
 // Only provides colors + border styles + some default padding
 
 button {
+  border-radius: $button-border-radius;
   display: block;
   font-family: inherit;
+  font-size: inherit;
   font-weight: inherit;
   padding: 1rem;
+  transition: background-color 0.3s;
 
   &:hover {
     cursor: pointer;
@@ -45,8 +48,11 @@ button {
 button.primary-button {
   background-color: $primary-button-background-color;
   border: 0;
-  border-radius: $button-border-radius;
   color: $primary-button-text-color;
+
+  &:hover {
+    background-color: $primary-button-background-hover-color;
+  }
 }
 
 button.secondary-button {
@@ -54,4 +60,38 @@ button.secondary-button {
   border: 0;
   color: $secondary-button-text-color;
   padding: 0;
+  transition: color 0.3s;
+
+  &:hover {
+    color: $secondary-button-text-hover-color;
+  }
+}
+
+button.border-button {
+  background-color: $background-color;
+  border: 1px solid $border-button-border-color;
+  color: $border-button-text-color;
+  padding: 0.5rem 0.8rem;
+
+  &:hover {
+    background-color: $border-button-background-hover-color;
+  }
+}
+
+button.border-button.is-danger {
+  border: 1px solid $danger-border-button-border-color;
+  color: $danger-border-button-text-color;
+
+  &:hover {
+    background-color: $danger-border-button-background-hover-color;
+  }
+}
+
+button.border-button.is-success {
+  border: 1px solid $success-border-button-border-color;
+  color: $success-border-button-text-color;
+
+  &:hover {
+    background-color: $success-border-button-background-hover-color;
+  }
 }

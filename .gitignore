@@ -119,3 +119,6 @@ dist
 
 # Local scripts
 **/*_local.sh
+
+# DS_Store
+.DS_Store
