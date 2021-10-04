@@ -1,0 +1,25 @@
+{
+  "name": "authentication",
+  "version": "0.0.1",
+  "description": "Authentication service for Code2Gather",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www",
+    "postinstall": ""
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "firebase-admin": "^9.12.0",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.13"
+  },
+  "devDependencies": {
+    "is-ci": "^3.0.0",
+    "lint-staged": "^11.1.2"
+  },
+  "lint-staged": {}
+}
