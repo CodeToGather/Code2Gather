@@ -7,7 +7,8 @@
   "private": true,
   "workspaces": [
     "frontend",
-    "pairing"
+    "pairing",
+    "code-executor"
   ],
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",

@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "code_executor"
+version = "0.1.0"
+description = "Code executor for code2gather"
+authors = ["Junhua <wen_junhua@u.nus.edu>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.26.0"
+Flask = "^2.0.1"
+
+[tool.poetry.dev-dependencies]
+black = "^21.4b2"
+isort = "^5.8.0"
+flake8 = "^3.9.1"
+mypy = "^0.812"
+pytest = "^6.2.5"
+pytest-cov = "^2.12.1"
+pytest-mock = "^3.6.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

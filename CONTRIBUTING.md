@@ -71,6 +71,7 @@ The following is the list of supported scopes:
 - `auth`
 - `pairing`
 - `coding`
+- `code-executor`
 - `video`
 - `room`
 - `history`

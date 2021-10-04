@@ -1,0 +1,23 @@
+{
+  "name": "code-executor",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "devDependencies": {
+    "is-ci": "^3.0.0",
+    "lint-staged": "^11.1.2"
+  },
+  "scripts": {
+    "postinstall": "is-ci || poetry install",
+    "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt",
+    "lint": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages ."
+  },
+  "lint-staged": {
+    "**/*.py": [
+      "poetry run black",
+      "poetry run isort",
+      "poetry run flake8 --select=F",
+      "poetry run mypy --namespace-packages"
+    ]
+  }
+}
