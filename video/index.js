@@ -1,47 +1,44 @@
-const express = require("express");
-const { RtcTokenBuilder, RtcRole } = require("agora-access-token");
+const express = require('express');
+const { RtcTokenBuilder, RtcRole } = require('agora-access-token');
 
-require("dotenv").config();
+require('dotenv').config();
 
-const PORT = process.env.PORT;
-
-const APP_ID = process.env.APP_ID;
-const APP_CERTIFICATE = process.env.APP_CERTIFICATE;
+const { PORT, APP_ID, APP_CERTIFICATE } = process.env;
 
 const app = express();
 
 // Forces browser to never cache the response so that we always get a fresh token.
 const nocache = (request, response, next) => {
   response.header(
-    "Cache-Control",
-    "private, no-cache, no-store, must-revalidate"
+    'Cache-Control',
+    'private, no-cache, no-store, must-revalidate',
   );
-  response.header("Expires", "-1");
-  response.header("Pragma", "no-cache");
+  response.header('Expires', '-1');
+  response.header('Pragma', 'no-cache');
   next();
 };
 
 const generateAccessToken = (request, response) => {
   // Set response header
-  response.header("Acess-Control-Allow-Origin", "*");
+  response.header('Acess-Control-Allow-Origin', '*');
   // Get channel name
-  const channelName = request.query.channelName;
+  const { channelName } = request.query;
   if (!channelName) {
-    return response.status(500).json({ error: "Channel name is required" });
+    return response.status(500).json({ error: 'Channel name is required' });
   }
   // Get uid
-  let uid = request.query.uid;
-  if (!uid || uid == "") {
+  let { uid } = request.query;
+  if (!uid || uid === '') {
     uid = 0;
   }
   // Get role
   let role = RtcRole.SUBSCRIBER;
-  if (request.query.role == "publisher") {
+  if (request.query.role === 'publisher') {
     role = RtcRole.PUBLISHER;
   }
   // Get the expire time
-  let expireTime = request.query.expireTime;
-  if (!expireTime || expireTime == "") {
+  let { expireTime } = request.query;
+  if (!expireTime || expireTime === '') {
     expireTime = 3600;
   } else {
     expireTime = parseInt(expireTime, 10);
@@ -56,13 +53,14 @@ const generateAccessToken = (request, response) => {
     channelName,
     uid,
     role,
-    privilegeExpireTime
+    privilegeExpireTime,
   );
-  return response.json({ token: token });
+  return response.json({ token });
 };
 
-app.get("/access_token", nocache, generateAccessToken);
+app.get('/access_token', nocache, generateAccessToken);
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`Listening on port: ${PORT}`);
 });
