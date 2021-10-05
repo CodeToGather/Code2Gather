@@ -26,8 +26,8 @@ app.get('/auth', async (req, res) => {
         res.status(code.OK).json();
         return;
       }
-      res.status(code.FORBIDDEN).json();
     }
+    res.status(code.FORBIDDEN).json();
   } catch {
     res.status(code.FORBIDDEN).json();
   }
