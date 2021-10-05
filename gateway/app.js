@@ -1,52 +1,41 @@
-const createError = require("http-errors");
-const express = require("express");
-const path = require("path");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
-const cors = require("cors");
-const admin = require("firebase-admin");
-const checkAuthWithFirebase = require("./middleware/checkAuthWithFirebase.middleware");
+const code = require('http-status-codes');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
 
-const serviceAccount = require("./config/serviceAccountKey.json");
+const checkAuth = require('./middleware/checkAuth.middleware');
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-
-const pairingRouter = require("./routes/pairing.routes");
-const roomRouter = require("./routes/room.routes");
-const historyRouter = require("./routes/history.routes");
+const { pairingProxy, roomProxy, historyProxy } = require('./proxy');
 
 const app = express();
 
 app.use(cors());
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get("/hello", (req, res) => {
+// middleware: auth service
+app.use('/', checkAuth);
+
+// test route
+app.get('/hello', (req, res) => {
   res.json({
-    message: "hello world",
+    message: 'hello world',
   });
 });
 
-app.use("/", checkAuthWithFirebase);
+app.use('/pairing', pairingProxy);
+app.use('/room', roomProxy);
+app.use('/history', historyProxy);
 
-app.use("/pairing", pairingRouter);
-app.use("/room", roomRouter);
-app.use("/history", historyRouter);
-
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function (err, req, res, next) {
-  res.status(err.status || 500).json({
-    message: "Invalid request.",
+// catch 404
+app.use((req, res) => {
+  res.status(code.NOT_FOUND).json({
+    message: 'No such route exists',
   });
 });
 
