@@ -1,10 +1,10 @@
 {
-  "name": "authentication",
+  "name": "api-gateway",
   "version": "0.0.1",
-  "description": "Authentication service for Code2Gather",
+  "description": "API Gateway for Code2Gather",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "nodemon index.js",
     "postinstall": ""
   },
   "dependencies": {
