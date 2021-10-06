@@ -1,4 +1,4 @@
-const code = require('http-status-codes');
+const { StatusCodes } = require('http-status-codes');
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
@@ -29,8 +29,8 @@ app.use('/room', roomProxy);
 app.use('/history', historyProxy);
 
 // catch 404
-app.use((req, res) => {
-  res.status(code.NOT_FOUND).json({
+app.use((_req, res) => {
+  res.status(StatusCodes.NOT_FOUND).json({
     message: 'No such route exists',
   });
 });

@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { StatusCodes } = require('http-status-codes');
 
 // TODO: change base url based on NODE_ENV
 const AUTH_BASE_URL = 'http://localhost:3002';
@@ -14,7 +15,7 @@ const checkAuth = async (req, res, next) => {
       next();
     })
     .catch(() => {
-      res.status(403).json();
+      res.status(StatusCodes.FORBIDDEN).json();
     });
 };
 
