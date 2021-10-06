@@ -1,17 +1,19 @@
 module.exports = {
   env: {
-    node: true,
     commonjs: true,
     es2021: true,
+    node: true,
   },
-  extends: 'eslint:recommended',
+  extends: ['eslint:recommended', 'airbnb-base', 'prettier'],
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module',
   },
+  plugins: ['sort-requires'],
   rules: {
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single', { avoidEscape: true }],
     semi: ['error', 'always'],
+    'sort-requires/sort-requires': 2,
   },
 };

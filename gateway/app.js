@@ -1,14 +1,11 @@
-const { StatusCodes } = require('http-status-codes');
-const express = require('express');
-const morgan = require('morgan');
 const cors = require('cors');
+const express = require('express');
 const helmet = require('helmet');
+const morgan = require('morgan');
+const { StatusCodes } = require('http-status-codes');
 
 const checkAuth = require('./middleware/checkAuth.middleware');
-
-const {
-  pairingProxy, roomProxy, historyProxy, authProxy,
-} = require('./proxy');
+const { pairingProxy, roomProxy, historyProxy, authProxy } = require('./proxy');
 
 const app = express();
 
