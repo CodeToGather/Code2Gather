@@ -11,7 +11,9 @@ const checkAuth = async (req, res, next) => {
     .get(url, {
       headers: req.headers,
     })
-    .then(() => {
+    .then((authRes) => {
+      const { uid } = authRes.data;
+      res.locals.uid = uid;
       next();
     })
     .catch(() => {

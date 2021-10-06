@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const helmet = require('helmet');
 const { StatusCodes } = require('http-status-codes');
 
 const admin = require('firebase-admin');
@@ -18,25 +19,61 @@ admin.initializeApp({
 
 const app = express();
 const verifyTokenWithFirebase = require('./service');
+const {
+  createAuthenticationToken,
+  isBearerToken,
+  isAccessTokenSignedPayload,
+} = require('./token');
+const { verify } = require('jsonwebtoken');
 
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(helmet());
+
+app.get('/login', async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (token == null) {
+      throw new Error();
+    }
+
+    const uid = await verifyTokenWithFirebase(token);
+    if (uid == null) {
+      throw new Error();
+    }
+
+    const jwtToken = createAuthenticationToken(uid);
+    res.status(StatusCodes.OK).json({ token: jwtToken });
+    return;
+  } catch {
+    res.status(StatusCodes.BAD_REQUEST).json();
+  }
+});
 
 app.get('/auth', async (req, res) => {
-  try {
-    if (req.headers.authorization) {
-      const uid = await verifyTokenWithFirebase(req.headers.authorization);
-      if (uid) {
-        res.status(StatusCodes.OK).json();
-        return;
-      }
-    }
-    res.status(StatusCodes.FORBIDDEN).json();
-  } catch {
-    res.status(StatusCodes.FORBIDDEN).json();
+  const bearerToken = req.headers.authorization;
+  if (!isBearerToken(bearerToken) || process.env.JWT_SECRET == null) {
+    res.status(StatusCodes.UNAUTHORIZED).json();
+    return;
   }
+  const token = bearerToken.split(' ')[1];
+
+  let payload;
+  try {
+    payload = verify(token, process.env.JWT_SECRET);
+    if (!isAccessTokenSignedPayload(payload)) {
+      throw new Error();
+    }
+  } catch (error) {
+    res.status(StatusCodes.UNAUTHORIZED).json();
+    return;
+  }
+
+  const { uid } = payload;
+  // TODO: Add uid verification with Firebase here
+  res.status(StatusCodes.OK).json({ uid });
 });
 
 app.listen(3002, () => {
