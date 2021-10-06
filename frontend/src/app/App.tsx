@@ -1,5 +1,6 @@
 import { FC, lazy, Suspense, useEffect } from 'react';
 
+import { useUser } from 'contexts/UserContext';
 import { retryPromise } from 'utils/promiseUtils';
 
 // Code splitting with React.lazy and Suspense
@@ -13,8 +14,7 @@ const AuthenticatedApp = lazy(
 const UnauthenticatedApp = lazy(() => import('./UnauthenticatedApp'));
 
 const App: FC = () => {
-  // TODO: Add user data fetching here
-  const user = null;
+  const user = useUser();
 
   useEffect(() => {
     loadAuthenticatedApp();
