@@ -1,6 +1,6 @@
 const { sign } = require('jsonwebtoken');
 
-export function createAuthenticationToken(uid) {
+function createAuthenticationToken(uid) {
   if (process.env.JWT_SECRET == null) {
     throw new Error();
   }
@@ -9,7 +9,7 @@ export function createAuthenticationToken(uid) {
   return token;
 }
 
-export function isBearerToken(token) {
+function isBearerToken(token) {
   if (token == null) {
     return false;
   }
@@ -21,6 +21,12 @@ function hasTokenLifespan(payload) {
   return typeof payload.iat === 'number' && typeof payload.exp === 'number';
 }
 
-export function isAccessTokenSignedPayload(payload) {
-  return typeof payload.userId === 'number' && hasTokenLifespan(payload);
+function isAccessTokenSignedPayload(payload) {
+  return typeof payload.uid === 'string' && hasTokenLifespan(payload);
 }
+
+module.exports = {
+  createAuthenticationToken,
+  isBearerToken,
+  isAccessTokenSignedPayload,
+};

@@ -19,7 +19,10 @@ admin.initializeApp({
 });
 
 const app = express();
-const verifyTokenWithFirebase = require('./service');
+const {
+  verifyTokenWithFirebase,
+  getUserWithIdFromFirebase,
+} = require('./service');
 const {
   createAuthenticationToken,
   isBearerToken,
@@ -32,7 +35,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 
-app.get('/login', async (req, res) => {
+app.get('/auth/login', async (req, res) => {
   try {
     const { token } = req.body;
     if (token == null) {
@@ -72,7 +75,13 @@ app.get('/auth', async (req, res) => {
   }
 
   const { uid } = payload;
-  // TODO: Add uid verification with Firebase here
+  try {
+    await getUserWithIdFromFirebase(uid);
+  } catch (error) {
+    res.status(StatusCodes.UNAUTHORIZED).json();
+    return;
+  }
+
   res.status(StatusCodes.OK).json({ uid });
 });
 

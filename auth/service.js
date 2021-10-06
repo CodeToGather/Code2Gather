@@ -13,4 +13,17 @@ const verifyTokenWithFirebase = async (token) => {
   }
 };
 
-module.exports = verifyTokenWithFirebase;
+const getUserWithIdFromFirebase = async (uid) => {
+  try {
+    return await admin
+      .auth()
+      .getUser(uid)
+      .then((userRecord) => {
+        return userRecord;
+      });
+  } catch {
+    throw new Error('Invalid user');
+  }
+};
+
+module.exports = { verifyTokenWithFirebase, getUserWithIdFromFirebase };
