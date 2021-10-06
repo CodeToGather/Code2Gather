@@ -5,7 +5,6 @@
   "private": true,
   "scripts": {
     "start": "nodemon index.js",
-    "postinstall": "",
     "lint": "eslint . --fix --ext .js && prettier --write \"**/*.js\" --tab-width 2",
     "lint:ci": "eslint . --ext .js && prettier --check \"**/*.js\" --tab-width 2"
   },
@@ -22,6 +21,9 @@
   },
   "devDependencies": {
     "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-sort-requires": "^2.1.0",
     "is-ci": "^3.0.0",
     "lint-staged": "^11.1.2",
     "prettier": "^2.4.1",

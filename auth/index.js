@@ -1,13 +1,22 @@
-const express = require('express');
+const admin = require('firebase-admin');
 const cors = require('cors');
-const morgan = require('morgan');
+const dotenv = require('dotenv');
+const express = require('express');
 const helmet = require('helmet');
+const morgan = require('morgan');
 const { StatusCodes } = require('http-status-codes');
 const { verify } = require('jsonwebtoken');
 
-const admin = require('firebase-admin');
+const {
+  createAuthenticationToken,
+  isBearerToken,
+  isAccessTokenSignedPayload,
+} = require('./token');
+const {
+  verifyTokenWithFirebase,
+  getUserWithIdFromFirebase,
+} = require('./service');
 
-const dotenv = require('dotenv');
 dotenv.config();
 
 admin.initializeApp({
@@ -19,15 +28,6 @@ admin.initializeApp({
 });
 
 const app = express();
-const {
-  verifyTokenWithFirebase,
-  getUserWithIdFromFirebase,
-} = require('./service');
-const {
-  createAuthenticationToken,
-  isBearerToken,
-  isAccessTokenSignedPayload,
-} = require('./token');
 
 app.use(cors());
 app.use(morgan('dev'));
@@ -86,6 +86,7 @@ app.get('/auth', async (req, res) => {
 });
 
 app.listen(3002, () => {
+  // eslint-disable-next-line no-console
   console.log('Listening on: 3002');
 });
 

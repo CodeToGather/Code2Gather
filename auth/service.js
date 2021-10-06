@@ -5,9 +5,7 @@ const verifyTokenWithFirebase = async (token) => {
     return await admin
       .auth()
       .verifyIdToken(token)
-      .then((decodedToken) => {
-        return decodedToken.uid;
-      });
+      .then((decodedToken) => decodedToken.uid);
   } catch {
     throw new Error('Invalid credentials');
   }
@@ -18,9 +16,7 @@ const getUserWithIdFromFirebase = async (uid) => {
     return await admin
       .auth()
       .getUser(uid)
-      .then((userRecord) => {
-        return userRecord;
-      });
+      .then((userRecord) => userRecord);
   } catch {
     throw new Error('Invalid user');
   }
