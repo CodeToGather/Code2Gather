@@ -7,7 +7,7 @@ import tokenUtils from 'utils/tokenUtils';
 export const API_VERSION = 'v1';
 
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_BACKEND_API}/${API_VERSION}`,
+  baseURL: `${process.env.REACT_APP_BACKEND_API}`,
   headers: { 'Content-Type': 'application/json' },
 });
 
