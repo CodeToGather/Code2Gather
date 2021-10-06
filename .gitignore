@@ -125,3 +125,6 @@ dist
 
 # DS_Store
 .DS_Store
+
+# IDE settings
+.idea/

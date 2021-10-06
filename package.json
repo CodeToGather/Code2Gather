@@ -9,7 +9,9 @@
     "frontend",
     "pairing",
     "code-executor",
-    "video"
+    "video",
+    "auth",
+    "gateway"
   ],
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
