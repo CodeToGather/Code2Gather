@@ -2,7 +2,6 @@ const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const { StatusCodes } = require('http-status-codes');
 
 const checkAuth = require('./middleware/checkAuth.middleware');
 const { pairingProxy, roomProxy, historyProxy, authProxy } = require('./proxy');
@@ -32,12 +31,5 @@ app.use(checkAuth);
 app.use('/pairing', pairingProxy);
 app.use('/room', roomProxy);
 app.use('/history', historyProxy);
-
-// Catch 404
-app.use((_req, res) => {
-  res.status(StatusCodes.NOT_FOUND).json({
-    error: 'No such route exists',
-  });
-});
 
 module.exports = app;
