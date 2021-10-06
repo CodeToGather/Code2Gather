@@ -12,9 +12,9 @@ export interface AuthContextInterface {
   logout(): Promise<void>;
 }
 
-const AuthContext = React.createContext<AuthContextInterface | undefined>(
-  undefined,
-);
+export const AuthContext = React.createContext<
+  AuthContextInterface | undefined
+>(undefined);
 
 const AuthProvider: React.FunctionComponent = (props) => {
   const [firstAttemptFinished, setFirstAttemptFinished] = React.useState(false);
