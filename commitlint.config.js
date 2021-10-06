@@ -11,7 +11,17 @@ const Configuration = {
     'scope-enum': [
       2,
       'always',
-      ['frontend', 'auth', 'pairing', 'coding', 'code-executor', 'video', 'room', 'history'],
+      [
+        'frontend',
+        'gateway',
+        'auth',
+        'pairing',
+        'coding',
+        'code-executor',
+        'video',
+        'room',
+        'history',
+      ],
     ],
     'type-enum': [
       2,
