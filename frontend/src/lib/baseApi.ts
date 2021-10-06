@@ -17,7 +17,7 @@ api.interceptors.request.use(
       const token = tokenUtils.getToken();
       // eslint-disable-next-line no-param-reassign
       if (token && config.headers) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = token;
       }
     }
     return config;
