@@ -3,6 +3,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const { StatusCodes } = require('http-status-codes');
+const { verify } = require('jsonwebtoken');
 
 const admin = require('firebase-admin');
 
@@ -24,7 +25,6 @@ const {
   isBearerToken,
   isAccessTokenSignedPayload,
 } = require('./token');
-const { verify } = require('jsonwebtoken');
 
 app.use(cors());
 app.use(morgan('dev'));
