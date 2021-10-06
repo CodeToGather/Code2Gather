@@ -28,14 +28,17 @@ api.interceptors.request.use(
 );
 
 export default class BaseApi {
-  async get<RES>(url: string, handler: (res: RES) => any): Promise<any> {
+  protected async get<RES>(
+    url: string,
+    handler: (res: RES) => any,
+  ): Promise<any> {
     return this.requestWrapper(
       async () => await api.get<never, AxiosResponse<RES | ErrorResponse>>(url),
       handler,
     );
   }
 
-  async post<REQ, RES>(
+  protected async post<REQ, RES>(
     url: string,
     body: REQ,
     handler: (res: RES) => any,
@@ -47,7 +50,7 @@ export default class BaseApi {
     );
   }
 
-  async put<REQ, RES>(
+  protected async put<REQ, RES>(
     url: string,
     body: REQ,
     handler: (res: RES) => any,
@@ -59,7 +62,10 @@ export default class BaseApi {
     );
   }
 
-  async delete<RES>(url: string, handler: (res: RES) => any): Promise<any> {
+  protected async delete<RES>(
+    url: string,
+    handler: (res: RES) => any,
+  ): Promise<any> {
     return this.requestWrapper(
       async () =>
         await api.delete<never, AxiosResponse<RES | ErrorResponse>>(url),
