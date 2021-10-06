@@ -8,6 +8,18 @@ const PAIRING_BASE_URL = 'http://localhost:3001/pairing';
 const ROOM_BASE_URL = 'http://localhost:3002/room';
 const HISTORY_BASE_URL = 'http://localhost:3003/history';
 
+// Parse requests with a body
+proxy.on('proxyReq', (proxyReq, req) => {
+  if (req.body) {
+    const bodyData = JSON.stringify(req.body);
+
+    proxyReq.setHeader('Content-Type', 'application/json');
+    proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
+
+    proxyReq.write(bodyData);
+  }
+});
+
 const authProxy = (req, res) => {
   proxy.web(req, res, { target: AUTH_BASE_URL });
 };
