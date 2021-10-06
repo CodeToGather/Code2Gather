@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package code2gather;
+
+option go_package = "models/";
+
+// Difficulty level for questions
+
+enum QuestionDifficultyLevel {
+  EASY = 0;
+  MEDIUM = 1;
+  HARD = 2;
+}
+
+// Question represents a question given by the interviewer to the interviewee during a mock interview session
+
+message Question {
+  string id = 1;
+  string title = 2;
+  string text = 3;
+  QuestionDifficultyLevel difficulty_level = 4;
+  string hints = 5;
+}
