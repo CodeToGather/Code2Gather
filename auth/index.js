@@ -35,7 +35,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 
-app.get('/auth/login', async (req, res) => {
+app.post('/auth/login', async (req, res) => {
   try {
     const { token } = req.body;
     if (token == null) {

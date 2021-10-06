@@ -4,11 +4,21 @@ import { useHistory } from 'react-router';
 import DemoImage from 'assets/images/demo.png';
 import Container from 'components/container';
 import { CODE_EDITOR } from 'constants/routes';
+import { useAuth } from 'contexts/AuthContext';
 
 import './Landing.scss';
 
 const Landing: FC = () => {
   const history = useHistory();
+  const { login } = useAuth();
+
+  const handleGithubSignIn = async () => {
+    try {
+      await login();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container hasBackground={true}>
@@ -19,7 +29,10 @@ const Landing: FC = () => {
             Excel in your technical interviews today.
           </p>
           <div className="landing__left__button-container">
-            <button className="primary-button landing__github-button">
+            <button
+              className="primary-button landing__github-button"
+              onClick={handleGithubSignIn}
+            >
               <i className="fab fa-github" />
               <div>Sign in with GitHub</div>
             </button>
