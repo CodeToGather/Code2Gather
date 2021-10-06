@@ -27,8 +27,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.get('/auth', async (req, res) => {
   try {
-    if (req.headers.authtoken) {
-      const uid = await verifyTokenWithFirebase(req.headers.authtoken);
+    if (req.headers.authorization) {
+      const uid = await verifyTokenWithFirebase(req.headers.authorization);
       if (uid) {
         res.status(code.OK).json();
         return;
