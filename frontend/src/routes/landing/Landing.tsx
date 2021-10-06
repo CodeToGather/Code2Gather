@@ -1,25 +1,20 @@
 import { FC } from 'react';
 import { useHistory } from 'react-router';
-import { auth } from 'firebase';
-import { GithubAuthProvider, signInWithPopup } from 'firebase/auth';
 
 import DemoImage from 'assets/images/demo.png';
 import Container from 'components/container';
 import { CODE_EDITOR } from 'constants/routes';
+import { useAuth } from 'contexts/AuthContext';
 
 import './Landing.scss';
 
-const githubAuthProvider = new GithubAuthProvider();
-
 const Landing: FC = () => {
   const history = useHistory();
+  const { login } = useAuth();
 
   const handleGithubSignIn = async () => {
     try {
-      const response = await signInWithPopup(auth, githubAuthProvider);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const token = await response.user.getIdToken();
-      // TODO: Send token to our own backend
+      await login();
     } catch (error) {
       console.log(error);
     }
