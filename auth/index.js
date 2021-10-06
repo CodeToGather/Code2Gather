@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const code = require('http-status-codes');
+const { StatusCodes } = require('http-status-codes');
 
 const admin = require('firebase-admin');
 
@@ -29,13 +29,13 @@ app.get('/auth', async (req, res) => {
     if (req.headers.authorization) {
       const uid = await verifyTokenWithFirebase(req.headers.authorization);
       if (uid) {
-        res.status(code.OK).json();
+        res.status(StatusCodes.OK).json();
         return;
       }
     }
-    res.status(code.FORBIDDEN).json();
+    res.status(StatusCodes.FORBIDDEN).json();
   } catch {
-    res.status(code.FORBIDDEN).json();
+    res.status(StatusCodes.FORBIDDEN).json();
   }
 });
 
