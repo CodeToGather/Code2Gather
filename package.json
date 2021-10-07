@@ -10,7 +10,9 @@
     "pairing",
     "code-executor",
     "history",
-    "video"
+    "video",
+    "auth",
+    "gateway"
   ],
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
