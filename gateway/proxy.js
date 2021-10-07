@@ -39,7 +39,7 @@ const historyProxy = (req, res) => {
 
 const codingProxy = (req, res) => {
   proxy.web(req, res, { target: CODING_BASE_URL });
-}
+};
 
 module.exports = {
   authProxy,
