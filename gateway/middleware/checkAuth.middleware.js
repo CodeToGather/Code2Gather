@@ -17,7 +17,7 @@ const checkAuth = async (req, res, next) => {
       next();
     })
     .catch(() => {
-      res.status(StatusCodes.FORBIDDEN).json();
+      res.status(StatusCodes.UNAUTHORIZED).json();
     });
 };
 
