@@ -7,6 +7,7 @@ const AUTH_BASE_URL = 'http://localhost:3002/auth';
 const PAIRING_BASE_URL = 'http://localhost:3001/pairing';
 const ROOM_BASE_URL = 'http://localhost:3002/room';
 const HISTORY_BASE_URL = 'http://localhost:3003/history';
+const CODING_BASE_URL = 'http://localhost:3004/coding';
 
 // Parse requests with a body
 proxy.on('proxyReq', (proxyReq, req) => {
@@ -36,9 +37,14 @@ const historyProxy = (req, res) => {
   proxy.web(req, res, { target: HISTORY_BASE_URL });
 };
 
+const codingProxy = (req, res) => {
+  proxy.web(req, res, { target: CODING_BASE_URL });
+}
+
 module.exports = {
   authProxy,
   pairingProxy,
   roomProxy,
   historyProxy,
+  codingProxy,
 };

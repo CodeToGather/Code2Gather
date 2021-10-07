@@ -4,7 +4,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 const checkAuth = require('./middleware/checkAuth.middleware');
-const { pairingProxy, roomProxy, historyProxy, authProxy } = require('./proxy');
+const { pairingProxy, roomProxy, historyProxy, authProxy, codingProxy } = require('./proxy');
 
 const app = express();
 
@@ -31,5 +31,6 @@ app.use(checkAuth);
 app.use('/pairing', pairingProxy);
 app.use('/room', roomProxy);
 app.use('/history', historyProxy);
+app.use('/coding', codingProxy);
 
 module.exports = app;
