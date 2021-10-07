@@ -1,6 +1,3 @@
-# This workflow will do a clean install of node dependencies,
-# build the source code and run tests. This is for PRs only.
-
 name: Test History
 
 on:
