@@ -73,10 +73,11 @@ class TestCodeExecutor(object):
         assert language_id is not None
 
         # Check for correct execution result id
-        results_id = executor.send_to_execute(
+        results_id, error = executor.send_to_execute(
             python_hello_world, language_id, self.EMPTY_STRING
         )
         assert results_id is None
+        assert error == "This is an error msg"
 
     def test_submit_result_failure_error(self, mocker: MockerFixture):
         mocker.patch("requests.get", return_value=generate_lang_mock_success())
@@ -89,10 +90,11 @@ class TestCodeExecutor(object):
         assert language_id is not None
 
         # Check for correct execution result id
-        results_id = executor.send_to_execute(
+        results_id, error = executor.send_to_execute(
             python_hello_world, language_id, self.EMPTY_STRING
         )
         assert results_id is None
+        assert error == "wait not allowed"
 
     def test_get_results_success(self, mocker: MockerFixture) -> None:
         mocker.patch("requests.get", return_value=generate_lang_mock_success())
@@ -105,10 +107,11 @@ class TestCodeExecutor(object):
         assert language_id is not None
 
         # Check for correct execution result id
-        results_id = executor.send_to_execute(
+        results_id, error = executor.send_to_execute(
             python_hello_world, language_id, self.EMPTY_STRING
         )
         assert results_id is not None
+        assert error is None
         assert len(results_id) > 0
 
         # Check for correct execution result
@@ -127,7 +130,7 @@ class TestCodeExecutor(object):
         assert language_id is not None
 
         # Check for correct execution result id
-        results_id = executor.send_to_execute(
+        results_id, error = executor.send_to_execute(
             python_hello_world, language_id, self.EMPTY_STRING
         )
         assert results_id is not None
