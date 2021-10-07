@@ -29,6 +29,6 @@
       "utils/*": ["./utils/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "jest.config.js"],
   "exclude": ["node_modules"]
 }
