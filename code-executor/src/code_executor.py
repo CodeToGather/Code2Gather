@@ -6,6 +6,7 @@ import requests
 
 from src.constants import (
     BASE64_RESULTS_FIELDS,
+    ERROR_KEY,
     ID_KEY,
     JSON_HEADERS,
     LANGUAGE_ID_KEY,
@@ -44,7 +45,7 @@ class CodeExecutor:
 
     def send_to_execute(
         self, code: str, language_id: int, input: Optional[str]
-    ) -> Optional[str]:
+    ) -> tuple[Optional[str], Optional[str]]:
         """
         Sends the code to an executor to be executed.
         Language is based on the language id that is provided
@@ -58,8 +59,10 @@ class CodeExecutor:
             json.dumps(self._create_send_payload(code, language_id, input)),
             headers=JSON_HEADERS,
         )
-        submission_id = json.loads(response.content).get(TOKEN_KEY, None)
-        return str(submission_id) if submission_id is not None else None
+        resp_body = json.loads(response.content)
+        submission_id = resp_body.get(TOKEN_KEY, None)
+        error_msg = resp_body.get(ERROR_KEY, None)
+        return (str(submission_id) if submission_id is not None else None, error_msg)
 
     def _convert_from_base64(self, result: dict, key: str) -> None:
         """Converts a give key of the result from base 64"""
@@ -123,13 +126,13 @@ def main():
     if lang_id is None:
         return
 
-    submission_id = codeExecutor.send_to_execute(
+    submission_id, error = codeExecutor.send_to_execute(
         # "import ctypes\nx = ctypes.c_double.from_param(1e300)\nrepr(x)",
         "print('hello world')",
         lang_id,
         None,
     )
-    print(submission_id)
+    print(f"Id: {submission_id}\nError: {error}")
     if submission_id is None:
         return
 
