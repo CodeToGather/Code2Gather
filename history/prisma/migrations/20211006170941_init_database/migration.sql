@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "Language" AS ENUM ('PYTHON', 'JAVA', 'JAVASCRIPT');
 
+-- CreateEnum
+CREATE TYPE "Difficulty" AS ENUM ('EASY', 'MEDIUM', 'HARD');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -19,7 +22,6 @@ CREATE TABLE "Rating" (
     "rating" DOUBLE PRECISION NOT NULL,
     "ratingUserId" TEXT,
     "ratedUserId" TEXT NOT NULL,
-    "meetingRecordId" INTEGER,
 
     CONSTRAINT "Rating_pkey" PRIMARY KEY ("id")
 );
@@ -44,17 +46,11 @@ CREATE TABLE "MeetingRecord" (
 -- CreateIndex
 CREATE UNIQUE INDEX "User_githubUsername_key" ON "User"("githubUsername");
 
--- CreateIndex
-CREATE UNIQUE INDEX "Rating_meetingRecordId_unique" ON "Rating"("meetingRecordId");
-
 -- AddForeignKey
 ALTER TABLE "Rating" ADD CONSTRAINT "Rating_ratingUserId_fkey" FOREIGN KEY ("ratingUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Rating" ADD CONSTRAINT "Rating_ratedUserId_fkey" FOREIGN KEY ("ratedUserId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Rating" ADD CONSTRAINT "Rating_meetingRecordId_fkey" FOREIGN KEY ("meetingRecordId") REFERENCES "MeetingRecord"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "MeetingRecord" ADD CONSTRAINT "MeetingRecord_interviewerId_fkey" FOREIGN KEY ("interviewerId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
