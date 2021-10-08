@@ -1,16 +1,16 @@
-name: Lint Video
+name: Lint History
 
 on:
   push:
     branches: [main]
     paths:
-      - ".github/workflows/lint_video.yml"
-      - "video/**/*"
+      - '.github/workflows/lint_history.yml'
+      - 'history/**/*'
   pull_request:
     branches: [main]
     paths:
-      - ".github/workflows/lint_video.yml"
-      - "video/**/*"
+      - '.github/workflows/lint_history.yml'
+      - 'history/**/*'
 
 jobs:
   lint:
@@ -37,5 +37,5 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Run linters
         run: |
-          cd video
+          cd history
           yarn lint:ci
