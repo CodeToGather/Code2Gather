@@ -75,18 +75,10 @@ export const createTestRating = async (
   data: Partial<RatingCreateData>
 ): Promise<Rating> => {
   checkTestEnv();
-  let finalRatingUserId = data.ratingUserId;
-  let finalRatedUserId = data.ratedUserId;
-  if (finalRatingUserId == null) {
-    finalRatingUserId = (await createTestUser()).id;
-  }
-  if (finalRatedUserId == null) {
-    finalRatedUserId = (await createTestUser()).id;
-  }
   return await prisma.rating.create({
     data: {
-      ratingUserId: finalRatingUserId,
-      ratedUserId: finalRatedUserId,
+      ratingUserId: data.ratingUserId ?? (await createTestUser()).id,
+      ratedUserId: data.ratedUserId ?? (await createTestUser()).id,
       rating: data.rating ?? faker.datatype.number({ min: 1, max: 5 }),
     },
   });
@@ -116,18 +108,10 @@ export const createTestMeetingRecord = async (
   data: Partial<MeetingRecordCreateData>
 ): Promise<MeetingRecord> => {
   checkTestEnv();
-  let finalInterviewerId = data.interviewerId;
-  let finalIntervieweeId = data.intervieweeId;
-  if (finalInterviewerId == null) {
-    finalInterviewerId = (await createTestUser()).id;
-  }
-  if (finalIntervieweeId == null) {
-    finalIntervieweeId = (await createTestUser()).id;
-  }
   return await prisma.meetingRecord.create({
     data: {
-      interviewerId: finalInterviewerId,
-      intervieweeId: finalIntervieweeId,
+      interviewerId: data.interviewerId ?? (await createTestUser()).id,
+      intervieweeId: data.intervieweeId ?? (await createTestUser()).id,
       duration: data.duration ?? faker.datatype.float(),
       questionId: data.questionId ?? faker.random.alpha(),
       questionDifficulty:
