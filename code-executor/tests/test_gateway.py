@@ -2,6 +2,7 @@ import json
 from unittest.mock import patch
 
 import pytest
+import requests
 from flask.testing import FlaskClient
 from pytest_mock import MockerFixture
 
@@ -70,8 +71,8 @@ def test_submissions_endpoint_failure_invalid_packet(
     client: FlaskClient, mocker: MockerFixture
 ) -> None:
     result = client.post("/submission")
-    print(result)
     assert len(result.data) > 0
+    assert result.status_code == 401
     assert json.loads(result.data) == {"error": "invalid request or not json request"}
 
 
@@ -86,6 +87,7 @@ def test_submissions_endpoint_failure_missing_args(
         content_type="application/json",
     )
     assert len(result.data) > 0
+    assert result.status_code == 401
     assert json.loads(result.data) == {"error": "missing either code, language"}
 
 
@@ -104,4 +106,30 @@ def test_submissions_endpoint_failure_error_language(
         content_type="application/json",
     )
     assert len(result.data) > 0
+    assert result.status_code == 404
     assert json.loads(result.data) == {"error": "language is not found"}
+
+
+def test_submissions_endpoint_failure_execution_server_down(
+    client: FlaskClient, mocker: MockerFixture
+) -> None:
+    with patch("requests.get") as getMock:
+        getMock.side_effect = requests.exceptions.RetryError
+        with patch(
+            "requests.post",
+        ) as postMock:
+            postMock.side_effect = requests.exceptions.RetryError
+            result = client.post(
+                "submission",
+                data=json.dumps(
+                    {
+                        "code": 'print("Hello World!\n)"',
+                        "language": "C",  # This is not avail in mock call
+                        "input": None,
+                    }
+                ),
+                content_type="application/json",
+            )
+            assert len(result.data) > 0
+            assert result.status_code == 500
+            assert json.loads(result.data) == {"error": "Execution server is down"}

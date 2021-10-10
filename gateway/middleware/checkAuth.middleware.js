@@ -9,15 +9,20 @@ const checkAuth = async (req, res, next) => {
   const url = `${AUTH_BASE_URL}/${CHECK_AUTH_PATH}`;
   await axios
     .get(url, {
-      headers: req.headers,
+      headers: {
+        // only include authorization header
+        // content-length and other headers for post request may affect the GET /auth route
+        authorization: req.headers.authorization,
+      },
     })
     .then((authRes) => {
       const { uid } = authRes.data;
-      res.locals.uid = uid;
+      // overwrite authorization header with uid before proxying
+      req.headers.authorization = uid;
       next();
     })
     .catch(() => {
-      res.status(StatusCodes.FORBIDDEN).json();
+      res.status(StatusCodes.UNAUTHORIZED).json();
     });
 };
 

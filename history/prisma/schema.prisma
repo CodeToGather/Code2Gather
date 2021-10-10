@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                   String          @id
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  githubUsername       String          @unique
+  ratingsGivenToOthers Rating[]        @relation("ratingUser")
+  ratingsGivenByOthers Rating[]        @relation("ratedUser")
+  interviewerRecords   MeetingRecord[] @relation("interviewer")
+  intervieweeRecords   MeetingRecord[] @relation("interviewee")
+}
+
+model Rating {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  rating       Float
+  ratingUser   User?    @relation("ratingUser", fields: [ratingUserId], references: [id], onDelete: SetNull)
+  ratingUserId String?
+  ratedUser    User     @relation("ratedUser", fields: [ratedUserId], references: [id], onDelete: Cascade)
+  ratedUserId  String
+}
+
+model MeetingRecord {
+  id                    Int        @id @default(autoincrement())
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+  interviewer           User?      @relation("interviewer", fields: [interviewerId], references: [id], onDelete: SetNull)
+  interviewerId         String?
+  interviewee           User       @relation("interviewee", fields: [intervieweeId], references: [id], onDelete: Cascade)
+  intervieweeId         String
+  duration              Float // In seconds
+  questionId            String
+  questionDifficulty    Difficulty // Reduce queries required
+  language              Language
+  codeWritten           String // Code written by interviewee
+  isSolved              Boolean
+  feedbackToInterviewee String // Markdown notes by interviewer
+}
+
+enum Language {
+  PYTHON
+  JAVA
+  JAVASCRIPT
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
