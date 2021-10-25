@@ -27,11 +27,7 @@ def generate_lang_mock_success() -> MockResponseObj:
 
 def generate_send_mock_failure_missing_field() -> MockResponseObj:
     return MockResponseObj(
-        json.dumps(
-            {
-                "language_id": ["can't be blank"],
-            }
-        )
+        json.dumps({"language_id": ["can't be blank"], "error": "This is an error msg"})
     )
 
 

@@ -8,7 +8,7 @@ const { PORT, APP_ID, APP_CERTIFICATE } = process.env;
 const app = express();
 
 // Forces browser to never cache the response so that we always get a fresh token.
-const nocache = (request, response, next) => {
+const nocache = (_request, response, next) => {
   response.header(
     'Cache-Control',
     'private, no-cache, no-store, must-revalidate',
@@ -20,7 +20,7 @@ const nocache = (request, response, next) => {
 
 const generateAccessToken = (request, response) => {
   // Set response header
-  response.header('Acess-Control-Allow-Origin', '*');
+  response.header('Access-Control-Allow-Origin', '*');
   // Get channel name
   const { channelName } = request.query;
   if (!channelName) {

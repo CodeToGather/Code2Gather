@@ -1,13 +1,17 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 
+import AppProviders from 'contexts/AppProviders';
+
 import App from './app';
 import reportWebVitals from './reportWebVitals';
 import './index.scss';
 
 ReactDOM.render(
   <StrictMode>
-    <App />
+    <AppProviders>
+      <App />
+    </AppProviders>
   </StrictMode>,
   document.getElementById('root'),
 );

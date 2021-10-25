@@ -14,4 +14,5 @@ NAME_KEY = "name"
 SOURCE_CODE_KEY = "source_code"
 LANGUAGE_ID_KEY = "language_id"
 STDIN_KEY = "stdin"
+ERROR_KEY = "error"
 BASE64_RESULTS_FIELDS = ["stderr", "stdout", "compile_output", "message"]

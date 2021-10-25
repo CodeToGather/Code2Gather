@@ -6,7 +6,8 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import { HOME } from 'constants/routes';
+import { CODE_EDITOR, HOME } from 'constants/routes';
+import CodeEditor from 'routes/codeEditor';
 
 const redirectToHome = (): React.ReactNode => <Redirect to={HOME} />;
 
@@ -14,8 +15,8 @@ const AuthenticatedApp: FC = () => {
   return (
     <Router>
       <Switch>
-        {/* TODO: Add authenticated routes */}
-        {/* <Route component={<div>Test</div>} exact={true} path={HOME} /> */}
+        {/* TODO: Add home route and component */}
+        <Route component={CodeEditor} exact={true} path={CODE_EDITOR} />
         <Route path="/" render={redirectToHome} />
       </Switch>
     </Router>
