@@ -3,12 +3,16 @@
   "version": "0.0.1",
   "description": "Room Management service for Code2Gather",
   "private": true,
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "scripts": {
     "start": "go run ./src/main.go",
-    "lint": "gofmt -w src"
+    "lint": "gofmt -w src",
+    "lint:ci": "gofmt -w src"
   },
-  "config": {
+  "lint-staged": {
+    "**/*.js": [
+      "pretty-quick --staged",
+      "eslint --fix"
+    ]
   }
 }

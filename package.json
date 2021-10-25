@@ -12,7 +12,8 @@
     "history",
     "video",
     "auth",
-    "gateway"
+    "gateway",
+    "room"
   ],
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
