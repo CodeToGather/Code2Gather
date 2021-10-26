@@ -10,7 +10,7 @@
     "lint:ci": "gofmt -w src"
   },
   "lint-staged": {
-    "**/*.js": [
+    "**/*.go": [
       "pretty-quick --staged",
       "eslint --fix"
     ]
