@@ -11,8 +11,7 @@
   },
   "lint-staged": {
     "**/*.go": [
-      "pretty-quick --staged",
-      "eslint --fix"
+      "pretty-quick --staged"
     ]
   }
 }

@@ -14,6 +14,7 @@ func StartServer() {
 			"message": "pong",
 		})
 	})
+
 	err := r.Run(ConnHost + ":" + ConnPort)
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)

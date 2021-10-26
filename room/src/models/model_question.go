@@ -21,11 +21,11 @@ func (d QuestionDifficultyLevel) String() string {
 }
 
 type Question struct {
-	QuestionId      string `json:"uuid"`
-	QuestionTitle   string `json:"question_title"`
-	QuestionText    string `json:"question_text"`
-	DifficultyLevel string `json:"difficulty_level"`
-	QuestionHints   string `json:"question_hints"`
+	QuestionId      string                  `json:"uuid"`
+	QuestionTitle   string                  `json:"question_title"`
+	QuestionText    string                  `json:"question_text"`
+	DifficultyLevel QuestionDifficultyLevel `json:"difficulty_level"`
+	QuestionHints   string                  `json:"question_hints"`
 }
 
 func (Question) TableName() string {

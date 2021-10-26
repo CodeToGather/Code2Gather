@@ -30,6 +30,11 @@ func (m QuestionManager) GetQuestionById(id string) (models.Question, error) {
 
 func (m QuestionManager) GetQuestionsWithDifficulty(difficulty models.QuestionDifficultyLevel) ([]models.Question, error) {
 	var questions []models.Question
-	err := QuestionCollection.Find(bson.M{"difficulty_level": difficulty.String()}).All(&questions)
+	err := QuestionCollection.Find(bson.M{"difficulty_level": difficulty}).All(&questions)
 	return questions, err
+}
+
+func (m QuestionManager) ClearQuestions() error {
+	err := QuestionCollection.DropCollection()
+	return err
 }

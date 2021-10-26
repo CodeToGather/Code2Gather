@@ -26,5 +26,8 @@ func ConnectoToDB() error {
 }
 
 func CloseDBConnection() {
-	DBSession.Close()
+	log.Print("Closing MongoDB ...")
+	if DBSession != nil {
+		DBSession.Close()
+	}
 }
