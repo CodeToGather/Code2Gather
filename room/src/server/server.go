@@ -15,6 +15,11 @@ func StartServer() {
 		})
 	})
 
+	v := r.Group("/room")
+	{
+		v.POST("/create", RoomCreationHandler)
+	}
+
 	err := r.Run(ConnHost + ":" + ConnPort)
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)

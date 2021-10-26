@@ -8,6 +8,21 @@ const (
 	Hard
 )
 
+func GetQuestionDifficultyLevel(difficulty string) (d QuestionDifficultyLevel, err error) {
+	switch difficulty {
+	case Easy.String():
+		d = Easy
+	case Medium.String():
+		d = Medium
+	case Hard.String():
+		d = Hard
+	default:
+		// TODO: return error
+		return
+	}
+	return
+}
+
 func (d QuestionDifficultyLevel) String() string {
 	switch d {
 	case Easy:
@@ -21,7 +36,7 @@ func (d QuestionDifficultyLevel) String() string {
 }
 
 type Question struct {
-	QuestionId      string                  `json:"uuid"`
+	QuestionId      string                  `json:"question_id"`
 	QuestionTitle   string                  `json:"question_title"`
 	QuestionText    string                  `json:"question_text"`
 	DifficultyLevel QuestionDifficultyLevel `json:"difficulty_level"`

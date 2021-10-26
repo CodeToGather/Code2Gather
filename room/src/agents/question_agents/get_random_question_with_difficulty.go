@@ -7,13 +7,21 @@ import (
 	"code2gather.com/room/src/models"
 )
 
-func GetRandomQuestionWithDifficulty(difficulty models.QuestionDifficultyLevel) (question models.Question, err error) {
-	questionManager := db.NewQuestionManager()
+func GetRandomQuestionsWithDifficulty(difficulty models.QuestionDifficultyLevel, numOfQuestions int) ([]models.Question, error) {
+	var questions [2]models.Question
 
-	questions, err := questionManager.GetQuestionsWithDifficulty(difficulty)
-	if err == nil {
-		question = questions[rand.Intn(len(questions))]
+	questionManager := db.NewQuestionManager()
+	allQuestions, err := questionManager.GetQuestionsWithDifficulty(difficulty)
+
+	if err != nil {
+		return questions[:], err
 	}
 
-	return question, err
+	// TODO: replace with unique random generator
+	// remove questions attempted by user
+	for i := 0; i < numOfQuestions; i++ {
+		questions[i] = allQuestions[rand.Intn(len(allQuestions))]
+	}
+
+	return questions[:], err
 }
