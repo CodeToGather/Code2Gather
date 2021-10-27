@@ -1,23 +1,12 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import CodeMirror from '@uiw/react-codemirror';
 import '@codemirror/lang-javascript';
 
 const AutoMerge = require('automerge');
 
-function arrayToBase64String(data) {
-  const buff = Buffer.from(data);
-  const base64data = buff.toString('base64');
-  return base64data;
-}
-
-function base64StringToArray(s) {
-  const result = Buffer.from(s, 'base64');
-  return result;
-}
-
 export default function CodeEditor() {
-  const code = useRef();
+  const [code, setCode] = useState();
   const [socket, setSocket] = useState();
 
   useEffect(() => {
@@ -29,32 +18,27 @@ export default function CodeEditor() {
   }, []);
 
   useEffect(() => {
-    if (socket == null || code == null) return {};
+    if (socket == null || code == null) return;
     const handler = (document) => {
       if (document == null) return;
-      const doc = base64StringToArray(document);
-      code.current = AutoMerge.load(doc);
+      const t = AutoMerge.load(new Uint8Array(document));
+      setCode(t);
     };
-    socket.on('set-document', handler);
-    return () => {
-      socket.off('set-document', handler);
-    };
-  }, [socket, code]);
+
+    socket.once('set-document', handler);
+  }, [socket]);
 
   useEffect(() => {
     if (socket == null || code == null) return {};
     const handler = (changes) => {
       if (changes == null) return;
-      code.current = AutoMerge.applyChanges(
-        code.current,
-        base64StringToArray(changes),
-      );
+      setCode(AutoMerge.applyChanges(code, new Uint8Array(changes)));
     };
     socket.on('receive-changes', handler);
     return () => {
       socket.off('receive-changes', handler);
     };
-  }, [socket, code]);
+  }, [socket]);
 
   return (
     <div className="App">
@@ -62,30 +46,25 @@ export default function CodeEditor() {
       <div className="absolute top-20 bottom-40 left-10 right-10 text-left">
         <div>Welcome to the code editor</div>
         <CodeMirror
-          value={code.current == null ? '' : code.current.code}
+          value={code == null ? '' : code}
           options={{
             mode: 'jsx',
             theme: 'monokai',
             keyMap: 'sublime',
           }}
           onChange={(editor) => {
-            if (socket == null || code.current == null || editor == null) {
+            if (socket == null || code == null || editor == null) {
               return;
             }
 
             // Text of the editor
-            code.current = AutoMerge.change(
-              code.current,
-              'Update Code',
-              (doc) => {
-                const d = doc;
-                d.code = editor.toString();
-              },
-            );
-            console.log();
-            const c = AutoMerge.getLastLocalChange(code.current);
-            const changes = arrayToBase64String(c);
+            const c = AutoMerge.change(code, 'Update Code', (doc) => {
+              const d = doc;
+              d.code = editor.toString();
+            });
+            const changes = AutoMerge.getLastLocalChange(c);
             socket.emit('text-change', changes);
+            setCode(c);
           }}
         />
       </div>
