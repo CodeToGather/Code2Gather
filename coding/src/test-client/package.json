@@ -1,0 +1,39 @@
+{
+  "name": "test-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:ci": "react-scripts test --watchAll=false",
+    "eject": "react-scripts eject",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix && prettier --write 'src/**/*.{ts,tsx,js,jsx}' --tab-width 2 && stylelint '**/*.{scss,sass}' --fix",
+    "lint:ci": "eslint '*/**/*.{js,ts,tsx}' --color && yarn prettier --check 'src/**/*.{ts,tsx,js,jsx}' --tab-width 2 && stylelint '**/*.{scss,sass}' --color"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@codemirror/lang-javascript": "^0.19.2",
+    "@uiw/react-codemirror": "^4.1.0",
+    "automerge": "^1.0.1-preview.5",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^4.0.3",
+    "socket.io-client": "^4.3.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
