@@ -17,12 +17,17 @@
   "license": "ISC",
   "dependencies": {
     "@codemirror/lang-javascript": "^0.19.2",
+    "@codemirror/lang-python": "^0.19.2",
+    "@codemirror/stream-parser": "^0.19.2",
     "@uiw/react-codemirror": "^4.1.0",
-    "automerge": "^1.0.1-preview.5",
+    "codemirror": "^5.63.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "^4.0.3",
-    "socket.io-client": "^4.3.2"
+    "socket.io-client": "^4.3.2",
+    "socket.io-p2p": "^2.2.0",
+    "y-codemirror": "^2.1.1",
+    "yjs": "^13.5.16"
   },
   "browserslist": {
     "production": [

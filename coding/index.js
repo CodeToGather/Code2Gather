@@ -1,8 +1,4 @@
-const Automerge = require('automerge');
-
-let result = Automerge.from({
-  code: new Automerge.Text('print("Hello World")'),
-});
+const p2p = require('socket.io-p2p-server').Server;
 
 const io = require('socket.io')(3001, {
   cors: {
@@ -10,14 +6,16 @@ const io = require('socket.io')(3001, {
     methods: ['GET', 'POST'],
   },
 });
+
+io.use(p2p);
+
 io.on('connection', (socket) => {
-  socket.on('text-change', (changes) => {
-    console.log(changes);
-    result = Automerge.applyChanges(result, new Uint8Array(changes));
-    console.log(result);
-    socket.broadcast.emit('receive-changes', changes);
+  socket.on('peer-msg', (data) => {
+    console.log('Message from peer: %s', data);
+    socket.broadcast.emit('peer-msg', data);
   });
-  console.log('connected');
-  socket.emit('set-document', Automerge.save(result));
-  console.log('sent');
+
+  socket.on('go-private', (data) => {
+    socket.broadcast.emit('go-private', data);
+  });
 });
