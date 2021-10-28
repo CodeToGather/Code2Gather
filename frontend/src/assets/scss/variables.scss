@@ -2,7 +2,7 @@
 $background-color: #1e2126;
 
 // Text colors
-$text-primary-color: #fff;
+$text-primary-color: white;
 $text-secondary-color: #7b7a7f;
 $text-success-color: #5f9d50;
 $text-danger-color: #b8594c;
@@ -10,14 +10,14 @@ $text-danger-color: #b8594c;
 // Button colors
 $primary-button-background-color: #24282d;
 $primary-button-background-hover-color: #34383d;
-$primary-button-text-color: #fff;
+$primary-button-text-color: white;
 
 $secondary-button-text-color: #aeacb2;
 $secondary-button-text-hover-color: #c6c4ca;
 
 $border-button-background-hover-color: #282e34;
 $border-button-border-color: #2f353b;
-$border-button-text-color: #fff;
+$border-button-text-color: white;
 
 $success-border-button-background-hover-color: #2a3428;
 $success-border-button-text-color: #5f9d50;
@@ -52,5 +52,5 @@ $button-border-radius: 5px;
 // Dropdown
 $dropdown-background-color: #2f353b;
 $dropdown-background-hover-color: #4d555d;
-$dropdown-text-color: #fff;
+$dropdown-text-color: white;
 $dropdown-border-radius: 5px;

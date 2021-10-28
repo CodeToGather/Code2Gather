@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiServer from 'server';
 import request from 'supertest';
-
-import prisma from 'lib/prisma';
 import { Fixtures, loadFixtures } from 'utils/fixtures';
 import { convertDatesToJson, mockTestUser } from 'utils/tests';
+
+import prisma from 'lib/prisma';
 
 let server: ApiServer;
 let fixtures: Fixtures;
@@ -53,8 +53,8 @@ describe('POST /user', () => {
       id,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The user must have a valid GitHub username!'
+    expect(response.body.error).toBe(
+      'The user must have a valid GitHub username!',
     );
   });
 
@@ -63,8 +63,8 @@ describe('POST /user', () => {
       githubUsername,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The user must have a valid ID string from Firebase!'
+    expect(response.body.error).toBe(
+      'The user must have a valid ID string from Firebase!',
     );
   });
 
@@ -74,8 +74,8 @@ describe('POST /user', () => {
       githubUsername,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The user must have a valid ID string from Firebase!'
+    expect(response.body.error).toBe(
+      'The user must have a valid ID string from Firebase!',
     );
   });
 
@@ -87,8 +87,8 @@ describe('POST /user', () => {
         githubUsername: { hello: 'world' },
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The user must have a valid GitHub username!'
+    expect(response.body.error).toBe(
+      'The user must have a valid GitHub username!',
     );
   });
 
@@ -98,8 +98,8 @@ describe('POST /user', () => {
       githubUsername: fixtures.userOne.githubUsername,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'A user with this Firebase ID or GitHub username already exists!'
+    expect(response.body.error).toBe(
+      'A user with this Firebase ID or GitHub username already exists!',
     );
   });
 
@@ -109,8 +109,8 @@ describe('POST /user', () => {
       githubUsername,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'A user with this Firebase ID or GitHub username already exists!'
+    expect(response.body.error).toBe(
+      'A user with this Firebase ID or GitHub username already exists!',
     );
   });
 });
@@ -159,7 +159,7 @@ describe('PUT /user', () => {
         ...fixtures.userOne,
         githubUsername,
         updatedAt: response.body.updatedAt,
-      })
+      }),
     );
   });
 
@@ -170,7 +170,7 @@ describe('PUT /user', () => {
       .send({ githubUsername: 12345 });
     expect(response.status).toBe(StatusCodes.BAD_REQUEST);
     expect(response.body.error).toBe(
-      'The user must have a valid GitHub username!'
+      'The user must have a valid GitHub username!',
     );
   });
 

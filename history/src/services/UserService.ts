@@ -1,27 +1,28 @@
-import prisma from 'lib/prisma';
 import { AllowIfUserIsBotPolicy } from 'policies/AllowIfUserIsBotPolicy';
 import { AlwaysDenyPolicy } from 'policies/AlwaysDenyPolicy';
 import { AllowIfUserIsSelfPolicy } from 'policies/user/AllowIfUserIsSelfPolicy';
 import { UserCreateData, UserUpdateData } from 'types/crud/user';
 import { InvalidDataError, ResourceNotFoundError } from 'types/error';
 
+import prisma from 'lib/prisma';
+
 import { BaseService } from './BaseService';
 import { User } from '.prisma/client';
 
 class UserService extends BaseService<User, UserCreateData> {
-  protected createPolicies = [
+  protected override createPolicies = [
     new AllowIfUserIsBotPolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected readPolicies = [
+  protected override readPolicies = [
     new AllowIfUserIsSelfPolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected updatePolicies = [
+  protected override updatePolicies = [
     new AllowIfUserIsSelfPolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected deletePolicies = [
+  protected override deletePolicies = [
     new AllowIfUserIsSelfPolicy(),
     new AlwaysDenyPolicy(),
   ];
@@ -52,7 +53,7 @@ class UserService extends BaseService<User, UserCreateData> {
   async update(
     userId: string,
     data: UserUpdateData,
-    user: User
+    user: User,
   ): Promise<User> {
     const currentUser = await this.read(userId, user);
     this.checkRep(data, false);
@@ -78,14 +79,14 @@ class UserService extends BaseService<User, UserCreateData> {
 
   private checkRep(
     data: UserCreateData | UserUpdateData,
-    isCreate: boolean
+    isCreate: boolean,
   ): void {
     if (
       (isCreate && !('id' in data)) ||
       ('id' in data && (typeof data.id !== 'string' || data.id.length === 0))
     ) {
       throw new InvalidDataError(
-        'The user must have a valid ID string from Firebase!'
+        'The user must have a valid ID string from Firebase!',
       );
     }
     if (

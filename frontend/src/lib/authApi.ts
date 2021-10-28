@@ -4,6 +4,7 @@ import {
   LoginResponse,
 } from 'types/api/auth';
 import { User } from 'types/crud/user';
+
 import tokenUtils from 'utils/tokenUtils';
 
 import BaseApi from './baseApi';

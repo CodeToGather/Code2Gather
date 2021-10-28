@@ -1,10 +1,10 @@
 import faker from 'faker';
-
-import prisma from 'lib/prisma';
 import { Difficulty, Language } from 'types/crud/enums';
 import { MeetingRecordCreateData } from 'types/crud/meetingRecord';
 import { RatingCreateData } from 'types/crud/rating';
 import { UserCreateData } from 'types/crud/user';
+
+import prisma from 'lib/prisma';
 
 import { MeetingRecord, Rating, User } from '.prisma/client';
 
@@ -46,7 +46,7 @@ export const resetDatabase = async (): Promise<void> => {
 // Creates a test user and persists it into the database.
 // Can only be called in test environment.
 export const createTestUser = async (
-  data?: Partial<UserCreateData>
+  data?: Partial<UserCreateData>,
 ): Promise<User> => {
   checkTestEnv();
   return await prisma.user.create({
@@ -72,7 +72,7 @@ export const mockTestUser = (data?: Partial<UserCreateData>): User => {
 // Creates a test rating and persists it into the database.
 // Can only be called in test environment.
 export const createTestRating = async (
-  data: Partial<RatingCreateData>
+  data: Partial<RatingCreateData>,
 ): Promise<Rating> => {
   checkTestEnv();
   return await prisma.rating.create({
@@ -89,7 +89,7 @@ export const createTestRating = async (
 export const mockTestRating = (
   ratingUserId: string,
   ratedUserId: string,
-  data?: Partial<Omit<Omit<RatingCreateData, 'ratingUserId'>, 'ratedUserId'>>
+  data?: Partial<Omit<Omit<RatingCreateData, 'ratingUserId'>, 'ratedUserId'>>,
 ): Rating => {
   checkTestEnv();
   return {
@@ -105,7 +105,7 @@ export const mockTestRating = (
 // Creates a test meeting record and persists it into the database.
 // Can only be called in test environment.
 export const createTestMeetingRecord = async (
-  data: Partial<MeetingRecordCreateData>
+  data: Partial<MeetingRecordCreateData>,
 ): Promise<MeetingRecord> => {
   checkTestEnv();
   return await prisma.meetingRecord.create({
@@ -132,7 +132,7 @@ export const mockTestMeetingRecord = (
   intervieweeId: string,
   data?: Partial<
     Omit<Omit<MeetingRecordCreateData, 'interviewerId'>, 'intervieweeId'>
-  >
+  >,
 ): MeetingRecord => {
   checkTestEnv();
   return {

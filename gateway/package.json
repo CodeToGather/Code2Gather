@@ -4,9 +4,7 @@
   "description": "API Gateway for Code2Gather",
   "private": true,
   "scripts": {
-    "start": "nodemon index.js",
-    "lint": "eslint . --fix --ext .js && prettier --write \"**/*.js\" --tab-width 2",
-    "lint:ci": "eslint . --ext .js && prettier --check \"**/*.js\" --tab-width 2"
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "axios": "^0.22.0",
@@ -20,21 +18,5 @@
     "https": "^1.0.0",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.13"
-  },
-  "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-sort-requires": "^2.1.0",
-    "is-ci": "^3.0.0",
-    "lint-staged": "^11.1.2",
-    "prettier": "^2.4.1",
-    "pretty-quick": "^3.1.1"
-  },
-  "lint-staged": {
-    "**/*.js": [
-      "pretty-quick --staged",
-      "eslint --fix"
-    ]
   }
 }

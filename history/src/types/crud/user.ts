@@ -1,8 +1,8 @@
-export type UserCreateData = {
+export interface UserCreateData {
   id: string;
   githubUsername: string;
-};
+}
 
-export type UserUpdateData = {
+export interface UserUpdateData {
   githubUsername: string;
-};
+}

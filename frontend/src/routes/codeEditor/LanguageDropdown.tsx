@@ -12,11 +12,11 @@ const languageNames: { [key: string]: string } = {
   [ProgrammingLanguage.PYTHON]: 'Python 3',
 };
 
-type Props = {
+interface Props {
   language: ProgrammingLanguage;
   setLanguage: (language: ProgrammingLanguage) => void;
   className?: string;
-};
+}
 
 const LanguageDropdown: FC<Props> = ({
   language,
@@ -34,22 +34,28 @@ const LanguageDropdown: FC<Props> = ({
     <div className="language-dropdown">
       <button
         className={`border-button${className !== '' ? ` ${className}` : ''}`}
-        onClick={() => setIsDropdownShown((isShown) => !isShown)}
+        onClick={(): void => setIsDropdownShown((isShown) => !isShown)}
       >
         <div>{languageNames[language]}</div>
         <i className="fas fa-caret-down" />
       </button>
       {isDropdownShown ? (
         <div className="language-dropdown__dropdown">
-          <button onClick={() => handleSetLanguage(ProgrammingLanguage.PYTHON)}>
+          <button
+            onClick={(): void => handleSetLanguage(ProgrammingLanguage.PYTHON)}
+          >
             Python
           </button>
           <button
-            onClick={() => handleSetLanguage(ProgrammingLanguage.JAVASCRIPT)}
+            onClick={(): void =>
+              handleSetLanguage(ProgrammingLanguage.JAVASCRIPT)
+            }
           >
             JavaScript
           </button>
-          <button onClick={() => handleSetLanguage(ProgrammingLanguage.JAVA)}>
+          <button
+            onClick={(): void => handleSetLanguage(ProgrammingLanguage.JAVA)}
+          >
             Java
           </button>
         </div>

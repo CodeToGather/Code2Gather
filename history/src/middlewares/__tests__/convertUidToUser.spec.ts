@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { NextFunction } from 'express-serve-static-core';
 import { StatusCodes } from 'http-status-codes';
+import { createTestUser } from 'utils/tests';
 
 import { convertUidToUser } from 'middlewares/convertUidToUser';
-import { createTestUser } from 'utils/tests';
 
 import { User } from '.prisma/client';
 
@@ -39,7 +39,7 @@ describe('convertUidToUser', () => {
     hasCalledSendStatus = false;
     mockStatusCode = null;
     hasCalledNextFunction = false;
-    nextFunction = () => {
+    nextFunction = (): void => {
       hasCalledNextFunction = true;
     };
   });

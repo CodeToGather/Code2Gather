@@ -16,7 +16,7 @@ describe('Base Policy', () => {
   it('throws an error for validate', async () => {
     const policy = new BasePolicy<User>();
     await expect(policy.validate(user, user)).rejects.toThrow(
-      MissingImplementationError
+      MissingImplementationError,
     );
   });
 
@@ -24,7 +24,7 @@ describe('Base Policy', () => {
     class SubBasePolicy extends BasePolicy<User> {}
     const policy = new SubBasePolicy();
     await expect(policy.validate(user, user)).rejects.toThrow(
-      MissingImplementationError
+      MissingImplementationError,
     );
   });
 });

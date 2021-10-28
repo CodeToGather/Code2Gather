@@ -1,13 +1,14 @@
-import prisma from 'lib/prisma';
 import { AlwaysAllowPolicy } from 'policies/AlwaysAllowPolicy';
 import { DenyIfUserIsBotPolicy } from 'policies/DenyIfUserIsBotPolicy';
 import { LeaderboardData } from 'types/crud/leaderboard';
+
+import prisma from 'lib/prisma';
 
 import { BaseService } from './BaseService';
 import { User } from '.prisma/client';
 
 class LeaderboardService extends BaseService<LeaderboardData[], void> {
-  protected readPolicies = [
+  protected override readPolicies = [
     new DenyIfUserIsBotPolicy(),
     new AlwaysAllowPolicy(),
   ];

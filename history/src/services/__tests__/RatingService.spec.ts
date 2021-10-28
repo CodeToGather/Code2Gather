@@ -1,8 +1,9 @@
-import prisma from 'lib/prisma';
 import ratingService from 'services/RatingService';
 import { AuthorizationError, InvalidDataError } from 'types/error';
 import { Fixtures, loadFixtures } from 'utils/fixtures';
 import { createTestRating, createTestUser, mockTestRating } from 'utils/tests';
+
+import prisma from 'lib/prisma';
 
 let fixtures: Fixtures;
 
@@ -22,7 +23,7 @@ describe('RatingService', () => {
       await fixtures.reload();
       const mockRatingData = mockTestRating(
         fixtures.userOne.id,
-        fixtures.userTwo.id
+        fixtures.userTwo.id,
       );
       rating = mockRatingData.rating;
     });
@@ -34,13 +35,13 @@ describe('RatingService', () => {
           ratedUserId: fixtures.userTwo.id,
           rating,
         },
-        fixtures.userOne
+        fixtures.userOne,
       );
       expect(createdRating.rating).toBe(rating);
       expect(createdRating.ratingUserId).toBe(fixtures.userOne.id);
       expect(createdRating.ratedUserId).toBe(fixtures.userTwo.id);
       expect(
-        await prisma.rating.findUnique({ where: { id: createdRating.id } })
+        await prisma.rating.findUnique({ where: { id: createdRating.id } }),
       ).toBeTruthy();
     });
 
@@ -52,8 +53,8 @@ describe('RatingService', () => {
             ratedUserId: fixtures.userTwo.id,
             rating: 0,
           },
-          fixtures.userOne
-        )
+          fixtures.userOne,
+        ),
       ).rejects.toThrow(InvalidDataError);
       await expect(
         ratingService.create(
@@ -62,8 +63,8 @@ describe('RatingService', () => {
             ratedUserId: fixtures.userTwo.id,
             rating: 6,
           },
-          fixtures.userOne
-        )
+          fixtures.userOne,
+        ),
       ).rejects.toThrow(InvalidDataError);
       await expect(
         ratingService.create(
@@ -72,8 +73,8 @@ describe('RatingService', () => {
             ratedUserId: fixtures.userTwo.id,
             rating: 4.5,
           },
-          fixtures.userOne
-        )
+          fixtures.userOne,
+        ),
       ).rejects.toThrow(InvalidDataError);
     });
 
@@ -85,8 +86,8 @@ describe('RatingService', () => {
             ratedUserId: fixtures.userOne.id,
             rating: 4.5,
           },
-          fixtures.userOne
-        )
+          fixtures.userOne,
+        ),
       ).rejects.toThrow(InvalidDataError);
     });
 
@@ -99,8 +100,8 @@ describe('RatingService', () => {
             ratedUserId: fixtures.userTwo.id,
             rating: 4,
           },
-          fixtures.userTwo
-        )
+          fixtures.userTwo,
+        ),
       ).rejects.toThrow(AuthorizationError);
       await expect(
         ratingService.create(
@@ -109,8 +110,8 @@ describe('RatingService', () => {
             ratedUserId: fixtures.userTwo.id,
             rating: 4,
           },
-          unrelatedUser
-        )
+          unrelatedUser,
+        ),
       ).rejects.toThrow(AuthorizationError);
     });
   });
@@ -120,18 +121,18 @@ describe('RatingService', () => {
       const { average, count } =
         await ratingService.readAverageRatingForRatedUser(
           fixtures.userOne.id,
-          fixtures.userOne
+          fixtures.userOne,
         );
       expect(average).toEqual(fixtures.ratingFromTwoToOne.rating);
-      expect(count).toEqual(1);
+      expect(count).toBe(1);
     });
 
     it("unrelated user cannot read another user's average rating", async () => {
       await expect(
         ratingService.readAverageRatingForRatedUser(
           fixtures.userOne.id,
-          fixtures.userTwo
-        )
+          fixtures.userTwo,
+        ),
       ).rejects.toThrow(AuthorizationError);
     });
 
@@ -139,8 +140,8 @@ describe('RatingService', () => {
       const newUser = await createTestUser();
       const { average, count } =
         await ratingService.readAverageRatingForRatedUser(newUser.id, newUser);
-      expect(average).toEqual(0);
-      expect(count).toEqual(0);
+      expect(average).toBe(0);
+      expect(count).toBe(0);
     });
 
     it('correctly computes the average', async () => {
@@ -150,8 +151,8 @@ describe('RatingService', () => {
       await createTestRating({ ratedUserId: newUser.id, rating: 3 });
       const { average, count } =
         await ratingService.readAverageRatingForRatedUser(newUser.id, newUser);
-      expect(average).toEqual(2);
-      expect(count).toEqual(3);
+      expect(average).toBe(2);
+      expect(count).toBe(3);
     });
   });
 });

@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 ace.define(
   'ace/theme/twilight',
   ['require', 'exports', 'module', 'ace/lib/dom'],
@@ -110,12 +111,12 @@ color: #494949\
 background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWMQERFpYLC1tf0PAAgOAnPnhxyiAAAAAElFTkSuQmCC) right repeat-y\
 }";
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     var dom = require('../lib/dom');
     dom.importCssString(exports.cssText, exports.cssClass);
   },
 );
 (function () {
+  // eslint-disable-next-line no-undef
   ace.require(['ace/theme/twilight'], function (m) {
     if (typeof module == 'object' && typeof exports == 'object' && module) {
       module.exports = m;

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-
 import meetingRecordService from 'services/MeetingRecordService';
 import { ErrorResponse } from 'types/api';
 import { MeetingRecordCreateData } from 'types/crud/meetingRecord';
@@ -17,14 +16,14 @@ import { MeetingRecord } from '.prisma/client';
  */
 export async function createMeetingRecord(
   request: Request<unknown, unknown, MeetingRecordCreateData>,
-  response: Response<ErrorResponse | MeetingRecord>
+  response: Response<ErrorResponse | MeetingRecord>,
 ): Promise<void> {
   const { user } = response.locals;
   try {
     const meetingRecordCreateData = request.body;
     const createdMeetingRecord = await meetingRecordService.create(
       meetingRecordCreateData,
-      user
+      user,
     );
     response.status(StatusCodes.OK).json(createdMeetingRecord);
   } catch (error: any) {
@@ -55,13 +54,13 @@ export async function createMeetingRecord(
  */
 export async function readMeetingRecordsForSelf(
   _request: Request<unknown, unknown, unknown>,
-  response: Response<ErrorResponse | MeetingRecord[]>
+  response: Response<ErrorResponse | MeetingRecord[]>,
 ): Promise<void> {
   const { user } = response.locals;
   try {
     const meetingRecords = await meetingRecordService.readAllForInterviewee(
       user.id,
-      user
+      user,
     );
     response.status(StatusCodes.OK).json(meetingRecords);
   } catch (error: any) {

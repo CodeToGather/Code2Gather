@@ -85,9 +85,8 @@ app.get('/auth', async (req, res) => {
   res.status(StatusCodes.OK).json({ uid });
 });
 
-app.listen(3002, () => {
-  // eslint-disable-next-line no-console
-  console.log('Listening on: 3002');
+app.listen(8001, () => {
+  console.log('Listening on: 8001');
 });
 
 module.exports = app;

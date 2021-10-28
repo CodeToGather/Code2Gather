@@ -1,9 +1,8 @@
-/* eslint-disable react/jsx-props-no-spreading */
+ 
 import React from 'react';
 import { useAsync } from 'react-async';
 import authApi from 'lib/authApi';
 import { signInWithFirebase } from 'lib/firebase';
-
 import { User } from 'types/crud/user';
 
 export interface AuthContextInterface {

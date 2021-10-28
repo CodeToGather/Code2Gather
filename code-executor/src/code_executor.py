@@ -3,7 +3,6 @@ import json
 from typing import Optional, Union
 
 import requests
-
 from src.constants import (
     BASE64_RESULTS_FIELDS,
     ERROR_KEY,

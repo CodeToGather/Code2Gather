@@ -1,14 +1,14 @@
 import { User } from '.prisma/client';
 
-export type UserLocals = {
+export interface UserLocals {
   user: User;
-};
+}
 
-export type ErrorResponse = {
+export interface ErrorResponse {
   error: string;
-};
+}
 
-export type SuccessResponse = {
+export interface SuccessResponse {
   success: boolean;
   id?: number;
-};
+}
