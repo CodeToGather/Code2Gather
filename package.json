@@ -32,7 +32,6 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "foreman": "^3.0.1",
     "husky": "^7.0.2",
-    "is-ci": "^3.0.0",
     "lint-staged": "^11.2.3",
     "markdownlint-cli": "^0.29.0",
     "npm-run-all": "^4.1.5",
@@ -52,8 +51,8 @@
     "lint:md": "markdownlint '**/*.md' --ignore-path .gitignore",
     "lint:py": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages .",
     "pre-commit": "lint-staged",
-    "postinstall": "is-ci || poetry install",
-    "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || is-ci || husky install",
+    "postinstall": "poetry install",
+    "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
     "start": "nf start",
     "stylelint-check": "stylelint-config-prettier-check"
   },
