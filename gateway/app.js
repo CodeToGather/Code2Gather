@@ -8,7 +8,15 @@ const { pairingProxy, roomProxy, historyProxy, authProxy } = require('./proxy');
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  // TODO: Fix the production URL once deployed
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? /.*placeholder\.placeholder\.app.*/
+      : '*',
+};
+
+app.use(cors(corsOptions));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

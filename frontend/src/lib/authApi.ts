@@ -1,5 +1,5 @@
 import {
-  GetSelfResponse,
+  // GetSelfResponse,
   LoginRequestBody,
   LoginResponse,
 } from 'types/api/auth';
@@ -7,7 +7,7 @@ import { User } from 'types/crud/user';
 
 import tokenUtils from 'utils/tokenUtils';
 
-import BaseApi from './baseApi';
+import BaseApi, { api } from './baseApi';
 
 class AuthApi extends BaseApi {
   async login(token: string): Promise<void> {
@@ -24,14 +24,16 @@ class AuthApi extends BaseApi {
       return Promise.resolve(null);
     }
 
-    return this.get('history/self', (res: GetSelfResponse) => {
-      const { user } = res;
-      // TODO: Dispatch user object into redux store
-      return user;
-    }).catch((error: Error) => {
+    try {
+      const response = await api.get('history/user');
+      if (response.status === 200) {
+        return response.data;
+      }
+      throw new Error(response.statusText);
+    } catch (error) {
       this.logout();
       return Promise.reject(error);
-    });
+    }
   }
 
   async logout(): Promise<void> {

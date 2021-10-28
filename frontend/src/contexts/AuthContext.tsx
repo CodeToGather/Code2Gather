@@ -1,4 +1,3 @@
- 
 import React from 'react';
 import { useAsync } from 'react-async';
 import authApi from 'lib/authApi';
@@ -32,11 +31,11 @@ const AuthProvider: React.FunctionComponent = (props) => {
     if (isSettled) {
       setFirstAttemptFinished(true);
     }
-  }, [isSettled]);
+  }, [isSettled, data]);
 
   if (!firstAttemptFinished) {
     if (isPending) {
-      return <></>;
+      return <>Loading...</>;
     }
     if (isRejected && error) {
       return (

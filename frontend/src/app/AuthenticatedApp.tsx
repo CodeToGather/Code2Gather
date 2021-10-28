@@ -16,6 +16,7 @@ const AuthenticatedApp: FC = () => {
     <Router>
       <Switch>
         {/* TODO: Add home route and component */}
+        <Route component={CodeEditor} exact={true} path={HOME} />
         <Route component={CodeEditor} exact={true} path={CODE_EDITOR} />
         <Route path="/" render={redirectToHome} />
       </Switch>
