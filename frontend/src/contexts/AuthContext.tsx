@@ -50,8 +50,14 @@ const AuthProvider: React.FunctionComponent = (props) => {
   const login = async (): Promise<void> => {
     const response = await signInWithFirebase();
     const token = await response.user.getIdToken();
+    const username = response.user.displayName;
+
+    if (username == null) {
+      throw new Error();
+    }
+
     return authApi
-      .login(token)
+      .login({ token, username })
       .then(reload)
       .catch((e: Error) => Promise.reject(e));
   };

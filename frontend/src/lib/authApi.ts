@@ -10,10 +10,10 @@ import tokenUtils from 'utils/tokenUtils';
 import BaseApi, { api } from './baseApi';
 
 class AuthApi extends BaseApi {
-  async login(token: string): Promise<void> {
+  async login(data: { token: string; username: string }): Promise<void> {
     return this.post(
       'auth/login',
-      { token } as LoginRequestBody,
+      data as LoginRequestBody,
       (res: LoginResponse) => tokenUtils.storeToken(res.token),
     );
   }
