@@ -19,4 +19,5 @@ io.on('connection', (socket) => {
   });
   console.log('connected');
   socket.emit('set-document', Automerge.save(result));
+  console.log('sent');
 });

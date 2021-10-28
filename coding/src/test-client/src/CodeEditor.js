@@ -10,23 +10,24 @@ export default function CodeEditor() {
   const [socket, setSocket] = useState();
 
   useEffect(() => {
+    if (socket == null || code == null) return;
+    const handler = (document) => {
+      console.log('function called');
+      if (document == null) return;
+      const t = AutoMerge.load(new Uint8Array(document));
+      setCode(t);
+    };
+
+    socket.on('set-document', handler);
+  }, [socket]);
+
+  useEffect(() => {
     const s = io('http://localhost:3001');
     setSocket(s);
     return () => {
       s.disconnect();
     };
   }, []);
-
-  useEffect(() => {
-    if (socket == null || code == null) return;
-    const handler = (document) => {
-      if (document == null) return;
-      const t = AutoMerge.load(new Uint8Array(document));
-      setCode(t);
-    };
-
-    socket.once('set-document', handler);
-  }, [socket]);
 
   useEffect(() => {
     if (socket == null || code == null) return {};
