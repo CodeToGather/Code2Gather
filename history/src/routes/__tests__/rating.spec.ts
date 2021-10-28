@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiServer from 'server';
 import request from 'supertest';
-
-import prisma from 'lib/prisma';
 import { Fixtures, loadFixtures } from 'utils/fixtures';
 import { createTestRating, createTestUser, mockTestRating } from 'utils/tests';
+
+import prisma from 'lib/prisma';
 
 let server: ApiServer;
 let fixtures: Fixtures;
@@ -32,7 +32,7 @@ describe('POST /rating', () => {
   beforeEach(() => {
     const mockRatingData = mockTestRating(
       fixtures.userOne.id,
-      fixtures.userTwo.id
+      fixtures.userTwo.id,
     );
     rating = mockRatingData.rating;
     ratingUserId = mockRatingData.ratingUserId as string;
@@ -67,8 +67,8 @@ describe('POST /rating', () => {
         ratedUserId,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The rating must have a valid rating user ID!'
+    expect(response.body.error).toBe(
+      'The rating must have a valid rating user ID!',
     );
   });
 
@@ -81,8 +81,8 @@ describe('POST /rating', () => {
         ratingUserId,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The rating must have a valid rated user ID!'
+    expect(response.body.error).toBe(
+      'The rating must have a valid rated user ID!',
     );
   });
 
@@ -95,8 +95,8 @@ describe('POST /rating', () => {
         ratingUserId,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The rating must have a valid rating value!'
+    expect(response.body.error).toBe(
+      'The rating must have a valid rating value!',
     );
   });
 
@@ -110,8 +110,8 @@ describe('POST /rating', () => {
         ratingUserId: 100,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The rating must have a valid rating user ID!'
+    expect(response.body.error).toBe(
+      'The rating must have a valid rating user ID!',
     );
   });
 
@@ -125,8 +125,8 @@ describe('POST /rating', () => {
         ratingUserId,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The rating must have a valid rated user ID!'
+    expect(response.body.error).toBe(
+      'The rating must have a valid rated user ID!',
     );
   });
 
@@ -140,8 +140,8 @@ describe('POST /rating', () => {
         ratingUserId,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The rating must have a valid rating value!'
+    expect(response.body.error).toBe(
+      'The rating must have a valid rating value!',
     );
   });
 
@@ -155,7 +155,7 @@ describe('POST /rating', () => {
         ratingUserId,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual('A user cannot rate themselves!');
+    expect(response.body.error).toBe('A user cannot rate themselves!');
   });
 
   it('should not allow a user to create a rating by others', async () => {
@@ -190,8 +190,8 @@ describe('POST /rating', () => {
         ratingUserId,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'Rating must be between 1 to 5, both inclusive!'
+    expect(response.body.error).toBe(
+      'Rating must be between 1 to 5, both inclusive!',
     );
 
     response = await request(server.server)
@@ -203,8 +203,8 @@ describe('POST /rating', () => {
         ratingUserId,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'Rating must be between 1 to 5, both inclusive!'
+    expect(response.body.error).toBe(
+      'Rating must be between 1 to 5, both inclusive!',
     );
 
     response = await request(server.server)
@@ -216,7 +216,7 @@ describe('POST /rating', () => {
         ratingUserId,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual('Rating must be discrete!');
+    expect(response.body.error).toBe('Rating must be discrete!');
   });
 
   it('should not allow invalid uid', async () => {

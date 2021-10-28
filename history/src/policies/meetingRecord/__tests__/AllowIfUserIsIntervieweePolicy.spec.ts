@@ -37,7 +37,7 @@ describe('AllowIfUserIsIntervieweePolicy', () => {
     const resultOne = await policy.validate(meetingRecord, interviewee);
     const resultTwo = await policy.validate(
       meetingRecordCreateData,
-      interviewee
+      interviewee,
     );
     expect(resultOne).toBe(Authorization.ALLOW);
     expect(resultTwo).toBe(Authorization.ALLOW);
@@ -48,7 +48,7 @@ describe('AllowIfUserIsIntervieweePolicy', () => {
     const resultOne = await policy.validate(meetingRecord, interviewer);
     const resultTwo = await policy.validate(
       meetingRecordCreateData,
-      interviewer
+      interviewer,
     );
     expect(resultOne).toBe(Authorization.SKIP);
     expect(resultTwo).toBe(Authorization.SKIP);
@@ -59,7 +59,7 @@ describe('AllowIfUserIsIntervieweePolicy', () => {
     const resultOne = await policy.validate(meetingRecord, unrelatedUser);
     const resultTwo = await policy.validate(
       meetingRecordCreateData,
-      unrelatedUser
+      unrelatedUser,
     );
     expect(resultOne).toBe(Authorization.SKIP);
     expect(resultTwo).toBe(Authorization.SKIP);

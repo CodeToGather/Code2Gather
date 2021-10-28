@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-
 import ratingService from 'services/RatingService';
 import { ErrorResponse, UserLocals } from 'types/api';
 import { RatingCreateData } from 'types/crud/rating';
@@ -18,7 +17,7 @@ import { Rating } from '.prisma/client';
  */
 export async function createRating(
   request: Request<unknown, unknown, RatingCreateData>,
-  response: Response<ErrorResponse | Rating>
+  response: Response<ErrorResponse | Rating>,
 ): Promise<void> {
   const { user } = response.locals;
   try {
@@ -56,13 +55,13 @@ export async function readAverageRatingForSelf(
   response: Response<
     ErrorResponse | { average: number; count: number },
     UserLocals
-  >
+  >,
 ): Promise<void> {
   const { user } = response.locals;
   try {
     const stats = await ratingService.readAverageRatingForRatedUser(
       user.id,
-      user
+      user,
     );
     response.status(StatusCodes.OK).json(stats);
   } catch (error: any) {

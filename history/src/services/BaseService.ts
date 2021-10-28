@@ -17,7 +17,7 @@ export class BaseService<T, CT> {
   protected async isAuthorized<U extends T | CT>(
     data: U,
     user: User,
-    policies: BasePolicy<U>[]
+    policies: BasePolicy<U>[],
   ): Promise<boolean> {
     if (user == null) {
       // Just in case check
@@ -41,7 +41,7 @@ export class BaseService<T, CT> {
     const isAuthorized = await this.isAuthorized(
       data,
       user,
-      this.createPolicies
+      this.createPolicies,
     );
     if (!isAuthorized) {
       throw new AuthorizationError();
@@ -59,7 +59,7 @@ export class BaseService<T, CT> {
     const isAuthorized = await this.isAuthorized(
       data,
       user,
-      this.updatePolicies
+      this.updatePolicies,
     );
     if (!isAuthorized) {
       throw new AuthorizationError();
@@ -70,7 +70,7 @@ export class BaseService<T, CT> {
     const isAuthorized = await this.isAuthorized(
       data,
       user,
-      this.deletePolicies
+      this.deletePolicies,
     );
     if (!isAuthorized) {
       throw new AuthorizationError();

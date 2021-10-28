@@ -1,6 +1,6 @@
 import { Difficulty, Language } from './enums';
 
-export type MeetingRecordCreateData = {
+export interface MeetingRecordCreateData {
   interviewerId: string;
   intervieweeId: string;
   duration: number;
@@ -10,9 +10,9 @@ export type MeetingRecordCreateData = {
   codeWritten: string;
   isSolved: boolean;
   feedbackToInterviewee: string;
-};
+}
 
-export type MeetingRecordUpdateData = {
+export interface MeetingRecordUpdateData {
   interviewerId?: string;
   intervieweeId?: string;
   duration?: number;
@@ -22,4 +22,4 @@ export type MeetingRecordUpdateData = {
   codeWritten?: string;
   isSolved?: boolean;
   feedbackToInterviewee?: string;
-};
+}

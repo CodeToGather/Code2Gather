@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-
 import leaderboardService from 'services/LeaderboardService';
 import { ErrorResponse } from 'types/api';
 import { LeaderboardData } from 'types/crud/leaderboard';
@@ -14,7 +13,7 @@ import { AuthorizationError } from 'types/error';
  */
 export async function readLeaderboard(
   _request: Request<unknown, unknown, unknown>,
-  response: Response<ErrorResponse | LeaderboardData[]>
+  response: Response<ErrorResponse | LeaderboardData[]>,
 ): Promise<void> {
   const { user } = response.locals;
   try {

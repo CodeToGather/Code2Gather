@@ -1,7 +1,6 @@
 from typing import Any
 
 from pytest_mock import MockerFixture
-
 from src.code_executor import CodeExecutor
 from tests.utils.request_mock import (
     generate_lang_mock_success,

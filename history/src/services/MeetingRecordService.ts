@@ -1,4 +1,3 @@
-import prisma from 'lib/prisma';
 import { AlwaysDenyPolicy } from 'policies/AlwaysDenyPolicy';
 import { AllowIfUserIsIntervieweePolicy } from 'policies/meetingRecord/AllowIfUserIsIntervieweePolicy';
 import { AllowIfUserIsInterviewerPolicy } from 'policies/meetingRecord/AllowIfUserIsInterviewerPolicy';
@@ -9,6 +8,8 @@ import {
 } from 'types/crud/meetingRecord';
 import { InvalidDataError } from 'types/error';
 
+import prisma from 'lib/prisma';
+
 import { BaseService } from './BaseService';
 import { MeetingRecord, User } from '.prisma/client';
 
@@ -16,20 +17,20 @@ class MeetingRecordService extends BaseService<
   MeetingRecord,
   MeetingRecordCreateData
 > {
-  protected createPolicies = [
+  protected override createPolicies = [
     new AllowIfUserIsInterviewerPolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected readPolicies = [
+  protected override readPolicies = [
     new AllowIfUserIsIntervieweePolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected updatePolicies = [
+  protected override updatePolicies = [
     new AllowIfUserIsInterviewerPolicy(),
     new AllowIfUserIsIntervieweePolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected deletePolicies = [
+  protected override deletePolicies = [
     new AllowIfUserIsInterviewerPolicy(),
     new AllowIfUserIsIntervieweePolicy(),
     new AlwaysDenyPolicy(),
@@ -39,7 +40,7 @@ class MeetingRecordService extends BaseService<
   // require a user object to continue.
   async create(
     data: MeetingRecordCreateData,
-    user: User
+    user: User,
   ): Promise<MeetingRecord> {
     this.checkRep(data, true);
     await this.checkCreation(data, user);
@@ -63,7 +64,7 @@ class MeetingRecordService extends BaseService<
 
   async readAllForInterviewee(
     intervieweeId: string,
-    user: User
+    user: User,
   ): Promise<MeetingRecord[]> {
     const meetingRecords = await prisma.meetingRecord.findMany({
       where: {
@@ -108,7 +109,7 @@ class MeetingRecordService extends BaseService<
 
   private checkRep(
     data: MeetingRecordCreateData | MeetingRecordUpdateData,
-    isCreate: boolean
+    isCreate: boolean,
   ): void {
     if (
       (isCreate && !('intervieweeId' in data)) ||
@@ -117,7 +118,7 @@ class MeetingRecordService extends BaseService<
           data.intervieweeId.length === 0))
     ) {
       throw new InvalidDataError(
-        'The meeting record must have a valid interviewee ID!'
+        'The meeting record must have a valid interviewee ID!',
       );
     }
     if (
@@ -127,7 +128,7 @@ class MeetingRecordService extends BaseService<
           data.interviewerId.length === 0))
     ) {
       throw new InvalidDataError(
-        'The meeting record must have a valid interviewer ID!'
+        'The meeting record must have a valid interviewer ID!',
       );
     }
     if (
@@ -136,7 +137,7 @@ class MeetingRecordService extends BaseService<
         (typeof data.duration !== 'number' || data.duration < 0))
     ) {
       throw new InvalidDataError(
-        'The meeting record must have a valid non-negative duration (in seconds)!'
+        'The meeting record must have a valid non-negative duration (in seconds)!',
       );
     }
     if (
@@ -145,7 +146,7 @@ class MeetingRecordService extends BaseService<
         (typeof data.questionId !== 'string' || data.questionId.length === 0))
     ) {
       throw new InvalidDataError(
-        'The meeting record must have a valid question ID!'
+        'The meeting record must have a valid question ID!',
       );
     }
     if (
@@ -155,7 +156,7 @@ class MeetingRecordService extends BaseService<
           !Object.values(Difficulty).includes(data.questionDifficulty)))
     ) {
       throw new InvalidDataError(
-        'The meeting record must have a valid question difficulty!'
+        'The meeting record must have a valid question difficulty!',
       );
     }
     if (
@@ -165,7 +166,7 @@ class MeetingRecordService extends BaseService<
           !Object.values(Language).includes(data.language)))
     ) {
       throw new InvalidDataError(
-        'The meeting record must have a valid programming language!'
+        'The meeting record must have a valid programming language!',
       );
     }
     if (
@@ -173,7 +174,7 @@ class MeetingRecordService extends BaseService<
       (data.codeWritten && typeof data.codeWritten !== 'string')
     ) {
       throw new InvalidDataError(
-        'The meeting record must have valid code written!'
+        'The meeting record must have valid code written!',
       );
     }
     if (
@@ -181,7 +182,7 @@ class MeetingRecordService extends BaseService<
       (data.isSolved != null && typeof data.isSolved !== 'boolean')
     ) {
       throw new InvalidDataError(
-        'The meeting record must have valid is solved state!'
+        'The meeting record must have valid is solved state!',
       );
     }
     if (
@@ -190,7 +191,7 @@ class MeetingRecordService extends BaseService<
         typeof data.feedbackToInterviewee !== 'string')
     ) {
       throw new InvalidDataError(
-        'The meeting record must have valid feedback to interviewee!'
+        'The meeting record must have valid feedback to interviewee!',
       );
     }
     if (

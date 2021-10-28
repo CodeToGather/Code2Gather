@@ -1,8 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiServer from 'server';
 import request from 'supertest';
-
-import prisma from 'lib/prisma';
 import { Difficulty, Language } from 'types/crud/enums';
 import { Fixtures, loadFixtures } from 'utils/fixtures';
 import {
@@ -11,6 +9,8 @@ import {
   createTestUser,
   mockTestMeetingRecord,
 } from 'utils/tests';
+
+import prisma from 'lib/prisma';
 
 let server: ApiServer;
 let fixtures: Fixtures;
@@ -44,7 +44,7 @@ describe('POST /meeting', () => {
   beforeEach(() => {
     const mockMeetingRecordData = mockTestMeetingRecord(
       fixtures.userOne.id,
-      fixtures.userTwo.id
+      fixtures.userTwo.id,
     );
     intervieweeId = mockMeetingRecordData.intervieweeId;
     interviewerId = mockMeetingRecordData.interviewerId as string;
@@ -103,8 +103,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid interviewee ID!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid interviewee ID!',
     );
   });
 
@@ -123,8 +123,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid interviewer ID!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid interviewer ID!',
     );
   });
 
@@ -143,8 +143,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid non-negative duration (in seconds)!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid non-negative duration (in seconds)!',
     );
   });
 
@@ -163,8 +163,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid question ID!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid question ID!',
     );
   });
 
@@ -183,8 +183,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid question difficulty!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid question difficulty!',
     );
   });
 
@@ -203,8 +203,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid programming language!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid programming language!',
     );
   });
 
@@ -223,8 +223,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have valid code written!'
+    expect(response.body.error).toBe(
+      'The meeting record must have valid code written!',
     );
   });
 
@@ -243,8 +243,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have valid is solved state!'
+    expect(response.body.error).toBe(
+      'The meeting record must have valid is solved state!',
     );
   });
 
@@ -263,8 +263,8 @@ describe('POST /meeting', () => {
         isSolved,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have valid feedback to interviewee!'
+    expect(response.body.error).toBe(
+      'The meeting record must have valid feedback to interviewee!',
     );
   });
 
@@ -284,8 +284,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid interviewee ID!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid interviewee ID!',
     );
   });
 
@@ -305,8 +305,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid interviewer ID!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid interviewer ID!',
     );
   });
 
@@ -326,8 +326,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid non-negative duration (in seconds)!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid non-negative duration (in seconds)!',
     );
   });
 
@@ -347,8 +347,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid question ID!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid question ID!',
     );
   });
 
@@ -368,8 +368,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid question difficulty!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid question difficulty!',
     );
   });
 
@@ -389,8 +389,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid programming language!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid programming language!',
     );
   });
 
@@ -410,8 +410,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have valid code written!'
+    expect(response.body.error).toBe(
+      'The meeting record must have valid code written!',
     );
   });
 
@@ -431,8 +431,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have valid is solved state!'
+    expect(response.body.error).toBe(
+      'The meeting record must have valid is solved state!',
     );
   });
 
@@ -452,8 +452,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee: 12346,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have valid feedback to interviewee!'
+    expect(response.body.error).toBe(
+      'The meeting record must have valid feedback to interviewee!',
     );
   });
 
@@ -473,8 +473,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid non-negative duration (in seconds)!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid non-negative duration (in seconds)!',
     );
   });
 
@@ -494,8 +494,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid question difficulty!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid question difficulty!',
     );
   });
 
@@ -515,8 +515,8 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The meeting record must have a valid programming language!'
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid programming language!',
     );
   });
 
@@ -536,7 +536,7 @@ describe('POST /meeting', () => {
         feedbackToInterviewee,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual('A user cannot interview themselves!');
+    expect(response.body.error).toBe('A user cannot interview themselves!');
   });
 
   it('should not allow a user to create a meeting record by others', async () => {
@@ -613,7 +613,7 @@ describe('GET /meeting', () => {
       .send();
     expect(response.status).toBe(StatusCodes.OK);
     expect(response.body).toEqual(
-      convertDatesToJson([fixtures.meetingRecordTwoInterviewedOne])
+      convertDatesToJson([fixtures.meetingRecordTwoInterviewedOne]),
     );
   });
 
@@ -639,7 +639,7 @@ describe('GET /meeting', () => {
     expect(response.body).toHaveLength(2);
     expect(response.body[0]).toEqual(convertDatesToJson(newMeetingRecord));
     expect(response.body[1]).toEqual(
-      convertDatesToJson(fixtures.meetingRecordTwoInterviewedOne)
+      convertDatesToJson(fixtures.meetingRecordTwoInterviewedOne),
     );
   });
 

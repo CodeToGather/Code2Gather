@@ -10,9 +10,9 @@ import { MeetingRecord, User } from '.prisma/client';
 export class AllowIfUserIsIntervieweePolicy extends BasePolicy<
   MeetingRecord | MeetingRecordCreateData
 > {
-  public async validate(
+  public override async validate(
     item: MeetingRecord | MeetingRecordCreateData,
-    user: User
+    user: User,
   ): Promise<Authorization> {
     if (item.intervieweeId === user.id) {
       return Authorization.ALLOW;

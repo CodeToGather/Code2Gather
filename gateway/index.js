@@ -28,7 +28,7 @@ function normalizePort(val) {
 /**
  * Get port from environment and store in Express.
  */
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT ?? '8000');
 app.set('port', port);
 
 /**
@@ -44,12 +44,10 @@ function onError(error) {
   // Handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      // eslint-disable-next-line no-console
       console.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      // eslint-disable-next-line no-console
       console.error(`${bind} is already in use`);
       process.exit(1);
       break;

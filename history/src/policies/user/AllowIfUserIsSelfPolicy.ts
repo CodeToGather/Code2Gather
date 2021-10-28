@@ -8,9 +8,9 @@ import { User } from '.prisma/client';
 // Checks that the user is the owner of the post before
 // allowing for mutations to said post.
 export class AllowIfUserIsSelfPolicy extends BasePolicy<User | UserCreateData> {
-  public async validate(
+  public override async validate(
     item: User | UserCreateData,
-    user: User
+    user: User,
   ): Promise<Authorization> {
     if (item.id === user.id) {
       return Authorization.ALLOW;

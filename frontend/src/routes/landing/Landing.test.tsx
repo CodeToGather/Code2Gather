@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, RenderResult, screen } from '@testing-library/react';
 
 import { AuthContext } from 'contexts/AuthContext';
 import { emptyPromiseFunction } from 'utils/functionUtils';
@@ -7,7 +7,10 @@ import { emptyPromiseFunction } from 'utils/functionUtils';
 import Landing from './Landing';
 
 // Renders the UI within an AuthContext.
-const contextRender = (ui: ReactElement, login: () => Promise<void>) => {
+const contextRender = (
+  ui: ReactElement,
+  login: () => Promise<void>,
+): RenderResult => {
   return render(
     <AuthContext.Provider
       value={{ data: null, logout: emptyPromiseFunction, login }}

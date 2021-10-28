@@ -1,7 +1,6 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-
 import userService from 'services/UserService';
 import { ErrorResponse, SuccessResponse, UserLocals } from 'types/api';
 import { UserCreateData, UserUpdateData } from 'types/crud/user';
@@ -19,7 +18,7 @@ import { User } from '.prisma/client';
  */
 export async function createUser(
   request: Request<unknown, unknown, UserCreateData>,
-  response: Response<ErrorResponse | User>
+  response: Response<ErrorResponse | User>,
 ): Promise<void> {
   try {
     const userCreateData = request.body;
@@ -50,7 +49,7 @@ export async function createUser(
  */
 export async function readSelf(
   _request: Request<unknown, unknown, unknown>,
-  response: Response<User, UserLocals>
+  response: Response<User, UserLocals>,
 ): Promise<void> {
   const { user } = response.locals;
   response.status(200).json(user);
@@ -72,7 +71,7 @@ export async function readSelf(
  */
 export async function updateSelf(
   request: Request<unknown, unknown, UserUpdateData>,
-  response: Response<ErrorResponse | User, UserLocals>
+  response: Response<ErrorResponse | User, UserLocals>,
 ): Promise<void> {
   const { user } = response.locals;
   try {
@@ -112,7 +111,7 @@ export async function updateSelf(
  */
 export async function deleteSelf(
   _request: Request<unknown, unknown, unknown>,
-  response: Response<ErrorResponse | SuccessResponse, UserLocals>
+  response: Response<ErrorResponse | SuccessResponse, UserLocals>,
 ): Promise<void> {
   const { user } = response.locals;
   try {

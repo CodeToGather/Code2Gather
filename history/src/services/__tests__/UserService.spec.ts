@@ -1,9 +1,10 @@
-import prisma from 'lib/prisma';
 import userService from 'services/UserService';
 import { AuthorizationError, InvalidDataError } from 'types/error';
 import { botUser } from 'utils/botUser';
 import { Fixtures, loadFixtures } from 'utils/fixtures';
 import { createTestUser, mockTestUser } from 'utils/tests';
+
+import prisma from 'lib/prisma';
 
 let fixtures: Fixtures;
 
@@ -33,7 +34,7 @@ describe('UserService', () => {
           id,
           githubUsername,
         },
-        botUser
+        botUser,
       );
       expect(user.id).toBe(id);
       expect(user.githubUsername).toBe(githubUsername);
@@ -47,8 +48,8 @@ describe('UserService', () => {
             id: '',
             githubUsername,
           },
-          botUser
-        )
+          botUser,
+        ),
       ).rejects.toThrow(InvalidDataError);
     });
 
@@ -59,8 +60,8 @@ describe('UserService', () => {
             id,
             githubUsername: '',
           },
-          botUser
-        )
+          botUser,
+        ),
       ).rejects.toThrow(InvalidDataError);
     });
 
@@ -72,8 +73,8 @@ describe('UserService', () => {
             id,
             githubUsername,
           },
-          nonBotUser
-        )
+          nonBotUser,
+        ),
       ).rejects.toThrow(AuthorizationError);
     });
   });
@@ -82,14 +83,14 @@ describe('UserService', () => {
     it('user can read themselves', async () => {
       const user = await userService.read(
         fixtures.userOne.id,
-        fixtures.userOne
+        fixtures.userOne,
       );
       expect(user).toEqual(fixtures.userOne);
     });
 
     it('unrelated user cannot read another user', async () => {
       await expect(
-        userService.read(fixtures.userOne.id, fixtures.userTwo)
+        userService.read(fixtures.userOne.id, fixtures.userTwo),
       ).rejects.toThrow(AuthorizationError);
     });
   });
@@ -108,7 +109,7 @@ describe('UserService', () => {
         {
           githubUsername,
         },
-        fixtures.userOne
+        fixtures.userOne,
       );
       expect(updatedUser.id).toBe(fixtures.userOne.id);
       expect(updatedUser.githubUsername).toBe(githubUsername);
@@ -121,8 +122,8 @@ describe('UserService', () => {
           {
             githubUsername,
           },
-          fixtures.userTwo
-        )
+          fixtures.userTwo,
+        ),
       ).rejects.toThrow(AuthorizationError);
     });
 
@@ -133,8 +134,8 @@ describe('UserService', () => {
           {
             githubUsername: '',
           },
-          fixtures.userOne
-        )
+          fixtures.userOne,
+        ),
       ).rejects.toThrow(InvalidDataError);
     });
   });
@@ -149,12 +150,12 @@ describe('UserService', () => {
       const deletedUser = await prisma.user.findUnique({
         where: { id: fixtures.userOne.id },
       });
-      expect(deletedUser).toBe(null);
+      expect(deletedUser).toBeNull();
     });
 
     it('unrelated user cannot delete another user', async () => {
       await expect(
-        userService.delete(fixtures.userOne.id, fixtures.userTwo)
+        userService.delete(fixtures.userOne.id, fixtures.userTwo),
       ).rejects.toThrow(AuthorizationError);
     });
   });

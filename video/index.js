@@ -3,7 +3,7 @@ const { RtcTokenBuilder, RtcRole } = require('agora-access-token');
 
 require('dotenv').config();
 
-const { PORT, APP_ID, APP_CERTIFICATE } = process.env;
+const { APP_ID, APP_CERTIFICATE } = process.env;
 
 const app = express();
 
@@ -60,7 +60,6 @@ const generateAccessToken = (request, response) => {
 
 app.get('/access_token', nocache, generateAccessToken);
 
-app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Listening on port: ${PORT}`);
+app.listen(8004, () => {
+  console.log(`Listening on port: ${8004}`);
 });

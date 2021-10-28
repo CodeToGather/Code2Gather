@@ -1,9 +1,9 @@
-export type RatingCreateData = {
+export interface RatingCreateData {
   rating: number;
   ratingUserId: string;
   ratedUserId: string;
-};
+}
 
-export type RatingUpdateData = {
+export interface RatingUpdateData {
   rating: number;
-};
+}

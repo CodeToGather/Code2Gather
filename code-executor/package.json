@@ -10,14 +10,6 @@
   "scripts": {
     "postinstall": "is-ci || poetry install",
     "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt",
-    "lint": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages ."
-  },
-  "lint-staged": {
-    "**/*.py": [
-      "poetry run black",
-      "poetry run isort",
-      "poetry run flake8 --select=F",
-      "poetry run mypy --namespace-packages"
-    ]
+    "start": "env PYTHONPATH=. poetry run python src/__main__.py"
   }
 }

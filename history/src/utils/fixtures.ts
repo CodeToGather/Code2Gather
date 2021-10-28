@@ -1,5 +1,4 @@
 import faker from 'faker';
-
 import { Difficulty } from 'types/crud/enums';
 import { LeaderboardData } from 'types/crud/leaderboard';
 
@@ -29,7 +28,7 @@ export class Fixtures {
     meetingRecordOneInterviewedTwo: MeetingRecord,
     meetingRecordTwoInterviewedOne: MeetingRecord,
     ratingFromOneToTwo: Rating,
-    ratingFromTwoToOne: Rating
+    ratingFromTwoToOne: Rating,
   ) {
     this.faker = faker;
     this.userOne = userOne;
@@ -105,15 +104,15 @@ export class Fixtures {
     }
 
     const usersWithStats: [User, { [key in Difficulty]: number }][] = users.map(
-      (user, index) => [user, stats[index]]
+      (user, index) => [user, stats[index]],
     );
     usersWithStats.sort((u1, u2) => {
       const hardDiff = u2[1].HARD - u1[1].HARD;
-      if (hardDiff !== 0) return hardDiff;
+      if (hardDiff !== 0) {return hardDiff;}
       const mediumDiff = u2[1].MEDIUM - u1[1].MEDIUM;
-      if (mediumDiff !== 0) return mediumDiff;
+      if (mediumDiff !== 0) {return mediumDiff;}
       const easyDiff = u2[1].EASY - u1[1].EASY;
-      if (easyDiff !== 0) return easyDiff;
+      if (easyDiff !== 0) {return easyDiff;}
       return u2[0].githubUsername.localeCompare(u1[0].githubUsername);
     });
 
@@ -153,6 +152,6 @@ export const loadFixtures = async (): Promise<Fixtures> => {
     meetingRecordOneInterviewedTwo,
     meetingRecordTwoInterviewedOne,
     ratingFromOneToTwo,
-    ratingFromTwoToOne
+    ratingFromTwoToOne,
   );
 };
