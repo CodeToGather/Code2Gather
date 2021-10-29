@@ -1,4 +1,3 @@
- 
 import React from 'react';
 import { useAsync } from 'react-async';
 import authApi from 'lib/authApi';
@@ -32,11 +31,11 @@ const AuthProvider: React.FunctionComponent = (props) => {
     if (isSettled) {
       setFirstAttemptFinished(true);
     }
-  }, [isSettled]);
+  }, [isSettled, data]);
 
   if (!firstAttemptFinished) {
     if (isPending) {
-      return <></>;
+      return <>Loading...</>;
     }
     if (isRejected && error) {
       return (
@@ -51,8 +50,14 @@ const AuthProvider: React.FunctionComponent = (props) => {
   const login = async (): Promise<void> => {
     const response = await signInWithFirebase();
     const token = await response.user.getIdToken();
+    const username = response.user.displayName;
+
+    if (username == null) {
+      throw new Error();
+    }
+
     return authApi
-      .login(token)
+      .login({ token, username })
       .then(reload)
       .catch((e: Error) => Promise.reject(e));
   };

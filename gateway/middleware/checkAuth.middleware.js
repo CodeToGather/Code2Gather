@@ -2,7 +2,7 @@ const axios = require('axios');
 const { StatusCodes } = require('http-status-codes');
 
 // TODO: change base url based on NODE_ENV
-const AUTH_BASE_URL = 'http://localhost:3002';
+const AUTH_BASE_URL = 'http://localhost:8001';
 const CHECK_AUTH_PATH = 'auth';
 
 const checkAuth = async (req, res, next) => {

@@ -15,7 +15,7 @@ api.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined') {
       const token = tokenUtils.getToken();
-       
+
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -27,11 +27,10 @@ api.interceptors.request.use(
   },
 );
 
+export { api };
+
 export default class BaseApi {
-  protected async get<RES>(
-    url: string,
-    handler: (res: RES) => any,
-  ): Promise<any> {
+  async get<RES>(url: string, handler: (res: RES) => any): Promise<any> {
     return this.requestWrapper(
       async () => await api.get<never, AxiosResponse<RES | ErrorResponse>>(url),
       handler,

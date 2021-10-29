@@ -16,6 +16,7 @@ const {
   verifyTokenWithFirebase,
   getUserWithIdFromFirebase,
 } = require('./service');
+const { default: axios } = require('axios');
 
 dotenv.config();
 
@@ -27,17 +28,25 @@ admin.initializeApp({
   }),
 });
 
+const corsOptions = {
+  // TODO: Fix the production URL once deployed
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? /.*placeholder\.placeholder\.app.*/
+      : '*',
+};
+
 const app = express();
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 
-app.post('/auth/login', async (req, res) => {
+app.post('/login', async (req, res) => {
   try {
-    const { token } = req.body;
+    const { token, username } = req.body;
     if (token == null) {
       throw new Error();
     }
@@ -47,10 +56,19 @@ app.post('/auth/login', async (req, res) => {
       throw new Error();
     }
 
+    const createUserResponse = await axios.post('http://localhost:8002/user', {
+      id: uid,
+      githubUsername: username,
+    });
+
+    if (createUserResponse.status !== 200) {
+      throw new Error();
+    }
+
     const jwtToken = createAuthenticationToken(uid);
     res.status(StatusCodes.OK).json({ token: jwtToken });
     return;
-  } catch {
+  } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).json();
   }
 });

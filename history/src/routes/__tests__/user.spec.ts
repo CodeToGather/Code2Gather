@@ -92,7 +92,7 @@ describe('POST /user', () => {
     );
   });
 
-  it('should not allow creation of a user with an existing id', async () => {
+  it('should not allow creation of a user with an existing github username', async () => {
     const response = await request(server.server).post('/user').send({
       id,
       githubUsername: fixtures.userOne.githubUsername,
@@ -103,19 +103,26 @@ describe('POST /user', () => {
     );
   });
 
-  it('should not allow creation of a user with an existing github username', async () => {
+  it('should update the user with an existing id and update the username', async () => {
     const response = await request(server.server).post('/user').send({
       id: fixtures.userOne.id,
       githubUsername,
     });
-    expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toBe(
-      'A user with this Firebase ID or GitHub username already exists!',
-    );
+    expect(response.status).toEqual(StatusCodes.OK);
+    expect(response.body.id).toBe(fixtures.userOne.id);
+    expect(response.body.githubUsername).toBe(githubUsername);
+    const user = await prisma.user.findUnique({
+      where: { id: fixtures.userOne.id },
+    });
+    expect(user).toBeDefined();
+    expect(user!.githubUsername).toBe(githubUsername);
   });
 });
 
 describe('GET /user', () => {
+  beforeAll(async () => {
+    await fixtures.reload();
+  });
   it('should return self when valid uid is provided', async () => {
     const response = await request(server.server)
       .get('/user')

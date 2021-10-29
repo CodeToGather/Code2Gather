@@ -22,9 +22,25 @@ export async function createUser(
 ): Promise<void> {
   try {
     const userCreateData = request.body;
+
+    try {
+      // Check if there's already an existing user for this account
+      const existingUser = await userService.read(userCreateData.id, botUser);
+      const updatedUser = await userService.update(
+        userCreateData.id,
+        { githubUsername: userCreateData.githubUsername },
+        existingUser,
+      );
+      response.status(StatusCodes.OK).json(updatedUser);
+      return;
+    } catch (error) {
+      // no-op
+    }
+
     const createdUser = await userService.create(userCreateData, botUser);
     response.status(StatusCodes.OK).json(createdUser);
   } catch (error: any) {
+    console.log(error);
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
         response.status(StatusCodes.BAD_REQUEST).json({
