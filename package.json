@@ -44,6 +44,7 @@
   },
   "scripts": {
     "commit": "git-cz",
+    "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt",
     "lint": "run-p lint:*",
     "lint-fix": "run-p \"lint:* --fix\"",
     "lint:js": "eslint . --ext .ts,.js,.tsx,.jsx",
@@ -51,7 +52,7 @@
     "lint:md": "markdownlint '**/*.md' --ignore-path .gitignore",
     "lint:py": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages .",
     "pre-commit": "lint-staged",
-    "postinstall": "poetry install && poetry update",
+    "postinstall": "poetry install && poetry update && yarn export-requirements",
     "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
     "start": "nf start",
     "stylelint-check": "stylelint-config-prettier-check"
