@@ -6,6 +6,7 @@
   "scripts": {
     "postinstall": "poetry install",
     "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt",
-    "start": "env PYTHONPATH=. poetry run python src/__main__.py"
+    "start": "env PYTHONPATH=. poetry run python src/__main__.py",
+    "test": "poetry run pytest --cov-report term-missing:skip-covered --cov=src tests/"
   }
 }
