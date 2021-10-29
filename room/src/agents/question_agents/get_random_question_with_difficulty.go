@@ -8,8 +8,8 @@ import (
 )
 
 func GetRandomQuestionsWithDifficulty(difficulty models.QuestionDifficulty) (questions []models.Question, err error) {
-	questionManager := db.NewQuestionDAOImpl()
-	allQuestions, err := questionManager.GetQuestionsWithDifficulty(difficulty)
+	questionDaoImpl := db.NewQuestionDaoImpl()
+	allQuestions, err := questionDaoImpl.GetQuestionsWithDifficulty(difficulty)
 
 	if err != nil {
 		return

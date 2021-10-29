@@ -6,35 +6,33 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-var QuestionCollection *mgo.Collection
-
 type QuestionDaoImpl struct {
+	collection *mgo.Collection
 }
 
-func NewQuestionDAOImpl() *QuestionDaoImpl {
-	QuestionCollection = DB.C(models.Question{}.TableName())
-	return &QuestionDaoImpl{}
+func NewQuestionDaoImpl() *QuestionDaoImpl {
+	return &QuestionDaoImpl{DB.C(models.Question{}.TableName())}
 }
 
-func (m QuestionDaoImpl) CreateQuestion(question *models.Question) error {
-	err := QuestionCollection.Insert(question)
+func (daoi QuestionDaoImpl) CreateQuestion(question *models.Question) error {
+	err := daoi.collection.Insert(question)
 	return err
 }
 
-func (m QuestionDaoImpl) GetQuestionById(id string) (models.Question, error) {
+func (daoi QuestionDaoImpl) GetQuestionById(id string) (models.Question, error) {
 	question := models.Question{}
-	err := QuestionCollection.Find(bson.M{"id": id}).One(&question)
+	err := daoi.collection.Find(bson.M{"id": id}).One(&question)
 	return question, err
 
 }
 
-func (m QuestionDaoImpl) GetQuestionsWithDifficulty(difficulty models.QuestionDifficulty) ([]models.Question, error) {
+func (daoi QuestionDaoImpl) GetQuestionsWithDifficulty(difficulty models.QuestionDifficulty) ([]models.Question, error) {
 	var questions []models.Question
-	err := QuestionCollection.Find(bson.M{"difficulty": difficulty}).All(&questions)
+	err := daoi.collection.Find(bson.M{"difficulty": difficulty}).All(&questions)
 	return questions, err
 }
 
-func (m QuestionDaoImpl) ClearQuestions() error {
-	err := QuestionCollection.DropCollection()
+func (daoi QuestionDaoImpl) ClearQuestions() error {
+	err := daoi.collection.DropCollection()
 	return err
 }

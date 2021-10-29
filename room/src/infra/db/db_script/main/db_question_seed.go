@@ -73,7 +73,7 @@ func main() {
 	}
 	defer db.CloseDBConnection()
 
-	questionManager := db.NewQuestionDAOImpl()
+	questionManager := db.NewQuestionDaoImpl()
 
 	err = questionManager.ClearQuestions()
 	if err != nil {

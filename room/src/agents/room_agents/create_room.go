@@ -1,6 +1,7 @@
 package room_agents
 
 import (
+	"code2gather.com/room/src/infra/db"
 	"log"
 
 	"code2gather.com/room/src/agents/question_agents"
@@ -21,6 +22,13 @@ func CreateRoom(uid1 string, uid2 string, difficulty models.QuestionDifficulty) 
 
 	newRoom.Qid1 = questions[0].Id
 	newRoom.Qid2 = questions[1].Id
+
+	roomDaoImpl := db.NewRoomDaoImpl()
+	err = roomDaoImpl.CreateRoom(newRoom)
+	if err != nil {
+		log.Fatal(err)
+		return newRoom, err
+	}
 
 	return newRoom, err
 }
