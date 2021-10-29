@@ -9,22 +9,30 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func handleInvalidRequestBody(c *gin.Context) {
+	c.JSON(http.StatusBadRequest, gin.H{
+		"message": "invalid request body",
+	})
+}
+
+func handleBadRequest(c *gin.Context) {
+	c.JSON(http.StatusBadRequest, gin.H{
+		"message": "something went wrong",
+	})
+}
+
 func RoomCreationHandler(c *gin.Context) {
 	handler := processor.NewRoomCreationProcessor()
 
 	if err := middleware.UnmarshalRequestBody(c.Request, handler.GetRequest()); err != nil {
 		log.Println(err)
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "invalid request body",
-		})
+		handleInvalidRequestBody(c)
 		return
 	}
 
 	if err := handler.Process(); err != nil {
 		log.Println(err)
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "something went wrong",
-		})
+		handleBadRequest(c)
 		return
 	}
 
@@ -32,9 +40,8 @@ func RoomCreationHandler(c *gin.Context) {
 
 	if err != nil {
 		log.Println(err)
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "something went wrong",
-		})
+		handleBadRequest(c)
+		return
 	}
 
 	c.Data(http.StatusOK, gin.MIMEJSON, resp)
