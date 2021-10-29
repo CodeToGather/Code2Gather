@@ -4,12 +4,12 @@ on:
   push:
     branches: [main]
     paths:
-      - '.github/workflows/lint_frontend.yml'
+      - '.github/workflows/test_frontend.yml'
       - 'frontend/**/*'
   pull_request:
     branches: [main]
     paths:
-      - '.github/workflows/lint_frontend.yml'
+      - '.github/workflows/test_frontend.yml'
       - 'frontend/**/*'
 
 jobs:
