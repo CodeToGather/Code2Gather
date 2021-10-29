@@ -63,9 +63,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
       - name: Run tests
         run: |
           cd code-executor
-          poetry install
           yarn test
