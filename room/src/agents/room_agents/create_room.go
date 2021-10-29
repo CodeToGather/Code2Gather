@@ -7,16 +7,20 @@ import (
 	"code2gather.com/room/src/models"
 )
 
-func CreateRoom(users []string, difficulty models.QuestionDifficultyLevel) (room models.Room, err error) {
-	room.Users = users
+func CreateRoom(uid1 string, uid2 string, difficulty models.QuestionDifficulty) (*models.Room, error) {
+	newRoom := models.NewRoom()
+	newRoom.Uid1 = uid1
+	newRoom.Uid2 = uid2
 
-	questions, err := question_agents.GetRandomQuestionsWithDifficulty(difficulty, len(users))
+	questions, err := question_agents.GetRandomQuestionsWithDifficulty(difficulty)
 
 	if err != nil {
 		log.Fatal(err)
-		return
+		return newRoom, err
 	}
 
-	room.Questions = questions
-	return
+	newRoom.Qid1 = questions[0].Id
+	newRoom.Qid2 = questions[1].Id
+
+	return newRoom, err
 }

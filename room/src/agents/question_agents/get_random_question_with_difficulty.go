@@ -7,21 +7,25 @@ import (
 	"code2gather.com/room/src/models"
 )
 
-func GetRandomQuestionsWithDifficulty(difficulty models.QuestionDifficultyLevel, numOfQuestions int) ([]models.Question, error) {
-	var questions [2]models.Question
-
-	questionManager := db.NewQuestionManager()
+func GetRandomQuestionsWithDifficulty(difficulty models.QuestionDifficulty) (questions []models.Question, err error) {
+	questionManager := db.NewQuestionDAOImpl()
 	allQuestions, err := questionManager.GetQuestionsWithDifficulty(difficulty)
 
 	if err != nil {
-		return questions[:], err
+		return
 	}
 
-	// TODO: replace with unique random generator
-	// remove questions attempted by user
-	for i := 0; i < numOfQuestions; i++ {
-		questions[i] = allQuestions[rand.Intn(len(allQuestions))]
+	totalQuestionCount := len(allQuestions)
+	idx1, idx2 := getRandomIntInRange(totalQuestionCount), getRandomIntInRange(totalQuestionCount)
+
+	for idx1 == idx2 {
+		idx2 = getRandomIntInRange(totalQuestionCount)
 	}
 
-	return questions[:], err
+	questions = append(questions, allQuestions[idx1], allQuestions[idx2])
+	return
+}
+
+func getRandomIntInRange(n int) int {
+	return rand.Intn(n)
 }

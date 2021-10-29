@@ -1,46 +1,41 @@
 package server
 
 import (
-	"code2gather.com/room/src/ui/processor"
-	"fmt"
-	"github.com/gin-gonic/gin"
+	"code2gather.com/room/src/server/middleware"
+	"log"
 	"net/http"
+
+	"code2gather.com/room/src/processor"
+	"github.com/gin-gonic/gin"
 )
 
 func RoomCreationHandler(c *gin.Context) {
-	var json map[string]interface{}
+	handler := processor.NewRoomCreationProcessor()
 
-	_ = c.BindJSON(&json)
-
-	users, exists := json["users"].([]string)
-	fmt.Println(json)
-	if !exists {
+	if err := middleware.UnmarshalRequestBody(c.Request, handler.GetRequest()); err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "missing users",
+			"message": "invalid request body",
 		})
 		return
 	}
 
-	difficulty, exists := json["difficulty"].(string)
-
-	if !exists {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "missing difficulty",
-		})
-		return
-	}
-
-	handler := processor.NewRoomCreationProcessor(users, difficulty)
-	_ = handler.Process()
-	if handler == nil {
+	if err := handler.Process(); err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "something went wrong",
 		})
 		return
 	}
-	fmt.Println(handler.Room)
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": "hi",
-	})
+	resp, err := middleware.MarshalResponse(handler.GetResponse())
+
+	if err != nil {
+		log.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "something went wrong",
+		})
+	}
+
+	c.Data(http.StatusOK, gin.MIMEJSON, resp)
 }

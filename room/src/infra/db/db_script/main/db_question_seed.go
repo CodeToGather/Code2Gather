@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/google/uuid"
 	"log"
 
 	"code2gather.com/room/src/infra/db"
@@ -12,40 +13,53 @@ var questionSeeds []*models.Question
 func init() {
 	questionSeeds = []*models.Question{
 		{
-			QuestionTitle:   "easy_1",
-			QuestionText:    "easy question 1",
-			DifficultyLevel: models.Easy,
-			QuestionHints:   "some hints",
+			Id:         uuid.New().String(),
+			Title:      "easy_1",
+			Text:       "easy question 1",
+			Difficulty: models.QuestionDifficulty_EASY,
+			Hints:      "some hints",
 		},
 		{
-			QuestionTitle:   "easy_2",
-			QuestionText:    "easy question 2",
-			DifficultyLevel: models.Easy,
-			QuestionHints:   "some hints",
+			Id:         uuid.New().String(),
+			Title:      "easy_2",
+			Text:       "easy question 2",
+			Difficulty: models.QuestionDifficulty_EASY,
+			Hints:      "some hints",
 		},
 		{
-			QuestionTitle:   "medium_1",
-			QuestionText:    "medium question 1",
-			DifficultyLevel: models.Medium,
-			QuestionHints:   "some hints",
+			Id:         uuid.New().String(),
+			Title:      "medium_1",
+			Text:       "medium question 1",
+			Difficulty: models.QuestionDifficulty_MEDIUM,
+			Hints:      "some hints",
 		},
 		{
-			QuestionTitle:   "medium_2",
-			QuestionText:    "medium question 2",
-			DifficultyLevel: models.Medium,
-			QuestionHints:   "some hints",
+			Id:         uuid.New().String(),
+			Title:      "medium_2",
+			Text:       "medium question 2",
+			Difficulty: models.QuestionDifficulty_MEDIUM,
+			Hints:      "some hints",
 		},
 		{
-			QuestionTitle:   "hard_1",
-			QuestionText:    "hard question 1",
-			DifficultyLevel: models.Hard,
-			QuestionHints:   "some hints",
+			Id:         uuid.New().String(),
+			Title:      "medium_3",
+			Text:       "medium question 3",
+			Difficulty: models.QuestionDifficulty_MEDIUM,
+			Hints:      "some hints",
 		},
 		{
-			QuestionTitle:   "hard_2",
-			QuestionText:    "hard question 2",
-			DifficultyLevel: models.Hard,
-			QuestionHints:   "some hints",
+			Id:         uuid.New().String(),
+			Title:      "hard_1",
+			Text:       "hard question 1",
+			Difficulty: models.QuestionDifficulty_HARD,
+			Hints:      "some hints",
+		},
+		{
+			Id:         uuid.New().String(),
+			Title:      "hard_2",
+			Text:       "hard question 2",
+			Difficulty: models.QuestionDifficulty_HARD,
+			Hints:      "some hints",
 		},
 	}
 }
@@ -59,7 +73,7 @@ func main() {
 	}
 	defer db.CloseDBConnection()
 
-	questionManager := db.NewQuestionManager()
+	questionManager := db.NewQuestionDAOImpl()
 
 	err = questionManager.ClearQuestions()
 	if err != nil {
