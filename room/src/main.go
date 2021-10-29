@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"code2gather.com/room/src/infra/db"
-	"code2gather.com/room/src/server"
+	"code2gather.com/room/src/server/http"
 )
 
 func main() {
@@ -15,5 +15,5 @@ func main() {
 	}
 	defer db.CloseDBConnection()
 
-	server.StartServer()
+	http.StartHttpServer()
 }

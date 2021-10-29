@@ -1,4 +1,4 @@
-package server
+package http
 
 import (
 	"code2gather.com/room/src/server/middleware"
