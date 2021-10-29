@@ -72,6 +72,20 @@ yarn install
 
 > Please do not navigate to the packages/services individually! This single `yarn install` will do the trick.
 
+### Set-up `.env` files and databases
+
+TODO
+
+### Run `node-foreman`
+
+Simply run this at the project root:
+
+```sh
+yarn start
+```
+
+which will use `node-foreman` to get all the services up and running!
+
 ### Committing
 
 Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) for our commit guidelines.
@@ -102,24 +116,17 @@ Then copy the following content into the new `package.json`:
   "version": "0.0.1",
   "description": "",
   "private": true,
-  "devDependencies": {
-    "is-ci": "^3.0.0",
-    "lint-staged": "^11.1.2"
-  },
   "scripts": {
-    "postinstall": ""
-  },
-  "lint-staged": {}
+    "postinstall": "<insert script here to set-up if you're not using node>"
+  }
 }
 ```
 
 The above is the bare minimum you must have for the new package. Do fill in the remaining parts:
 
 - The `"postinstall"` script is utilised if you are not using Node for the package. Insert your installation commands there, e.g. `poetry install`. Otherwise, feel free to delete it.
-  - If you're using Poetry, make sure to do a `is-ci` check (see [`pairing`](pairing/package.json)), since the Poetry installation requires additional steps during CI runs.
-- The `"lint-staged"` section is to be filled with linting commands that will run against staged files.
 
-You can refer to [Pairing Service's `package.json`](pairing/package.json) for an example.
+You can refer to [Code-Executor Service's `package.json`](code-executor/package.json) for an example.
 
 Finally, you will need to add the new package to the root `package.json` under `"workspaces"`.
 
@@ -127,8 +134,9 @@ Finally, you will need to add the new package to the root `package.json` under `
   "workspaces": [
     "frontend",
     "pairing",
+    // ...
     "package"
   ],
 ```
 
-Now, `yarn install` and `yarn workspaces run lint-staged` at the project root should work for all packages!
+Now, `yarn install` at the project root should work for all packages!
