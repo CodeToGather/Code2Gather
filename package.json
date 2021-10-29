@@ -52,7 +52,9 @@
     "lint:md": "markdownlint '**/*.md' --ignore-path .gitignore",
     "lint:py": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages .",
     "pre-commit": "lint-staged",
-    "postinstall": "poetry install && poetry update && yarn export-requirements",
+    "postinstall": "run-p postinstall:*",
+    "postinstall:root": "poetry install",
+    "postinstall:code-executor": "cd code-executor && poetry install",
     "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
     "start": "nf start",
     "stylelint-check": "stylelint-config-prettier-check"
