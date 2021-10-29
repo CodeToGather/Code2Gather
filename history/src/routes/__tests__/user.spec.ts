@@ -23,6 +23,7 @@ afterAll(async () => {
 describe('POST /user', () => {
   let id: string;
   let githubUsername: string;
+  let photoUrl: string;
 
   beforeAll(async () => {
     await fixtures.reload();
@@ -32,16 +33,19 @@ describe('POST /user', () => {
     const mockUserData = mockTestUser();
     id = mockUserData.id;
     githubUsername = mockUserData.githubUsername;
+    photoUrl = mockUserData.photoUrl;
   });
 
   it('should create a user', async () => {
     const response = await request(server.server).post('/user').send({
       id,
       githubUsername,
+      photoUrl,
     });
     expect(response.status).toEqual(StatusCodes.OK);
     expect(response.body.id).toBe(id);
     expect(response.body.githubUsername).toBe(githubUsername);
+    expect(response.body.photoUrl).toBe(photoUrl);
     const user = await prisma.user.findUnique({
       where: { id },
     });
@@ -51,6 +55,7 @@ describe('POST /user', () => {
   it('should not allow missing github username', async () => {
     const response = await request(server.server).post('/user').send({
       id,
+      photoUrl,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
     expect(response.body.error).toBe(
@@ -61,6 +66,7 @@ describe('POST /user', () => {
   it('should not allow missing id', async () => {
     const response = await request(server.server).post('/user').send({
       githubUsername,
+      photoUrl,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
     expect(response.body.error).toBe(
@@ -68,10 +74,20 @@ describe('POST /user', () => {
     );
   });
 
+  it('should not allow missing photo url', async () => {
+    const response = await request(server.server).post('/user').send({
+      id,
+      githubUsername,
+    });
+    expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
+    expect(response.body.error).toBe('The user must have a valid photo URL!');
+  });
+
   it('should not allow id of non-string types', async () => {
     const response = await request(server.server).post('/user').send({
       id: 123456,
       githubUsername,
+      photoUrl,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
     expect(response.body.error).toBe(
@@ -85,6 +101,7 @@ describe('POST /user', () => {
       .send({
         id,
         githubUsername: { hello: 'world' },
+        photoUrl,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
     expect(response.body.error).toBe(
@@ -92,30 +109,34 @@ describe('POST /user', () => {
     );
   });
 
-  it('should not allow creation of a user with an existing github username', async () => {
-    const response = await request(server.server).post('/user').send({
-      id,
-      githubUsername: fixtures.userOne.githubUsername,
-    });
+  it('should not allow photo url of non-string types', async () => {
+    const response = await request(server.server)
+      .post('/user')
+      .send({
+        id,
+        githubUsername,
+        photoUrl: ['hello!'],
+      });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toBe(
-      'A user with this Firebase ID or GitHub username already exists!',
-    );
+    expect(response.body.error).toBe('The user must have a valid photo URL!');
   });
 
-  it('should update the user with an existing id and update the username', async () => {
+  it('should update the user with an existing id and update the username and photo url', async () => {
     const response = await request(server.server).post('/user').send({
       id: fixtures.userOne.id,
       githubUsername,
+      photoUrl,
     });
     expect(response.status).toEqual(StatusCodes.OK);
     expect(response.body.id).toBe(fixtures.userOne.id);
     expect(response.body.githubUsername).toBe(githubUsername);
+    expect(response.body.photoUrl).toBe(photoUrl);
     const user = await prisma.user.findUnique({
       where: { id: fixtures.userOne.id },
     });
     expect(user).toBeDefined();
     expect(user!.githubUsername).toBe(githubUsername);
+    expect(user!.photoUrl).toBe(photoUrl);
   });
 });
 
@@ -145,6 +166,7 @@ describe('GET /user', () => {
 
 describe('PUT /user', () => {
   let githubUsername: string;
+  let photoUrl: string;
 
   beforeEach(async () => {
     await fixtures.reload();
@@ -153,18 +175,20 @@ describe('PUT /user', () => {
   beforeEach(() => {
     const mockUserData = mockTestUser();
     githubUsername = mockUserData.githubUsername;
+    photoUrl = mockUserData.photoUrl;
   });
 
   it('should update user', async () => {
     const response = await request(server.server)
       .put('/user')
       .set('Authorization', fixtures.userOne.id)
-      .send({ githubUsername });
+      .send({ githubUsername, photoUrl });
     expect(response.status).toBe(StatusCodes.OK);
     expect(response.body).toEqual(
       convertDatesToJson({
         ...fixtures.userOne,
         githubUsername,
+        photoUrl,
         updatedAt: response.body.updatedAt,
       }),
     );
@@ -174,22 +198,31 @@ describe('PUT /user', () => {
     const response = await request(server.server)
       .put('/user')
       .set('Authorization', fixtures.userOne.id)
-      .send({ githubUsername: 12345 });
+      .send({ githubUsername: 12345, photoUrl });
     expect(response.status).toBe(StatusCodes.BAD_REQUEST);
     expect(response.body.error).toBe(
       'The user must have a valid GitHub username!',
     );
   });
 
+  it('should handle update with invalid photo url', async () => {
+    const response = await request(server.server)
+      .put('/user')
+      .set('Authorization', fixtures.userOne.id)
+      .send({ githubUsername, photoUrl: 92845 });
+    expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+    expect(response.body.error).toBe('The user must have a valid photo URL!');
+  });
+
   it('should not allow invalid uid', async () => {
     let response = await request(server.server)
       .put('/user')
-      .send({ githubUsername });
+      .send({ githubUsername, photoUrl });
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
     response = await request(server.server)
       .put('/user')
       .set('Authorization', '123456')
-      .send({ githubUsername });
+      .send({ githubUsername, photoUrl });
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
   });
 });

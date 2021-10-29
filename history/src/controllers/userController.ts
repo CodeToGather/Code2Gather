@@ -28,7 +28,10 @@ export async function createUser(
       const existingUser = await userService.read(userCreateData.id, botUser);
       const updatedUser = await userService.update(
         userCreateData.id,
-        { githubUsername: userCreateData.githubUsername },
+        {
+          githubUsername: userCreateData.githubUsername,
+          photoUrl: userCreateData.photoUrl,
+        },
         existingUser,
       );
       response.status(StatusCodes.OK).json(updatedUser);
@@ -44,8 +47,7 @@ export async function createUser(
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
         response.status(StatusCodes.BAD_REQUEST).json({
-          error:
-            'A user with this Firebase ID or GitHub username already exists!',
+          error: 'A user with this Firebase ID already exists!',
         });
         return;
       }

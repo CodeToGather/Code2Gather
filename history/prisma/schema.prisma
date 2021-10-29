@@ -14,7 +14,8 @@ model User {
   id                   String          @id
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
-  githubUsername       String          @unique
+  githubUsername       String // Actually this is the display name
+  photoUrl             String // Provided by GitHub
   ratingsGivenToOthers Rating[]        @relation("ratingUser")
   ratingsGivenByOthers Rating[]        @relation("ratedUser")
   interviewerRecords   MeetingRecord[] @relation("interviewer")

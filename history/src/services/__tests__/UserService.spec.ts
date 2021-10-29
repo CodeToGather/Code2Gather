@@ -19,6 +19,7 @@ afterAll(async () => {
 describe('UserService', () => {
   let id: string;
   let githubUsername: string;
+  let photoUrl: string;
 
   describe('create', () => {
     beforeEach(async () => {
@@ -26,6 +27,7 @@ describe('UserService', () => {
       const mockUserData = mockTestUser();
       id = mockUserData.id;
       githubUsername = mockUserData.githubUsername;
+      photoUrl = mockUserData.photoUrl;
     });
 
     it('creates a user', async () => {
@@ -33,6 +35,7 @@ describe('UserService', () => {
         {
           id,
           githubUsername,
+          photoUrl,
         },
         botUser,
       );
@@ -47,6 +50,7 @@ describe('UserService', () => {
           {
             id: '',
             githubUsername,
+            photoUrl,
           },
           botUser,
         ),
@@ -59,6 +63,20 @@ describe('UserService', () => {
           {
             id,
             githubUsername: '',
+            photoUrl,
+          },
+          botUser,
+        ),
+      ).rejects.toThrow(InvalidDataError);
+    });
+
+    it('checks for photo url length', async () => {
+      await expect(
+        userService.create(
+          {
+            id,
+            githubUsername,
+            photoUrl: '',
           },
           botUser,
         ),
@@ -72,6 +90,7 @@ describe('UserService', () => {
           {
             id,
             githubUsername,
+            photoUrl,
           },
           nonBotUser,
         ),
@@ -101,6 +120,7 @@ describe('UserService', () => {
       const mockUserData = mockTestUser();
       id = mockUserData.id;
       githubUsername = mockUserData.githubUsername;
+      photoUrl = mockUserData.photoUrl;
     });
 
     it('user can update themselves', async () => {
@@ -108,11 +128,13 @@ describe('UserService', () => {
         fixtures.userOne.id,
         {
           githubUsername,
+          photoUrl,
         },
         fixtures.userOne,
       );
       expect(updatedUser.id).toBe(fixtures.userOne.id);
       expect(updatedUser.githubUsername).toBe(githubUsername);
+      expect(updatedUser.photoUrl).toBe(photoUrl);
     });
 
     it('unrelated user cannot update another user', async () => {
@@ -133,6 +155,18 @@ describe('UserService', () => {
           fixtures.userOne.id,
           {
             githubUsername: '',
+          },
+          fixtures.userOne,
+        ),
+      ).rejects.toThrow(InvalidDataError);
+    });
+
+    it('checks for photo url length', async () => {
+      await expect(
+        userService.update(
+          fixtures.userOne.id,
+          {
+            photoUrl: '',
           },
           fixtures.userOne,
         ),
