@@ -57,21 +57,6 @@ export async function createUser(
 }
 
 /**
- * Reads the user that is associated with the UID that comes with the
- * request (as resolved by the auth handler).
- *
- * @param _request No requirement for request format
- * @param response Response with body of type User
- */
-export async function readSelf(
-  _request: Request<unknown, unknown, unknown>,
-  response: Response<User, UserLocals>,
-): Promise<void> {
-  const { user } = response.locals;
-  response.status(200).json(user);
-}
-
-/**
  * Updates the information of the user. Primarily used to keep the
  * GitHub username updated. Other fields should be more or less immutable.
  *

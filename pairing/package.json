@@ -4,8 +4,32 @@
   "description": "Pairing service for Code2Gather",
   "private": true,
   "scripts": {
-    "postinstall": "poetry install",
-    "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt",
-    "start": "env PYTHONPATH=. poetry run python src/app.py"
+    "start": "cross-env NODE_ENV=development ts-node-dev --exit-child --respawn --transpile-only -r tsconfig-paths/register ./src/index.ts",
+    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit --passWithNoTests",
+    "build": "yarn clean && tsc --build",
+    "clean": "tsc --build --clean"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.3.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/faker": "^5.5.9",
+    "@types/jest": "^27.0.2",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^16.11.6",
+    "cross-env": "^7.0.3",
+    "faker": "^5.5.3",
+    "jest": "^27.3.1",
+    "ts-jest": "^27.0.7",
+    "ts-node-dev": "^1.1.8",
+    "tsconfig-paths": "^3.11.0",
+    "typescript": "^4.4.4"
   }
 }
