@@ -4,20 +4,41 @@ package code2gather;
 
 option go_package = "models/";
 
+
 // Difficulty level for questions
 
-enum QuestionDifficultyLevel {
-  EASY = 0;
-  MEDIUM = 1;
-  HARD = 2;
+enum QuestionDifficulty {
+  UNKNOWN = 0;
+  EASY = 1;
+  MEDIUM = 2;
+  HARD = 3;
 }
 
 // Question represents a question given by the interviewer to the interviewee during a mock interview session
 
-message Question {
+message QuestionMessage {
   string id = 1;
   string title = 2;
   string text = 3;
-  QuestionDifficultyLevel difficulty_level = 4;
+  QuestionDifficulty difficulty = 4;
   string hints = 5;
+}
+
+message RoomMessage {
+  string id = 1;
+  string uid1 = 2;
+  string uid2 = 3;
+  string qid1 = 4;
+  string qid2 = 5;
+}
+
+// HTTP POST request (Pairing -> Room)
+message CreateRoomRequest {
+  string uid1 = 1;
+  string uid2 = 2;
+  QuestionDifficulty difficulty = 3;
+}
+
+message CreateRoomResponse {
+  string room_id = 1;
 }
