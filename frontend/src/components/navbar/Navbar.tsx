@@ -16,7 +16,12 @@ const Navbar: FC = () => {
     <nav className="navbar">
       <h1 className="navbar__title">Code2Gather</h1>
       {user && (
-        <a href={user.profileUrl} rel="noopenner noreferrer" target="_blank">
+        <a
+          data-testid="profile-picture-anchor"
+          href={user.profileUrl}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <img alt="Profile" className="navbar__image" src={user.photoUrl} />
         </a>
       )}
