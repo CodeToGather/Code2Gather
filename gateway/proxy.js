@@ -1,4 +1,5 @@
 const httpProxy = require('http-proxy');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const proxy = httpProxy.createProxyServer();
 
@@ -31,9 +32,10 @@ const historyProxy = (req, res) => {
   proxy.web(req, res, { target: HISTORY_BASE_URL });
 };
 
-const pairingProxy = (req, res) => {
-  proxy.web(req, res, { target: PAIRING_BASE_URL });
-};
+const pairingWsProxy = createProxyMiddleware('/pairing', {
+  target: PAIRING_BASE_URL,
+  ws: true,
+});
 
 const videoProxy = (req, res) => {
   proxy.web(req, res, { target: VIDEO_BASE_URL });
@@ -54,7 +56,7 @@ const roomProxy = (req, res) => {
 module.exports = {
   authProxy,
   historyProxy,
-  pairingProxy,
+  pairingWsProxy,
   videoProxy,
   codeExecutorProxy,
   codingProxy,

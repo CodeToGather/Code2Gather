@@ -1,1 +1,1 @@
-export const CONNECT = 'CONNECT';
+export const CONNECT = 'connect';

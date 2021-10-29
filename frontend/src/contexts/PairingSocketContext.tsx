@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 import { CONNECT } from 'constants/pairing';
+import tokenUtils from 'utils/tokenUtils';
 
 export default interface SocketContextInterface {
   socket: Socket;
@@ -13,11 +14,15 @@ const PairingSocketContext = React.createContext<
 >(undefined);
 
 const PairingSocketProvider: React.FunctionComponent = (props) => {
-  const socket = io(`${process.env.REACT_APP_BACKEND_API}pairing`, {
+  const socket = io(`${process.env.REACT_APP_BACKEND_API}`, {
     reconnection: true,
     reconnectionDelay: 1000,
     reconnectionDelayMax: 5000,
     reconnectionAttempts: Infinity,
+    auth: {
+      token: tokenUtils.getToken(),
+    },
+    path: '/pairing',
   });
 
   useEffect(() => {
