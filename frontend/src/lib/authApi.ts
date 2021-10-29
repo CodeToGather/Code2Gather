@@ -10,7 +10,12 @@ import tokenUtils from 'utils/tokenUtils';
 import BaseApi, { api } from './baseApi';
 
 class AuthApi extends BaseApi {
-  async login(data: { token: string; username: string }): Promise<void> {
+  async login(data: {
+    token: string;
+    githubUsername: string;
+    photoUrl: string;
+    profileUrl: string;
+  }): Promise<void> {
     return this.post(
       'auth/login',
       data as LoginRequestBody,

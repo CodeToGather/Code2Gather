@@ -46,7 +46,7 @@ app.use(helmet());
 
 app.post('/login', async (req, res) => {
   try {
-    const { token, username } = req.body;
+    const { token, githubUsername, photoUrl, profileUrl } = req.body;
     if (token == null) {
       throw new Error();
     }
@@ -58,7 +58,9 @@ app.post('/login', async (req, res) => {
 
     const createUserResponse = await axios.post('http://localhost:8002/user', {
       id: uid,
-      githubUsername: username,
+      githubUsername,
+      photoUrl,
+      profileUrl,
     });
 
     if (createUserResponse.status !== 200) {
