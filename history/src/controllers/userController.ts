@@ -26,11 +26,13 @@ export async function createUser(
     try {
       // Check if there's already an existing user for this account
       const existingUser = await userService.read(userCreateData.id, botUser);
+      const { githubUsername, photoUrl, profileUrl } = userCreateData;
       const updatedUser = await userService.update(
         userCreateData.id,
         {
-          githubUsername: userCreateData.githubUsername,
-          photoUrl: userCreateData.photoUrl,
+          githubUsername,
+          photoUrl,
+          profileUrl,
         },
         existingUser,
       );

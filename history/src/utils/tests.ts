@@ -54,6 +54,7 @@ export const createTestUser = async (
       id: data?.id ?? faker.random.alphaNumeric(20),
       githubUsername: data?.githubUsername ?? faker.random.alphaNumeric(20),
       photoUrl: data?.githubUsername ?? faker.internet.avatar(),
+      profileUrl: data?.profileUrl ?? faker.internet.url(),
     },
   });
 };
@@ -68,6 +69,7 @@ export const mockTestUser = (data?: Partial<UserCreateData>): User => {
     updatedAt: new Date(),
     githubUsername: data?.githubUsername ?? faker.random.alphaNumeric(20),
     photoUrl: data?.githubUsername ?? faker.internet.avatar(),
+    profileUrl: data?.profileUrl ?? faker.internet.url(),
   };
 };
 

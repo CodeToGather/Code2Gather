@@ -24,6 +24,7 @@ describe('POST /user', () => {
   let id: string;
   let githubUsername: string;
   let photoUrl: string;
+  let profileUrl: string;
 
   beforeAll(async () => {
     await fixtures.reload();
@@ -34,6 +35,7 @@ describe('POST /user', () => {
     id = mockUserData.id;
     githubUsername = mockUserData.githubUsername;
     photoUrl = mockUserData.photoUrl;
+    profileUrl = mockUserData.profileUrl;
   });
 
   it('should create a user', async () => {
@@ -41,11 +43,13 @@ describe('POST /user', () => {
       id,
       githubUsername,
       photoUrl,
+      profileUrl,
     });
     expect(response.status).toEqual(StatusCodes.OK);
     expect(response.body.id).toBe(id);
     expect(response.body.githubUsername).toBe(githubUsername);
     expect(response.body.photoUrl).toBe(photoUrl);
+    expect(response.body.profileUrl).toBe(profileUrl);
     const user = await prisma.user.findUnique({
       where: { id },
     });
@@ -56,6 +60,7 @@ describe('POST /user', () => {
     const response = await request(server.server).post('/user').send({
       id,
       photoUrl,
+      profileUrl,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
     expect(response.body.error).toBe(
@@ -67,6 +72,7 @@ describe('POST /user', () => {
     const response = await request(server.server).post('/user').send({
       githubUsername,
       photoUrl,
+      profileUrl,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
     expect(response.body.error).toBe(
@@ -78,9 +84,20 @@ describe('POST /user', () => {
     const response = await request(server.server).post('/user').send({
       id,
       githubUsername,
+      profileUrl,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
     expect(response.body.error).toBe('The user must have a valid photo URL!');
+  });
+
+  it('should not allow missing profile url', async () => {
+    const response = await request(server.server).post('/user').send({
+      id,
+      githubUsername,
+      photoUrl,
+    });
+    expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
+    expect(response.body.error).toBe('The user must have a valid profile URL!');
   });
 
   it('should not allow id of non-string types', async () => {
@@ -121,22 +138,36 @@ describe('POST /user', () => {
     expect(response.body.error).toBe('The user must have a valid photo URL!');
   });
 
-  it('should update the user with an existing id and update the username and photo url', async () => {
+  it('should not allow profile url of non-string types', async () => {
+    const response = await request(server.server).post('/user').send({
+      id,
+      githubUsername,
+      photoUrl,
+      profileUrl: true,
+    });
+    expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
+    expect(response.body.error).toBe('The user must have a valid profile URL!');
+  });
+
+  it('should update the user with an existing id', async () => {
     const response = await request(server.server).post('/user').send({
       id: fixtures.userOne.id,
       githubUsername,
       photoUrl,
+      profileUrl,
     });
     expect(response.status).toEqual(StatusCodes.OK);
     expect(response.body.id).toBe(fixtures.userOne.id);
     expect(response.body.githubUsername).toBe(githubUsername);
     expect(response.body.photoUrl).toBe(photoUrl);
+    expect(response.body.profileUrl).toBe(profileUrl);
     const user = await prisma.user.findUnique({
       where: { id: fixtures.userOne.id },
     });
     expect(user).toBeDefined();
     expect(user!.githubUsername).toBe(githubUsername);
     expect(user!.photoUrl).toBe(photoUrl);
+    expect(user!.profileUrl).toBe(profileUrl);
   });
 });
 
@@ -144,6 +175,7 @@ describe('GET /user', () => {
   beforeAll(async () => {
     await fixtures.reload();
   });
+
   it('should return self when valid uid is provided', async () => {
     const response = await request(server.server)
       .get('/user')
@@ -167,6 +199,7 @@ describe('GET /user', () => {
 describe('PUT /user', () => {
   let githubUsername: string;
   let photoUrl: string;
+  let profileUrl: string;
 
   beforeEach(async () => {
     await fixtures.reload();
@@ -176,19 +209,21 @@ describe('PUT /user', () => {
     const mockUserData = mockTestUser();
     githubUsername = mockUserData.githubUsername;
     photoUrl = mockUserData.photoUrl;
+    profileUrl = mockUserData.profileUrl;
   });
 
   it('should update user', async () => {
     const response = await request(server.server)
       .put('/user')
       .set('Authorization', fixtures.userOne.id)
-      .send({ githubUsername, photoUrl });
+      .send({ githubUsername, photoUrl, profileUrl });
     expect(response.status).toBe(StatusCodes.OK);
     expect(response.body).toEqual(
       convertDatesToJson({
         ...fixtures.userOne,
         githubUsername,
         photoUrl,
+        profileUrl,
         updatedAt: response.body.updatedAt,
       }),
     );
@@ -198,7 +233,7 @@ describe('PUT /user', () => {
     const response = await request(server.server)
       .put('/user')
       .set('Authorization', fixtures.userOne.id)
-      .send({ githubUsername: 12345, photoUrl });
+      .send({ githubUsername: 12345, photoUrl, profileUrl });
     expect(response.status).toBe(StatusCodes.BAD_REQUEST);
     expect(response.body.error).toBe(
       'The user must have a valid GitHub username!',
@@ -209,20 +244,29 @@ describe('PUT /user', () => {
     const response = await request(server.server)
       .put('/user')
       .set('Authorization', fixtures.userOne.id)
-      .send({ githubUsername, photoUrl: 92845 });
+      .send({ githubUsername, photoUrl: 92845, profileUrl });
     expect(response.status).toBe(StatusCodes.BAD_REQUEST);
     expect(response.body.error).toBe('The user must have a valid photo URL!');
+  });
+
+  it('should handle update with invalid profile url', async () => {
+    const response = await request(server.server)
+      .put('/user')
+      .set('Authorization', fixtures.userOne.id)
+      .send({ githubUsername, photoUrl, profileUrl: 12345 });
+    expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+    expect(response.body.error).toBe('The user must have a valid profile URL!');
   });
 
   it('should not allow invalid uid', async () => {
     let response = await request(server.server)
       .put('/user')
-      .send({ githubUsername, photoUrl });
+      .send({ githubUsername, photoUrl, profileUrl });
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
     response = await request(server.server)
       .put('/user')
       .set('Authorization', '123456')
-      .send({ githubUsername, photoUrl });
+      .send({ githubUsername, photoUrl, profileUrl });
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
   });
 });
