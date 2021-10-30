@@ -15,7 +15,7 @@
   "scripts": {
     "lint": "eslint . --fix --ext .js && prettier --write \"**/*.js\" --tab-width 2",
     "lint:ci": "eslint . --ext .js && prettier --check \"**/*.js\" --tab-width 2",
-    "start": "node index.js"
+    "start": "set PORT=3001 && npx y-websocket"
   },
   "lint-staged": {
     "**/*.js": [
@@ -23,10 +23,14 @@
       "eslint --fix"
     ]
   },
+  "type": "module",
   "dependencies": {
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "http": "^0.0.1-security",
+    "lib0": "^0.2.42",
     "socket.io": "^4.3.1",
-    "socket.io-p2p-server": "^1.2.0"
+    "socket.io-p2p-server": "^1.2.0",
+    "ws": "^8.2.3"
   }
 }
