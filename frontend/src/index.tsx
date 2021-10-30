@@ -1,16 +1,20 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
+import { SkeletonTheme } from 'react-loading-skeleton';
 
 import AppProviders from 'contexts/AppProviders';
 
 import App from './app';
 import reportWebVitals from './reportWebVitals';
+import 'react-loading-skeleton/dist/skeleton.css';
 import './index.scss';
 
 ReactDOM.render(
   <StrictMode>
     <AppProviders>
-      <App />
+      <SkeletonTheme baseColor="#24282D" highlightColor="#34383d">
+        <App />
+      </SkeletonTheme>
     </AppProviders>
   </StrictMode>,
   document.getElementById('root'),

@@ -21,12 +21,12 @@ export async function readLeaderboard(
     const day = await leaderboardService.read(user);
     const week = await leaderboardService.read(
       user,
-      10,
+      5,
       new Date(new Date().setDate(new Date().getDate() - 7)),
     );
     const month = await leaderboardService.read(
       user,
-      10,
+      5,
       // We'll just use 30 days for month query
       new Date(new Date().setDate(new Date().getDate() - 30)),
     );

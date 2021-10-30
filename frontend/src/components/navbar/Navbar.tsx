@@ -1,5 +1,8 @@
 import { FC } from 'react';
 
+import Avatar from 'components/avatar';
+import AvatarPlaceholder from 'components/avatar/AvatarPlaceholder';
+import Typography from 'components/typography';
 import { useUser } from 'contexts/UserContext';
 
 import './Navbar.scss';
@@ -14,18 +17,18 @@ const Navbar: FC = () => {
   const user = useUser();
   return (
     <nav className="navbar">
-      <h1 className="navbar__title">Code2Gather</h1>
+      <Typography className="is-bold" size="large">
+        Code2Gather
+      </Typography>
       {user ? (
-        <a
-          data-testid="profile-picture-anchor"
+        <Avatar
+          alt="Profile"
+          dataTestId="profile-picture-anchor"
           href={user.profileUrl}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <img alt="Profile" className="navbar__image" src={user.photoUrl} />
-        </a>
+          src={user.photoUrl}
+        />
       ) : (
-        <div className="navbar__image">&nbsp;</div>
+        <AvatarPlaceholder />
       )}
     </nav>
   );

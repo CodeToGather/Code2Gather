@@ -1,0 +1,63 @@
+@import '../../../assets/scss/main';
+
+.leaderboard {
+  margin-bottom: 1rem;
+
+  @include media('>desktop') {
+    display: flex;
+    flex: 2;
+    flex-direction: column;
+    padding-right: 2rem;
+  }
+
+  &__body {
+    margin-top: 0.8rem;
+  }
+
+  &__title {
+    margin-bottom: 1rem;
+  }
+
+  &__empty {
+    color: $text-secondary-color;
+    padding-top: 4rem;
+    text-align: center;
+  }
+}
+
+.leaderboard-row {
+  align-items: center;
+  border: 0 !important;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.2rem;
+  width: 100%;
+
+  &:hover {
+    cursor: default;
+  }
+
+  &__left {
+    align-items: center;
+    display: flex;
+
+    > * {
+      margin-right: 1rem;
+    }
+  }
+
+  &__right {
+    align-items: center;
+    display: flex;
+
+    > * {
+      margin-left: 1rem;
+    }
+  }
+}
+
+.statistic {
+  &__difficulty {
+    color: $leaderboard-question-type-color;
+  }
+}
