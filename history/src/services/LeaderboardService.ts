@@ -12,13 +12,17 @@ class LeaderboardService extends BaseService<LeaderboardData[], void> {
     new AlwaysAllowPolicy(),
   ];
 
-  async read(user: User, top = 10): Promise<LeaderboardData[]> {
+  async read(
+    user: User,
+    top = 10,
+    before = new Date(new Date().setDate(new Date().getDate() - 1)),
+  ): Promise<LeaderboardData[]> {
     const users = await prisma.$queryRaw<LeaderboardData[]>`
     SELECT
       u.*,
-      (SELECT COUNT(*) FROM "public"."MeetingRecord" m WHERE m."intervieweeId" = u.id AND m."questionDifficulty" = 'EASY') AS "numEasyQuestions",
-      (SELECT COUNT(*) FROM "public"."MeetingRecord" m WHERE m."intervieweeId" = u.id AND m."questionDifficulty" = 'MEDIUM') AS "numMediumQuestions",
-      (SELECT COUNT(*) FROM "public"."MeetingRecord" m WHERE m."intervieweeId" = u.id AND m."questionDifficulty" = 'HARD') AS "numHardQuestions"
+      (SELECT COUNT(*) FROM "public"."MeetingRecord" m WHERE m."createdAt" > ${before} AND m."intervieweeId" = u.id AND m."questionDifficulty" = 'EASY') AS "numEasyQuestions",
+      (SELECT COUNT(*) FROM "public"."MeetingRecord" m WHERE m."createdAt" > ${before} AND m."intervieweeId" = u.id AND m."questionDifficulty" = 'MEDIUM') AS "numMediumQuestions",
+      (SELECT COUNT(*) FROM "public"."MeetingRecord" m WHERE m."createdAt" > ${before} AND m."intervieweeId" = u.id AND m."questionDifficulty" = 'HARD') AS "numHardQuestions"
     FROM
       "public"."User" u
     ORDER BY

@@ -2846,6 +2846,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/http-status-codes@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/http-status-codes/-/http-status-codes-1.2.0.tgz#6e5244835aaf7164dd306f1d4d2dfdbb2159d909"
+  integrity sha512-vjpjevMaxtrtdrrV/TQNIFT7mKL8nvIKG7G/LjMDZdVvqRxRg5SNfGkeuSaowVc0rbK8xDA2d/Etunyb5GyzzA==
+  dependencies:
+    http-status-codes "*"
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.3.tgz#4ba8ddb720221f432e443bd5f9117fd22cfd4762"
@@ -8102,7 +8109,7 @@ http-proxy@^1.17.0, http-proxy@^1.18.1:
     follow-redirects "^1.0.0"
     requires-port "^1.0.0"
 
-http-status-codes@^2.1.4:
+http-status-codes@*, http-status-codes@^2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/http-status-codes/-/http-status-codes-2.1.4.tgz#453d99b4bd9424254c4f6a9a3a03715923052798"
   integrity sha512-MZVIsLKGVOVE1KEnldppe6Ij+vmemMuApDfjhVSLzyYP+td0bREEYyAoIw9yFePoBXManCuBqmiNP5FqJS5Xkg==
