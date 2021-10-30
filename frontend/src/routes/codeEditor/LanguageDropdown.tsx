@@ -1,20 +1,15 @@
 import { FC, useState } from 'react';
-
-export enum ProgrammingLanguage {
-  JAVA = 'java',
-  JAVASCRIPT = 'javascript',
-  PYTHON = 'python',
-}
+import { Language } from 'types/crud/language';
 
 const languageNames: { [key: string]: string } = {
-  [ProgrammingLanguage.JAVA]: 'Java',
-  [ProgrammingLanguage.JAVASCRIPT]: 'JavaScript',
-  [ProgrammingLanguage.PYTHON]: 'Python 3',
+  [Language.JAVA]: 'Java',
+  [Language.JAVASCRIPT]: 'JavaScript',
+  [Language.PYTHON]: 'Python 3',
 };
 
 interface Props {
-  language: ProgrammingLanguage;
-  setLanguage: (language: ProgrammingLanguage) => void;
+  language: Language;
+  setLanguage: (language: Language) => void;
   className?: string;
 }
 
@@ -25,7 +20,7 @@ const LanguageDropdown: FC<Props> = ({
 }) => {
   const [isDropdownShown, setIsDropdownShown] = useState<boolean>(false);
 
-  const handleSetLanguage = (language: ProgrammingLanguage): void => {
+  const handleSetLanguage = (language: Language): void => {
     setLanguage(language);
     setIsDropdownShown(false);
   };
@@ -41,21 +36,13 @@ const LanguageDropdown: FC<Props> = ({
       </button>
       {isDropdownShown ? (
         <div className="language-dropdown__dropdown">
-          <button
-            onClick={(): void => handleSetLanguage(ProgrammingLanguage.PYTHON)}
-          >
+          <button onClick={(): void => handleSetLanguage(Language.PYTHON)}>
             Python
           </button>
-          <button
-            onClick={(): void =>
-              handleSetLanguage(ProgrammingLanguage.JAVASCRIPT)
-            }
-          >
+          <button onClick={(): void => handleSetLanguage(Language.JAVASCRIPT)}>
             JavaScript
           </button>
-          <button
-            onClick={(): void => handleSetLanguage(ProgrammingLanguage.JAVA)}
-          >
+          <button onClick={(): void => handleSetLanguage(Language.JAVA)}>
             Java
           </button>
         </div>

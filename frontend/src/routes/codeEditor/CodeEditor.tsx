@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import AceEditor from 'react-ace';
+import { Language } from 'types/crud/language';
 
 import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/mode-java';
@@ -8,13 +9,12 @@ import 'ace-builds/src-noconflict/mode-javascript';
 import './theme-twilight';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
-import LanguageDropdown, { ProgrammingLanguage } from './LanguageDropdown';
+import LanguageDropdown from './LanguageDropdown';
 import './CodeEditor.scss';
 
 const CodeEditor: FC = () => {
-  const [language, setLanguage] = useState<ProgrammingLanguage>(
-    ProgrammingLanguage.PYTHON,
-  );
+  const [language, setLanguage] = useState<Language>(Language.PYTHON);
+  Language;
 
   return (
     <div className="editor">
@@ -36,7 +36,7 @@ const CodeEditor: FC = () => {
         </div>
       </div>
       <AceEditor
-        mode={language}
+        mode={language.toLowerCase()}
         name="code-editor"
         showPrintMargin={false}
         theme="twilight"
