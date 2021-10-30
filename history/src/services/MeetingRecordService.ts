@@ -16,7 +16,7 @@ class MeetingRecordService extends BaseService<
   MeetingRecord,
   MeetingRecordCreateData
 > {
-  protected createPolicies = [
+  protected override createPolicies = [
     new AllowIfUserIsInterviewerPolicy(),
     new AlwaysDenyPolicy(),
   ];

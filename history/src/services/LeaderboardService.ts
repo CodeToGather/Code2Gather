@@ -7,7 +7,7 @@ import { BaseService } from './BaseService';
 import { User } from '.prisma/client';
 
 class LeaderboardService extends BaseService<LeaderboardData[], void> {
-  protected readPolicies = [
+  protected override readPolicies = [
     new DenyIfUserIsBotPolicy(),
     new AlwaysAllowPolicy(),
   ];

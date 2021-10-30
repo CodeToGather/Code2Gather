@@ -10,7 +10,7 @@ import { Rating, User } from '.prisma/client';
 export class AllowIfUserIsRatedUserPolicy extends BasePolicy<
   Rating | RatingCreateData
 > {
-  public async validate(
+  public override async validate(
     item: Rating | RatingCreateData,
     user: User,
   ): Promise<Authorization> {

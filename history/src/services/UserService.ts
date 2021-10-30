@@ -9,19 +9,19 @@ import { BaseService } from './BaseService';
 import { User } from '.prisma/client';
 
 class UserService extends BaseService<User, UserCreateData> {
-  protected createPolicies = [
+  protected override createPolicies = [
     new AllowIfUserIsBotPolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected readPolicies = [
+  protected override readPolicies = [
     new AllowIfUserIsSelfPolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected updatePolicies = [
+  protected override updatePolicies = [
     new AllowIfUserIsSelfPolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected deletePolicies = [
+  protected override deletePolicies = [
     new AllowIfUserIsSelfPolicy(),
     new AlwaysDenyPolicy(),
   ];

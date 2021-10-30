@@ -10,7 +10,7 @@ import { MeetingRecord, User } from '.prisma/client';
 export class AllowIfUserIsInterviewerPolicy extends BasePolicy<
   MeetingRecord | MeetingRecordCreateData
 > {
-  public async validate(
+  public override async validate(
     item: MeetingRecord | MeetingRecordCreateData,
     user: User,
   ): Promise<Authorization> {

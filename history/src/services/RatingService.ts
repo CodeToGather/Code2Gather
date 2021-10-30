@@ -9,19 +9,19 @@ import { BaseService } from './BaseService';
 import { Rating, User } from '.prisma/client';
 
 class RatingService extends BaseService<Rating, RatingCreateData> {
-  protected createPolicies = [
+  protected override createPolicies = [
     new AllowIfUserIsRatingUserPolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected readPolicies = [
+  protected override readPolicies = [
     new AllowIfUserIsRatedUserPolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected updatePolicies = [
+  protected override updatePolicies = [
     new AllowIfUserIsRatingUserPolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected deletePolicies = [
+  protected override deletePolicies = [
     new AllowIfUserIsRatingUserPolicy(),
     new AlwaysDenyPolicy(),
   ];
