@@ -1,3 +1,4 @@
+import prisma from 'lib/prisma';
 import meetingRecordService from 'services/MeetingRecordService';
 import { Difficulty, Language } from 'types/crud/enums';
 import { AuthorizationError, InvalidDataError } from 'types/error';
@@ -7,8 +8,6 @@ import {
   createTestUser,
   mockTestMeetingRecord,
 } from 'utils/tests';
-
-import prisma from 'lib/prisma';
 
 let fixtures: Fixtures;
 

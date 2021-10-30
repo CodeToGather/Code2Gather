@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+
 import meetingRecordService from 'services/MeetingRecordService';
 import { ErrorResponse } from 'types/api';
 import { MeetingRecordCreateData } from 'types/crud/meetingRecord';

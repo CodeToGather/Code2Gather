@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+
 import leaderboardService from 'services/LeaderboardService';
 import { ErrorResponse } from 'types/api';
 import { LeaderboardData } from 'types/crud/leaderboard';

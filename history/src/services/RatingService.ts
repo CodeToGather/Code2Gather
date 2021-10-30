@@ -1,10 +1,9 @@
+import prisma from 'lib/prisma';
 import { AlwaysDenyPolicy } from 'policies/AlwaysDenyPolicy';
 import { AllowIfUserIsRatedUserPolicy } from 'policies/rating/AllowIfUserIsRatedUserPolicy';
 import { AllowIfUserIsRatingUserPolicy } from 'policies/rating/AllowIfUserIsRatingUserPolicy';
 import { RatingCreateData, RatingUpdateData } from 'types/crud/rating';
 import { InvalidDataError } from 'types/error';
-
-import prisma from 'lib/prisma';
 
 import { BaseService } from './BaseService';
 import { Rating, User } from '.prisma/client';

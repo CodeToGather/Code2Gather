@@ -30,7 +30,7 @@ api.interceptors.request.use(
 export { api };
 
 export default class BaseApi {
-  async get<RES>(url: string, handler: (res: RES) => any): Promise<any> {
+  protected async get<RES>(url: string, handler: (res: RES) => any): Promise<any> {
     return this.requestWrapper(
       async () => await api.get<never, AxiosResponse<RES | ErrorResponse>>(url),
       handler,

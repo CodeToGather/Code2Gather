@@ -16,6 +16,7 @@ const Landing: FC = () => {
     try {
       await login();
     } catch (error) {
+      // TODO: Show error
       // eslint-disable-next-line no-console
       console.log(error);
     }

@@ -1,5 +1,5 @@
 import {
-  // GetSelfResponse,
+  GetSelfResponse,
   LoginRequestBody,
   LoginResponse,
 } from 'types/api/auth';
@@ -32,7 +32,7 @@ class AuthApi extends BaseApi {
     try {
       const response = await api.get('history/user');
       if (response.status === 200) {
-        return response.data;
+        return response.data as GetSelfResponse;
       }
       throw new Error(response.statusText);
     } catch (error) {

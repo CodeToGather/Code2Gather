@@ -1,10 +1,10 @@
 import faker from 'faker';
+
+import prisma from 'lib/prisma';
 import { Difficulty, Language } from 'types/crud/enums';
 import { MeetingRecordCreateData } from 'types/crud/meetingRecord';
 import { RatingCreateData } from 'types/crud/rating';
 import { UserCreateData } from 'types/crud/user';
-
-import prisma from 'lib/prisma';
 
 import { MeetingRecord, Rating, User } from '.prisma/client';
 

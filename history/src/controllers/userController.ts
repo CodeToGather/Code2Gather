@@ -1,6 +1,7 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+
 import userService from 'services/UserService';
 import { ErrorResponse, SuccessResponse, UserLocals } from 'types/api';
 import { UserCreateData, UserUpdateData } from 'types/crud/user';

@@ -1,10 +1,9 @@
+import prisma from 'lib/prisma';
 import userService from 'services/UserService';
 import { AuthorizationError, InvalidDataError } from 'types/error';
 import { botUser } from 'utils/botUser';
 import { Fixtures, loadFixtures } from 'utils/fixtures';
 import { createTestUser, mockTestUser } from 'utils/tests';
-
-import prisma from 'lib/prisma';
 
 let fixtures: Fixtures;
 

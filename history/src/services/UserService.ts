@@ -1,10 +1,9 @@
+import prisma from 'lib/prisma';
 import { AllowIfUserIsBotPolicy } from 'policies/AllowIfUserIsBotPolicy';
 import { AlwaysDenyPolicy } from 'policies/AlwaysDenyPolicy';
 import { AllowIfUserIsSelfPolicy } from 'policies/user/AllowIfUserIsSelfPolicy';
 import { UserCreateData, UserUpdateData } from 'types/crud/user';
 import { InvalidDataError, ResourceNotFoundError } from 'types/error';
-
-import prisma from 'lib/prisma';
 
 import { BaseService } from './BaseService';
 import { User } from '.prisma/client';

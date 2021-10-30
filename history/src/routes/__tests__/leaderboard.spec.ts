@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiServer from 'server';
 import request from 'supertest';
+
 import { LeaderboardData } from 'types/crud/leaderboard';
 import { Fixtures, loadFixtures } from 'utils/fixtures';
 import { convertDatesToJson } from 'utils/tests';

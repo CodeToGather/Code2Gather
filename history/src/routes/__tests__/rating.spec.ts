@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiServer from 'server';
 import request from 'supertest';
-import { Fixtures, loadFixtures } from 'utils/fixtures';
-import { createTestRating, createTestUser, mockTestRating } from 'utils/tests';
 
 import prisma from 'lib/prisma';
+import { Fixtures, loadFixtures } from 'utils/fixtures';
+import { createTestRating, createTestUser, mockTestRating } from 'utils/tests';
 
 let server: ApiServer;
 let fixtures: Fixtures;

@@ -1,4 +1,5 @@
 import faker from 'faker';
+
 import { Difficulty } from 'types/crud/enums';
 import { LeaderboardData } from 'types/crud/leaderboard';
 
