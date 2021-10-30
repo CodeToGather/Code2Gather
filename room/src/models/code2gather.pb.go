@@ -23,25 +23,25 @@ const (
 type QuestionDifficulty int32
 
 const (
-	QuestionDifficulty_UNKNOWN QuestionDifficulty = 0
-	QuestionDifficulty_EASY    QuestionDifficulty = 1
-	QuestionDifficulty_MEDIUM  QuestionDifficulty = 2
-	QuestionDifficulty_HARD    QuestionDifficulty = 3
+	QuestionDifficulty_UNKNOWN_DIFFICULTY QuestionDifficulty = 0
+	QuestionDifficulty_EASY               QuestionDifficulty = 1
+	QuestionDifficulty_MEDIUM             QuestionDifficulty = 2
+	QuestionDifficulty_HARD               QuestionDifficulty = 3
 )
 
 // Enum value maps for QuestionDifficulty.
 var (
 	QuestionDifficulty_name = map[int32]string{
-		0: "UNKNOWN",
+		0: "UNKNOWN_DIFFICULTY",
 		1: "EASY",
 		2: "MEDIUM",
 		3: "HARD",
 	}
 	QuestionDifficulty_value = map[string]int32{
-		"UNKNOWN": 0,
-		"EASY":    1,
-		"MEDIUM":  2,
-		"HARD":    3,
+		"UNKNOWN_DIFFICULTY": 0,
+		"EASY":               1,
+		"MEDIUM":             2,
+		"HARD":               3,
 	}
 )
 
@@ -70,6 +70,113 @@ func (x QuestionDifficulty) Number() protoreflect.EnumNumber {
 // Deprecated: Use QuestionDifficulty.Descriptor instead.
 func (QuestionDifficulty) EnumDescriptor() ([]byte, []int) {
 	return file_code2gather_proto_rawDescGZIP(), []int{0}
+}
+
+type Language int32
+
+const (
+	Language_UNKNOWN_LANGUGAE Language = 0
+	Language_PYTHON           Language = 1
+	Language_JAVA             Language = 2
+	Language_JAVASCRIPT       Language = 3
+)
+
+// Enum value maps for Language.
+var (
+	Language_name = map[int32]string{
+		0: "UNKNOWN_LANGUGAE",
+		1: "PYTHON",
+		2: "JAVA",
+		3: "JAVASCRIPT",
+	}
+	Language_value = map[string]int32{
+		"UNKNOWN_LANGUGAE": 0,
+		"PYTHON":           1,
+		"JAVA":             2,
+		"JAVASCRIPT":       3,
+	}
+)
+
+func (x Language) Enum() *Language {
+	p := new(Language)
+	*p = x
+	return p
+}
+
+func (x Language) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Language) Descriptor() protoreflect.EnumDescriptor {
+	return file_code2gather_proto_enumTypes[1].Descriptor()
+}
+
+func (Language) Type() protoreflect.EnumType {
+	return &file_code2gather_proto_enumTypes[1]
+}
+
+func (x Language) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Language.Descriptor instead.
+func (Language) EnumDescriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{1}
+}
+
+type ErrorCode int32
+
+const (
+	// success
+	ErrorCode_NO_ERROR ErrorCode = 0
+	// system error (unexpected error)
+	ErrorCode_UNKNOWN_ERROR ErrorCode = -1
+	// client/business error (expected error)
+	ErrorCode_MESSAGE_CODING_ERROR ErrorCode = 1
+	ErrorCode_UNAUTHORIZED_USER    ErrorCode = 2
+)
+
+// Enum value maps for ErrorCode.
+var (
+	ErrorCode_name = map[int32]string{
+		0:  "NO_ERROR",
+		-1: "UNKNOWN_ERROR",
+		1:  "MESSAGE_CODING_ERROR",
+		2:  "UNAUTHORIZED_USER",
+	}
+	ErrorCode_value = map[string]int32{
+		"NO_ERROR":             0,
+		"UNKNOWN_ERROR":        -1,
+		"MESSAGE_CODING_ERROR": 1,
+		"UNAUTHORIZED_USER":    2,
+	}
+)
+
+func (x ErrorCode) Enum() *ErrorCode {
+	p := new(ErrorCode)
+	*p = x
+	return p
+}
+
+func (x ErrorCode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ErrorCode) Descriptor() protoreflect.EnumDescriptor {
+	return file_code2gather_proto_enumTypes[2].Descriptor()
+}
+
+func (ErrorCode) Type() protoreflect.EnumType {
+	return &file_code2gather_proto_enumTypes[2]
+}
+
+func (x ErrorCode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ErrorCode.Descriptor instead.
+func (ErrorCode) EnumDescriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{2}
 }
 
 type QuestionMessage struct {
@@ -141,7 +248,7 @@ func (x *QuestionMessage) GetDifficulty() QuestionDifficulty {
 	if x != nil {
 		return x.Difficulty
 	}
-	return QuestionDifficulty_UNKNOWN
+	return QuestionDifficulty_UNKNOWN_DIFFICULTY
 }
 
 func (x *QuestionMessage) GetHints() string {
@@ -291,7 +398,7 @@ func (x *CreateRoomRequest) GetDifficulty() QuestionDifficulty {
 	if x != nil {
 		return x.Difficulty
 	}
-	return QuestionDifficulty_UNKNOWN
+	return QuestionDifficulty_UNKNOWN_DIFFICULTY
 }
 
 type CreateRoomResponse struct {
@@ -341,6 +448,657 @@ func (x *CreateRoomResponse) GetRoomId() string {
 	return ""
 }
 
+type ErrorResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ErrorCode int32  `protobuf:"varint,1,opt,name=error_code,json=errorCode,proto3" json:"error_code,omitempty"`
+	Message   string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+}
+
+func (x *ErrorResponse) Reset() {
+	*x = ErrorResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_code2gather_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ErrorResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ErrorResponse) ProtoMessage() {}
+
+func (x *ErrorResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_code2gather_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ErrorResponse.ProtoReflect.Descriptor instead.
+func (*ErrorResponse) Descriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ErrorResponse) GetErrorCode() int32 {
+	if x != nil {
+		return x.ErrorCode
+	}
+	return 0
+}
+
+func (x *ErrorResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type ClientRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Request:
+	//	*ClientRequest_JoinRoomRequest
+	//	*ClientRequest_ExecuteCodeRequest
+	Request isClientRequest_Request `protobuf_oneof:"request"`
+}
+
+func (x *ClientRequest) Reset() {
+	*x = ClientRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_code2gather_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ClientRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClientRequest) ProtoMessage() {}
+
+func (x *ClientRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_code2gather_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClientRequest.ProtoReflect.Descriptor instead.
+func (*ClientRequest) Descriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{5}
+}
+
+func (m *ClientRequest) GetRequest() isClientRequest_Request {
+	if m != nil {
+		return m.Request
+	}
+	return nil
+}
+
+func (x *ClientRequest) GetJoinRoomRequest() *JoinRoomRequest {
+	if x, ok := x.GetRequest().(*ClientRequest_JoinRoomRequest); ok {
+		return x.JoinRoomRequest
+	}
+	return nil
+}
+
+func (x *ClientRequest) GetExecuteCodeRequest() *ExecuteCodeRequest {
+	if x, ok := x.GetRequest().(*ClientRequest_ExecuteCodeRequest); ok {
+		return x.ExecuteCodeRequest
+	}
+	return nil
+}
+
+type isClientRequest_Request interface {
+	isClientRequest_Request()
+}
+
+type ClientRequest_JoinRoomRequest struct {
+	JoinRoomRequest *JoinRoomRequest `protobuf:"bytes,1,opt,name=join_room_request,json=joinRoomRequest,proto3,oneof"`
+}
+
+type ClientRequest_ExecuteCodeRequest struct {
+	ExecuteCodeRequest *ExecuteCodeRequest `protobuf:"bytes,2,opt,name=execute_code_request,json=executeCodeRequest,proto3,oneof"`
+}
+
+func (*ClientRequest_JoinRoomRequest) isClientRequest_Request() {}
+
+func (*ClientRequest_ExecuteCodeRequest) isClientRequest_Request() {}
+
+type JoinRoomRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	RoomId string `protobuf:"bytes,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+}
+
+func (x *JoinRoomRequest) Reset() {
+	*x = JoinRoomRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_code2gather_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *JoinRoomRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JoinRoomRequest) ProtoMessage() {}
+
+func (x *JoinRoomRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_code2gather_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use JoinRoomRequest.ProtoReflect.Descriptor instead.
+func (*JoinRoomRequest) Descriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *JoinRoomRequest) GetRoomId() string {
+	if x != nil {
+		return x.RoomId
+	}
+	return ""
+}
+
+type JoinRoomResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ErrorCode     int32            `protobuf:"varint,1,opt,name=error_code,json=errorCode,proto3" json:"error_code,omitempty"`
+	InterviewerId string           `protobuf:"bytes,2,opt,name=interviewer_id,json=interviewerId,proto3" json:"interviewer_id,omitempty"`
+	Question      *QuestionMessage `protobuf:"bytes,3,opt,name=question,proto3" json:"question,omitempty"`
+}
+
+func (x *JoinRoomResponse) Reset() {
+	*x = JoinRoomResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_code2gather_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *JoinRoomResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JoinRoomResponse) ProtoMessage() {}
+
+func (x *JoinRoomResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_code2gather_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use JoinRoomResponse.ProtoReflect.Descriptor instead.
+func (*JoinRoomResponse) Descriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *JoinRoomResponse) GetErrorCode() int32 {
+	if x != nil {
+		return x.ErrorCode
+	}
+	return 0
+}
+
+func (x *JoinRoomResponse) GetInterviewerId() string {
+	if x != nil {
+		return x.InterviewerId
+	}
+	return ""
+}
+
+func (x *JoinRoomResponse) GetQuestion() *QuestionMessage {
+	if x != nil {
+		return x.Question
+	}
+	return nil
+}
+
+type ExecuteCodeRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Code     string   `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Language Language `protobuf:"varint,2,opt,name=language,proto3,enum=code2gather.Language" json:"language,omitempty"`
+}
+
+func (x *ExecuteCodeRequest) Reset() {
+	*x = ExecuteCodeRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_code2gather_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ExecuteCodeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExecuteCodeRequest) ProtoMessage() {}
+
+func (x *ExecuteCodeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_code2gather_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExecuteCodeRequest.ProtoReflect.Descriptor instead.
+func (*ExecuteCodeRequest) Descriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ExecuteCodeRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *ExecuteCodeRequest) GetLanguage() Language {
+	if x != nil {
+		return x.Language
+	}
+	return Language_UNKNOWN_LANGUGAE
+}
+
+type ExecuteCodeBroadcast struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ExecuteCodeBroadcast) Reset() {
+	*x = ExecuteCodeBroadcast{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_code2gather_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ExecuteCodeBroadcast) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExecuteCodeBroadcast) ProtoMessage() {}
+
+func (x *ExecuteCodeBroadcast) ProtoReflect() protoreflect.Message {
+	mi := &file_code2gather_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExecuteCodeBroadcast.ProtoReflect.Descriptor instead.
+func (*ExecuteCodeBroadcast) Descriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{9}
+}
+
+type ExecuteCodeResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ErrorCode int32  `protobuf:"varint,1,opt,name=error_code,json=errorCode,proto3" json:"error_code,omitempty"`
+	Output    string `protobuf:"bytes,2,opt,name=output,proto3" json:"output,omitempty"`
+}
+
+func (x *ExecuteCodeResponse) Reset() {
+	*x = ExecuteCodeResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_code2gather_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ExecuteCodeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExecuteCodeResponse) ProtoMessage() {}
+
+func (x *ExecuteCodeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_code2gather_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExecuteCodeResponse.ProtoReflect.Descriptor instead.
+func (*ExecuteCodeResponse) Descriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ExecuteCodeResponse) GetErrorCode() int32 {
+	if x != nil {
+		return x.ErrorCode
+	}
+	return 0
+}
+
+func (x *ExecuteCodeResponse) GetOutput() string {
+	if x != nil {
+		return x.Output
+	}
+	return ""
+}
+
+type DisconnectBroadcast struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DisconnectBroadcast) Reset() {
+	*x = DisconnectBroadcast{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_code2gather_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DisconnectBroadcast) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DisconnectBroadcast) ProtoMessage() {}
+
+func (x *DisconnectBroadcast) ProtoReflect() protoreflect.Message {
+	mi := &file_code2gather_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DisconnectBroadcast.ProtoReflect.Descriptor instead.
+func (*DisconnectBroadcast) Descriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{11}
+}
+
+type CompleteQuestionRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	InterviewerNotes string `protobuf:"bytes,1,opt,name=interviewer_notes,json=interviewerNotes,proto3" json:"interviewer_notes,omitempty"`
+	IsSolved         bool   `protobuf:"varint,2,opt,name=is_solved,json=isSolved,proto3" json:"is_solved,omitempty"`
+	Code             string `protobuf:"bytes,3,opt,name=code,proto3" json:"code,omitempty"`
+}
+
+func (x *CompleteQuestionRequest) Reset() {
+	*x = CompleteQuestionRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_code2gather_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CompleteQuestionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CompleteQuestionRequest) ProtoMessage() {}
+
+func (x *CompleteQuestionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_code2gather_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CompleteQuestionRequest.ProtoReflect.Descriptor instead.
+func (*CompleteQuestionRequest) Descriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *CompleteQuestionRequest) GetInterviewerNotes() string {
+	if x != nil {
+		return x.InterviewerNotes
+	}
+	return ""
+}
+
+func (x *CompleteQuestionRequest) GetIsSolved() bool {
+	if x != nil {
+		return x.IsSolved
+	}
+	return false
+}
+
+func (x *CompleteQuestionRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+type CompleteQuestionResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ErrorCode     int32            `protobuf:"varint,1,opt,name=error_code,json=errorCode,proto3" json:"error_code,omitempty"`
+	InterviewerId string           `protobuf:"bytes,2,opt,name=interviewer_id,json=interviewerId,proto3" json:"interviewer_id,omitempty"`
+	NextQuestion  *QuestionMessage `protobuf:"bytes,3,opt,name=next_question,json=nextQuestion,proto3" json:"next_question,omitempty"`
+}
+
+func (x *CompleteQuestionResponse) Reset() {
+	*x = CompleteQuestionResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_code2gather_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CompleteQuestionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CompleteQuestionResponse) ProtoMessage() {}
+
+func (x *CompleteQuestionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_code2gather_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CompleteQuestionResponse.ProtoReflect.Descriptor instead.
+func (*CompleteQuestionResponse) Descriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *CompleteQuestionResponse) GetErrorCode() int32 {
+	if x != nil {
+		return x.ErrorCode
+	}
+	return 0
+}
+
+func (x *CompleteQuestionResponse) GetInterviewerId() string {
+	if x != nil {
+		return x.InterviewerId
+	}
+	return ""
+}
+
+func (x *CompleteQuestionResponse) GetNextQuestion() *QuestionMessage {
+	if x != nil {
+		return x.NextQuestion
+	}
+	return nil
+}
+
+type SubmitRatingRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Rating float32 `protobuf:"fixed32,1,opt,name=rating,proto3" json:"rating,omitempty"`
+}
+
+func (x *SubmitRatingRequest) Reset() {
+	*x = SubmitRatingRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_code2gather_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SubmitRatingRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubmitRatingRequest) ProtoMessage() {}
+
+func (x *SubmitRatingRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_code2gather_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubmitRatingRequest.ProtoReflect.Descriptor instead.
+func (*SubmitRatingRequest) Descriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *SubmitRatingRequest) GetRating() float32 {
+	if x != nil {
+		return x.Rating
+	}
+	return 0
+}
+
+type SubmitRatingResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ErrorCode int32 `protobuf:"varint,1,opt,name=error_code,json=errorCode,proto3" json:"error_code,omitempty"`
+}
+
+func (x *SubmitRatingResponse) Reset() {
+	*x = SubmitRatingResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_code2gather_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SubmitRatingResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubmitRatingResponse) ProtoMessage() {}
+
+func (x *SubmitRatingResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_code2gather_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubmitRatingResponse.ProtoReflect.Descriptor instead.
+func (*SubmitRatingResponse) Descriptor() ([]byte, []int) {
+	return file_code2gather_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *SubmitRatingResponse) GetErrorCode() int32 {
+	if x != nil {
+		return x.ErrorCode
+	}
+	return 0
+}
+
 var File_code2gather_proto protoreflect.FileDescriptor
 
 var file_code2gather_proto_rawDesc = []byte{
@@ -374,12 +1132,90 @@ var file_code2gather_proto_rawDesc = []byte{
 	0x74, 0x79, 0x22, 0x2d, 0x0a, 0x12, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x6f, 0x6f, 0x6d,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x17, 0x0a, 0x07, 0x72, 0x6f, 0x6f, 0x6d,
 	0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x6f, 0x6f, 0x6d, 0x49,
-	0x64, 0x2a, 0x41, 0x0a, 0x12, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x69, 0x66,
-	0x66, 0x69, 0x63, 0x75, 0x6c, 0x74, 0x79, 0x12, 0x0b, 0x0a, 0x07, 0x55, 0x4e, 0x4b, 0x4e, 0x4f,
-	0x57, 0x4e, 0x10, 0x00, 0x12, 0x08, 0x0a, 0x04, 0x45, 0x41, 0x53, 0x59, 0x10, 0x01, 0x12, 0x0a,
-	0x0a, 0x06, 0x4d, 0x45, 0x44, 0x49, 0x55, 0x4d, 0x10, 0x02, 0x12, 0x08, 0x0a, 0x04, 0x48, 0x41,
-	0x52, 0x44, 0x10, 0x03, 0x42, 0x09, 0x5a, 0x07, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2f, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x64, 0x22, 0x48, 0x0a, 0x0d, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x5f, 0x63, 0x6f, 0x64, 0x65,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x43, 0x6f, 0x64,
+	0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0xbb, 0x01, 0x0a, 0x0d,
+	0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x4a, 0x0a,
+	0x11, 0x6a, 0x6f, 0x69, 0x6e, 0x5f, 0x72, 0x6f, 0x6f, 0x6d, 0x5f, 0x72, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x63, 0x6f, 0x64, 0x65, 0x32,
+	0x67, 0x61, 0x74, 0x68, 0x65, 0x72, 0x2e, 0x4a, 0x6f, 0x69, 0x6e, 0x52, 0x6f, 0x6f, 0x6d, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52, 0x0f, 0x6a, 0x6f, 0x69, 0x6e, 0x52, 0x6f,
+	0x6f, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x53, 0x0a, 0x14, 0x65, 0x78, 0x65,
+	0x63, 0x75, 0x74, 0x65, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x5f, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x63, 0x6f, 0x64, 0x65, 0x32, 0x67,
+	0x61, 0x74, 0x68, 0x65, 0x72, 0x2e, 0x45, 0x78, 0x65, 0x63, 0x75, 0x74, 0x65, 0x43, 0x6f, 0x64,
+	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52, 0x12, 0x65, 0x78, 0x65, 0x63,
+	0x75, 0x74, 0x65, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x42, 0x09,
+	0x0a, 0x07, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x2a, 0x0a, 0x0f, 0x4a, 0x6f, 0x69,
+	0x6e, 0x52, 0x6f, 0x6f, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x17, 0x0a, 0x07,
+	0x72, 0x6f, 0x6f, 0x6d, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x72,
+	0x6f, 0x6f, 0x6d, 0x49, 0x64, 0x22, 0x92, 0x01, 0x0a, 0x10, 0x4a, 0x6f, 0x69, 0x6e, 0x52, 0x6f,
+	0x6f, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x65, 0x72,
+	0x72, 0x6f, 0x72, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09,
+	0x65, 0x72, 0x72, 0x6f, 0x72, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x69, 0x6e, 0x74,
+	0x65, 0x72, 0x76, 0x69, 0x65, 0x77, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0d, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x76, 0x69, 0x65, 0x77, 0x65, 0x72, 0x49, 0x64,
+	0x12, 0x38, 0x0a, 0x08, 0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x63, 0x6f, 0x64, 0x65, 0x32, 0x67, 0x61, 0x74, 0x68, 0x65, 0x72,
+	0x2e, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+	0x52, 0x08, 0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x5b, 0x0a, 0x12, 0x45, 0x78,
+	0x65, 0x63, 0x75, 0x74, 0x65, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x63, 0x6f, 0x64, 0x65, 0x12, 0x31, 0x0a, 0x08, 0x6c, 0x61, 0x6e, 0x67, 0x75, 0x61, 0x67, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x15, 0x2e, 0x63, 0x6f, 0x64, 0x65, 0x32, 0x67, 0x61,
+	0x74, 0x68, 0x65, 0x72, 0x2e, 0x4c, 0x61, 0x6e, 0x67, 0x75, 0x61, 0x67, 0x65, 0x52, 0x08, 0x6c,
+	0x61, 0x6e, 0x67, 0x75, 0x61, 0x67, 0x65, 0x22, 0x16, 0x0a, 0x14, 0x45, 0x78, 0x65, 0x63, 0x75,
+	0x74, 0x65, 0x43, 0x6f, 0x64, 0x65, 0x42, 0x72, 0x6f, 0x61, 0x64, 0x63, 0x61, 0x73, 0x74, 0x22,
+	0x4c, 0x0a, 0x13, 0x45, 0x78, 0x65, 0x63, 0x75, 0x74, 0x65, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x5f,
+	0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09, 0x65, 0x72, 0x72, 0x6f,
+	0x72, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x22, 0x15, 0x0a,
+	0x13, 0x44, 0x69, 0x73, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x42, 0x72, 0x6f, 0x61, 0x64,
+	0x63, 0x61, 0x73, 0x74, 0x22, 0x77, 0x0a, 0x17, 0x43, 0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x74, 0x65,
+	0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x2b, 0x0a, 0x11, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x76, 0x69, 0x65, 0x77, 0x65, 0x72, 0x5f, 0x6e,
+	0x6f, 0x74, 0x65, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x10, 0x69, 0x6e, 0x74, 0x65,
+	0x72, 0x76, 0x69, 0x65, 0x77, 0x65, 0x72, 0x4e, 0x6f, 0x74, 0x65, 0x73, 0x12, 0x1b, 0x0a, 0x09,
+	0x69, 0x73, 0x5f, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52,
+	0x08, 0x69, 0x73, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64,
+	0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x22, 0xa3, 0x01,
+	0x0a, 0x18, 0x43, 0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x74, 0x65, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69,
+	0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x65, 0x72,
+	0x72, 0x6f, 0x72, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09,
+	0x65, 0x72, 0x72, 0x6f, 0x72, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x69, 0x6e, 0x74,
+	0x65, 0x72, 0x76, 0x69, 0x65, 0x77, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0d, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x76, 0x69, 0x65, 0x77, 0x65, 0x72, 0x49, 0x64,
+	0x12, 0x41, 0x0a, 0x0d, 0x6e, 0x65, 0x78, 0x74, 0x5f, 0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f,
+	0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x63, 0x6f, 0x64, 0x65, 0x32, 0x67,
+	0x61, 0x74, 0x68, 0x65, 0x72, 0x2e, 0x51, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x4d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x0c, 0x6e, 0x65, 0x78, 0x74, 0x51, 0x75, 0x65, 0x73, 0x74,
+	0x69, 0x6f, 0x6e, 0x22, 0x2d, 0x0a, 0x13, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x52, 0x61, 0x74,
+	0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x61,
+	0x74, 0x69, 0x6e, 0x67, 0x18, 0x01, 0x20, 0x01, 0x28, 0x02, 0x52, 0x06, 0x72, 0x61, 0x74, 0x69,
+	0x6e, 0x67, 0x22, 0x35, 0x0a, 0x14, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x52, 0x61, 0x74, 0x69,
+	0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x65, 0x72,
+	0x72, 0x6f, 0x72, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09,
+	0x65, 0x72, 0x72, 0x6f, 0x72, 0x43, 0x6f, 0x64, 0x65, 0x2a, 0x4c, 0x0a, 0x12, 0x51, 0x75, 0x65,
+	0x73, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x69, 0x66, 0x66, 0x69, 0x63, 0x75, 0x6c, 0x74, 0x79, 0x12,
+	0x16, 0x0a, 0x12, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x5f, 0x44, 0x49, 0x46, 0x46, 0x49,
+	0x43, 0x55, 0x4c, 0x54, 0x59, 0x10, 0x00, 0x12, 0x08, 0x0a, 0x04, 0x45, 0x41, 0x53, 0x59, 0x10,
+	0x01, 0x12, 0x0a, 0x0a, 0x06, 0x4d, 0x45, 0x44, 0x49, 0x55, 0x4d, 0x10, 0x02, 0x12, 0x08, 0x0a,
+	0x04, 0x48, 0x41, 0x52, 0x44, 0x10, 0x03, 0x2a, 0x46, 0x0a, 0x08, 0x4c, 0x61, 0x6e, 0x67, 0x75,
+	0x61, 0x67, 0x65, 0x12, 0x14, 0x0a, 0x10, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x5f, 0x4c,
+	0x41, 0x4e, 0x47, 0x55, 0x47, 0x41, 0x45, 0x10, 0x00, 0x12, 0x0a, 0x0a, 0x06, 0x50, 0x59, 0x54,
+	0x48, 0x4f, 0x4e, 0x10, 0x01, 0x12, 0x08, 0x0a, 0x04, 0x4a, 0x41, 0x56, 0x41, 0x10, 0x02, 0x12,
+	0x0e, 0x0a, 0x0a, 0x4a, 0x41, 0x56, 0x41, 0x53, 0x43, 0x52, 0x49, 0x50, 0x54, 0x10, 0x03, 0x2a,
+	0x66, 0x0a, 0x09, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x0c, 0x0a, 0x08,
+	0x4e, 0x4f, 0x5f, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x10, 0x00, 0x12, 0x1a, 0x0a, 0x0d, 0x55, 0x4e,
+	0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x5f, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x10, 0xff, 0xff, 0xff, 0xff,
+	0xff, 0xff, 0xff, 0xff, 0xff, 0x01, 0x12, 0x18, 0x0a, 0x14, 0x4d, 0x45, 0x53, 0x53, 0x41, 0x47,
+	0x45, 0x5f, 0x43, 0x4f, 0x44, 0x49, 0x4e, 0x47, 0x5f, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x10, 0x01,
+	0x12, 0x15, 0x0a, 0x11, 0x55, 0x4e, 0x41, 0x55, 0x54, 0x48, 0x4f, 0x52, 0x49, 0x5a, 0x45, 0x44,
+	0x5f, 0x55, 0x53, 0x45, 0x52, 0x10, 0x02, 0x42, 0x09, 0x5a, 0x07, 0x6d, 0x6f, 0x64, 0x65, 0x6c,
+	0x73, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -394,23 +1230,42 @@ func file_code2gather_proto_rawDescGZIP() []byte {
 	return file_code2gather_proto_rawDescData
 }
 
-var file_code2gather_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_code2gather_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_code2gather_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_code2gather_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_code2gather_proto_goTypes = []interface{}{
-	(QuestionDifficulty)(0),    // 0: code2gather.QuestionDifficulty
-	(*QuestionMessage)(nil),    // 1: code2gather.QuestionMessage
-	(*RoomMessage)(nil),        // 2: code2gather.RoomMessage
-	(*CreateRoomRequest)(nil),  // 3: code2gather.CreateRoomRequest
-	(*CreateRoomResponse)(nil), // 4: code2gather.CreateRoomResponse
+	(QuestionDifficulty)(0),          // 0: code2gather.QuestionDifficulty
+	(Language)(0),                    // 1: code2gather.Language
+	(ErrorCode)(0),                   // 2: code2gather.ErrorCode
+	(*QuestionMessage)(nil),          // 3: code2gather.QuestionMessage
+	(*RoomMessage)(nil),              // 4: code2gather.RoomMessage
+	(*CreateRoomRequest)(nil),        // 5: code2gather.CreateRoomRequest
+	(*CreateRoomResponse)(nil),       // 6: code2gather.CreateRoomResponse
+	(*ErrorResponse)(nil),            // 7: code2gather.ErrorResponse
+	(*ClientRequest)(nil),            // 8: code2gather.ClientRequest
+	(*JoinRoomRequest)(nil),          // 9: code2gather.JoinRoomRequest
+	(*JoinRoomResponse)(nil),         // 10: code2gather.JoinRoomResponse
+	(*ExecuteCodeRequest)(nil),       // 11: code2gather.ExecuteCodeRequest
+	(*ExecuteCodeBroadcast)(nil),     // 12: code2gather.ExecuteCodeBroadcast
+	(*ExecuteCodeResponse)(nil),      // 13: code2gather.ExecuteCodeResponse
+	(*DisconnectBroadcast)(nil),      // 14: code2gather.DisconnectBroadcast
+	(*CompleteQuestionRequest)(nil),  // 15: code2gather.CompleteQuestionRequest
+	(*CompleteQuestionResponse)(nil), // 16: code2gather.CompleteQuestionResponse
+	(*SubmitRatingRequest)(nil),      // 17: code2gather.SubmitRatingRequest
+	(*SubmitRatingResponse)(nil),     // 18: code2gather.SubmitRatingResponse
 }
 var file_code2gather_proto_depIdxs = []int32{
-	0, // 0: code2gather.QuestionMessage.difficulty:type_name -> code2gather.QuestionDifficulty
-	0, // 1: code2gather.CreateRoomRequest.difficulty:type_name -> code2gather.QuestionDifficulty
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	0,  // 0: code2gather.QuestionMessage.difficulty:type_name -> code2gather.QuestionDifficulty
+	0,  // 1: code2gather.CreateRoomRequest.difficulty:type_name -> code2gather.QuestionDifficulty
+	9,  // 2: code2gather.ClientRequest.join_room_request:type_name -> code2gather.JoinRoomRequest
+	11, // 3: code2gather.ClientRequest.execute_code_request:type_name -> code2gather.ExecuteCodeRequest
+	3,  // 4: code2gather.JoinRoomResponse.question:type_name -> code2gather.QuestionMessage
+	1,  // 5: code2gather.ExecuteCodeRequest.language:type_name -> code2gather.Language
+	3,  // 6: code2gather.CompleteQuestionResponse.next_question:type_name -> code2gather.QuestionMessage
+	7,  // [7:7] is the sub-list for method output_type
+	7,  // [7:7] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_code2gather_proto_init() }
@@ -467,14 +1322,162 @@ func file_code2gather_proto_init() {
 				return nil
 			}
 		}
+		file_code2gather_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ErrorResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_code2gather_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ClientRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_code2gather_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*JoinRoomRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_code2gather_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*JoinRoomResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_code2gather_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ExecuteCodeRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_code2gather_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ExecuteCodeBroadcast); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_code2gather_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ExecuteCodeResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_code2gather_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DisconnectBroadcast); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_code2gather_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CompleteQuestionRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_code2gather_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CompleteQuestionResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_code2gather_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SubmitRatingRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_code2gather_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SubmitRatingResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+	}
+	file_code2gather_proto_msgTypes[5].OneofWrappers = []interface{}{
+		(*ClientRequest_JoinRoomRequest)(nil),
+		(*ClientRequest_ExecuteCodeRequest)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_code2gather_proto_rawDesc,
-			NumEnums:      1,
-			NumMessages:   4,
+			NumEnums:      3,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

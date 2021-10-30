@@ -32,7 +32,8 @@ func (c *Client) read() {
 			break
 		}
 		//c.manager.broadcast <- RoomBroadcastMessage{message: message}
-		c.send <- message
+		//c.send <- message
+		incomingRequestHandler(c, message)
 	}
 
 }

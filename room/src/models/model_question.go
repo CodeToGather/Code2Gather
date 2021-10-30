@@ -1,6 +1,8 @@
 package models
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+)
 
 type Question struct {
 	Id         string             `json:"id"`
@@ -16,4 +18,14 @@ func NewQuestion() *Question {
 
 func (Question) TableName() string {
 	return "questions"
+}
+
+func (q Question) ToQuestionMessage() *QuestionMessage {
+	return &QuestionMessage{
+		Id:         q.Id,
+		Title:      q.Title,
+		Text:       q.Text,
+		Difficulty: q.Difficulty,
+		Hints:      q.Hints,
+	}
 }

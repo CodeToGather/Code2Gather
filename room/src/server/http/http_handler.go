@@ -36,7 +36,7 @@ func RoomCreationHandler(c *gin.Context) {
 		return
 	}
 
-	resp, err := middleware.MarshalResponse(handler.GetResponse())
+	resp, err := middleware.MarshalToJson(handler.GetResponse())
 
 	if err != nil {
 		log.Println(err)

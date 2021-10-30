@@ -8,10 +8,19 @@ option go_package = "models/";
 // Difficulty level for questions
 
 enum QuestionDifficulty {
-  UNKNOWN = 0;
+  UNKNOWN_DIFFICULTY = 0;
   EASY = 1;
   MEDIUM = 2;
   HARD = 3;
+}
+
+// Language for questions
+
+enum Language {
+  UNKNOWN_LANGUGAE = 0;
+  PYTHON = 1;
+  JAVA = 2;
+  JAVASCRIPT = 3;
 }
 
 // Question represents a question given by the interviewer to the interviewee during a mock interview session
@@ -41,4 +50,78 @@ message CreateRoomRequest {
 
 message CreateRoomResponse {
   string room_id = 1;
+}
+
+// ===============================
+// Websocket messages with client
+// ===============================
+
+enum ErrorCode {
+  // success
+  NO_ERROR = 0;
+
+  // system error (unexpected error)
+  UNKNOWN_ERROR = -1;
+
+  // client/business error (expected error)
+  MESSAGE_CODING_ERROR = 1;
+  UNAUTHORIZED_USER = 2;
+}
+
+message ErrorResponse {
+  int32 error_code = 1;
+  string message = 2;
+}
+
+message ClientRequest {
+  oneof request {
+    JoinRoomRequest join_room_request = 1;
+    ExecuteCodeRequest execute_code_request = 2;
+  }
+}
+
+message JoinRoomRequest {
+  string room_id = 1;
+}
+
+message JoinRoomResponse {
+  int32 error_code = 1;
+  string interviewer_id = 2;
+  QuestionMessage question = 3;
+}
+
+message ExecuteCodeRequest {
+  string code = 1;
+  Language language = 2;
+}
+
+message ExecuteCodeBroadcast {
+}
+
+message ExecuteCodeResponse {
+  int32 error_code = 1;
+  string output = 2;
+}
+
+message DisconnectBroadcast {
+}
+
+message CompleteQuestionRequest {
+  string interviewer_notes = 1;
+  bool is_solved = 2;
+  string code = 3;
+}
+
+message CompleteQuestionResponse {
+  int32 error_code = 1;
+  string interviewer_id = 2;
+  QuestionMessage next_question = 3;
+}
+
+message SubmitRatingRequest {
+  float rating = 1;
+}
+
+message SubmitRatingResponse {
+  int32 error_code = 1;
 }
