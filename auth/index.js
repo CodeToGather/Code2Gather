@@ -89,7 +89,7 @@ app.get('/auth', async (req, res) => {
     if (!isAccessTokenSignedPayload(payload)) {
       throw new Error();
     }
-  } catch (error) {
+  } catch {
     res.status(StatusCodes.UNAUTHORIZED).json();
     return;
   }
@@ -97,7 +97,7 @@ app.get('/auth', async (req, res) => {
   const { uid } = payload;
   try {
     await getUserWithIdFromFirebase(uid);
-  } catch (error) {
+  } catch {
     res.status(StatusCodes.UNAUTHORIZED).json();
     return;
   }
