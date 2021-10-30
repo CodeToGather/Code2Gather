@@ -15,6 +15,7 @@ class UserService extends BaseService<User, UserCreateData> {
   ];
   protected override readPolicies = [
     new AllowIfUserIsSelfPolicy(),
+    new AllowIfUserIsBotPolicy(),
     new AlwaysDenyPolicy(),
   ];
   protected override updatePolicies = [

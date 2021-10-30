@@ -20,16 +20,16 @@ class MeetingRecordService extends BaseService<
     new AllowIfUserIsInterviewerPolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected readPolicies = [
+  protected override readPolicies = [
     new AllowIfUserIsIntervieweePolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected updatePolicies = [
+  protected override updatePolicies = [
     new AllowIfUserIsInterviewerPolicy(),
     new AllowIfUserIsIntervieweePolicy(),
     new AlwaysDenyPolicy(),
   ];
-  protected deletePolicies = [
+  protected override deletePolicies = [
     new AllowIfUserIsInterviewerPolicy(),
     new AllowIfUserIsIntervieweePolicy(),
     new AlwaysDenyPolicy(),
