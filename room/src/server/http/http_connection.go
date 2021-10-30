@@ -1,14 +1,16 @@
 package http
 
 import (
-	"code2gather.com/room/src/server"
 	"log"
 	"net/http"
 
+	"code2gather.com/room/src/server"
+	"code2gather.com/room/src/server/socket"
 	"github.com/gin-gonic/gin"
 )
 
 func StartHttpServer() {
+
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -19,6 +21,9 @@ func StartHttpServer() {
 	v := r.Group("/room")
 	{
 		v.POST("/create", RoomCreationHandler)
+		v.GET("/ws", func(c *gin.Context) {
+			socket.WSHandler(c.Writer, c.Request)
+		})
 	}
 
 	err := r.Run(server.ConnHost + ":" + server.ConnPort)

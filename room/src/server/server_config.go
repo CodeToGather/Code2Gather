@@ -2,5 +2,5 @@ package server
 
 const (
 	ConnHost = "localhost"
-	ConnPort = "8007"
+	ConnPort = "8006"
 )
