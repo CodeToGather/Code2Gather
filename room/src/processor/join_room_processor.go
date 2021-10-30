@@ -1,10 +1,10 @@
 package processor
 
 import (
-	"code2gather.com/room/src/agents/question_agents"
-	"code2gather.com/room/src/agents/room_agents"
 	"log"
 
+	"code2gather.com/room/src/agents/question_agents"
+	"code2gather.com/room/src/agents/room_agents"
 	"code2gather.com/room/src/models"
 	"github.com/golang/protobuf/proto"
 )
@@ -20,6 +20,14 @@ type JoinRoomProcessor struct {
 
 func NewJoinRoomProcessor(request *models.JoinRoomRequest, uid string) *JoinRoomProcessor {
 	return &JoinRoomProcessor{request: request, uid: uid, rid: request.GetRoomId()}
+}
+
+func (p *JoinRoomProcessor) IsRequestAuthorized() bool {
+	return p.authorized
+}
+
+func (p *JoinRoomProcessor) GetRoomId() string {
+	return p.rid
 }
 
 func (p *JoinRoomProcessor) GetRequest() proto.Message {

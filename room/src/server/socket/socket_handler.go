@@ -44,6 +44,12 @@ func joinRoomRequestHandler(c *Client, request *models.JoinRoomRequest) proto.Me
 	if err != nil {
 		log.Println(err)
 	}
+	if handler.IsRequestAuthorized() {
+		c.manager.roomRegister <- ClientRoomRegisteration{
+			roomId: handler.GetRoomId(),
+			client: c,
+		}
+	}
 	return handler.GetResponse()
 }
 
