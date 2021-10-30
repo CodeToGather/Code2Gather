@@ -156,6 +156,7 @@ describe('POST /user', () => {
       photoUrl,
       profileUrl,
     });
+
     expect(response.status).toEqual(StatusCodes.OK);
     expect(response.body.id).toBe(fixtures.userOne.id);
     expect(response.body.githubUsername).toBe(githubUsername);

@@ -11,4 +11,4 @@ export interface LoginResponse {
   token: string; // jwt token
 }
 
-export type GetSelfResponse = User
+export type GetSelfResponse = User;

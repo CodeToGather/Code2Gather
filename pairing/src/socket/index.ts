@@ -1,4 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
+import { Server } from 'socket.io';
+
 import { Difficulty } from 'constants/difficulty';
 import {
   CONNECT,
@@ -10,7 +12,6 @@ import {
   RES_FIND_PAIR,
   RES_FOUND_PAIR,
 } from 'constants/socket';
-import { Server } from 'socket.io';
 import PairingQueue from 'structures/PairingQueue';
 import SidUidMap from 'structures/SidUidMap';
 

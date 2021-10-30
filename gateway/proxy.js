@@ -44,7 +44,6 @@ const codeExecutorProxy = (req, res) => {
   proxy.web(req, res, { target: CODE_EXECUTOR_BASE_URL });
 };
 
-
 const roomProxy = (req, res) => {
   proxy.web(req, res, { target: ROOM_BASE_URL });
 };

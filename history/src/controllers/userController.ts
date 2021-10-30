@@ -42,11 +42,9 @@ export async function createUser(
     } catch (error) {
       // no-op
     }
-
     const createdUser = await userService.create(userCreateData, botUser);
     response.status(StatusCodes.OK).json(createdUser);
   } catch (error: any) {
-    console.log(error);
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
         response.status(StatusCodes.BAD_REQUEST).json({
