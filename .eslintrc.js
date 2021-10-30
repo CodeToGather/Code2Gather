@@ -189,6 +189,7 @@ module.exports = {
       files: ['**/*.js'],
       rules: {
         '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-var-requires': 'off',
         'no-console': 'off',
         'no-process-exit': 'off',

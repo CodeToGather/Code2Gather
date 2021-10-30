@@ -2,31 +2,24 @@ import React, { useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 import { CONNECT } from 'constants/pairing';
-import { initializeSocketForPairing } from 'lib/pairingSocketService';
-import tokenUtils from 'utils/tokenUtils';
 
 export default interface SocketContextInterface {
   socket: Socket;
 }
 
-const PairingSocketContext = React.createContext<
+const CodingSocketContext = React.createContext<
   SocketContextInterface | undefined
 >(undefined);
 
-const PairingSocketProvider: React.FunctionComponent = (props) => {
-  const socket = io(`${process.env.REACT_APP_BACKEND_API}`, {
+const CodingSocketProvider: React.FunctionComponent = (props) => {
+  const socket = io('http://localhost:3001', {
     reconnection: true,
     reconnectionDelay: 1000,
     reconnectionDelayMax: 5000,
     reconnectionAttempts: Infinity,
-    auth: {
-      token: tokenUtils.getToken(),
-    },
-    path: '/pairing',
   });
 
   useEffect(() => {
-    initializeSocketForPairing(socket);
     socket.on(CONNECT, () => {
       // eslint-disable-next-line no-console
       console.log('Socket connected!');
@@ -51,15 +44,17 @@ const PairingSocketProvider: React.FunctionComponent = (props) => {
     };
   }, [socket]);
 
-  return <PairingSocketContext.Provider value={{ socket }} {...props} />;
+  return <CodingSocketContext.Provider value={{ socket }} {...props} />;
 };
 
-const usePairingSocket = (): SocketContextInterface => {
-  const context = React.useContext(PairingSocketContext);
+const useCodingSocket = (): SocketContextInterface => {
+  const context = React.useContext(CodingSocketContext);
   if (context === undefined) {
-    throw new Error(`useSocket must be used within a SocketProvider`);
+    throw new Error(
+      `useCodingSocket must be used within a CodingSocketProvider`,
+    );
   }
   return context;
 };
 
-export { PairingSocketProvider, usePairingSocket };
+export { CodingSocketProvider, useCodingSocket };
