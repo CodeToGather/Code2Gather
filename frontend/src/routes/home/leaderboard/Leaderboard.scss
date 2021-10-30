@@ -1,0 +1,13 @@
+@import '../../../assets/scss/main';
+
+.leaderboard {
+
+  @include media('>desktop') {
+    flex: 3;
+    padding-right: 2rem;
+  }
+
+  &__title {
+    margin-bottom: 1rem;
+  }
+}
