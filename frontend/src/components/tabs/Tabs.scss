@@ -1,0 +1,30 @@
+@import '../../assets/scss/variables';
+
+.tabs {
+  display: flex;
+
+  .tab {
+    background-color: transparent;
+    border: 0;
+    border-bottom: 2px solid $tab-unselected-color;
+    border-radius: 0;
+    color: $tab-unselected-color;
+    padding: 0 0 0.2rem;
+
+    transition: color 0.3s, border-bottom-color 0.3s;
+
+    &.is-selected {
+      border-bottom-color: white;
+      color: white;
+    }
+
+    &:not(:last-child) {
+      margin-right: 1.25rem;
+    }
+
+    &:not(.is-selected):hover {
+      border-bottom-color: $tab-hover-color;
+      color: $tab-hover-color;
+    }
+  }
+}
