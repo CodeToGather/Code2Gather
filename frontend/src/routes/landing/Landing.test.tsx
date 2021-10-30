@@ -1,24 +1,11 @@
-import { ReactElement } from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
-import { AuthContext } from 'contexts/AuthContext';
-import { emptyPromiseFunction } from 'utils/functionUtils';
+import { authUserContextRender } from 'utils/testUtils';
 
 import Landing from './Landing';
 
-// Renders the UI within an AuthContext.
-const contextRender = (ui: ReactElement, login: () => Promise<void>) => {
-  return render(
-    <AuthContext.Provider
-      value={{ data: null, logout: emptyPromiseFunction, login }}
-    >
-      {ui}
-    </AuthContext.Provider>,
-  );
-};
-
 test('renders mock interviews text', () => {
-  contextRender(<Landing />, emptyPromiseFunction);
+  authUserContextRender(<Landing />);
   const mockInterviewsTextElement = screen.getByText(
     /mock interviews made easier./i,
   );
@@ -26,7 +13,7 @@ test('renders mock interviews text', () => {
 });
 
 test('renders excel text', () => {
-  contextRender(<Landing />, emptyPromiseFunction);
+  authUserContextRender(<Landing />);
   const excelTextElement = screen.getByText(
     /excel in your technical interviews today./i,
   );
@@ -34,7 +21,7 @@ test('renders excel text', () => {
 });
 
 test('renders github button', () => {
-  contextRender(<Landing />, emptyPromiseFunction);
+  authUserContextRender(<Landing />);
   const githubButtonElement = screen.getByText(/sign in with github/i);
   expect(githubButtonElement).toBeInTheDocument();
 });
@@ -44,20 +31,20 @@ test('renders github button that logins via auth context', () => {
   const login = async (): Promise<void> => {
     hasTriggeredLogin = true;
   };
-  contextRender(<Landing />, login);
+  authUserContextRender(<Landing />, { login });
   const githubButtonElement = screen.getByText(/sign in with github/i);
   githubButtonElement.click();
   expect(hasTriggeredLogin).toBe(true);
 });
 
 test('renders guest button', () => {
-  contextRender(<Landing />, emptyPromiseFunction);
+  authUserContextRender(<Landing />);
   const guestButtonElement = screen.getByText(/sign in as guest instead/i);
   expect(guestButtonElement).toBeInTheDocument();
 });
 
 test('renders demo image', () => {
-  contextRender(<Landing />, emptyPromiseFunction);
+  authUserContextRender(<Landing />);
   const imageElement = screen.getByAltText(/code2gather demo/i);
   expect(imageElement).toBeInTheDocument();
 });

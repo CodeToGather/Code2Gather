@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any, Union, cast
 
 import requests
 from flask import Blueprint, Response, abort, g, jsonify, request
@@ -27,7 +27,7 @@ def get_languages() -> Response:
     Gets all the different supported languages.
     Returns a json list as a response.
     """
-    return jsonify(get_executor().get_supported_languages())
+    return cast(Response, jsonify(get_executor().get_supported_languages()))
 
 
 @executor_blueprint.route("/submission", methods=["POST"])
@@ -55,7 +55,7 @@ def submission() -> Response:
     result, error = executor.send_to_execute(code, language_id, stdin)
     if result is None:
         return abort(503, description={"error": f"Error: {error}"})
-    return jsonify({"result": result})
+    return cast(Response, jsonify({"result": result}))
 
 
 @executor_blueprint.route("/submissions/<path:path>")
@@ -64,7 +64,7 @@ def get_submission(path: str) -> Response:
     Gets the output of the results.
     """
     results = get_executor().get_results(path)
-    return jsonify(results)
+    return cast(Response, jsonify(results))
 
 
 @executor_blueprint.errorhandler(500)
@@ -72,4 +72,4 @@ def get_submission(path: str) -> Response:
 @executor_blueprint.errorhandler(401)
 @executor_blueprint.errorhandler(503)
 def error_wrapper(e):
-    return jsonify(e.description), e.code
+    return cast(Response, jsonify(e.description)), e.code

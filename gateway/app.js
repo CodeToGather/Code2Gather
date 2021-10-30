@@ -4,7 +4,12 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 const checkAuth = require('./middleware/checkAuth.middleware');
-const { pairingProxy, roomProxy, historyProxy, authProxy, codingProxy } = require('./proxy');
+const {
+  roomProxy,
+  historyProxy,
+  authProxy,
+  pairingWsProxy,
+} = require('./proxy');
 
 const app = express();
 
@@ -24,11 +29,13 @@ app.get('/hello', (_req, res) => {
 // For authentication purposes
 app.use('/auth', authProxy);
 
+// Websocket routes are authenticated by the sockets
+app.use(pairingWsProxy);
+
 // Middleware: auth service
 // All routes after this will be authenticated
 app.use(checkAuth);
 
-app.use('/pairing', pairingProxy);
 app.use('/room', roomProxy);
 app.use('/history', historyProxy);
 app.use('/coding', codingProxy);

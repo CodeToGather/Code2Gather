@@ -37,13 +37,24 @@ app.use(helmet());
 
 app.post('/auth/login', async (req, res) => {
   try {
-    const { token } = req.body;
+    const { token, githubUsername, photoUrl, profileUrl } = req.body;
     if (token == null) {
       throw new Error();
     }
 
     const uid = await verifyTokenWithFirebase(token);
     if (uid == null) {
+      throw new Error();
+    }
+
+    const createUserResponse = await axios.post('http://localhost:8002/user', {
+      id: uid,
+      githubUsername,
+      photoUrl,
+      profileUrl,
+    });
+
+    if (createUserResponse.status !== 200) {
       throw new Error();
     }
 

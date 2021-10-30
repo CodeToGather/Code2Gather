@@ -4,17 +4,24 @@ on:
   push:
     branches: [main]
     paths:
-      - ".github/workflows/lint_frontend.yml"
-      - "frontend/**/*"
+      - '.github/workflows/test_frontend.yml'
+      - 'frontend/**/*'
   pull_request:
     branches: [main]
     paths:
-      - ".github/workflows/lint_frontend.yml"
-      - "frontend/**/*"
+      - '.github/workflows/test_frontend.yml'
+      - 'frontend/**/*'
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.9]
+        node-version: [14.x]
+        poetry-version: [1.1.9]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14.x
@@ -34,7 +41,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
       - name: Run tests
         run: |
           cd frontend

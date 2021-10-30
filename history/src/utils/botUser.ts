@@ -5,4 +5,6 @@ export const botUser: User = {
   createdAt: new Date(),
   updatedAt: new Date(),
   githubUsername: 'bot',
+  photoUrl: 'https://github.com/botuser.png',
+  profileUrl: 'https://github.com/botuser',
 };
