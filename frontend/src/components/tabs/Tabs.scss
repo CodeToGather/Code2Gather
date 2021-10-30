@@ -14,8 +14,8 @@
     transition: color 0.3s, border-bottom-color 0.3s;
 
     &.is-selected {
-      border-bottom-color: white;
-      color: white;
+      border-bottom-color: $text-primary-color;
+      color: $text-primary-color;
     }
 
     &:not(:last-child) {

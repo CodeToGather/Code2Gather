@@ -17,6 +17,12 @@
   &__title {
     margin-bottom: 1rem;
   }
+
+  &__empty {
+    color: $text-secondary-color;
+    padding-top: 4rem;
+    text-align: center;
+  }
 }
 
 .leaderboard-row {

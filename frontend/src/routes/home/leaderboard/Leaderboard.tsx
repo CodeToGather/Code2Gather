@@ -65,8 +65,13 @@ const Leaderboard: FC<Props> = ({ day, week, month, isLoading, isError }) => {
     }
     const data = getData();
     if (data.length === 0) {
-      // TODO: Replace with a proper banner or better looking message
-      return <>There are currently no records! You can be the first!</>;
+      return (
+        <div className="leaderboard__body">
+          <Typography className="leaderboard__empty" size="regular">
+            There are currently no records! You can be the first!
+          </Typography>
+        </div>
+      );
     }
     return (
       <div className="leaderboard__body">
