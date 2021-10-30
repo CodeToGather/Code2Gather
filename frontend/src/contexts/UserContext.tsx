@@ -3,7 +3,9 @@ import { User } from 'types/crud/user';
 
 import { useAuth } from './AuthContext';
 
-const UserContext = React.createContext<User | null | undefined>(undefined);
+export const UserContext = React.createContext<User | null | undefined>(
+  undefined,
+);
 
 // Allows user data to be accessible from everywhere
 const UserProvider: React.FunctionComponent = (props) => {

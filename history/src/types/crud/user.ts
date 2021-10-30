@@ -1,8 +1,12 @@
 export interface UserCreateData {
   id: string;
   githubUsername: string;
+  photoUrl: string;
+  profileUrl: string;
 }
 
 export interface UserUpdateData {
-  githubUsername: string;
+  githubUsername?: string;
+  photoUrl?: string;
+  profileUrl?: string;
 }

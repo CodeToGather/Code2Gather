@@ -19,6 +19,8 @@ afterAll(async () => {
 describe('UserService', () => {
   let id: string;
   let githubUsername: string;
+  let photoUrl: string;
+  let profileUrl: string;
 
   describe('create', () => {
     beforeEach(async () => {
@@ -26,6 +28,8 @@ describe('UserService', () => {
       const mockUserData = mockTestUser();
       id = mockUserData.id;
       githubUsername = mockUserData.githubUsername;
+      photoUrl = mockUserData.photoUrl;
+      profileUrl = mockUserData.profileUrl;
     });
 
     it('creates a user', async () => {
@@ -33,6 +37,8 @@ describe('UserService', () => {
         {
           id,
           githubUsername,
+          photoUrl,
+          profileUrl,
         },
         botUser,
       );
@@ -47,6 +53,8 @@ describe('UserService', () => {
           {
             id: '',
             githubUsername,
+            photoUrl,
+            profileUrl,
           },
           botUser,
         ),
@@ -59,6 +67,36 @@ describe('UserService', () => {
           {
             id,
             githubUsername: '',
+            photoUrl,
+            profileUrl,
+          },
+          botUser,
+        ),
+      ).rejects.toThrow(InvalidDataError);
+    });
+
+    it('checks for photo url length', async () => {
+      await expect(
+        userService.create(
+          {
+            id,
+            githubUsername,
+            photoUrl: '',
+            profileUrl,
+          },
+          botUser,
+        ),
+      ).rejects.toThrow(InvalidDataError);
+    });
+
+    it('checks for profile url length', async () => {
+      await expect(
+        userService.create(
+          {
+            id,
+            githubUsername,
+            photoUrl,
+            profileUrl: '',
           },
           botUser,
         ),
@@ -72,6 +110,8 @@ describe('UserService', () => {
           {
             id,
             githubUsername,
+            photoUrl,
+            profileUrl,
           },
           nonBotUser,
         ),
@@ -101,6 +141,8 @@ describe('UserService', () => {
       const mockUserData = mockTestUser();
       id = mockUserData.id;
       githubUsername = mockUserData.githubUsername;
+      photoUrl = mockUserData.photoUrl;
+      profileUrl = mockUserData.profileUrl;
     });
 
     it('user can update themselves', async () => {
@@ -108,11 +150,15 @@ describe('UserService', () => {
         fixtures.userOne.id,
         {
           githubUsername,
+          photoUrl,
+          profileUrl,
         },
         fixtures.userOne,
       );
       expect(updatedUser.id).toBe(fixtures.userOne.id);
       expect(updatedUser.githubUsername).toBe(githubUsername);
+      expect(updatedUser.photoUrl).toBe(photoUrl);
+      expect(updatedUser.profileUrl).toBe(profileUrl);
     });
 
     it('unrelated user cannot update another user', async () => {
@@ -133,6 +179,30 @@ describe('UserService', () => {
           fixtures.userOne.id,
           {
             githubUsername: '',
+          },
+          fixtures.userOne,
+        ),
+      ).rejects.toThrow(InvalidDataError);
+    });
+
+    it('checks for photo url length', async () => {
+      await expect(
+        userService.update(
+          fixtures.userOne.id,
+          {
+            photoUrl: '',
+          },
+          fixtures.userOne,
+        ),
+      ).rejects.toThrow(InvalidDataError);
+    });
+
+    it('checks for profile url length', async () => {
+      await expect(
+        userService.update(
+          fixtures.userOne.id,
+          {
+            profileUrl: '',
           },
           fixtures.userOne,
         ),

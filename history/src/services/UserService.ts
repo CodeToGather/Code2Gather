@@ -98,6 +98,20 @@ class UserService extends BaseService<User, UserCreateData> {
     ) {
       throw new InvalidDataError('The user must have a valid GitHub username!');
     }
+    if (
+      (isCreate && !('photoUrl' in data)) ||
+      ('photoUrl' in data &&
+        (typeof data.photoUrl !== 'string' || data.photoUrl.length === 0))
+    ) {
+      throw new InvalidDataError('The user must have a valid photo URL!');
+    }
+    if (
+      (isCreate && !('profileUrl' in data)) ||
+      ('profileUrl' in data &&
+        (typeof data.profileUrl !== 'string' || data.profileUrl.length === 0))
+    ) {
+      throw new InvalidDataError('The user must have a valid profile URL!');
+    }
   }
 }
 

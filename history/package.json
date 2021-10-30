@@ -38,7 +38,7 @@
     "build:prepare": "tsc --build --clean",
     "build": "yarn build:prepare && set debug=* && prisma generate && tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./build",
     "db:create": "test -e scripts/db/db_create_local.sh && ./scripts/db/db_create_local.sh || ./scripts/db/db_create.sh",
-    "db:migrate": "prisma migrate dev",
+    "db:migrate": "dotenv -e .env.development prisma migrate dev",
     "db:migrate:test": "dotenv -e .env.test prisma migrate dev",
     "lint": "eslint . --fix --ext .ts,.js && prettier --write \"src/**/*.{ts,js}\" --tab-width 2",
     "lint:ci": "eslint . --ext .ts,.js && prettier --check \"src/**/*.{ts,js}\" --tab-width 2",
