@@ -15,7 +15,7 @@ const Navbar: FC = () => {
   return (
     <nav className="navbar">
       <h1 className="navbar__title">Code2Gather</h1>
-      {user && (
+      {user ? (
         <a
           data-testid="profile-picture-anchor"
           href={user.profileUrl}
@@ -24,6 +24,8 @@ const Navbar: FC = () => {
         >
           <img alt="Profile" className="navbar__image" src={user.photoUrl} />
         </a>
+      ) : (
+        <div className="navbar__image">&nbsp;</div>
       )}
     </nav>
   );
