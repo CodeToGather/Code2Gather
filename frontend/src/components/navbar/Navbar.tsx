@@ -1,5 +1,6 @@
 import { FC } from 'react';
 
+import Typography from 'components/typography';
 import { useUser } from 'contexts/UserContext';
 
 import './Navbar.scss';
@@ -14,7 +15,9 @@ const Navbar: FC = () => {
   const user = useUser();
   return (
     <nav className="navbar">
-      <h1 className="navbar__title">Code2Gather</h1>
+      <Typography className="is-bold" size="large">
+        Code2Gather
+      </Typography>
       {user ? (
         <a
           data-testid="profile-picture-anchor"
