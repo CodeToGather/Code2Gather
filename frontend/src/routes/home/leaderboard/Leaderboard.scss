@@ -1,9 +1,8 @@
 @import '../../../assets/scss/main';
 
 .leaderboard {
-
   @include media('>desktop') {
-    flex: 3;
+    flex: 2;
     padding-right: 2rem;
   }
 

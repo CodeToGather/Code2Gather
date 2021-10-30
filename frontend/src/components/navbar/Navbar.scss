@@ -11,13 +11,9 @@
     height: 2rem;
     width: 2rem;
 
-    @include media('>mobile', '<=desktop') {
+    @include media('>mobile') {
       height: 2.5rem;
       width: 2.5rem;
-    }
-    @include media('>desktop') {
-      height: 3rem;
-      width: 3rem;
     }
   }
 }
