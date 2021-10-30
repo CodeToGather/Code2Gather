@@ -1,10 +1,10 @@
 import faker from 'faker';
+
+import prisma from 'lib/prisma';
 import { Difficulty, Language } from 'types/crud/enums';
 import { MeetingRecordCreateData } from 'types/crud/meetingRecord';
 import { RatingCreateData } from 'types/crud/rating';
 import { UserCreateData } from 'types/crud/user';
-
-import prisma from 'lib/prisma';
 
 import { MeetingRecord, Rating, User } from '.prisma/client';
 
@@ -53,6 +53,8 @@ export const createTestUser = async (
     data: {
       id: data?.id ?? faker.random.alphaNumeric(20),
       githubUsername: data?.githubUsername ?? faker.random.alphaNumeric(20),
+      photoUrl: data?.githubUsername ?? faker.internet.avatar(),
+      profileUrl: data?.profileUrl ?? faker.internet.url(),
     },
   });
 };
@@ -66,6 +68,8 @@ export const mockTestUser = (data?: Partial<UserCreateData>): User => {
     createdAt: new Date(),
     updatedAt: new Date(),
     githubUsername: data?.githubUsername ?? faker.random.alphaNumeric(20),
+    photoUrl: data?.githubUsername ?? faker.internet.avatar(),
+    profileUrl: data?.profileUrl ?? faker.internet.url(),
   };
 };
 

@@ -1,16 +1,20 @@
 import {
-  // GetSelfResponse,
+  GetSelfResponse,
   LoginRequestBody,
   LoginResponse,
 } from 'types/api/auth';
 import { User } from 'types/crud/user';
-
 import tokenUtils from 'utils/tokenUtils';
 
 import BaseApi, { api } from './baseApi';
 
 class AuthApi extends BaseApi {
-  async login(data: { token: string; username: string }): Promise<void> {
+  async login(data: {
+    token: string;
+    githubUsername: string;
+    photoUrl: string;
+    profileUrl: string;
+  }): Promise<void> {
     return this.post(
       'auth/login',
       data as LoginRequestBody,
@@ -27,7 +31,7 @@ class AuthApi extends BaseApi {
     try {
       const response = await api.get('history/user');
       if (response.status === 200) {
-        return response.data;
+        return response.data as GetSelfResponse;
       }
       throw new Error(response.statusText);
     } catch (error) {

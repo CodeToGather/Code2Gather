@@ -1,6 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiServer from 'server';
 import request from 'supertest';
+
+import prisma from 'lib/prisma';
 import { Difficulty, Language } from 'types/crud/enums';
 import { Fixtures, loadFixtures } from 'utils/fixtures';
 import {
@@ -9,8 +11,6 @@ import {
   createTestUser,
   mockTestMeetingRecord,
 } from 'utils/tests';
-
-import prisma from 'lib/prisma';
 
 let server: ApiServer;
 let fixtures: Fixtures;

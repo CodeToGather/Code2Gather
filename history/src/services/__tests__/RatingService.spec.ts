@@ -1,9 +1,8 @@
+import prisma from 'lib/prisma';
 import ratingService from 'services/RatingService';
 import { AuthorizationError, InvalidDataError } from 'types/error';
 import { Fixtures, loadFixtures } from 'utils/fixtures';
 import { createTestRating, createTestUser, mockTestRating } from 'utils/tests';
-
-import prisma from 'lib/prisma';
 
 let fixtures: Fixtures;
 

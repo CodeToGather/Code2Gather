@@ -1,0 +1,53 @@
+@import '../../assets/scss/main';
+
+.typography-small {
+  font-size: 0.5rem;
+
+  @include media('>mobile', '<=desktop') {
+    font-size: 0.6rem;
+  }
+  @include media('>desktop') {
+    font-size: 0.7rem;
+  }
+}
+
+.typography-regular {
+  font-size: 0.8rem;
+
+  @include media('>mobile', '<=desktop') {
+    font-size: 0.9rem;
+  }
+  @include media('>desktop') {
+    font-size: 1rem;
+  }
+}
+
+.typography-medium {
+  font-size: 1rem;
+  @include media('>mobile', '<=desktop') {
+    font-size: 1.25rem;
+  }
+  @include media('>desktop') {
+    font-size: 1.3rem;
+  }
+}
+
+.typography-large {
+  font-size: 1.5rem;
+  @include media('>mobile', '<=desktop') {
+    font-size: 1.75rem;
+  }
+  @include media('>desktop') {
+    font-size: 2rem;
+  }
+}
+
+.typography-extra-large {
+  font-size: 3rem;
+  @include media('>mobile', '<=desktop') {
+    font-size: 3.5rem;
+  }
+  @include media('>desktop') {
+    font-size: 4rem;
+  }
+}

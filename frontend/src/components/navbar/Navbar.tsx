@@ -1,5 +1,10 @@
 import { FC } from 'react';
 
+import Avatar from 'components/avatar';
+import AvatarPlaceholder from 'components/avatar/AvatarPlaceholder';
+import Typography from 'components/typography';
+import { useUser } from 'contexts/UserContext';
+
 import './Navbar.scss';
 
 /**
@@ -9,11 +14,22 @@ import './Navbar.scss';
  * if the user is logged in.
  */
 const Navbar: FC = () => {
-  // TODO: Add profile picture once user information has been
-  // added to application.
+  const user = useUser();
   return (
     <nav className="navbar">
-      <h1 className="navbar__title">Code2Gather</h1>
+      <Typography className="is-bold" size="large">
+        Code2Gather
+      </Typography>
+      {user ? (
+        <Avatar
+          alt="Profile"
+          dataTestId="profile-picture-anchor"
+          href={user.profileUrl}
+          src={user.photoUrl}
+        />
+      ) : (
+        <AvatarPlaceholder />
+      )}
     </nav>
   );
 };

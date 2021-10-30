@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse } from 'axios';
-import { ErrorResponse } from 'types/api';
 
+import { ErrorResponse } from 'types/api';
 import tokenUtils from 'utils/tokenUtils';
 
 export const API_VERSION = 'v1';
@@ -30,7 +30,10 @@ api.interceptors.request.use(
 export { api };
 
 export default class BaseApi {
-  async get<RES>(url: string, handler: (res: RES) => any): Promise<any> {
+  protected async get<RES>(
+    url: string,
+    handler: (res: RES) => any,
+  ): Promise<any> {
     return this.requestWrapper(
       async () => await api.get<never, AxiosResponse<RES | ErrorResponse>>(url),
       handler,

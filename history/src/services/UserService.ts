@@ -1,10 +1,9 @@
+import prisma from 'lib/prisma';
 import { AllowIfUserIsBotPolicy } from 'policies/AllowIfUserIsBotPolicy';
 import { AlwaysDenyPolicy } from 'policies/AlwaysDenyPolicy';
 import { AllowIfUserIsSelfPolicy } from 'policies/user/AllowIfUserIsSelfPolicy';
 import { UserCreateData, UserUpdateData } from 'types/crud/user';
 import { InvalidDataError, ResourceNotFoundError } from 'types/error';
-
-import prisma from 'lib/prisma';
 
 import { BaseService } from './BaseService';
 import { User } from '.prisma/client';
@@ -97,6 +96,20 @@ class UserService extends BaseService<User, UserCreateData> {
           data.githubUsername.length === 0))
     ) {
       throw new InvalidDataError('The user must have a valid GitHub username!');
+    }
+    if (
+      (isCreate && !('photoUrl' in data)) ||
+      ('photoUrl' in data &&
+        (typeof data.photoUrl !== 'string' || data.photoUrl.length === 0))
+    ) {
+      throw new InvalidDataError('The user must have a valid photo URL!');
+    }
+    if (
+      (isCreate && !('profileUrl' in data)) ||
+      ('profileUrl' in data &&
+        (typeof data.profileUrl !== 'string' || data.profileUrl.length === 0))
+    ) {
+      throw new InvalidDataError('The user must have a valid profile URL!');
     }
   }
 }

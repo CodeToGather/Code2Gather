@@ -1,6 +1,7 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+
 import userService from 'services/UserService';
 import { ErrorResponse, SuccessResponse, UserLocals } from 'types/api';
 import { UserCreateData, UserUpdateData } from 'types/crud/user';
@@ -26,9 +27,14 @@ export async function createUser(
     try {
       // Check if there's already an existing user for this account
       const existingUser = await userService.read(userCreateData.id, botUser);
+      const { githubUsername, photoUrl, profileUrl } = userCreateData;
       const updatedUser = await userService.update(
         userCreateData.id,
-        { githubUsername: userCreateData.githubUsername },
+        {
+          githubUsername,
+          photoUrl,
+          profileUrl,
+        },
         existingUser,
       );
       response.status(StatusCodes.OK).json(updatedUser);
@@ -36,16 +42,13 @@ export async function createUser(
     } catch (error) {
       // no-op
     }
-
     const createdUser = await userService.create(userCreateData, botUser);
     response.status(StatusCodes.OK).json(createdUser);
   } catch (error: any) {
-    console.log(error);
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
         response.status(StatusCodes.BAD_REQUEST).json({
-          error:
-            'A user with this Firebase ID or GitHub username already exists!',
+          error: 'A user with this Firebase ID already exists!',
         });
         return;
       }

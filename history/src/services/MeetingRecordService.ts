@@ -1,3 +1,4 @@
+import prisma from 'lib/prisma';
 import { AlwaysDenyPolicy } from 'policies/AlwaysDenyPolicy';
 import { AllowIfUserIsIntervieweePolicy } from 'policies/meetingRecord/AllowIfUserIsIntervieweePolicy';
 import { AllowIfUserIsInterviewerPolicy } from 'policies/meetingRecord/AllowIfUserIsInterviewerPolicy';
@@ -7,8 +8,6 @@ import {
   MeetingRecordUpdateData,
 } from 'types/crud/meetingRecord';
 import { InvalidDataError } from 'types/error';
-
-import prisma from 'lib/prisma';
 
 import { BaseService } from './BaseService';
 import { MeetingRecord, User } from '.prisma/client';

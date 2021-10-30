@@ -1,0 +1,12 @@
+@import '../../assets/scss/main';
+
+.avatar {
+  border-radius: 50%;
+  height: 2rem;
+  width: 2rem;
+
+  @include media('>mobile') {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+}

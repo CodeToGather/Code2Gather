@@ -1,4 +1,5 @@
 import faker from 'faker';
+
 import { Difficulty } from 'types/crud/enums';
 import { LeaderboardData } from 'types/crud/leaderboard';
 
@@ -108,11 +109,17 @@ export class Fixtures {
     );
     usersWithStats.sort((u1, u2) => {
       const hardDiff = u2[1].HARD - u1[1].HARD;
-      if (hardDiff !== 0) {return hardDiff;}
+      if (hardDiff !== 0) {
+        return hardDiff;
+      }
       const mediumDiff = u2[1].MEDIUM - u1[1].MEDIUM;
-      if (mediumDiff !== 0) {return mediumDiff;}
+      if (mediumDiff !== 0) {
+        return mediumDiff;
+      }
       const easyDiff = u2[1].EASY - u1[1].EASY;
-      if (easyDiff !== 0) {return easyDiff;}
+      if (easyDiff !== 0) {
+        return easyDiff;
+      }
       return u2[0].githubUsername.localeCompare(u1[0].githubUsername);
     });
 

@@ -16,7 +16,6 @@ const Configuration = {
         'gateway',
         'auth',
         'pairing',
-        'coding',
         'code-executor',
         'video',
         'room',

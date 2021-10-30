@@ -1,8 +1,7 @@
+import prisma from 'lib/prisma';
 import { AlwaysAllowPolicy } from 'policies/AlwaysAllowPolicy';
 import { DenyIfUserIsBotPolicy } from 'policies/DenyIfUserIsBotPolicy';
 import { LeaderboardData } from 'types/crud/leaderboard';
-
-import prisma from 'lib/prisma';
 
 import { BaseService } from './BaseService';
 import { User } from '.prisma/client';
@@ -13,13 +12,17 @@ class LeaderboardService extends BaseService<LeaderboardData[], void> {
     new AlwaysAllowPolicy(),
   ];
 
-  async read(user: User, top = 10): Promise<LeaderboardData[]> {
+  async read(
+    user: User,
+    top = 5,
+    before = new Date(new Date().setDate(new Date().getDate() - 1)),
+  ): Promise<LeaderboardData[]> {
     const users = await prisma.$queryRaw<LeaderboardData[]>`
     SELECT
       u.*,
-      (SELECT COUNT(*) FROM "public"."MeetingRecord" m WHERE m."intervieweeId" = u.id AND m."questionDifficulty" = 'EASY') AS "numEasyQuestions",
-      (SELECT COUNT(*) FROM "public"."MeetingRecord" m WHERE m."intervieweeId" = u.id AND m."questionDifficulty" = 'MEDIUM') AS "numMediumQuestions",
-      (SELECT COUNT(*) FROM "public"."MeetingRecord" m WHERE m."intervieweeId" = u.id AND m."questionDifficulty" = 'HARD') AS "numHardQuestions"
+      (SELECT COUNT(*) FROM "public"."MeetingRecord" m WHERE m."createdAt" > ${before} AND m."intervieweeId" = u.id AND m."questionDifficulty" = 'EASY') AS "numEasyQuestions",
+      (SELECT COUNT(*) FROM "public"."MeetingRecord" m WHERE m."createdAt" > ${before} AND m."intervieweeId" = u.id AND m."questionDifficulty" = 'MEDIUM') AS "numMediumQuestions",
+      (SELECT COUNT(*) FROM "public"."MeetingRecord" m WHERE m."createdAt" > ${before} AND m."intervieweeId" = u.id AND m."questionDifficulty" = 'HARD') AS "numHardQuestions"
     FROM
       "public"."User" u
     ORDER BY

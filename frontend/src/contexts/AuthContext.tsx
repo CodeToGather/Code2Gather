@@ -1,5 +1,8 @@
 import React from 'react';
 import { useAsync } from 'react-async';
+import { getAdditionalUserInfo } from 'firebase/auth';
+
+import { Loading } from 'components/loading';
 import authApi from 'lib/authApi';
 import { signInWithFirebase } from 'lib/firebase';
 import { User } from 'types/crud/user';
@@ -35,7 +38,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
 
   if (!firstAttemptFinished) {
     if (isPending) {
-      return <>Loading...</>;
+      return <Loading />;
     }
     if (isRejected && error) {
       return (
@@ -50,14 +53,22 @@ const AuthProvider: React.FunctionComponent = (props) => {
   const login = async (): Promise<void> => {
     const response = await signInWithFirebase();
     const token = await response.user.getIdToken();
-    const username = response.user.displayName;
+    const additionalInfo = getAdditionalUserInfo(response);
+    const githubUsername = additionalInfo?.username;
+    // TODO: Provide a default photo url and null coalesce it
+    const photoUrl = (additionalInfo?.profile?.avatar_url ??
+      response.user.photoURL) as string | undefined;
+    const profileUrl =
+      additionalInfo?.profile?.html_url ?? githubUsername
+        ? `https://github.com/${githubUsername}`
+        : undefined;
 
-    if (username == null) {
+    if (githubUsername == null || photoUrl == null || profileUrl == null) {
       throw new Error();
     }
 
     return authApi
-      .login({ token, username })
+      .login({ token, githubUsername, photoUrl, profileUrl })
       .then(reload)
       .catch((e: Error) => Promise.reject(e));
   };

@@ -1,0 +1,44 @@
+@import '../../assets/scss/main';
+
+.modal-fade-in {
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.modal-container {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  width: 100vw;
+}
+
+.modal-background {
+  background-color: black;
+  height: 100vh;
+  opacity: $modal-overlay-opacity;
+  position: absolute;
+  width: 100vw;
+  z-index: 9998;
+}
+
+.modal {
+  background-color: $modal-background-color;
+  border-radius: $modal-border-radius;
+
+  padding: 1.5rem;
+  width: calc(100vw - 5rem);
+  z-index: 9999;
+
+  @include media('>mobile', '<=tablet') {
+    width: calc(80vw - 3rem);
+  }
+  @include media('>tablet') {
+    width: calc(70vw - 3rem);
+  }
+
+  @include media('>desktop') {
+    width: 600px;
+  }
+}

@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const { StatusCodes } = require('http-status-codes');
 const { verify } = require('jsonwebtoken');
+const axios = require('axios');
 
 const {
   createAuthenticationToken,
@@ -16,7 +17,6 @@ const {
   verifyTokenWithFirebase,
   getUserWithIdFromFirebase,
 } = require('./service');
-const { default: axios } = require('axios');
 
 dotenv.config();
 
@@ -46,7 +46,7 @@ app.use(helmet());
 
 app.post('/login', async (req, res) => {
   try {
-    const { token, username } = req.body;
+    const { token, githubUsername, photoUrl, profileUrl } = req.body;
     if (token == null) {
       throw new Error();
     }
@@ -58,7 +58,9 @@ app.post('/login', async (req, res) => {
 
     const createUserResponse = await axios.post('http://localhost:8002/user', {
       id: uid,
-      githubUsername: username,
+      githubUsername,
+      photoUrl,
+      profileUrl,
     });
 
     if (createUserResponse.status !== 200) {
@@ -68,7 +70,7 @@ app.post('/login', async (req, res) => {
     const jwtToken = createAuthenticationToken(uid);
     res.status(StatusCodes.OK).json({ token: jwtToken });
     return;
-  } catch (error) {
+  } catch {
     res.status(StatusCodes.BAD_REQUEST).json();
   }
 });
@@ -87,7 +89,7 @@ app.get('/auth', async (req, res) => {
     if (!isAccessTokenSignedPayload(payload)) {
       throw new Error();
     }
-  } catch (error) {
+  } catch {
     res.status(StatusCodes.UNAUTHORIZED).json();
     return;
   }
@@ -95,7 +97,7 @@ app.get('/auth', async (req, res) => {
   const { uid } = payload;
   try {
     await getUserWithIdFromFirebase(uid);
-  } catch (error) {
+  } catch {
     res.status(StatusCodes.UNAUTHORIZED).json();
     return;
   }

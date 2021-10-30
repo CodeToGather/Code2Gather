@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 import { CONNECT } from 'constants/pairing';
+import { initializeSocketForPairing } from 'lib/pairingSocketService';
 import tokenUtils from 'utils/tokenUtils';
 
 export default interface SocketContextInterface {
@@ -26,7 +27,7 @@ const PairingSocketProvider: React.FunctionComponent = (props) => {
   });
 
   useEffect(() => {
-    // initializeSocket(socket);
+    initializeSocketForPairing(socket);
     socket.on(CONNECT, () => {
       // eslint-disable-next-line no-console
       console.log('Socket connected!');

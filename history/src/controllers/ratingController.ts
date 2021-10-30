@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+
 import ratingService from 'services/RatingService';
 import { ErrorResponse, UserLocals } from 'types/api';
 import { RatingCreateData } from 'types/crud/rating';

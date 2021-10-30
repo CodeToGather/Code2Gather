@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import DemoImage from 'assets/images/demo.png';
 import Container from 'components/container';
+import Typography from 'components/typography';
 import { CODE_EDITOR } from 'constants/routes';
 import { useAuth } from 'contexts/AuthContext';
 
@@ -16,6 +17,7 @@ const Landing: FC = () => {
     try {
       await login();
     } catch (error) {
+      // TODO: Show error
       // eslint-disable-next-line no-console
       console.log(error);
     }
@@ -25,25 +27,27 @@ const Landing: FC = () => {
     <Container hasBackground={true}>
       <main className="landing">
         <div className="landing__left">
-          <h1>Mock interviews made easier.</h1>
-          <p className="is-regular">
+          <Typography className="is-bold" size="extra-large">
+            Mock interviews made easier.
+          </Typography>
+          <Typography className="is-regular tagline" size="large">
             Excel in your technical interviews today.
-          </p>
+          </Typography>
           <div className="landing__left__button-container">
             <button
               className="primary-button landing__github-button"
               onClick={handleGithubSignIn}
             >
               <i className="fab fa-github" />
-              <div>Sign in with GitHub</div>
+              <Typography size="medium">Sign in with GitHub</Typography>
             </button>
             <button
-              className="secondary-button landing__guest-button"
+              className="secondary-button"
               onClick={(): void => {
                 history.push(CODE_EDITOR);
               }}
             >
-              Sign in as guest instead
+              <Typography size="regular">Sign in as guest instead</Typography>
             </button>
           </div>
         </div>

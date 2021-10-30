@@ -1,0 +1,48 @@
+@import '../../assets/scss/main';
+
+.home {
+  &__top {
+    display: flex;
+    flex-direction: column-reverse;
+    @include media('>desktop') {
+      flex-direction: row;
+    }
+  }
+
+  &__modal {
+    &-instruction {
+      margin-bottom: 1.5rem;
+      margin-top: 0.75rem;
+    }
+  }
+}
+
+.practice-panel {
+  @include media('>desktop') {
+    flex: 1;
+  }
+
+  &__title {
+    margin-bottom: 1rem;
+  }
+
+  .practice-panel__button {
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    width: 100%;
+
+    &.new-to-process {
+      margin-bottom: 1rem;
+      margin-top: 0;
+      padding: 0.25rem;
+    }
+  }
+
+  &__instruction {
+    margin-bottom: 1rem;
+
+    &.bottom {
+      margin-top: 1.5rem;
+    }
+  }
+}
