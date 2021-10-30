@@ -5,7 +5,7 @@ export enum PairingState {
   STARTED_PAIRING,
   FINDING_PAIR,
   FOUND_PAIR,
-  FOUND_ROOM,
+  CREATED_ROOM,
   ERROR,
 }
 

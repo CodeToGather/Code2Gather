@@ -1,9 +1,9 @@
 import { FC, ReactElement, useState } from 'react';
-import { LeaderboardData } from 'types/crud/leaderboard';
 
 import Error from 'components/error';
 import Tabs from 'components/tabs';
 import Typography from 'components/typography';
+import { LeaderboardData } from 'types/crud/leaderboard';
 
 import { LeaderboardState } from '../states';
 

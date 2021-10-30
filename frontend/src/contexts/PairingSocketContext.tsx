@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { initializeSocketForPairing } from 'lib/pairingSocketService';
 // import { initializeSocket } from 'services';
 import { io, Socket } from 'socket.io-client';
 
 import { CONNECT } from 'constants/pairing';
+import { initializeSocketForPairing } from 'lib/pairingSocketService';
 import tokenUtils from 'utils/tokenUtils';
 
 export default interface SocketContextInterface {

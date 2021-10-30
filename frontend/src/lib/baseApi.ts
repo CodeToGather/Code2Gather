@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse } from 'axios';
-import { ErrorResponse } from 'types/api';
 
+import { ErrorResponse } from 'types/api';
 import tokenUtils from 'utils/tokenUtils';
 
 export const API_VERSION = 'v1';

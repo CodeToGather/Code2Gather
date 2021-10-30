@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from 'reducers/rootReducer';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+
+import rootReducer from 'reducers/rootReducer';
 
 const persistConfig = {
   key: 'code2gather',

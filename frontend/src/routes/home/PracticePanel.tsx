@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
-import { Difficulty } from 'types/crud/difficulty';
 
 import Typography from 'components/typography';
+import { Difficulty } from 'types/crud/difficulty';
 
 import './Home.scss';
 

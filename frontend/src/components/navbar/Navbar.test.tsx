@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
-import { User } from 'types/crud/user';
 
+import { User } from 'types/crud/user';
 import { authUserContextRender } from 'utils/testUtils';
 
 import Navbar from './Navbar';

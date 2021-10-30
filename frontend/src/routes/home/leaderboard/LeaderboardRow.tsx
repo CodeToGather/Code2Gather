@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { LeaderboardData } from 'types/crud/leaderboard';
 
 import Avatar from 'components/avatar';
 import Typography from 'components/typography';
+import { LeaderboardData } from 'types/crud/leaderboard';
 
 import './Leaderboard.scss';
 

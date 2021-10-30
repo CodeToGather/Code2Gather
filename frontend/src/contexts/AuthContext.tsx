@@ -1,11 +1,11 @@
 import React from 'react';
 import { useAsync } from 'react-async';
 import { getAdditionalUserInfo } from 'firebase/auth';
+
+import { Loading } from 'components/loading';
 import authApi from 'lib/authApi';
 import { signInWithFirebase } from 'lib/firebase';
 import { User } from 'types/crud/user';
-
-import { Loading } from 'components/loading';
 
 export interface AuthContextInterface {
   data: User | null;
