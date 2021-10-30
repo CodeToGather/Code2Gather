@@ -11,7 +11,6 @@
 }
 
 .practice-panel {
-
   @include media('>desktop') {
     flex: 1;
   }
@@ -35,7 +34,7 @@
     margin-bottom: 1rem;
 
     &.bottom {
-      margin-top: 1rem;
+      margin-top: 1.5rem;
     }
   }
 }
