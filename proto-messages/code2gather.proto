@@ -52,6 +52,27 @@ message CreateRoomResponse {
   string room_id = 1;
 }
 
+// HTTP POST request /meeting (Room -> History)
+message CreateMeetingRequest {
+  string interviewer_id = 1;
+  string interviewee_id = 2;
+  int32 duration = 3;
+  string question_id = 4;
+  QuestionDifficulty difficulty = 5;
+  Language language = 6;
+  string code_written = 7;
+  bool is_solved = 8;
+  string feedback_to_interviewee = 9;
+}
+
+// HTTP POST request /rating (Room -> History)
+message CreateRatingRequest {
+  float rating = 1;
+  string rating_user_id = 2;
+  string rated_user_id = 3;
+  string room_id = 4;
+}
+
 // ===============================
 // Websocket messages with client
 // ===============================
@@ -113,9 +134,9 @@ message DisconnectBroadcast {
 
 message CompleteQuestionRequest {
   string room_id = 1;
-  string interviewer_notes = 2;
-  bool is_solved = 3;
-  string code = 4;
+  bool is_solved = 2;
+  string feedback_to_interviewee = 3;
+  string code_written = 4;
 }
 
 message CompleteQuestionResponse {
