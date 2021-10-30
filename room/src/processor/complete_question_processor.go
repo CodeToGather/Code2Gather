@@ -1,6 +1,7 @@
 package processor
 
 import (
+	"code2gather.com/room/src/server/http_client"
 	"log"
 
 	"code2gather.com/room/src/agents/question_agents"
@@ -10,12 +11,14 @@ import (
 )
 
 type CompleteQuestionProcessor struct {
-	request           *models.CompleteQuestionRequest
-	uid               string
-	rid               string
-	nextInterviewerId string
-	nextQuestion      *models.QuestionMessage
-	authorized        bool
+	request            *models.CompleteQuestionRequest
+	uid                string
+	rid                string
+	currentIntervieeId string
+	currentQuestion    *models.Question
+	nextInterviewerId  string
+	nextQuestion       *models.QuestionMessage
+	authorized         bool
 }
 
 func NewCompleteQuestionProcessor(request *models.CompleteQuestionRequest, uid string) *CompleteQuestionProcessor {
@@ -34,29 +37,57 @@ func (p *CompleteQuestionProcessor) GetRequest() proto.Message {
 	return p.request
 }
 
-func (p *CompleteQuestionProcessor) ProcessRoom() error {
+func (p *CompleteQuestionProcessor) SendMeetingRecord() error {
+	meetingRecord := &models.CreateMeetingRequest{
+		InterviewerId:         p.uid,
+		IntervieweeId:         p.currentIntervieeId,
+		Duration:              0,
+		QuestionId:            p.currentQuestion.Id,
+		Difficulty:            p.currentQuestion.Difficulty,
+		Language:              p.request.Language,
+		CodeWritten:           p.request.CodeWritten,
+		IsSolved:              p.request.IsSolved,
+		FeedbackToInterviewee: p.request.FeedbackToInterviewee,
+	}
+	err := http_client.SendMeetingRecord(meetingRecord)
+	return err
+}
+
+func (p *CompleteQuestionProcessor) Process() error {
+	log.Println("Processing Complete Question Request")
 	room, err := room_agents.GetRoomById(p.rid)
 	if err != nil {
 		return err
 	}
-	if p.uid == room.Uid1 || p.uid == room.Uid2 {
+	if p.uid == room.Uid1 {
 		p.authorized = true
+		p.currentIntervieeId = room.Uid2
+	} else if p.uid == room.Uid2 {
+		p.authorized = true
+		p.currentIntervieeId = room.Uid1
 	} else {
 		return nil
+	}
+
+	firstQuestion, err := question_agents.GetQuestionById(room.Qid1)
+	if err != nil {
+		return err
+	}
+	secondQuestion, err := question_agents.GetQuestionById(room.Qid2)
+	if err != nil {
+		return err
 	}
 
 	// If the room is at the first question, return the second question and mark room as SecondQuestion
 	// Else, return empty nextInterviewerId and nextQuestion
 	if room.Status == models.FirstQuestion {
+		p.currentQuestion = firstQuestion
 		p.nextInterviewerId = room.Uid2
-		question, err := question_agents.GetQuestionById(room.Qid2)
-		if err != nil {
-			return err
-		}
-		p.nextQuestion = question.ToQuestionMessage()
+		p.nextQuestion = secondQuestion.ToQuestionMessage()
 		// Update room status to SecondQuestion
 		room.Status = models.SecondQuestion
 	} else {
+		p.currentQuestion = secondQuestion
 		// Update room status to Completed
 		room.Status = models.Completed
 	}
@@ -64,21 +95,11 @@ func (p *CompleteQuestionProcessor) ProcessRoom() error {
 	if err = room_agents.UpdateRoom(room); err != nil {
 		return err
 	}
-	return nil
-}
 
-func (p *CompleteQuestionProcessor) SendMeetingRecord() error {
-	return nil
-}
-
-func (p *CompleteQuestionProcessor) Process() error {
-	log.Println("Processing Complete Question Request")
-	if err := p.ProcessRoom(); err != nil {
+	if err = p.SendMeetingRecord(); err != nil {
 		return err
 	}
-	if err := p.SendMeetingRecord(); err != nil {
-		return err
-	}
+
 	return nil
 }
 
