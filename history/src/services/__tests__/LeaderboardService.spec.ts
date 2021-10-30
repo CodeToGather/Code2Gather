@@ -22,14 +22,14 @@ describe('LeaderboardService', () => {
     rankedUsers = await fixtures.generateLeaderboardUsers();
   });
 
-  it('reads top 10 users correctly', async () => {
+  it('reads top 5 users correctly', async () => {
     const leaderboard = await leaderboardService.read(fixtures.userOne);
-    expect(leaderboard).toEqual(rankedUsers.slice(0, 10));
+    expect(leaderboard).toEqual(rankedUsers.slice(0, 5));
   });
 
   it('reads a specified number of people', async () => {
-    const leaderboard = await leaderboardService.read(fixtures.userOne, 5);
-    expect(leaderboard).toEqual(rankedUsers.slice(0, 5));
+    const leaderboard = await leaderboardService.read(fixtures.userOne, 10);
+    expect(leaderboard).toEqual(rankedUsers.slice(0, 10));
   });
 
   it('does not allow a bot to read', async () => {

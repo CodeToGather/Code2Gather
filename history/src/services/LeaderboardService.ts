@@ -14,7 +14,7 @@ class LeaderboardService extends BaseService<LeaderboardData[], void> {
 
   async read(
     user: User,
-    top = 10,
+    top = 5,
     before = new Date(new Date().setDate(new Date().getDate() - 1)),
   ): Promise<LeaderboardData[]> {
     const users = await prisma.$queryRaw<LeaderboardData[]>`
