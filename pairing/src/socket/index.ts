@@ -44,59 +44,57 @@ const setUpIo = (io: Server): void => {
     // Doesn't seem to be called due to the middleware before
     socket.on(CONNECT, () => console.log('Socket connected!'));
 
-    socket.on(
-      REQ_FIND_PAIR,
-      async ({ difficulty }: { difficulty: Difficulty }) => {
-        const uid = SidUidMap.retrieveUid(socket.id);
-        if (uid == null) {
-          socket.emit(ERROR_FIND_PAIR, 'Unauthorized');
-          return;
-        }
-        let ratingResponse: AxiosResponse<any, any>;
-        try {
-          ratingResponse = await axios.get('http://localhost:8002/rating', {
-            headers: {
-              authorization: uid,
-            },
-          });
-          if (ratingResponse.status !== 200) {
-            throw new Error();
-          }
-        } catch (error) {
-          socket.emit(ERROR_FIND_PAIR, 'Something went wrong!');
-        }
-        const user = {
-          uid,
-          sid: socket.id,
-          difficulty,
-          rating: {
-            average: ratingResponse!.data.average,
-            count: ratingResponse!.data.count,
+    socket.on(REQ_FIND_PAIR, async (difficulty: Difficulty) => {
+      const uid = SidUidMap.retrieveUid(socket.id);
+      if (uid == null) {
+        socket.emit(ERROR_FIND_PAIR, 'Unauthorized');
+        return;
+      }
+      let ratingResponse: AxiosResponse<any, any>;
+      try {
+        ratingResponse = await axios.get('http://localhost:8002/rating', {
+          headers: {
+            authorization: uid,
           },
-        };
-        const result = PairingQueue.enqueue(user);
-        // Let the frontend know we're looking for a pair now.
-        socket.emit(RES_FIND_PAIR);
-
-        // We found a match!
-        if (result != null) {
-          const [user1, user2] = result;
-          // Tell the two users we found a match! Going to create the room now.
-          io.to(user1.uid).to(user2.uid).emit(RES_FOUND_PAIR);
-          const roomResponse = await axios.post('http://localhost:8007', {
-            uid1: user1.uid,
-            uid2: user2.uid,
-            difficulty,
-          });
-          if (roomResponse.status !== 200) {
-            // TODO: Have some more elaborate recovery mechanism
-          }
-          io.to(user1.uid)
-            .to(user2.uid)
-            .emit(RES_CREATED_ROOM, { roomId: roomResponse.data.roomId });
+        });
+        if (ratingResponse.status !== 200) {
+          throw new Error();
         }
-      },
-    );
+      } catch (error) {
+        socket.emit(ERROR_FIND_PAIR, 'Something went wrong!');
+      }
+      const user = {
+        uid,
+        sid: socket.id,
+        difficulty,
+        rating: {
+          average: ratingResponse!.data.average,
+          count: ratingResponse!.data.count,
+        },
+      };
+      SidUidMap.insertUser(socket.id, user);
+      const result = PairingQueue.enqueue(user);
+      // Let the frontend know we're looking for a pair now.
+      socket.emit(RES_FIND_PAIR);
+
+      // We found a match!
+      if (result != null) {
+        const [user1, user2] = result;
+        // Tell the two users we found a match! Going to create the room now.
+        io.to(user1.uid).to(user2.uid).emit(RES_FOUND_PAIR);
+        const roomResponse = await axios.post('http://localhost:8007', {
+          uid1: user1.uid,
+          uid2: user2.uid,
+          difficulty,
+        });
+        if (roomResponse.status !== 200) {
+          // TODO: Have some more elaborate recovery mechanism
+        }
+        io.to(user1.uid)
+          .to(user2.uid)
+          .emit(RES_CREATED_ROOM, roomResponse.data.roomId);
+      }
+    });
 
     socket.on(REQ_STOP_FINDING_PAIR, async () => {
       const user = SidUidMap.retrieveUser(socket.id);

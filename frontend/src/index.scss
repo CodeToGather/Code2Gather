@@ -38,7 +38,7 @@ button {
   font-size: inherit;
   font-weight: inherit;
   padding: 1rem;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, opacity 0.3s;
 
   &:hover {
     cursor: pointer;
@@ -52,6 +52,15 @@ button.primary-button {
 
   &:hover {
     background-color: $primary-button-background-hover-color;
+  }
+
+  &:disabled {
+    background-color: $primary-button-background-color;
+    opacity: 0.5;
+
+    &:hover {
+      cursor: not-allowed;
+    }
   }
 }
 

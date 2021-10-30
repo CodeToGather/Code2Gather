@@ -51,6 +51,7 @@ class PairingQueue {
       throw new Error('Something went wrong!');
     }
     queue.splice(index);
+    this.alreadyEnqueued.delete(user.uid);
   }
 }
 

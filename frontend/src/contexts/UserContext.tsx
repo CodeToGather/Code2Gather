@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { User } from 'types/crud/user';
 
 import { useAuth } from './AuthContext';

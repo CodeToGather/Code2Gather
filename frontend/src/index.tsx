@@ -1,7 +1,10 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import { SkeletonTheme } from 'react-loading-skeleton';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
+import store, { persistor } from 'app/store';
 import AppProviders from 'contexts/AppProviders';
 
 import App from './app';
@@ -11,11 +14,15 @@ import './index.scss';
 
 ReactDOM.render(
   <StrictMode>
-    <AppProviders>
-      <SkeletonTheme baseColor="#24282D" highlightColor="#34383d">
-        <App />
-      </SkeletonTheme>
-    </AppProviders>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <AppProviders>
+          <SkeletonTheme baseColor="#24282D" highlightColor="#34383d">
+            <App />
+          </SkeletonTheme>
+        </AppProviders>
+      </PersistGate>
+    </Provider>
   </StrictMode>,
   document.getElementById('root'),
 );

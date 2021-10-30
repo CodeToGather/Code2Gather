@@ -265,7 +265,7 @@ module.exports = {
               ['^react', '^@?\\w'],
               // Internal packages.
               [
-                '^(app|assets|components|constants|contexts|data|routes|sections|utils)(/.*|$)',
+                '^(app|assets|components|constants|contexts|data|lib|reducers|routes|sections|types|utils)(/.*|$)',
               ],
               // Side effect imports.
               ['^\\u0000'],

@@ -8,6 +8,13 @@
       flex-direction: row;
     }
   }
+
+  &__modal {
+    &-instruction {
+      margin-bottom: 1.5rem;
+      margin-top: 0.75rem;
+    }
+  }
 }
 
 .practice-panel {

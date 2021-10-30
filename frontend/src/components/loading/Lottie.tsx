@@ -116,9 +116,15 @@ class Lottie extends PureComponent<ReactLottieOwnProps, ReactLottieState> {
 
   private configureAnimationItem(): void {
     const { playingState, speed, direction } = this.props;
-    if (playingState) {this.setAnimationPlayingState(playingState);}
-    if (speed) {this.animationItem?.setSpeed(speed);}
-    if (direction) {this.animationItem?.setDirection(direction);}
+    if (playingState) {
+      this.setAnimationPlayingState(playingState);
+    }
+    if (speed) {
+      this.animationItem?.setSpeed(speed);
+    }
+    if (direction) {
+      this.animationItem?.setDirection(direction);
+    }
   }
 
   private setAnimationPlayingState = (state: ReactLottiePlayingState): void => {

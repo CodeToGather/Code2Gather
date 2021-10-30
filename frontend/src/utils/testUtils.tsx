@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
 import { render, RenderResult } from '@testing-library/react';
-import { User } from 'types/crud/user';
 
 import { AuthContext } from 'contexts/AuthContext';
 import { UserContext } from 'contexts/UserContext';
+import { User } from 'types/crud/user';
 
 import { emptyPromiseFunction } from './functionUtils';
 
