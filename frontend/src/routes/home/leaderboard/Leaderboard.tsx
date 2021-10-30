@@ -60,7 +60,7 @@ const Leaderboard: FC<Props> = ({ day, week, month, isLoading, isError }) => {
         </div>
       );
     }
-    if (!isError) {
+    if (isError) {
       return (
         <div className="leaderboard__body">
           <Error />
