@@ -49,7 +49,6 @@ const Leaderboard: FC<Props> = ({ day, week, month, isLoading, isError }) => {
 
   const renderBody = (): ReactElement => {
     if (isLoading) {
-      // TODO: Replace with skeleton
       return (
         <div className="leaderboard__body">
           <LeaderboardRowSkeleton />
