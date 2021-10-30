@@ -27,10 +27,10 @@ const PracticePanel: FC = () => {
         a mock interview with you!
       </Typography>
       <button className="primary-button practice-panel__button">
-        Practice Now
+        <Typography size="regular">Practice Now</Typography>
       </button>
       <button className="secondary-button practice-panel__button new-to-process">
-        I&apos;m new to the process.
+        <Typography size="regular">I&apos;m new to the process.</Typography>
       </button>
     </div>
   );
