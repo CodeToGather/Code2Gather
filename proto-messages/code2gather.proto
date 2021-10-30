@@ -77,6 +77,8 @@ message ClientRequest {
   oneof request {
     JoinRoomRequest join_room_request = 1;
     ExecuteCodeRequest execute_code_request = 2;
+    CompleteQuestionRequest complete_question_request = 3;
+    SubmitRatingRequest submit_rating_request = 4;
   }
 }
 
@@ -91,11 +93,13 @@ message JoinRoomResponse {
 }
 
 message ExecuteCodeRequest {
-  string code = 1;
-  Language language = 2;
+  string room_id = 1;
+  string code = 2;
+  Language language = 3;
 }
 
 message ExecuteCodeBroadcast {
+  string executing_uid = 1;
 }
 
 message ExecuteCodeResponse {
@@ -104,12 +108,14 @@ message ExecuteCodeResponse {
 }
 
 message DisconnectBroadcast {
+  string disconnected_uid = 1;
 }
 
 message CompleteQuestionRequest {
-  string interviewer_notes = 1;
-  bool is_solved = 2;
-  string code = 3;
+  string room_id = 1;
+  string interviewer_notes = 2;
+  bool is_solved = 3;
+  string code = 4;
 }
 
 message CompleteQuestionResponse {
@@ -119,7 +125,8 @@ message CompleteQuestionResponse {
 }
 
 message SubmitRatingRequest {
-  float rating = 1;
+  string room_id = 1;
+  float rating = 2;
 }
 
 message SubmitRatingResponse {
