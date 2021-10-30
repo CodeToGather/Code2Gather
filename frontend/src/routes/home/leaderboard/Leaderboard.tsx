@@ -7,6 +7,7 @@ import Typography from 'components/typography';
 import { LeaderboardState } from '../states';
 
 import LeaderboardRow from './LeaderboardRow';
+import LeaderboardRowSkeleton from './LeaderboardRowSkeleton';
 import './Leaderboard.scss';
 
 type Props = LeaderboardState;
@@ -48,7 +49,15 @@ const Leaderboard: FC<Props> = ({ day, week, month, isLoading, isError }) => {
   const renderBody = (): ReactElement => {
     if (isLoading) {
       // TODO: Replace with skeleton
-      return <>Loading...</>;
+      return (
+        <div className="leaderboard__body">
+          <LeaderboardRowSkeleton />
+          <LeaderboardRowSkeleton />
+          <LeaderboardRowSkeleton />
+          <LeaderboardRowSkeleton />
+          <LeaderboardRowSkeleton />
+        </div>
+      );
     }
     if (isError) {
       // TODO: Replace with a standard error component
