@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import Avatar from 'components/avatar';
+import AvatarPlaceholder from 'components/avatar/AvatarPlaceholder';
 import Typography from 'components/typography';
 import { useUser } from 'contexts/UserContext';
 
@@ -19,16 +21,14 @@ const Navbar: FC = () => {
         Code2Gather
       </Typography>
       {user ? (
-        <a
-          data-testid="profile-picture-anchor"
+        <Avatar
+          alt="Profile"
+          dataTestId="profile-picture-anchor"
           href={user.profileUrl}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <img alt="Profile" className="navbar__image" src={user.photoUrl} />
-        </a>
+          src={user.photoUrl}
+        />
       ) : (
-        <div className="navbar__image">&nbsp;</div>
+        <AvatarPlaceholder />
       )}
     </nav>
   );

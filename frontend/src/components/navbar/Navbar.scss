@@ -1,19 +1,6 @@
-@import '../../assets/scss/main';
-
 .navbar {
   align-items: center;
   display: flex;
   justify-content: space-between;
   padding: 2rem 0;
-
-  &__image {
-    border-radius: 50%;
-    height: 2rem;
-    width: 2rem;
-
-    @include media('>mobile') {
-      height: 2.5rem;
-      width: 2.5rem;
-    }
-  }
 }
