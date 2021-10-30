@@ -137,6 +137,7 @@ message CompleteQuestionRequest {
   bool is_solved = 2;
   string feedback_to_interviewee = 3;
   string code_written = 4;
+  Language language = 5;
 }
 
 message CompleteQuestionResponse {

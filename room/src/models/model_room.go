@@ -7,6 +7,7 @@ type RoomStatus int32
 const (
 	FirstQuestion RoomStatus = iota
 	SecondQuestion
+	Completed
 	Closed
 )
 

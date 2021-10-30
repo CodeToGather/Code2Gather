@@ -24,3 +24,8 @@ func (daoi RoomDaoImpl) GetRoomById(id string) (models.Room, error) {
 	err := daoi.collection.Find(bson.M{"id": id}).One(&room)
 	return room, err
 }
+
+func (daoi RoomDaoImpl) UpdateRoom(room *models.Room) error {
+	err := daoi.collection.Update(bson.M{"id": room.Id}, room)
+	return err
+}
