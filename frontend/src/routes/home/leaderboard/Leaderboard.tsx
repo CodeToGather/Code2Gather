@@ -1,6 +1,7 @@
 import { FC, ReactElement, useState } from 'react';
 import { LeaderboardData } from 'types/crud/leaderboard';
 
+import Error from 'components/error';
 import Tabs from 'components/tabs';
 import Typography from 'components/typography';
 
@@ -59,9 +60,12 @@ const Leaderboard: FC<Props> = ({ day, week, month, isLoading, isError }) => {
         </div>
       );
     }
-    if (isError) {
-      // TODO: Replace with a standard error component
-      return <>Error!</>;
+    if (!isError) {
+      return (
+        <div className="leaderboard__body">
+          <Error />
+        </div>
+      );
     }
     const data = getData();
     if (data.length === 0) {
