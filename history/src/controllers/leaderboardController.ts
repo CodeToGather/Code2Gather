@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import leaderboardService from 'services/LeaderboardService';
 import { ErrorResponse } from 'types/api';
-import { LeaderboardData } from 'types/crud/leaderboard';
+import { LeaderboardApiResponse } from 'types/api/leaderboard';
 import { AuthorizationError } from 'types/error';
 
 /**
@@ -14,12 +14,23 @@ import { AuthorizationError } from 'types/error';
  */
 export async function readLeaderboard(
   _request: Request<unknown, unknown, unknown>,
-  response: Response<ErrorResponse | LeaderboardData[]>,
+  response: Response<ErrorResponse | LeaderboardApiResponse>,
 ): Promise<void> {
   const { user } = response.locals;
   try {
-    const leaderboardData = await leaderboardService.read(user);
-    response.status(StatusCodes.OK).json(leaderboardData);
+    const day = await leaderboardService.read(user);
+    const week = await leaderboardService.read(
+      user,
+      10,
+      new Date(new Date().setDate(new Date().getDate() - 7)),
+    );
+    const month = await leaderboardService.read(
+      user,
+      10,
+      // We'll just use 30 days for month query
+      new Date(new Date().setDate(new Date().getDate() - 30)),
+    );
+    response.status(StatusCodes.OK).json({ day, week, month });
   } catch (error: any) {
     if (error instanceof AuthorizationError) {
       response.status(StatusCodes.FORBIDDEN).json({

@@ -28,14 +28,24 @@ describe('GET /leaderboard', () => {
     rankedUsers = await fixtures.generateLeaderboardUsers();
   });
 
-  it('should return the top 10 users', async () => {
+  it('should return the same top 10 users for day, week and month', async () => {
     const response = await request(server.server)
       .get('/leaderboard')
       .set('Authorization', fixtures.userOne.id)
       .send();
     expect(response.status).toBe(StatusCodes.OK);
-    expect(response.body).toHaveLength(10);
-    expect(response.body).toEqual(convertDatesToJson(rankedUsers.slice(0, 10)));
+    expect(response.body.day).toHaveLength(10);
+    expect(response.body.day).toEqual(
+      convertDatesToJson(rankedUsers.slice(0, 10)),
+    );
+    expect(response.body.week).toHaveLength(10);
+    expect(response.body.week).toEqual(
+      convertDatesToJson(rankedUsers.slice(0, 10)),
+    );
+    expect(response.body.month).toHaveLength(10);
+    expect(response.body.month).toEqual(
+      convertDatesToJson(rankedUsers.slice(0, 10)),
+    );
   });
 
   it('should not allow invalid uid', async () => {
