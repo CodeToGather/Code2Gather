@@ -6,7 +6,7 @@ import prisma from 'lib/prisma';
 export const convertUidToUser = async (
   request: Request<any>,
   response: Response<any>,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   const uid = request.headers.authorization;
   if (uid == null || typeof uid !== 'string') {

@@ -7,7 +7,7 @@ import { User } from '.prisma/client';
 export class BasePolicy<T> {
   public async validate(_item: T, _user: User): Promise<Authorization> {
     throw new MissingImplementationError(
-      'You need to override the validate method!'
+      'You need to override the validate method!',
     );
   }
 }

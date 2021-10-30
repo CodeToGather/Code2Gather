@@ -32,23 +32,12 @@
     "jest-canvas-mock": "^2.3.1",
     "typescript": "^4.4.4"
   },
-  "lint-staged": {
-    "**/*.{ts,js,jsx,tsx}": [
-      "pretty-quick --staged",
-      "eslint --fix"
-    ],
-    "**/*.{scss,sass}": [
-      "stylelint --fix"
-    ]
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:ci": "react-scripts test --watchAll=false",
-    "eject": "react-scripts eject",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix && prettier --write 'src/**/*.{ts,tsx,js,jsx}' --tab-width 2 && stylelint '**/*.{scss,sass}' --fix",
-    "lint:ci": "eslint '*/**/*.{js,ts,tsx}' --color && yarn prettier --check 'src/**/*.{ts,tsx,js,jsx}' --tab-width 2 && stylelint '**/*.{scss,sass}' --color"
+    "eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [

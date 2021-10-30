@@ -14,7 +14,7 @@ import { AuthorizationError } from 'types/error';
  */
 export async function readLeaderboard(
   _request: Request<unknown, unknown, unknown>,
-  response: Response<ErrorResponse | LeaderboardData[]>
+  response: Response<ErrorResponse | LeaderboardData[]>,
 ): Promise<void> {
   const { user } = response.locals;
   try {

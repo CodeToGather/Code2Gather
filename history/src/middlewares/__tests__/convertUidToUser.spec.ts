@@ -39,7 +39,7 @@ describe('convertUidToUser', () => {
     hasCalledSendStatus = false;
     mockStatusCode = null;
     hasCalledNextFunction = false;
-    nextFunction = () => {
+    nextFunction = (): void => {
       hasCalledNextFunction = true;
     };
   });

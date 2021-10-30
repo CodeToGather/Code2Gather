@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse } from 'axios';
-
 import { ErrorResponse } from 'types/api';
+
 import tokenUtils from 'utils/tokenUtils';
 
 export const API_VERSION = 'v1';
@@ -15,7 +15,7 @@ api.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined') {
       const token = tokenUtils.getToken();
-      // eslint-disable-next-line no-param-reassign
+
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -26,6 +26,8 @@ api.interceptors.request.use(
     return Promise.reject(new Error(error));
   },
 );
+
+export { api };
 
 export default class BaseApi {
   protected async get<RES>(

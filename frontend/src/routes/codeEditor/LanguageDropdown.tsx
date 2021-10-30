@@ -11,7 +11,7 @@ interface Props {
   language: Language;
   setLanguage: (language: Language) => void;
   className?: string;
-};
+}
 
 const LanguageDropdown: FC<Props> = ({
   language,
@@ -29,7 +29,7 @@ const LanguageDropdown: FC<Props> = ({
     <div className="language-dropdown">
       <button
         className={`border-button${className !== '' ? ` ${className}` : ''}`}
-        onClick={() => setIsDropdownShown((isShown) => !isShown)}
+        onClick={(): void => setIsDropdownShown((isShown) => !isShown)}
       >
         <div>{languageNames[language]}</div>
         <i className="fas fa-caret-down" />

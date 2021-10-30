@@ -6,13 +6,13 @@
   "author": "Team 32",
   "private": true,
   "workspaces": [
-    "frontend",
-    "pairing",
-    "code-executor",
-    "history",
-    "video",
     "auth",
-    "gateway"
+    "code-executor",
+    "frontend",
+    "gateway",
+    "history",
+    "pairing",
+    "video"
   ],
   "devDependencies": {
     "@commitlint/cli": "^13.2.1",
@@ -63,5 +63,22 @@
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
+  },
+  "lint-staged": {
+    "**/*.{ts,js,tsx,jsx}": [
+      "eslint --fix"
+    ],
+    "**/*.{scss,sass,css}": [
+      "stylelint --fix"
+    ],
+    "**/*.md": [
+      "markdownlint --fix"
+    ],
+    "**/*.py": [
+      "poetry run black",
+      "poetry run isort",
+      "poetry run flake8 --select=F",
+      "poetry run mypy --namespace-packages"
+    ]
   }
 }

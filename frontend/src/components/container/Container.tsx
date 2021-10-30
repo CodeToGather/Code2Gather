@@ -4,9 +4,9 @@ import Navbar from 'components/navbar';
 
 import './Container.scss';
 
-type Props = {
+interface Props {
   hasBackground?: boolean;
-};
+}
 
 /**
  * Container that wraps around the given children, giving it padding on the

@@ -10,7 +10,7 @@ import { User } from '.prisma/client';
 export class AllowIfUserIsSelfPolicy extends BasePolicy<User | UserCreateData> {
   public async validate(
     item: User | UserCreateData,
-    user: User
+    user: User,
   ): Promise<Authorization> {
     if (item.id === user.id) {
       return Authorization.ALLOW;

@@ -1,4 +1,4 @@
-export type UserCreateData = {
+export interface UserCreateData {
   id: string;
   githubUsername: string;
   photoUrl: string;

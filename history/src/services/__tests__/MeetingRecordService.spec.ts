@@ -33,7 +33,7 @@ describe('MeetingRecordService', () => {
       await fixtures.reload();
       const mockMeetingRecordData = mockTestMeetingRecord(
         fixtures.userOne.id,
-        fixtures.userTwo.id
+        fixtures.userTwo.id,
       );
       duration = mockMeetingRecordData.duration;
       questionId = mockMeetingRecordData.questionId;
@@ -58,7 +58,7 @@ describe('MeetingRecordService', () => {
           isSolved,
           feedbackToInterviewee,
         },
-        fixtures.userOne
+        fixtures.userOne,
       );
       expect(meetingRecord.interviewerId).toBe(fixtures.userOne.id);
       expect(meetingRecord.intervieweeId).toBe(fixtures.userTwo.id);
@@ -72,7 +72,7 @@ describe('MeetingRecordService', () => {
       expect(
         await prisma.meetingRecord.findUnique({
           where: { id: meetingRecord.id },
-        })
+        }),
       ).toBeTruthy();
     });
 
@@ -90,8 +90,8 @@ describe('MeetingRecordService', () => {
             isSolved,
             feedbackToInterviewee,
           },
-          fixtures.userOne
-        )
+          fixtures.userOne,
+        ),
       ).rejects.toThrow(InvalidDataError);
     });
 
@@ -109,8 +109,8 @@ describe('MeetingRecordService', () => {
             isSolved,
             feedbackToInterviewee,
           },
-          fixtures.userOne
-        )
+          fixtures.userOne,
+        ),
       ).rejects.toThrow(InvalidDataError);
     });
 
@@ -129,8 +129,8 @@ describe('MeetingRecordService', () => {
             isSolved,
             feedbackToInterviewee,
           },
-          fixtures.userTwo
-        )
+          fixtures.userTwo,
+        ),
       ).rejects.toThrow(AuthorizationError);
       await expect(
         meetingRecordService.create(
@@ -145,8 +145,8 @@ describe('MeetingRecordService', () => {
             isSolved,
             feedbackToInterviewee,
           },
-          unrelatedUser
-        )
+          unrelatedUser,
+        ),
       ).rejects.toThrow(AuthorizationError);
     });
   });
@@ -155,11 +155,11 @@ describe('MeetingRecordService', () => {
     it('user can read their meeting records', async () => {
       const meetingRecords = await meetingRecordService.readAllForInterviewee(
         fixtures.userOne.id,
-        fixtures.userOne
+        fixtures.userOne,
       );
       expect(meetingRecords).toHaveLength(1);
       expect(meetingRecords[0]).toEqual(
-        fixtures.meetingRecordTwoInterviewedOne
+        fixtures.meetingRecordTwoInterviewedOne,
       );
     });
 
@@ -167,8 +167,8 @@ describe('MeetingRecordService', () => {
       await expect(
         meetingRecordService.readAllForInterviewee(
           fixtures.userOne.id,
-          fixtures.userTwo
-        )
+          fixtures.userTwo,
+        ),
       ).rejects.toThrow(AuthorizationError);
     });
 
@@ -176,7 +176,7 @@ describe('MeetingRecordService', () => {
       const newUser = await createTestUser();
       const meetingRecords = await meetingRecordService.readAllForInterviewee(
         newUser.id,
-        newUser
+        newUser,
       );
       expect(meetingRecords).toHaveLength(0);
     });
@@ -187,12 +187,12 @@ describe('MeetingRecordService', () => {
       });
       const meetingRecords = await meetingRecordService.readAllForInterviewee(
         fixtures.userOne.id,
-        fixtures.userOne
+        fixtures.userOne,
       );
       expect(meetingRecords).toHaveLength(2);
       expect(meetingRecords[0]).toEqual(newMeetingRecord);
       expect(meetingRecords[1]).toEqual(
-        fixtures.meetingRecordTwoInterviewedOne
+        fixtures.meetingRecordTwoInterviewedOne,
       );
     });
   });

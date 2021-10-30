@@ -12,7 +12,7 @@ export class AllowIfUserIsRatedUserPolicy extends BasePolicy<
 > {
   public async validate(
     item: Rating | RatingCreateData,
-    user: User
+    user: User,
   ): Promise<Authorization> {
     if (item.ratedUserId === user.id) {
       return Authorization.ALLOW;

@@ -17,12 +17,12 @@ export const corsOptions: CorsOptions = {
 export class ApiServer {
   public server: Server | null = null;
 
-  async initialize(port = 3001): Promise<void> {
+  async initialize(port = 8002): Promise<void> {
     const app = express();
 
     app.use(express.json({ limit: '20mb' }) as RequestHandler);
     app.use(
-      express.urlencoded({ extended: true, limit: '20mb' }) as RequestHandler
+      express.urlencoded({ extended: true, limit: '20mb' }) as RequestHandler,
     );
     app.use(cors(corsOptions));
     app.use(helmet() as RequestHandler);
@@ -39,7 +39,7 @@ export class ApiServer {
   }
 
   async close(): Promise<void> {
-    this.server && this.server.close();
+    this.server?.close();
   }
 }
 

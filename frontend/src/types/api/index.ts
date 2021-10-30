@@ -1,3 +1,3 @@
-export type ErrorResponse = {
+export interface ErrorResponse {
   error: string;
-};
+}

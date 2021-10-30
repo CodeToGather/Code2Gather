@@ -49,7 +49,7 @@ class RatingService extends BaseService<Rating, RatingCreateData> {
 
   async readAverageRatingForRatedUser(
     ratedUserId: string,
-    user: User
+    user: User,
   ): Promise<{ average: number; count: number }> {
     const ratings = await prisma.rating.findMany({
       where: {
@@ -96,7 +96,7 @@ class RatingService extends BaseService<Rating, RatingCreateData> {
 
   private checkRep(
     data: RatingCreateData | RatingUpdateData,
-    isCreate: boolean
+    isCreate: boolean,
   ): void {
     if (
       (isCreate && !('ratingUserId' in data)) ||
@@ -105,7 +105,7 @@ class RatingService extends BaseService<Rating, RatingCreateData> {
           data.ratingUserId.length === 0))
     ) {
       throw new InvalidDataError(
-        'The rating must have a valid rating user ID!'
+        'The rating must have a valid rating user ID!',
       );
     }
     if (
@@ -128,7 +128,7 @@ class RatingService extends BaseService<Rating, RatingCreateData> {
     }
     if (data.rating < 1 || data.rating > 5) {
       throw new InvalidDataError(
-        'Rating must be between 1 to 5, both inclusive!'
+        'Rating must be between 1 to 5, both inclusive!',
       );
     }
     if (data.rating !== Math.round(data.rating)) {

@@ -4,11 +4,12 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const proxy = httpProxy.createProxyServer();
 
 // TODO: change to actual service base url
-const AUTH_BASE_URL = 'http://localhost:3002/auth';
-const PAIRING_BASE_URL = 'http://localhost:3001/pairing';
-const ROOM_BASE_URL = 'http://localhost:3002/room';
-const HISTORY_BASE_URL = 'http://localhost:3003/history';
-const CODING_BASE_URL = 'http://localhost:3004/coding';
+const AUTH_BASE_URL = 'http://localhost:8001';
+const HISTORY_BASE_URL = 'http://localhost:8002';
+const PAIRING_BASE_URL = 'http://localhost:8003';
+const VIDEO_BASE_URL = 'http://localhost:8004';
+const CODE_EXECUTOR_BASE_URL = 'http://localhost:8005';
+const ROOM_BASE_URL = 'http://localhost:8006';
 
 // Parse requests with a body
 proxy.on('proxyReq', (proxyReq, req) => {
@@ -35,16 +36,16 @@ const pairingWsProxy = createProxyMiddleware('/pairing', {
   ws: true,
 });
 
+const videoProxy = (req, res) => {
+  proxy.web(req, res, { target: VIDEO_BASE_URL });
+};
+
+const codeExecutorProxy = (req, res) => {
+  proxy.web(req, res, { target: CODE_EXECUTOR_BASE_URL });
+};
+
 const roomProxy = (req, res) => {
   proxy.web(req, res, { target: ROOM_BASE_URL });
-};
-
-const historyProxy = (req, res) => {
-  proxy.web(req, res, { target: HISTORY_BASE_URL });
-};
-
-const codingProxy = (req, res) => {
-  proxy.web(req, res, { target: CODING_BASE_URL });
 };
 
 module.exports = {
@@ -53,8 +54,5 @@ module.exports = {
   pairingWsProxy,
   videoProxy,
   codeExecutorProxy,
-  codingProxy,
   roomProxy,
-  historyProxy,
-  codingProxy,
 };

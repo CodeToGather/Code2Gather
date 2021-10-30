@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 import DemoImage from 'assets/images/demo.png';
 import Container from 'components/container';
@@ -12,10 +12,12 @@ const Landing: FC = () => {
   const history = useHistory();
   const { login } = useAuth();
 
-  const handleGithubSignIn = async () => {
+  const handleGithubSignIn = async (): Promise<void> => {
     try {
       await login();
     } catch (error) {
+      // TODO: Show error
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };
@@ -38,7 +40,7 @@ const Landing: FC = () => {
             </button>
             <button
               className="secondary-button landing__guest-button"
-              onClick={() => {
+              onClick={(): void => {
                 history.push(CODE_EDITOR);
               }}
             >

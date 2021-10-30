@@ -63,8 +63,8 @@ describe('POST /user', () => {
       profileUrl,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The user must have a valid GitHub username!'
+    expect(response.body.error).toBe(
+      'The user must have a valid GitHub username!',
     );
   });
 
@@ -75,8 +75,8 @@ describe('POST /user', () => {
       profileUrl,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The user must have a valid ID string from Firebase!'
+    expect(response.body.error).toBe(
+      'The user must have a valid ID string from Firebase!',
     );
   });
 
@@ -107,8 +107,8 @@ describe('POST /user', () => {
       photoUrl,
     });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The user must have a valid ID string from Firebase!'
+    expect(response.body.error).toBe(
+      'The user must have a valid ID string from Firebase!',
     );
   });
 
@@ -121,8 +121,8 @@ describe('POST /user', () => {
         photoUrl,
       });
     expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toEqual(
-      'The user must have a valid GitHub username!'
+    expect(response.body.error).toBe(
+      'The user must have a valid GitHub username!',
     );
   });
 
@@ -226,7 +226,7 @@ describe('PUT /user', () => {
         photoUrl,
         profileUrl,
         updatedAt: response.body.updatedAt,
-      })
+      }),
     );
   });
 
@@ -237,7 +237,7 @@ describe('PUT /user', () => {
       .send({ githubUsername: 12345, photoUrl, profileUrl });
     expect(response.status).toBe(StatusCodes.BAD_REQUEST);
     expect(response.body.error).toBe(
-      'The user must have a valid GitHub username!'
+      'The user must have a valid GitHub username!',
     );
   });
 

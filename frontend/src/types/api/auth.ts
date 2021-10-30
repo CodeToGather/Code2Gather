@@ -1,16 +1,14 @@
 import { User } from 'types/crud/user';
 
-export type LoginRequestBody = {
+export interface LoginRequestBody {
   token: string; // firebase token
   githubUsername: string;
   photoUrl: string;
   profileUrl: string;
 }
 
-export type LoginResponse = {
+export interface LoginResponse {
   token: string; // jwt token
-};
+}
 
-export type GetSelfResponse = {
-  user: User;
-};
+export type GetSelfResponse = User;

@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const { StatusCodes } = require('http-status-codes');
 const { verify } = require('jsonwebtoken');
+const axios = require('axios');
 
 const {
   createAuthenticationToken,
@@ -27,15 +28,23 @@ admin.initializeApp({
   }),
 });
 
+const corsOptions = {
+  // TODO: Fix the production URL once deployed
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? /.*placeholder\.placeholder\.app.*/
+      : '*',
+};
+
 const app = express();
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 
-app.post('/auth/login', async (req, res) => {
+app.post('/login', async (req, res) => {
   try {
     const { token, githubUsername, photoUrl, profileUrl } = req.body;
     if (token == null) {
@@ -96,9 +105,8 @@ app.get('/auth', async (req, res) => {
   res.status(StatusCodes.OK).json({ uid });
 });
 
-app.listen(3002, () => {
-  // eslint-disable-next-line no-console
-  console.log('Listening on: 3002');
+app.listen(8001, () => {
+  console.log('Listening on: 8001');
 });
 
 module.exports = app;

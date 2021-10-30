@@ -1,10 +1,8 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { useAsync } from 'react-async';
 import { getAdditionalUserInfo } from 'firebase/auth';
 import authApi from 'lib/authApi';
 import { signInWithFirebase } from 'lib/firebase';
-
 import { User } from 'types/crud/user';
 
 import { Loading } from 'components/loading';
@@ -36,7 +34,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
     if (isSettled) {
       setFirstAttemptFinished(true);
     }
-  }, [isSettled]);
+  }, [isSettled, data]);
 
   if (!firstAttemptFinished) {
     if (isPending) {

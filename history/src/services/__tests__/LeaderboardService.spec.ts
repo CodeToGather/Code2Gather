@@ -34,7 +34,7 @@ describe('LeaderboardService', () => {
 
   it('does not allow a bot to read', async () => {
     await expect(leaderboardService.read(botUser)).rejects.toThrow(
-      AuthorizationError
+      AuthorizationError,
     );
   });
 });

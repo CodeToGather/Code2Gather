@@ -12,7 +12,7 @@ export class AllowIfUserIsInterviewerPolicy extends BasePolicy<
 > {
   public async validate(
     item: MeetingRecord | MeetingRecordCreateData,
-    user: User
+    user: User,
   ): Promise<Authorization> {
     if (item.interviewerId === user.id) {
       return Authorization.ALLOW;

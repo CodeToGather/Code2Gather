@@ -303,7 +303,9 @@ module.exports = {
               // Packages packages come first.
               ['^@?\\w'],
               // Internal packages.
-              ['^(controllers|lib|middlewares|routes)(/.*|$)'],
+              [
+                '^(constants|controllers|lib|middlewares|policies|routes|services|socket|structures|types|utils)(/.*|$)',
+              ],
               // Side effect imports.
               ['^\\u0000'],
               // Parent imports. Put `..` last.
