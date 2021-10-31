@@ -9,6 +9,8 @@ type Client struct {
 	manager *Manager
 	// User id
 	uid string
+	// Room id
+	rid string
 	// Websocket connection.
 	conn *websocket.Conn
 	// Buffered channel of outgoing messages.
@@ -17,7 +19,13 @@ type Client struct {
 
 func (c *Client) read() {
 	defer func() {
+		log.Printf("Socket read (%s) closed", c.uid)
 		c.manager.unregister <- c
+		c.manager.roomUnregister <- ClientRoomRegistration{
+			roomId: c.rid,
+			client: c,
+		}
+		c.manager.broadcast <- *NewDisconnectRoomBroadcastMessage(c.rid, c.uid)
 		if err := c.conn.Close(); err != nil {
 			return
 		}
@@ -31,8 +39,6 @@ func (c *Client) read() {
 			}
 			break
 		}
-		//c.manager.broadcast <- RoomBroadcastMessage{message: message}
-		//c.send <- message
 		incomingRequestHandler(c, message)
 	}
 
@@ -40,6 +46,7 @@ func (c *Client) read() {
 
 func (c *Client) write() {
 	defer func() {
+		log.Printf("Socket write (%s) closed", c.uid)
 		if err := c.conn.Close(); err != nil {
 			return
 		}
@@ -55,23 +62,26 @@ func (c *Client) write() {
 				}
 				return
 			}
-			c.conn.WriteMessage(websocket.TextMessage, message)
-			//w, err := c.conn.NextWriter(websocket.TextMessage)
-			//if err != nil {
-			//	return
-			//}
-			//if _, err := w.Write(message); err != nil {
-			//	return
-			//}
-			//n := len(c.send)
-			//for i := 0; i < n; i++ {
-			//	if _, err := w.Write(<-c.send); err != nil {
-			//		return
-			//	}
-			//}
-			//if err := w.Close; err != nil {
-			//	return
-			//}
+			w, err := c.conn.NextWriter(websocket.TextMessage)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			if _, err = w.Write(message); err != nil {
+				log.Println(err)
+				return
+			}
+			n := len(c.send)
+			for i := 0; i < n; i++ {
+				if _, err = w.Write(<-c.send); err != nil {
+					log.Println(err)
+					return
+				}
+			}
+			if err = w.Close(); err != nil {
+				log.Println(err)
+				return
+			}
 		}
 	}
 

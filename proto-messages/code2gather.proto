@@ -103,6 +103,18 @@ message ClientRequest {
   }
 }
 
+message RoomServiceToClientMessage {
+  oneof response {
+    JoinRoomResponse join_room_response = 1;
+    ExecuteCodeResponse execute_code_response = 2;
+    ExecuteCodeBroadcast execute_code_broadcast = 3;
+    JoinRoomBroadcast join_room_broadcast = 4;
+    DisconnectBroadcast disconnect_broadcast = 5;
+    CompleteQuestionResponse complete_question_response = 6;
+    SubmitRatingResponse submit_rating_response = 7;
+  }
+}
+
 message JoinRoomRequest {
   string room_id = 1;
 }
@@ -111,6 +123,10 @@ message JoinRoomResponse {
   int32 error_code = 1;
   string interviewer_id = 2;
   QuestionMessage question = 3;
+}
+
+message JoinRoomBroadcast {
+  string joined_uid = 1;
 }
 
 message ExecuteCodeRequest {

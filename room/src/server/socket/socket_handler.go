@@ -116,10 +116,15 @@ func broadcastResponseToRoom(response proto.Message, rid string, c *Client) {
 }
 
 func checkClientRegisteredToRoom(authorized bool, rid string, c *Client) {
+	if c.rid == rid {
+		return
+	}
 	if authorized {
-		c.manager.roomRegister <- ClientRoomRegisteration{
+		c.rid = rid
+		c.manager.roomRegister <- ClientRoomRegistration{
 			roomId: rid,
 			client: c,
 		}
+		c.manager.broadcast <- *NewJoinedRoomBroadcastMessage(rid, c.uid)
 	}
 }
