@@ -5,6 +5,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
     "ace-builds": "^1.4.13",
+    "agora-rtc-react": "^1.1.0",
+    "agora-rtc-sdk-ng": "^4.7.2",
     "automerge": "1.0.1-preview.5",
     "axios": "^0.24.0",
     "diff-match-patch": "^1.0.5",
