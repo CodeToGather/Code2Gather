@@ -6,6 +6,13 @@ RUN mkdir -p /home/node/app
 
 WORKDIR /home/node/app/code-executor
 
-RUN poetry config virtualenvs.in-project true
+COPY . /home/node/app/code-executor/
 
-CMD poetry install && env PYTHONPATH=. poetry run python src/__main__.py
+RUN pip install -r requirements.txt && pip install gunicorn
+
+# RUN ./deploy.sh
+EXPOSE 8005
+
+# gunicorn --chdir app main:app -w 2 --threads 2 -b 0.0.0.0:8005
+ENTRYPOINT [ "gunicorn", "src.wsgi:app", "-b 0.0.0.0:8005" ]
+
