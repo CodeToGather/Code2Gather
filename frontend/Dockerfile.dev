@@ -16,4 +16,4 @@ RUN mv package.json temp.json && jq -r '.workspaces |= ["frontend"] | .scripts |
 
 WORKDIR /home/node/app/frontend
 
-CMD ["yarn", "start"]
+CMD yarn && yarn start

@@ -62,7 +62,8 @@
     "postinstall:code-executor": "cd code-executor && poetry install && cd ..",
     "postinstall:room": "cd room && yarn install && cd ..",
     "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
-    "start": "docker-compose up -f docker-compose.local.yml",
+    "start": "docker-compose -f docker-compose.local.yml up",
+    "stop": "docker-compose -f docker-compose.local.yml down",
     "stylelint-check": "stylelint-config-prettier-check"
   },
   "config": {

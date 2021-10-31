@@ -1,6 +1,7 @@
 package server
 
-const (
-	ConnHost = "localhost"
-	ConnPort = "8006"
-)
+import "os"
+
+const ConnHost = "localhost"
+
+var ConnPort = os.Getenv("PORT")

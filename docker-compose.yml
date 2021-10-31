@@ -124,6 +124,23 @@ services:
     environment:
       <<: *shared-variables
 
+  room:
+    build:
+      dockerfile: room/Dockerfile.dev
+      context: .
+    volumes:
+      - ./room:/home/node/app/room
+    expose:
+      - 3000
+    restart: on-failure
+    networks:
+      - backend
+    environment:
+      <<: *shared-variables
+      MONGODB_ADMINUSERNAME: root
+      MONGODB_ADMINPASSWORD: example
+      MONGODB_URL: mongodb://root:password@mongo:27017/
+
   video:
     build:
       dockerfile: video/Dockerfile.dev
@@ -154,3 +171,14 @@ services:
       - 15432:5432
     environment:
       POSTGRES_PASSWORD: postgres
+
+  mongo:
+    image: mongo
+    restart: always
+    networks:
+      - backend
+    ports:
+      - 27018:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
