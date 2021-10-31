@@ -68,5 +68,5 @@ jobs:
         run: |
           cd frontend
           yarn test:ci
-        with:
+        env:
           SKIP_PREFLIGHT_CHECK: 'true'
