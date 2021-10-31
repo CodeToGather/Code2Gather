@@ -56,12 +56,15 @@ app.post('/login', async (req, res) => {
       throw new Error();
     }
 
-    const createUserResponse = await axios.post('http://localhost:8002/user', {
-      id: uid,
-      githubUsername,
-      photoUrl,
-      profileUrl,
-    });
+    const createUserResponse = await axios.post(
+      `${process.env.HISTORY_URL}/user`,
+      {
+        id: uid,
+        githubUsername,
+        photoUrl,
+        profileUrl,
+      },
+    );
 
     if (createUserResponse.status !== 200) {
       throw new Error();
@@ -105,8 +108,8 @@ app.get('/auth', async (req, res) => {
   res.status(StatusCodes.OK).json({ uid });
 });
 
-app.listen(8001, () => {
-  console.log('Listening on: 8001');
+app.listen(process.env.PORT, () => {
+  console.log(`Listening on: ${process.env.PORT}`);
 });
 
 module.exports = app;

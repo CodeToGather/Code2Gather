@@ -17,7 +17,7 @@ export const corsOptions: CorsOptions = {
 export class ApiServer {
   public server: Server | null = null;
 
-  async initialize(port = 8002): Promise<void> {
+  async initialize(port = process.env.PORT): Promise<void> {
     const app = express();
 
     app.use(express.json({ limit: '20mb' }) as RequestHandler);

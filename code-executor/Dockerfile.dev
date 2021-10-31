@@ -1,0 +1,14 @@
+FROM python:3.9-alpine
+
+RUN mkdir -p /home/node/app
+
+WORKDIR /home/node/app/code-executor
+
+COPY . /home/node/app/code-executor/
+
+RUN pip install -r requirements.txt && pip install gunicorn
+
+EXPOSE 3000
+
+ENTRYPOINT [ "gunicorn", "src.wsgi:app", "-b 0.0.0.0:3000" ]
+

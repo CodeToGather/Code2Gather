@@ -10,7 +10,6 @@ import {
   TextDoc,
 } from './automergeUtils';
 import {
-  CODE_EXECUTION_SERVICE_URL,
   CONNECT,
   DISCONNECT,
   REQ_CHANGE_LANGUAGE,
@@ -28,9 +27,9 @@ const socketIdToRoomId = new Map<string, string>();
 const roomIdToDoc = new Map<string, Automerge.Doc<TextDoc>>();
 const roomIdToLanguage = new Map<string, Language>();
 const languageToId = {
-  'PYTHON': 'Python (3.8.1)',
-  'JAVA': 'Java (OpenJDK 13.0.1)',
-  'JAVASCRIPT': 'JavaScript (Node.js 12.14.0)',
+  PYTHON: 'Python (3.8.1)',
+  JAVA: 'Java (OpenJDK 13.0.1)',
+  JAVASCRIPT: 'JavaScript (Node.js 12.14.0)',
 };
 
 const setUpIo = (io: Server): void => {
@@ -112,22 +111,28 @@ const setUpIo = (io: Server): void => {
         code: doc.text.toString(),
         language: languageToId[language],
       };
-      
-      const resp = await axios.post(CODE_EXECUTION_SERVICE_URL, data, {
-        headers: {'Content-Type': 'application/json'}
-      });
 
-      if(resp.status != 200 || resp.data.result == null) {
+      const resp = await axios.post(
+        `${process.env.CODE_EXECUTOR_URL}/submission`,
+        data,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
+
+      if (resp.status != 200 || resp.data.result == null) {
         console.error(resp.status);
-        //TODO: handle error.
+        // TODO: handle error.
         return;
       }
 
-      const execResult = await axios.get(CODE_EXECUTION_SERVICE_URL + '/' + resp.data.result);
+      const execResult = await axios.get(
+        `${process.env.CODE_EXECUTOR_URL}/submission/${resp.data.result}`,
+      );
 
-      if(execResult.status != 200) {
+      if (execResult.status != 200) {
         console.error(execResult.data.error);
-        //TODO: handle error.
+        // TODO: handle error.
         return;
       }
 

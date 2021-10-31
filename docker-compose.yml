@@ -1,0 +1,200 @@
+version: '3.8'
+
+x-common-variables: &shared-variables
+  NODE_ENV: development
+  PORT: 3000
+  AUTH_URL: http://auth:3000
+  CODE_EXECUTOR_URL: http://code-executor:3000
+  CODING_URL: http://coding:3000
+  HISTORY_URL: http://history:3000
+  PAIRING_URL: http://pairing:3000
+  VIDEO_URL: http://video:3000
+  ROOM_URL: http://room:3000
+  JUDGE_URL: http://jh123x.tk:2358
+
+networks:
+  frontend:
+  backend:
+
+services:
+  frontend:
+    build:
+      dockerfile: frontend/Dockerfile.dev
+      context: .
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./frontend:/home/node/app/frontend
+    ports:
+      - 3000:3000
+    restart: on-failure
+    networks:
+      - frontend
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      SKIP_PREFLIGHT_CHECK: 'true'
+      REACT_APP_BACKEND_API: http://localhost:4000
+      REACT_APP_FIREBASE_API_KEY:
+      REACT_APP_FIREBASE_AUTH_DOMAIN:
+      REACT_APP_FIREBASE_PROJECT_ID:
+      REACT_APP_FIREBASE_STORAGE_BUCKET:
+      REACT_APP_FIREBASE_MESSAGING_SENDER_ID:
+      REACT_APP_FIREBASE_APP_ID:
+      REACT_APP_FIREBASE_MEASUREMENT_ID:
+
+  gateway:
+    build:
+      dockerfile: gateway/Dockerfile.dev
+      context: .
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./gateway:/home/node/app/gateway
+    ports:
+      - 4000:3000
+    restart: on-failure
+    networks:
+      - frontend
+      - backend
+    environment:
+      <<: *shared-variables
+
+  auth:
+    build:
+      dockerfile: auth/Dockerfile.dev
+      context: .
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./auth:/home/node/app/auth
+    expose:
+      - 3000
+    restart: on-failure
+    networks:
+      - backend
+    environment:
+      <<: *shared-variables
+      FIREBASE_PROJECT_ID:
+      FIREBASE_CLIENT_EMAIL:
+      FIREBASE_PRIVATE_KEY:
+      JWT_SECRET: code2gather
+
+  coding:
+    build:
+      dockerfile: coding/Dockerfile.dev
+      context: .
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./coding:/home/node/app/coding
+    expose:
+      - 3000
+    restart: on-failure
+    networks:
+      - backend
+    environment:
+      <<: *shared-variables
+
+  code-executor:
+    build:
+      dockerfile: code-executor/Dockerfile.dev
+      context: .
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./code-executor:/home/node/app/code-executor
+    expose:
+      - 3000
+    restart: on-failure
+    networks:
+      - backend
+    environment:
+      <<: *shared-variables
+
+  history:
+    build:
+      dockerfile: history/Dockerfile.dev
+      context: .
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./history:/home/node/app/history
+    expose:
+      - 3000
+    restart: on-failure
+    networks:
+      - backend
+    depends_on:
+      - db
+    environment:
+      <<: *shared-variables
+      DATABASE_URL: postgresql://postgres:postgres@db/postgres?connect_timeout=300
+
+  pairing:
+    build:
+      dockerfile: pairing/Dockerfile.dev
+      context: .
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./pairing:/home/node/app/pairing
+    expose:
+      - 3000
+    restart: on-failure
+    networks:
+      - backend
+    environment:
+      <<: *shared-variables
+
+  room:
+    build:
+      dockerfile: room/Dockerfile.dev
+      context: .
+    expose:
+      - 3000
+    restart: on-failure
+    networks:
+      - backend
+    depends_on:
+      - mongo
+    environment:
+      <<: *shared-variables
+      MONGODB_ADMINUSERNAME: root
+      MONGODB_ADMINPASSWORD: example
+      MONGODB_URL: mongodb://root:password@mongo:27017/
+
+  video:
+    build:
+      dockerfile: video/Dockerfile.dev
+      context: .
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./video:/home/node/app/video
+    expose:
+      - 3000
+    restart: on-failure
+    networks:
+      - backend
+    environment:
+      <<: *shared-variables
+      APP_ID:
+      APP_CERTIFICATE:
+
+  db:
+    image: postgres:12
+    restart: always
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data/
+    logging:
+      driver: none
+    networks:
+      - backend
+    ports:
+      - 15432:5432
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  mongo:
+    image: mongo
+    restart: always
+    networks:
+      - backend
+    ports:
+      - 27018:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password

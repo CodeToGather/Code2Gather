@@ -1,12 +1,9 @@
 const axios = require('axios');
 const { StatusCodes } = require('http-status-codes');
-
-// TODO: change base url based on NODE_ENV
-const AUTH_BASE_URL = 'http://localhost:8001';
-const CHECK_AUTH_PATH = 'auth';
+const { AUTH_BASE_URL } = require('../proxy');
 
 const checkAuth = async (req, res, next) => {
-  const url = `${AUTH_BASE_URL}/${CHECK_AUTH_PATH}`;
+  const url = `${AUTH_BASE_URL}/auth`;
   await axios
     .get(url, {
       headers: {

@@ -270,3 +270,12 @@ cython_debug/
 
 # Go vendor (to be excluded from markdownlint)
 room/vendor
+
+# Non-root yarn.locks
+*/yarn.lock
+
+# Postgres data generated via docker
+postgres-data
+
+# Local docker-compose
+docker-compose.local.yml
