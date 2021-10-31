@@ -73,7 +73,7 @@ message CreateRatingRequest {
   string room_id = 4;
 }
 
-// HTTP GET request /auth (Room -> Auth)
+// HTTP GET request /auth (Auth -> Room)
 message AuthResponse {
   string uid = 1;
 }
