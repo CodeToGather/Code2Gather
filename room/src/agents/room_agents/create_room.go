@@ -13,15 +13,15 @@ func CreateRoom(uid1 string, uid2 string, difficulty models.QuestionDifficulty) 
 	newRoom.Uid1 = uid1
 	newRoom.Uid2 = uid2
 
-	questions, err := question_agents.GetRandomQuestionsWithDifficulty(difficulty)
+	question1, question2, err := question_agents.GetRandomQuestionsWithDifficulty(difficulty)
 
 	if err != nil {
 		log.Fatal(err)
 		return newRoom, err
 	}
 
-	newRoom.Qid1 = questions[0].Id
-	newRoom.Qid2 = questions[1].Id
+	newRoom.Qid1 = question1.Id
+	newRoom.Qid2 = question2.Id
 
 	roomDaoImpl := db.NewRoomDaoImpl()
 	err = roomDaoImpl.CreateRoom(newRoom)

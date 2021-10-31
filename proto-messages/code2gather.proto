@@ -67,7 +67,7 @@ message CreateMeetingRequest {
 
 // HTTP POST request /rating (Room -> History)
 message CreateRatingRequest {
-  float rating = 1;
+  int32 rating = 1;
   string rating_user_id = 2;
   string rated_user_id = 3;
   string room_id = 4;
@@ -164,7 +164,7 @@ message CompleteQuestionResponse {
 
 message SubmitRatingRequest {
   string room_id = 1;
-  float rating = 2;
+  int32 rating = 2;
 }
 
 message SubmitRatingResponse {

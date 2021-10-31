@@ -7,7 +7,7 @@ import (
 	"code2gather.com/room/src/models"
 )
 
-func GetRandomQuestionsWithDifficulty(difficulty models.QuestionDifficulty) (questions []models.Question, err error) {
+func GetRandomQuestionsWithDifficulty(difficulty models.QuestionDifficulty) (question1 models.Question, question2 models.Question, err error) {
 	questionDaoImpl := db.NewQuestionDaoImpl()
 	allQuestions, err := questionDaoImpl.GetQuestionsWithDifficulty(difficulty)
 
@@ -22,7 +22,8 @@ func GetRandomQuestionsWithDifficulty(difficulty models.QuestionDifficulty) (que
 		idx2 = getRandomIntInRange(totalQuestionCount)
 	}
 
-	questions = append(questions, allQuestions[idx1], allQuestions[idx2])
+	question1 = allQuestions[idx1]
+	question2 = allQuestions[idx2]
 	return
 }
 
