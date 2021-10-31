@@ -19,7 +19,7 @@ func StartHttpServer() {
 	})
 
 	r.POST("/create", RoomCreationHandler)
-	r.GET("/ws", func(c *gin.Context) {
+	r.GET("/room/ws", func(c *gin.Context) {
 		socket.WSHandler(c.Writer, c.Request)
 	})
 

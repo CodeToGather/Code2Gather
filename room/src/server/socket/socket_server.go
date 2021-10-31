@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"code2gather.com/room/src/server/http_client"
 	"github.com/gorilla/websocket"
 )
 
@@ -26,6 +27,7 @@ func WSHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Printf("Failed to set websocket upgrade: %+v\n\n", err)
+		conn.Close()
 		return
 	}
 
@@ -33,10 +35,18 @@ func WSHandler(w http.ResponseWriter, r *http.Request) {
 	values, ok := r.Header["Authorization"]
 	if !ok || len(values) == 0 {
 		log.Printf("Missing authorization header")
+		conn.Close()
 		return
 	}
 
-	uid := values[0]
+	uid, err := http_client.GetUserId(values[0])
+
+	if err != nil {
+		log.Printf("Failed to get user id from authorization header")
+		conn.Close()
+		return
+	}
+
 	log.Printf("Client (%s) connected", uid)
 	client := &Client{
 		manager: WSManager,
