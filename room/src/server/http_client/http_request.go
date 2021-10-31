@@ -18,6 +18,7 @@ func SendMeetingRecord(meetingRecord *models.CreateMeetingRequest) error {
 		log.Println(err)
 		return err
 	}
+	// TODO: handle error response from history service
 	_, err = httpClient.Post(historyBaseUrl+"/meeting", data)
 	if err != nil {
 		log.Println(err)
@@ -35,6 +36,7 @@ func SendRating(rating *models.CreateRatingRequest) error {
 		log.Println(err)
 		return err
 	}
+	// TODO: handle error response from history service
 	_, err = httpClient.Post(historyBaseUrl+"/rating", data)
 	if err != nil {
 		log.Println(err)
