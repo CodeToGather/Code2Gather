@@ -99,13 +99,13 @@ services:
     volumes:
       - ~/.cache/yarn:/home/node/.cache/yarn
       - ./code-executor:/home/node/app/code-executor
-    ports:
-      - 8005:3000
+    expose:
+      - 3000
     restart: on-failure
     networks:
       - backend
     environment:
-       <<: *shared-variables
+      <<: *shared-variables
 
   history:
     build:
@@ -144,13 +144,13 @@ services:
     build:
       dockerfile: room/Dockerfile.dev
       context: .
-    volumes:
-      - ./room:/home/node/app/room
     expose:
       - 3000
     restart: on-failure
     networks:
       - backend
+    depends_on:
+      - mongo
     environment:
       <<: *shared-variables
       MONGODB_ADMINUSERNAME: root

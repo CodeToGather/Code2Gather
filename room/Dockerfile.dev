@@ -1,7 +1,9 @@
-FROM golang:latest
+FROM golang:alpine
 
 RUN mkdir -p /home/node/app
 
 WORKDIR /home/node/app/room
+
+COPY . /home/node/app/room
 
 CMD go mod vendor && go run ./src/main.go
