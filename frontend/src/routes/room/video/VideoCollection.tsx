@@ -187,7 +187,7 @@ const VideoCollection: FC = () => {
             users.length < 1 ? 'video-call-single' : 'video-call-double'
           }
         >
-          {ready && tracks && (
+          {start && tracks && (
             <Controls
               setInCall={setInCall}
               setStart={setStart}

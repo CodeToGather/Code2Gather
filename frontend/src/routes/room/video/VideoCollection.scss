@@ -72,10 +72,10 @@
   display: grid;
   grid-template-columns: repeat(2, 50%);
   justify-items: left;
-  margin-right: calc(23.75vh - 4.5rem);
+  margin-right: calc(23.75vh - 4rem);
   position: absolute;
   right: 0;
-  width: 4rem;
+  width: 3.5rem;
   z-index: 1;
 }
 
