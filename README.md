@@ -9,7 +9,9 @@ Members of CS3219 Team 32:
 
 ## Project Requirements
 
-This project requires the following installed:
+This project requires Docker and Docker Compose to be installed. We will be using the `docker-compose` family of commands.
+
+We will also have some local dependencies to help with developer UX. This will require the following:
 
 ### Node.js v14 LTS
 
@@ -53,6 +55,10 @@ poetry self update
 
 Poetry is our choice of dependency manager for our Python packages.
 
+### Go
+
+You can install Go from their [website](https://golang.org/doc/install).
+
 ## Contributing to Code2Gather
 
 ### Installation
@@ -72,19 +78,21 @@ yarn install
 
 > Please do not navigate to the packages/services individually! This single `yarn install` will do the trick.
 
-### Set-up `.env` files and databases
+### Set-up `docker-compose.yml` file
 
-TODO
+Make a copy of the `docker-compose.yml` file:
 
-### Run `node-foreman`
+```sh
+cp docker-compose.yml docker-compose.local.yml
+```
 
-Simply run this at the project root:
+Fill up the environment variables that are empty in the `docker-compose.local.yml` file.
+
+Then, start developing by running:
 
 ```sh
 yarn start
 ```
-
-which will use `node-foreman` to get all the services up and running!
 
 ### Committing
 
@@ -115,18 +123,21 @@ Then copy the following content into the new `package.json`:
   "name": "",
   "version": "0.0.1",
   "description": "",
-  "private": true,
-  "scripts": {
-    "postinstall": "<insert script here to set-up if you're not using node>"
-  }
+  "private": true
 }
 ```
 
-The above is the bare minimum you must have for the new package. Do fill in the remaining parts:
+The above is the bare minimum you must have for the new package.
 
-- The `"postinstall"` script is utilised if you are not using Node for the package. Insert your installation commands there, e.g. `poetry install`. Otherwise, feel free to delete it.
+If you're not using Node, e.g. you're using Python or Go, you will need to add the following to the root `package.json` as well:
 
-You can refer to [Code-Executor Service's `package.json`](code-executor/package.json) for an example.
+```json
+  "scripts": {
+    // ...
+    "postinstall:package": "cd package && <insert command> && cd ..",
+    // ...
+  },
+```
 
 Finally, you will need to add the new package to the root `package.json` under `"workspaces"`.
 

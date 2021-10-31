@@ -51,14 +51,16 @@
     "lint:css": "stylelint '**/*.{scss,sass,css}'",
     "lint:md": "markdownlint '**/*.md' --ignore-path .gitignore",
     "lint:py": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages .",
+    "lint:go": "gofmt -w .",
     "setup": "run-s setup:*",
     "setup:history": "cd history && yarn db:create && yarn db:migrate && cd ..",
     "setup:room": "yarn protobuf && cd room && yarn db:seed",
     "pre-commit": "lint-staged",
     "protobuf": "./compile-proto-messages.sh",
-    "postinstall": "run-p postinstall:*",
+    "postinstall": "run-s postinstall:*",
     "postinstall:root": "poetry install",
-    "postinstall:code-executor": "cd code-executor && poetry install",
+    "postinstall:code-executor": "cd code-executor && poetry install && cd ..",
+    "postinstall:room": "cd room && yarn install && cd ..",
     "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
     "start": "docker-compose up -f docker-compose.local.yml",
     "stylelint-check": "stylelint-config-prettier-check"
@@ -83,6 +85,9 @@
       "poetry run isort",
       "poetry run flake8 --select=F",
       "poetry run mypy --namespace-packages"
+    ],
+    "**/*.go": [
+      "gofmt -w ."
     ]
   }
 }
