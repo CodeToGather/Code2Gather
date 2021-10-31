@@ -1,19 +1,11 @@
-/* eslint-disable no-console */
-import { FC, useEffect, useReducer, useState } from 'react';
+import { FC, useEffect } from 'react';
 import AceEditor from 'react-ace';
-import { Doc, load, save } from 'automerge';
+import { useSelector } from 'react-redux';
 
 import { useCodingSocket } from 'contexts/CodingSocketContext';
-import { useUser } from 'contexts/UserContext';
-import { Editor, TextDoc } from 'types/automerge';
+import { changeLanguage, joinRoom, updateCode } from 'lib/codingSocketService';
+import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
-import {
-  applyChanges,
-  changeTextDoc,
-  getChanges,
-  hasUnsyncedChanges,
-  initDocWithText,
-} from 'utils/automergeUtils';
 
 import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/mode-java';
@@ -26,57 +18,16 @@ import LanguageDropdown from './LanguageDropdown';
 import './CodeEditor.scss';
 
 const CodeEditor: FC = () => {
-  const [language, setLanguage] = useState<Language>(Language.PYTHON);
   const { socket } = useCodingSocket();
-  const user = useUser();
-  const initDoc = initDocWithText(user?.id ?? 'hello-world', '');
-
-  const [state, setState] = useReducer(
-    (s: Editor, a: Partial<Editor>) => ({ ...s, ...a }),
-    {
-      doc: initDoc,
-      code: initDoc.text.toString(),
-      lastSyncedDoc: initDoc,
-    },
-  );
+  const { doc, language } = useSelector((state: RootState) => state.coding);
 
   useEffect(() => {
-    socket.emit('join', {
-      id: 'hardcoded-room-id',
-      doc: JSON.stringify(save(initDoc)),
-    });
-    socket.on('joined', (data: string) => {
-      const loadedDoc: Doc<TextDoc> = load(JSON.parse(data));
-      console.log('loaded doc', loadedDoc);
-      setState({
-        doc: loadedDoc,
-        code: loadedDoc.text.toString(),
-        lastSyncedDoc: loadedDoc,
-      });
-    });
-    socket.on('change', (changes: string) => {
-      console.log('changes', JSON.parse(changes));
-      console.log('state', state);
-      const newState = applyChanges(state, JSON.parse(changes));
-      console.log('new state', newState);
-      if (!hasUnsyncedChanges(state.lastSyncedDoc, state.doc)) {
-        setState({
-          ...newState,
-          lastSyncedDoc: newState.doc,
-        });
-      } else {
-        setState({ ...newState });
-      }
-    });
+    joinRoom(socket, 'default-room-id');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onCodeChange = (code: string): void => {
-    const newDoc = changeTextDoc(state.doc, code);
-    const newState = { ...state, doc: newDoc, code: newDoc.text.toString() };
-    const changes = getChanges(newState);
-    socket.emit('change', JSON.stringify(changes));
-    setState({ ...newState, lastSyncedDoc: newState.doc });
+    updateCode(socket, doc, code);
   };
 
   return (
@@ -86,7 +37,9 @@ const CodeEditor: FC = () => {
           <LanguageDropdown
             className="editor--top__language-button"
             language={language}
-            setLanguage={setLanguage}
+            setLanguage={(language: Language): void => {
+              changeLanguage(socket, language);
+            }}
           />
           <button className="border-button editor--top__help-button">
             Help <i className="far fa-question-circle" />
@@ -101,10 +54,10 @@ const CodeEditor: FC = () => {
       <AceEditor
         mode={language.toLowerCase()}
         name="code-editor"
-        onChange={onCodeChange}
+        onChange={(code): void => onCodeChange(code)}
         showPrintMargin={false}
         theme="twilight"
-        value={state.code}
+        value={doc.text.toString()}
         width={'100vw'}
         wrapEnabled={true}
       />

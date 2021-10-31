@@ -20,6 +20,7 @@ const Configuration = {
         'video',
         'room',
         'history',
+        'coding',
       ],
     ],
     'type-enum': [

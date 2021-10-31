@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-import { CONNECT } from 'constants/pairing';
+import { CONNECT } from 'constants/socket';
+import { initializeSocketForCoding } from 'lib/codingSocketService';
 
 export default interface SocketContextInterface {
   socket: Socket;
@@ -12,14 +13,16 @@ const CodingSocketContext = React.createContext<
 >(undefined);
 
 const CodingSocketProvider: React.FunctionComponent = (props) => {
-  const socket = io('http://localhost:3001', {
+  const socket = io(`${process.env.REACT_APP_BACKEND_API}`, {
     reconnection: true,
     reconnectionDelay: 1000,
     reconnectionDelayMax: 5000,
     reconnectionAttempts: Infinity,
+    path: '/coding',
   });
 
   useEffect(() => {
+    initializeSocketForCoding(socket);
     socket.on(CONNECT, () => {
       // eslint-disable-next-line no-console
       console.log('Socket connected!');

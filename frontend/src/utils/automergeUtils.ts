@@ -5,7 +5,7 @@
 import Automerge from 'automerge';
 import DiffMatchPatch from 'diff-match-patch';
 
-import { Editor, TextDoc } from '../types/automerge';
+import { TextDoc } from '../types/automerge';
 
 export const changeTextDoc = (
   doc: Automerge.Doc<TextDoc>,
@@ -68,41 +68,24 @@ export const changeTextDoc = (
   return newDoc;
 };
 
-export function initDocWithText(
-  actorId: string,
-  text: string,
-): Automerge.Doc<TextDoc> {
-  return Automerge.change(Automerge.init<TextDoc>(actorId), (doc) => {
+export function initDocWithText(text: string): Automerge.Doc<TextDoc> {
+  return Automerge.change(Automerge.init<TextDoc>(), (doc) => {
     doc.text = new Automerge.Text(text);
     return doc.text.insertAt?.bind(doc.text)!(0, ...text.split(''));
   });
 }
 
-export function copyDoc<T>(doc: Automerge.Doc<T>): Automerge.Doc<T> {
-  return Automerge.load(Automerge.save(doc));
+export function binaryChangeToBase64String(
+  a: Automerge.BinaryChange[],
+): string[] {
+  return a.map((b) => window.btoa(String.fromCharCode(...b)));
 }
 
-export function getChanges(textBlock: Editor): Automerge.Change[] {
-  return Automerge.getChanges(textBlock.lastSyncedDoc, textBlock.doc);
-}
-
-export function applyChanges(
-  textBlock: Editor,
-  changes: Automerge.Change[],
-): Editor {
-  const newDoc = Automerge.applyChanges(textBlock.doc, changes);
-  // eslint-disable-next-line no-console
-  console.log('inside apply changes', newDoc);
-  return {
-    ...textBlock,
-    doc: newDoc,
-    code: newDoc.text.toString(),
-  };
-}
-
-export function hasUnsyncedChanges<T>(
-  lastSyncedDoc: Automerge.Doc<T>,
-  currentDoc: Automerge.Doc<T>,
-): boolean {
-  return Automerge.getChanges(lastSyncedDoc, currentDoc).length > 0;
+export function base64StringToBinaryChange(
+  s: string[],
+): Automerge.BinaryChange[] {
+  return s.map((a) => {
+    const asciiString = window.atob(a);
+    return new Uint8Array([...asciiString].map((char) => char.charCodeAt(0)));
+  }) as Automerge.BinaryChange[];
 }

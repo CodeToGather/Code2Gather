@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-import { CONNECT } from 'constants/pairing';
+import { CONNECT } from 'constants/socket';
 import { initializeSocketForPairing } from 'lib/pairingSocketService';
 import tokenUtils from 'utils/tokenUtils';
 
-export default interface SocketContextInterface {
+export default interface PairingSocketContextInterface {
   socket: Socket;
 }
 
 const PairingSocketContext = React.createContext<
-  SocketContextInterface | undefined
+  PairingSocketContextInterface | undefined
 >(undefined);
 
 const PairingSocketProvider: React.FunctionComponent = (props) => {
@@ -54,10 +54,12 @@ const PairingSocketProvider: React.FunctionComponent = (props) => {
   return <PairingSocketContext.Provider value={{ socket }} {...props} />;
 };
 
-const usePairingSocket = (): SocketContextInterface => {
+const usePairingSocket = (): PairingSocketContextInterface => {
   const context = React.useContext(PairingSocketContext);
   if (context === undefined) {
-    throw new Error(`useSocket must be used within a SocketProvider`);
+    throw new Error(
+      `usePairingSocket must be used within a PairingSocketProvider`,
+    );
   }
   return context;
 };

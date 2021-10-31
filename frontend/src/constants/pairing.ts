@@ -1,5 +1,3 @@
-export const CONNECT = 'connect';
-
 // From us: I want to enter pairing mode
 export const REQ_FIND_PAIR = 'req_find_pair';
 
@@ -17,5 +15,3 @@ export const RES_CREATED_ROOM = 'res_created_room';
 
 // From us: Ok nvm 30s have passed, I wanna stop finding
 export const REQ_STOP_FINDING_PAIR = 'req_stop_finding_pair';
-
-export const DISCONNECT = 'disconnect';

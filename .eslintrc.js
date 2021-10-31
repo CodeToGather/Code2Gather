@@ -286,7 +286,7 @@ module.exports = {
     },
     // TypeScript backend files
     {
-      files: ['history/**/*.ts', 'pairing/**/*.ts'],
+      files: ['history/**/*.ts', 'pairing/**/*.ts', 'coding/**/*.ts'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-misused-promises': [

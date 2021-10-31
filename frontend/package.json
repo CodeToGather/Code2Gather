@@ -5,7 +5,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
     "ace-builds": "^1.4.13",
-    "automerge": "^0.14.2",
+    "automerge": "1.0.1-preview.5",
     "axios": "^0.24.0",
     "diff-match-patch": "^1.0.5",
     "firebase": "^9.1.3",
