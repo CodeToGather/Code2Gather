@@ -2,7 +2,6 @@ from typing import Any, Union, cast
 
 import requests
 from flask import Blueprint, Response, abort, g, jsonify, request
-
 from src.code_executor import CodeExecutor
 from src.constants import CODE_KEY, INPUT_KEY, LANGUAGE_KEY, URL
 
@@ -36,7 +35,6 @@ def submission() -> Response:
     Execute code and returns a submission tag.
     """
     data = request.get_json()
-
     if data is None:
         return abort(401, description={"error": "invalid request or not json request"})
 
@@ -58,7 +56,7 @@ def submission() -> Response:
     return cast(Response, jsonify({"result": result}))
 
 
-@executor_blueprint.route("/submissions/<path:path>")
+@executor_blueprint.route("/submission/<path:path>")
 def get_submission(path: str) -> Response:
     """
     Gets the output of the results.

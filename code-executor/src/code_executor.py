@@ -3,7 +3,6 @@ import json
 from typing import Optional, Union
 
 import requests
-
 from src.constants import (
     BASE64_RESULTS_FIELDS,
     ERROR_KEY,
@@ -82,7 +81,10 @@ class CodeExecutor:
         """This method will block and return the submission"""
         result = self._get_results(submission_id)
 
-        while block and result.get(STATUS_KEY, {}).get(ID_KEY, None) == 1:
+        while block and (
+            result.get(STATUS_KEY, {}).get(ID_KEY, None) == 1
+            or result.get(STATUS_KEY, {}).get(ID_KEY) == 2
+        ):
             result = self._get_results(submission_id)
 
         for b64_attr in BASE64_RESULTS_FIELDS:
