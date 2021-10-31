@@ -60,6 +60,6 @@ const generateAccessToken = (request, response) => {
 
 app.get('/access_token', nocache, generateAccessToken);
 
-app.listen(8004, () => {
-  console.log(`Listening on port: ${8004}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Listening on port: ${process.env.PORT}`);
 });

@@ -19,7 +19,7 @@ export class ApiServer {
   public server: Server | null = null;
   public io: SocketServer | null = null;
 
-  async initialize(port = 8007): Promise<void> {
+  async initialize(port = process.env.PORT): Promise<void> {
     const app = express();
     app.use(express.json({ limit: '20mb' }) as RequestHandler);
     app.use(

@@ -1,0 +1,11 @@
+FROM python:3.9
+
+RUN curl -sL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py && python - -y --git https://github.com/python-poetry/poetry.git
+
+RUN mkdir -p /home/node/app
+
+WORKDIR /home/node/app/code-executor
+
+RUN poetry config virtualenvs.in-project true
+
+CMD poetry install && env PYTHONPATH=. poetry run python src/__main__.py

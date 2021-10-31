@@ -32,7 +32,6 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
-    "foreman": "^3.0.1",
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
     "markdownlint-cli": "^0.29.0",
@@ -61,7 +60,7 @@
     "postinstall:root": "poetry install",
     "postinstall:code-executor": "cd code-executor && poetry install",
     "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
-    "start": "nf start",
+    "start": "docker-compose up -f docker-compose.local.yml",
     "stylelint-check": "stylelint-config-prettier-check"
   },
   "config": {

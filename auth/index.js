@@ -56,12 +56,15 @@ app.post('/login', async (req, res) => {
       throw new Error();
     }
 
-    const createUserResponse = await axios.post('http://localhost:8002/user', {
-      id: uid,
-      githubUsername,
-      photoUrl,
-      profileUrl,
-    });
+    const createUserResponse = await axios.post(
+      `${process.env.HISTORY_URL}/user`,
+      {
+        id: uid,
+        githubUsername,
+        photoUrl,
+        profileUrl,
+      },
+    );
 
     if (createUserResponse.status !== 200) {
       throw new Error();
@@ -78,6 +81,7 @@ app.post('/login', async (req, res) => {
 app.get('/auth', async (req, res) => {
   const bearerToken = req.headers.authorization;
   if (!isBearerToken(bearerToken) || process.env.JWT_SECRET == null) {
+    console.log('HERE1');
     res.status(StatusCodes.UNAUTHORIZED).json();
     return;
   }
@@ -87,9 +91,11 @@ app.get('/auth', async (req, res) => {
   try {
     payload = verify(token, process.env.JWT_SECRET);
     if (!isAccessTokenSignedPayload(payload)) {
+      console.log('HERE2');
       throw new Error();
     }
   } catch {
+    console.log('HERE3');
     res.status(StatusCodes.UNAUTHORIZED).json();
     return;
   }
@@ -98,6 +104,7 @@ app.get('/auth', async (req, res) => {
   try {
     await getUserWithIdFromFirebase(uid);
   } catch {
+    console.log('HERE4');
     res.status(StatusCodes.UNAUTHORIZED).json();
     return;
   }
@@ -105,8 +112,8 @@ app.get('/auth', async (req, res) => {
   res.status(StatusCodes.OK).json({ uid });
 });
 
-app.listen(8001, () => {
-  console.log('Listening on: 8001');
+app.listen(process.env.PORT, () => {
+  console.log(`Listening on: ${process.env.PORT}`);
 });
 
 module.exports = app;

@@ -1,0 +1,19 @@
+FROM node:14.17-alpine
+
+RUN apk add --no-cache jq
+RUN mkdir -p /home/node/app
+
+COPY ../.eslintignore /home/node/app/.eslintignore
+COPY ../.eslintrc.js /home/node/app/.eslintrc.js
+COPY ../.eslintrc.js /home/node/app/.eslintrc.js
+COPY ../tsconfig.base.json /home/node/app/tsconfig.base.json
+COPY ../tsconfig.eslint.json /home/node/app/tsconfig.eslint.json
+COPY ../package.json /home/node/app/package.json
+
+WORKDIR /home/node/app
+
+RUN mv package.json temp.json && jq -r '.workspaces |= ["frontend"] | .scripts |= {}' temp.json > package.json && rm -f temp.json && yarn
+
+WORKDIR /home/node/app/frontend
+
+CMD ["yarn", "start"]

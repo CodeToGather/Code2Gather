@@ -1,0 +1,9 @@
+FROM node:14.17-alpine
+
+RUN mkdir -p /home/node/app
+
+COPY ../tsconfig.base.json /home/node/app/tsconfig.base.json
+
+WORKDIR /home/node/app/pairing
+
+CMD yarn && yarn start
