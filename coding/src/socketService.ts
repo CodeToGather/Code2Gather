@@ -1,4 +1,5 @@
 import Automerge from 'automerge';
+import axios from 'axios';
 import { Server } from 'socket.io';
 
 import {
@@ -78,7 +79,7 @@ const setUpIo = (io: Server): void => {
       socket.to(roomId).emit(RES_CHANGED_LANGUAGE, language);
     });
 
-    socket.on(REQ_EXECUTE_CODE, () => {
+    socket.on(REQ_EXECUTE_CODE, async () => {
       const roomId = socketIdToRoomId.get(socket.id);
       if (!roomId) {
         console.log('Missing room!');
@@ -98,8 +99,29 @@ const setUpIo = (io: Server): void => {
 
       // TODO: Post the following to the code execution service.
       console.log(doc.text.toString(), language);
+
+      const resp = await axios.post('http://localhost:8006', {
+        code: doc.text.toString(),
+        langauge: language,
+        stdin: '', // TODO: Ask for stdin.
+      });
+
+      if(resp.status != 200 || resp.data.token == null) {
+        console.error(resp.data.error);
+        io.to(roomId).emit(RES_CODE_OUTPUT, 'Error while executing code: ' + resp.data.error);
+        return;
+      }
+
+      const execResult = await axios.get('http://localhost:8006/submissions/' + resp.data.token);
+
+      if(execResult.status != 200) {
+        console.error(execResult.data.error);
+        io.to(roomId).emit(RES_CODE_OUTPUT, 'Error while executing code: ' + execResult.data.error);
+        return;
+      }
+
       // TODO: Replace below with code output
-      io.to(roomId).emit(RES_CODE_OUTPUT, '');
+      io.to(roomId).emit(RES_CODE_OUTPUT, execResult.data);
     });
 
     socket.on(DISCONNECT, () => {
