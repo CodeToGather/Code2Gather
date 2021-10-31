@@ -33,8 +33,7 @@ const setUpIo = (io: Server): void => {
         socket.join(res.data.uid as string);
         next();
       })
-      .catch((error) => {
-        console.log(error.message);
+      .catch(() => {
         next(new Error('Unauthorized'));
       });
   });
@@ -82,11 +81,14 @@ const setUpIo = (io: Server): void => {
         const [user1, user2] = result;
         // Tell the two users we found a match! Going to create the room now.
         io.to(user1.uid).to(user2.uid).emit(RES_FOUND_PAIR);
-        const roomResponse = await axios.post(`${process.env.ROOM_URL}`, {
-          uid1: user1.uid,
-          uid2: user2.uid,
-          difficulty,
-        });
+        const roomResponse = await axios.post(
+          `${process.env.ROOM_URL}/create`,
+          {
+            uid1: user1.uid,
+            uid2: user2.uid,
+            difficulty,
+          },
+        );
         if (roomResponse.status !== 200) {
           // TODO: Have some more elaborate recovery mechanism
         }
