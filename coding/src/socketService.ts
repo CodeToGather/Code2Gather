@@ -1,4 +1,5 @@
 import Automerge from 'automerge';
+import axios from 'axios';
 import { Server } from 'socket.io';
 
 import {
@@ -9,6 +10,7 @@ import {
   TextDoc,
 } from './automergeUtils';
 import {
+  CODE_EXECUTION_SERVICE_URL,
   CONNECT,
   DISCONNECT,
   REQ_CHANGE_LANGUAGE,
@@ -25,6 +27,11 @@ import {
 const socketIdToRoomId = new Map<string, string>();
 const roomIdToDoc = new Map<string, Automerge.Doc<TextDoc>>();
 const roomIdToLanguage = new Map<string, Language>();
+const languageToId = {
+  'PYTHON': 'Python (3.8.1)',
+  'JAVA': 'Java (OpenJDK 13.0.1)',
+  'JAVASCRIPT': 'JavaScript (Node.js 12.14.0)',
+};
 
 const setUpIo = (io: Server): void => {
   io.on('connect', (socket) => {
@@ -78,7 +85,7 @@ const setUpIo = (io: Server): void => {
       socket.to(roomId).emit(RES_CHANGED_LANGUAGE, language);
     });
 
-    socket.on(REQ_EXECUTE_CODE, () => {
+    socket.on(REQ_EXECUTE_CODE, async () => {
       const roomId = socketIdToRoomId.get(socket.id);
       if (!roomId) {
         console.log('Missing room!');
@@ -94,12 +101,37 @@ const setUpIo = (io: Server): void => {
         console.log('Missing doc!');
         return;
       }
+
+      if (doc.text.length === 0) {
+        console.log('Empty code!');
+        return;
+      }
       io.to(roomId).emit(RES_EXECUTING_CODE);
 
-      // TODO: Post the following to the code execution service.
-      console.log(doc.text.toString(), language);
-      // TODO: Replace below with code output
-      io.to(roomId).emit(RES_CODE_OUTPUT, '');
+      const data = {
+        code: doc.text.toString(),
+        language: languageToId[language],
+      };
+      
+      const resp = await axios.post(CODE_EXECUTION_SERVICE_URL, data, {
+        headers: {'Content-Type': 'application/json'}
+      });
+
+      if(resp.status != 200 || resp.data.result == null) {
+        console.error(resp.status);
+        //TODO: handle error.
+        return;
+      }
+
+      const execResult = await axios.get(CODE_EXECUTION_SERVICE_URL + '/' + resp.data.result);
+
+      if(execResult.status != 200) {
+        console.error(execResult.data.error);
+        //TODO: handle error.
+        return;
+      }
+
+      io.to(roomId).emit(RES_CODE_OUTPUT, execResult.data);
     });
 
     socket.on(DISCONNECT, () => {
