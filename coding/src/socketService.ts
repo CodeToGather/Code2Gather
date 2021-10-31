@@ -26,6 +26,11 @@ import {
 const socketIdToRoomId = new Map<string, string>();
 const roomIdToDoc = new Map<string, Automerge.Doc<TextDoc>>();
 const roomIdToLanguage = new Map<string, Language>();
+const languageToId = {
+  'PYTHON': 71,
+  'JAVA': 62,
+  'JAVASCRIPT': 63,
+};
 
 const setUpIo = (io: Server): void => {
   io.on('connect', (socket) => {
@@ -102,7 +107,7 @@ const setUpIo = (io: Server): void => {
 
       const resp = await axios.post('http://localhost:8006', {
         code: doc.text.toString(),
-        langauge: language,
+        langauge: languageToId[language],
         stdin: '', // TODO: Ask for stdin.
       });
 
