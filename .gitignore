@@ -274,8 +274,9 @@ room/vendor
 # Non-root yarn.locks
 */yarn.lock
 
-# Postgres data generated via docker
+# DB data generated via docker
 postgres-data
+mongodb-data
 
 # Local docker-compose
 docker-compose.local.yml

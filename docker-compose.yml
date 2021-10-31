@@ -94,8 +94,8 @@ services:
 
   code-executor:
     build:
-      dockerfile: code-executor/Dockerfile.dev
-      context: .
+      dockerfile: Dockerfile.dev
+      context: ./code-executor
     volumes:
       - ~/.cache/yarn:/home/node/.cache/yarn
       - ./code-executor:/home/node/app/code-executor
@@ -142,8 +142,8 @@ services:
 
   room:
     build:
-      dockerfile: room/Dockerfile.dev
-      context: .
+      dockerfile: Dockerfile.dev
+      context: ./room
     expose:
       - 3000
     restart: on-failure
@@ -153,9 +153,7 @@ services:
       - mongo
     environment:
       <<: *shared-variables
-      MONGODB_ADMINUSERNAME: root
-      MONGODB_ADMINPASSWORD: example
-      MONGODB_URL: mongodb://root:password@mongo:27017/
+      MONGODB_URL: mongodb://mongo
 
   video:
     build:
@@ -189,12 +187,11 @@ services:
       POSTGRES_PASSWORD: postgres
 
   mongo:
-    image: mongo
+    image: mongo:4
     restart: always
+    volumes:
+      - ./mongodb-data:/data/db
     networks:
       - backend
     ports:
-      - 27018:27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
+      - 27017:27017
