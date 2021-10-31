@@ -35,7 +35,6 @@ def submission() -> Response:
     Execute code and returns a submission tag.
     """
     data = request.get_json()
-
     if data is None:
         return abort(401, description={"error": "invalid request or not json request"})
 
@@ -43,7 +42,7 @@ def submission() -> Response:
     code = data.get(CODE_KEY, None)
     language = data.get(LANGUAGE_KEY, None)
     stdin = data.get(INPUT_KEY, None)
-    if None in (code, language):
+    if None in (code, language) or len(code) == 0:
         return abort(401, description={"error": "missing either code, language"})
 
     executor = get_executor()
@@ -57,7 +56,7 @@ def submission() -> Response:
     return cast(Response, jsonify({"result": result}))
 
 
-@executor_blueprint.route("/submissions/<path:path>")
+@executor_blueprint.route("/submission/<path:path>")
 def get_submission(path: str) -> Response:
     """
     Gets the output of the results.
