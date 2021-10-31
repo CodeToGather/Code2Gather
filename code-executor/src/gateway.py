@@ -42,7 +42,7 @@ def submission() -> Response:
     code = data.get(CODE_KEY, None)
     language = data.get(LANGUAGE_KEY, None)
     stdin = data.get(INPUT_KEY, None)
-    if None in (code, language):
+    if None in (code, language) or len(code) == 0:
         return abort(401, description={"error": "missing either code, language"})
 
     executor = get_executor()
