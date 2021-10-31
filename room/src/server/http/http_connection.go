@@ -18,13 +18,10 @@ func StartHttpServer() {
 		})
 	})
 
-	v := r.Group("/room")
-	{
-		v.POST("/create", RoomCreationHandler)
-		v.GET("/ws", func(c *gin.Context) {
-			socket.WSHandler(c.Writer, c.Request)
-		})
-	}
+	r.POST("/create", RoomCreationHandler)
+	r.GET("/ws", func(c *gin.Context) {
+		socket.WSHandler(c.Writer, c.Request)
+	})
 
 	err := r.Run(server.ConnHost + ":" + server.ConnPort)
 	if err != nil {
