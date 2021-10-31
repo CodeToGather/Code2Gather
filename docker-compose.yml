@@ -10,6 +10,7 @@ x-common-variables: &shared-variables
   PAIRING_URL: http://pairing:3000
   VIDEO_URL: http://video:3000
   ROOM_URL: http://room:3000
+  JUDGE_URL: http://jh123x.tk:2358
 
 networks:
   frontend:
@@ -90,6 +91,21 @@ services:
       - backend
     environment:
       <<: *shared-variables
+
+  code-executor:
+    build:
+      dockerfile: code-executor/Dockerfile.dev
+      context: .
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./code-executor:/home/node/app/code-executor
+    ports:
+      - 8005:3000
+    restart: on-failure
+    networks:
+      - backend
+    environment:
+       <<: *shared-variables
 
   history:
     build:
