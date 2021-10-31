@@ -267,3 +267,6 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Go vendor (to be excluded from markdownlint)
+room/vendor
