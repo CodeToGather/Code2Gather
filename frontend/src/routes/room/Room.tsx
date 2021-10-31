@@ -1,30 +1,22 @@
 import { FC, useEffect } from 'react';
-import AceEditor from 'react-ace';
 import { useSelector } from 'react-redux';
 
+import CodeEditor from 'components/codeEditor';
+import LanguageDropdown from 'components/languageDropdown';
 import { useCodingSocket } from 'contexts/CodingSocketContext';
 import { changeLanguage, joinRoom, updateCode } from 'lib/codingSocketService';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 
-import 'ace-builds/webpack-resolver';
-import 'ace-builds/src-noconflict/mode-java';
-import 'ace-builds/src-noconflict/mode-python';
-import 'ace-builds/src-noconflict/mode-javascript';
-import './theme-twilight';
-import 'ace-builds/src-noconflict/ext-language_tools';
+import './Room.scss';
 
-import LanguageDropdown from './LanguageDropdown';
-import './CodeEditor.scss';
-
-const CodeEditor: FC = () => {
+const Room: FC = () => {
   const { socket } = useCodingSocket();
   const { doc, language } = useSelector((state: RootState) => state.coding);
 
   useEffect(() => {
     joinRoom(socket, 'default-room-id');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [socket]);
 
   const onCodeChange = (code: string): void => {
     updateCode(socket, doc, code);
@@ -51,18 +43,14 @@ const CodeEditor: FC = () => {
           </button>
         </div>
       </div>
-      <AceEditor
-        mode={language.toLowerCase()}
-        name="code-editor"
-        onChange={(code): void => onCodeChange(code)}
-        showPrintMargin={false}
-        theme="twilight"
+      <CodeEditor
+        language={language}
+        onChange={onCodeChange}
         value={doc.text.toString()}
-        width={'100vw'}
-        wrapEnabled={true}
+        width="100vw"
       />
     </div>
   );
 };
 
-export default CodeEditor;
+export default Room;

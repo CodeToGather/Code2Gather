@@ -32,6 +32,9 @@ const setUpIo = (io: Server): void => {
     socket.on(CONNECT, () => console.log('Socket connected!'));
 
     socket.on(REQ_JOIN_ROOM, (roomId: string) => {
+      if (socketIdToRoomId.has(socket.id)) {
+        socket.leave(socketIdToRoomId.get(socket.id)!);
+      }
       socket.join(roomId);
       socketIdToRoomId.set(socket.id, roomId);
 

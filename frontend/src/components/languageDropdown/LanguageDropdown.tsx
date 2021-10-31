@@ -2,6 +2,8 @@ import { FC, useState } from 'react';
 
 import { Language } from 'types/crud/language';
 
+import './LanguageDropdown.scss';
+
 const languageNames: { [key: string]: string } = {
   [Language.JAVA]: 'Java',
   [Language.JAVASCRIPT]: 'JavaScript',
