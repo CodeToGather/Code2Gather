@@ -10,6 +10,7 @@ import {
   TextDoc,
 } from './automergeUtils';
 import {
+  CODE_EXECUTION_SERVICE_URL,
   CONNECT,
   DISCONNECT,
   REQ_CHANGE_LANGUAGE,
@@ -105,7 +106,7 @@ const setUpIo = (io: Server): void => {
       // TODO: Post the following to the code execution service.
       console.log(doc.text.toString(), language);
 
-      const resp = await axios.post('http://localhost:8006', {
+      const resp = await axios.post(CODE_EXECUTION_SERVICE_URL, {
         code: doc.text.toString(),
         langauge: languageToId[language],
         stdin: '', // TODO: Ask for stdin.
@@ -117,7 +118,7 @@ const setUpIo = (io: Server): void => {
         return;
       }
 
-      const execResult = await axios.get('http://localhost:8006/submissions/' + resp.data.token);
+      const execResult = await axios.get(CODE_EXECUTION_SERVICE_URL + resp.data.token);
 
       if(execResult.status != 200) {
         console.error(execResult.data.error);
