@@ -39,7 +39,9 @@ test('renders github button that logins via auth context', () => {
 
 test('renders guest button', () => {
   authUserContextRender(<Landing />);
-  const guestButtonElement = screen.getByText(/sign in as guest instead/i);
+  const guestButtonElement = screen.getByText(
+    /try playground as guest instead/i,
+  );
   expect(guestButtonElement).toBeInTheDocument();
 });
 

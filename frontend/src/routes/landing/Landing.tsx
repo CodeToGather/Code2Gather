@@ -50,7 +50,7 @@ const Landing: FC = () => {
               }}
             >
               <Typography size="regular">
-                Try the playground as a guest instead
+                Try playground as guest instead
               </Typography>
             </button>
           </div>
