@@ -37,7 +37,6 @@ const Videos = (props: {
   return (
     <div>
       <div className={users.length < 1 ? 'videos-single' : 'videos-double'}>
-        <AgoraVideoPlayer className="vid" videoTrack={tracks[1]} />
         {users.length > 0 &&
           users.map((user) => {
             if (user.videoTrack) {
@@ -52,6 +51,7 @@ const Videos = (props: {
               return null;
             }
           })}
+        <AgoraVideoPlayer className="vid" videoTrack={tracks[1]} />
       </div>
     </div>
   );
