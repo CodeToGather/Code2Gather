@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import Typography from 'components/typography';
+import { GITHUB_ISSUES_PAGE } from 'constants/urls';
 
 import './Error.scss';
 
@@ -19,9 +20,7 @@ const Error: FC<Props> = ({
         className ? ` ${className}` : ''
       }`}
       onClick={(): void => {
-        window.open(
-          'https://github.com/CS3219-SE-Principles-and-Patterns/cs3219-project-ay2122-2122-s1-g32/issues/new',
-        );
+        window.open(GITHUB_ISSUES_PAGE);
       }}
     >
       <Typography size="regular">

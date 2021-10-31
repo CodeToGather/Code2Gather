@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { useHistory } from 'react-router-dom';
+import { generateSlug } from 'random-word-slugs';
 
 import DemoImage from 'assets/images/demo.png';
 import Container from 'components/container';
 import Typography from 'components/typography';
-import { CODE_EDITOR } from 'constants/routes';
+import { GUEST } from 'constants/routes';
 import { useAuth } from 'contexts/AuthContext';
 
 import './Landing.scss';
@@ -44,10 +45,13 @@ const Landing: FC = () => {
             <button
               className="secondary-button"
               onClick={(): void => {
-                history.push(CODE_EDITOR);
+                const slug = generateSlug();
+                history.push(`${GUEST}/${slug}`);
               }}
             >
-              <Typography size="regular">Sign in as guest instead</Typography>
+              <Typography size="regular">
+                Try playground as guest instead
+              </Typography>
             </button>
           </div>
         </div>

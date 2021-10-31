@@ -10,6 +10,7 @@ const PAIRING_BASE_URL = 'http://localhost:8003';
 const VIDEO_BASE_URL = 'http://localhost:8004';
 const CODE_EXECUTOR_BASE_URL = 'http://localhost:8005';
 const ROOM_BASE_URL = 'http://localhost:8006';
+const CODING_BASE_URL = 'http://localhost:8007';
 
 // Parse requests with a body
 proxy.on('proxyReq', (proxyReq, req) => {
@@ -48,8 +49,14 @@ const roomProxy = (req, res) => {
   proxy.web(req, res, { target: ROOM_BASE_URL });
 };
 
+
 const roomWsProxy = createProxyMiddleware('/room', {
   target: ROOM_BASE_URL,
+  ws: true,
+});
+
+const codingWsProxy = createProxyMiddleware('/coding', {
+  target: CODING_BASE_URL,
   ws: true,
 });
 
@@ -61,4 +68,5 @@ module.exports = {
   videoProxy,
   codeExecutorProxy,
   roomProxy,
+  codingWsProxy,
 };

@@ -1,0 +1,33 @@
+@import '../../assets/scss/variables';
+
+.guest {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  width: 100vw;
+
+  &--top {
+    display: flex;
+    font-size: 0.9rem;
+    justify-content: space-between;
+    max-width: 100%;
+    padding: 0.5rem;
+
+    &__left-buttons {
+      display: flex;
+    }
+
+    &__language-button {
+      margin-right: 0.7rem;
+    }
+
+    &__help-button i {
+      margin-left: 0.3rem;
+    }
+  }
+
+  .ace_editor {
+    flex: 1;
+  }
+}

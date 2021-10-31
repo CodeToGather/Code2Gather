@@ -189,6 +189,7 @@ module.exports = {
       files: ['**/*.js'],
       rules: {
         '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-var-requires': 'off',
         'no-console': 'off',
         'no-process-exit': 'off',
@@ -285,7 +286,7 @@ module.exports = {
     },
     // TypeScript backend files
     {
-      files: ['history/**/*.ts', 'pairing/**/*.ts'],
+      files: ['history/**/*.ts', 'pairing/**/*.ts', 'coding/**/*.ts'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-misused-promises': [

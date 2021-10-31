@@ -13,7 +13,8 @@
     "history",
     "pairing",
     "room",
-    "video"
+    "video",
+    "coding"
   ],
   "devDependencies": {
     "@commitlint/cli": "^13.2.1",
