@@ -28,9 +28,9 @@ const socketIdToRoomId = new Map<string, string>();
 const roomIdToDoc = new Map<string, Automerge.Doc<TextDoc>>();
 const roomIdToLanguage = new Map<string, Language>();
 const languageToId = {
-  'PYTHON': 71,
-  'JAVA': 62,
-  'JAVASCRIPT': 63,
+  'PYTHON': 'Python (3.8.1)',
+  'JAVA': 'Java (OpenJDK 13.0.1)',
+  'JAVASCRIPT': 'JavaScript (Node.js 12.14.0)',
 };
 
 const setUpIo = (io: Server): void => {
@@ -101,32 +101,36 @@ const setUpIo = (io: Server): void => {
         console.log('Missing doc!');
         return;
       }
+
+      if (doc.text.length === 0) {
+        console.log('Empty code!');
+        return;
+      }
       io.to(roomId).emit(RES_EXECUTING_CODE);
 
-      // TODO: Post the following to the code execution service.
-      console.log(doc.text.toString(), language);
-
-      const resp = await axios.post(CODE_EXECUTION_SERVICE_URL, {
+      const data = {
         code: doc.text.toString(),
-        langauge: languageToId[language],
-        stdin: '', // TODO: Ask for stdin.
+        language: languageToId[language],
+      };
+      
+      const resp = await axios.post(CODE_EXECUTION_SERVICE_URL, data, {
+        headers: {'Content-Type': 'application/json'}
       });
 
-      if(resp.status != 200 || resp.data.token == null) {
-        console.error(resp.data.error);
-        io.to(roomId).emit(RES_CODE_OUTPUT, 'Error while executing code: ' + resp.data.error);
+      if(resp.status != 200 || resp.data.result == null) {
+        console.error(resp.status);
+        //TODO: handle error.
         return;
       }
 
-      const execResult = await axios.get(CODE_EXECUTION_SERVICE_URL + resp.data.token);
+      const execResult = await axios.get(CODE_EXECUTION_SERVICE_URL + '/' + resp.data.result);
 
       if(execResult.status != 200) {
         console.error(execResult.data.error);
-        io.to(roomId).emit(RES_CODE_OUTPUT, 'Error while executing code: ' + execResult.data.error);
+        //TODO: handle error.
         return;
       }
 
-      // TODO: Replace below with code output
       io.to(roomId).emit(RES_CODE_OUTPUT, execResult.data);
     });
 

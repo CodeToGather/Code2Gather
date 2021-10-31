@@ -30,4 +30,4 @@ export const RES_EXECUTING_CODE = 'res_executing_code';
 export const RES_CODE_OUTPUT = 'res_code_output';
 
 // URL to the Code Executor.
-export const CODE_EXECUTION_SERVICE_URL = 'http://localhost:8006/submissions';
+export const CODE_EXECUTION_SERVICE_URL = 'http://localhost:8005/submission';
