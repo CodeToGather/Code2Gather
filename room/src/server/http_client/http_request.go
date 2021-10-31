@@ -5,15 +5,31 @@ import (
 
 	"code2gather.com/room/src/models"
 	"code2gather.com/room/src/server/middleware"
+	"encoding/json"
 )
 
+var authBaseUrl = "http://localhost:8001"
 var historyBaseUrl = "http://localhost:8002"
 
+var httpClient *HttpClient
+
+func init() {
+	httpClient = NewHttpClient()
+}
+
+func GetUserId(token string) (uid string, err error) {
+	resp, err := httpClient.GetWithAuthHeader(authBaseUrl+"/auth", token)
+	var responseMessage *models.AuthResponse
+	err = json.Unmarshal(resp, &responseMessage)
+	if err != nil {
+		return
+	}
+	uid = responseMessage.Uid
+	return
+}
+
 func SendMeetingRecord(meetingRecord *models.CreateMeetingRequest) error {
-	httpClient := NewHttpClient()
 	data, err := middleware.MarshalToJson(meetingRecord)
-	//log.Println(meetingRecord)
-	//log.Println(string(data))
 	if err != nil {
 		log.Println(err)
 		return err
@@ -28,10 +44,7 @@ func SendMeetingRecord(meetingRecord *models.CreateMeetingRequest) error {
 }
 
 func SendRating(rating *models.CreateRatingRequest) error {
-	httpClient := NewHttpClient()
 	data, err := middleware.MarshalToJson(rating)
-	//log.Println(rating)
-	//log.Println(string(data))
 	if err != nil {
 		log.Println(err)
 		return err
