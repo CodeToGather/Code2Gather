@@ -9,6 +9,7 @@ const {
   historyProxy,
   authProxy,
   pairingWsProxy,
+  roomWsProxy,
   codingWsProxy,
   videoProxy,
 } = require('./proxy');
@@ -41,6 +42,7 @@ app.use('/auth', authProxy);
 
 // Websocket routes are authenticated by the sockets, if required
 app.use(pairingWsProxy);
+app.use(roomWsProxy);
 app.use(codingWsProxy);
 
 // Middleware: auth service

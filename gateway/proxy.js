@@ -49,6 +49,12 @@ const roomProxy = (req, res) => {
   proxy.web(req, res, { target: ROOM_BASE_URL });
 };
 
+
+const roomWsProxy = createProxyMiddleware('/room', {
+  target: ROOM_BASE_URL,
+  ws: true,
+});
+
 const codingWsProxy = createProxyMiddleware('/coding', {
   target: CODING_BASE_URL,
   ws: true,
@@ -58,6 +64,7 @@ module.exports = {
   authProxy,
   historyProxy,
   pairingWsProxy,
+  roomWsProxy,
   videoProxy,
   codeExecutorProxy,
   roomProxy,
