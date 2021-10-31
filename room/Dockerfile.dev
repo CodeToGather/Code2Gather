@@ -1,0 +1,7 @@
+FROM golang:latest
+
+RUN mkdir -p /home/node/app
+
+WORKDIR /home/node/app/room
+
+CMD go mod vendor && go run ./src/main.go
