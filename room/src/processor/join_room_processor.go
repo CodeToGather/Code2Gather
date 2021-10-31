@@ -16,6 +16,7 @@ type JoinRoomProcessor struct {
 	interviewerId string
 	question      *models.QuestionMessage
 	authorized    bool
+	err           error
 }
 
 func NewJoinRoomProcessor(request *models.JoinRoomRequest, uid string) *JoinRoomProcessor {
@@ -38,6 +39,7 @@ func (p *JoinRoomProcessor) Process() error {
 	log.Println("Processing create room request")
 	room, err := room_agents.GetRoomById(p.rid)
 	if err != nil {
+		p.err = err
 		return err
 	}
 	if p.uid == room.Uid1 || p.uid == room.Uid2 {
@@ -50,6 +52,7 @@ func (p *JoinRoomProcessor) Process() error {
 		p.interviewerId = room.Uid1
 		question, err := question_agents.GetQuestionById(room.Qid1)
 		if err != nil {
+			p.err = err
 			return err
 		}
 		p.question = question.ToQuestionMessage()
@@ -57,6 +60,7 @@ func (p *JoinRoomProcessor) Process() error {
 		p.interviewerId = room.Uid2
 		question, err := question_agents.GetQuestionById(room.Qid2)
 		if err != nil {
+			p.err = err
 			return err
 		}
 		p.question = question.ToQuestionMessage()
@@ -67,7 +71,10 @@ func (p *JoinRoomProcessor) Process() error {
 
 func (p *JoinRoomProcessor) GetResponse() proto.Message {
 	errorCode := models.ErrorCode_NO_ERROR
-	if !p.authorized {
+	if p.err != nil {
+		log.Println(p.err)
+		errorCode = models.ErrorCode_UNKNOWN_ERROR
+	} else if !p.authorized {
 		errorCode = models.ErrorCode_UNAUTHORIZED_USER
 	}
 	response := &models.JoinRoomResponse{

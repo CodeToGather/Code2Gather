@@ -28,10 +28,12 @@ func incomingRequestHandler(c *Client, request []byte) {
 	switch r := intermediateRequest.(type) {
 	case *models.ClientRequest_JoinRoomRequest:
 		joinRoomRequestHandler(c, r.JoinRoomRequest)
-	case *models.ClientRequest_ExecuteCodeRequest:
-		executeCodeRequestHandler(c, r.ExecuteCodeRequest)
+	//case *models.ClientRequest_ExecuteCodeRequest:
+	//	executeCodeRequestHandler(c, r.ExecuteCodeRequest)
 	case *models.ClientRequest_CompleteQuestionRequest:
 		completeQuestionRequestHandler(c, r.CompleteQuestionRequest)
+	case *models.ClientRequest_SubmitRatingRequest:
+		submitRatingRequestHandler(c, r.SubmitRatingRequest)
 	default:
 		log.Println("Receive message of unknown type")
 		response = &models.ErrorResponse{
@@ -57,17 +59,17 @@ func joinRoomRequestHandler(c *Client, request *models.JoinRoomRequest) {
 	sendResponseToRequestedClient(handler.GetResponse(), c)
 }
 
-func executeCodeRequestHandler(c *Client, request *models.ExecuteCodeRequest) {
-	log.Println("Handling Execute Code Request")
-
-	// TODO: send response to both users in the room
-	response := &models.ExecuteCodeResponse{
-		ErrorCode: 0,
-	}
-	log.Println(response)
-	respBytes, _ := middleware.MarshalToBytes(response)
-	c.send <- respBytes
-}
+//func executeCodeRequestHandler(c *Client, request *models.ExecuteCodeRequest) {
+//	log.Println("Handling Execute Code Request")
+//
+//	// TODO: send response to both users in the room
+//	response := &models.ExecuteCodeResponse{
+//		ErrorCode: 0,
+//	}
+//	log.Println(response)
+//	respBytes, _ := middleware.MarshalToBytes(response)
+//	c.send <- respBytes
+//}
 
 func completeQuestionRequestHandler(c *Client, request *models.CompleteQuestionRequest) {
 	log.Println("Handling Complete Question Request")
@@ -81,6 +83,21 @@ func completeQuestionRequestHandler(c *Client, request *models.CompleteQuestionR
 	checkClientRegisteredToRoom(handler.IsRequestAuthorized(), handler.GetRoomId(), c)
 	// Send response to both users in the room
 	broadcastResponseToRoom(handler.GetResponse(), handler.GetRoomId(), c)
+}
+
+func submitRatingRequestHandler(c *Client, request *models.SubmitRatingRequest) {
+	log.Println("Handling Submit Rating Request")
+
+	handler := processor.NewSubmitRatingProcessor(request, c.uid)
+	err := handler.Process()
+	if err != nil {
+		log.Println(err)
+	}
+
+	// Check if the client has been registered to the room
+	checkClientRegisteredToRoom(handler.IsRequestAuthorized(), handler.GetRoomId(), c)
+	// Send response to requesting user only
+	sendResponseToRequestedClient(handler.GetResponse(), c)
 }
 
 func sendResponseToRequestedClient(response proto.Message, c *Client) {

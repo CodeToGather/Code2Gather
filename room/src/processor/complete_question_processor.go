@@ -1,12 +1,12 @@
 package processor
 
 import (
-	"code2gather.com/room/src/server/http_client"
 	"log"
 
 	"code2gather.com/room/src/agents/question_agents"
 	"code2gather.com/room/src/agents/room_agents"
 	"code2gather.com/room/src/models"
+	"code2gather.com/room/src/server/http_client"
 	"github.com/golang/protobuf/proto"
 )
 
@@ -19,6 +19,7 @@ type CompleteQuestionProcessor struct {
 	nextInterviewerId  string
 	nextQuestion       *models.QuestionMessage
 	authorized         bool
+	err                error
 }
 
 func NewCompleteQuestionProcessor(request *models.CompleteQuestionRequest, uid string) *CompleteQuestionProcessor {
@@ -57,6 +58,7 @@ func (p *CompleteQuestionProcessor) Process() error {
 	log.Println("Processing Complete Question Request")
 	room, err := room_agents.GetRoomById(p.rid)
 	if err != nil {
+		p.err = err
 		return err
 	}
 	if p.uid == room.Uid1 {
@@ -71,10 +73,12 @@ func (p *CompleteQuestionProcessor) Process() error {
 
 	firstQuestion, err := question_agents.GetQuestionById(room.Qid1)
 	if err != nil {
+		p.err = err
 		return err
 	}
 	secondQuestion, err := question_agents.GetQuestionById(room.Qid2)
 	if err != nil {
+		p.err = err
 		return err
 	}
 
@@ -93,10 +97,12 @@ func (p *CompleteQuestionProcessor) Process() error {
 	}
 
 	if err = room_agents.UpdateRoom(room); err != nil {
+		p.err = err
 		return err
 	}
 
 	if err = p.SendMeetingRecord(); err != nil {
+		p.err = err
 		return err
 	}
 
@@ -105,7 +111,10 @@ func (p *CompleteQuestionProcessor) Process() error {
 
 func (p *CompleteQuestionProcessor) GetResponse() proto.Message {
 	errorCode := models.ErrorCode_NO_ERROR
-	if !p.authorized {
+	if p.err != nil {
+		log.Println(p.err)
+		errorCode = models.ErrorCode_UNKNOWN_ERROR
+	} else if !p.authorized {
 		errorCode = models.ErrorCode_UNAUTHORIZED_USER
 	}
 	response := &models.CompleteQuestionResponse{
