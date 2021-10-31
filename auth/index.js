@@ -81,7 +81,6 @@ app.post('/login', async (req, res) => {
 app.get('/auth', async (req, res) => {
   const bearerToken = req.headers.authorization;
   if (!isBearerToken(bearerToken) || process.env.JWT_SECRET == null) {
-    console.log('HERE1');
     res.status(StatusCodes.UNAUTHORIZED).json();
     return;
   }
@@ -91,11 +90,9 @@ app.get('/auth', async (req, res) => {
   try {
     payload = verify(token, process.env.JWT_SECRET);
     if (!isAccessTokenSignedPayload(payload)) {
-      console.log('HERE2');
       throw new Error();
     }
   } catch {
-    console.log('HERE3');
     res.status(StatusCodes.UNAUTHORIZED).json();
     return;
   }
@@ -104,7 +101,6 @@ app.get('/auth', async (req, res) => {
   try {
     await getUserWithIdFromFirebase(uid);
   } catch {
-    console.log('HERE4');
     res.status(StatusCodes.UNAUTHORIZED).json();
     return;
   }
