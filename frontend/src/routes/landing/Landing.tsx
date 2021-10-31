@@ -49,7 +49,9 @@ const Landing: FC = () => {
                 history.push(`${GUEST}/${slug}`);
               }}
             >
-              <Typography size="regular">Sign in as guest instead</Typography>
+              <Typography size="regular">
+                Try the playground as a guest instead
+              </Typography>
             </button>
           </div>
         </div>
