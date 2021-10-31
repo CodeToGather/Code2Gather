@@ -122,5 +122,6 @@ func (p *CompleteQuestionProcessor) GetResponse() proto.Message {
 		InterviewerId: p.nextInterviewerId,
 		NextQuestion:  p.nextQuestion,
 	}
-	return response
+	responseWrapper := &models.RoomServiceToClientMessage_CompleteQuestionResponse{CompleteQuestionResponse: response}
+	return &models.RoomServiceToClientMessage{Response: responseWrapper}
 }

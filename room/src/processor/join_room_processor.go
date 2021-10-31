@@ -82,5 +82,6 @@ func (p *JoinRoomProcessor) GetResponse() proto.Message {
 		InterviewerId: p.interviewerId,
 		Question:      p.question,
 	}
-	return response
+	responseWrapper := &models.RoomServiceToClientMessage_JoinRoomResponse{JoinRoomResponse: response}
+	return &models.RoomServiceToClientMessage{Response: responseWrapper}
 }

@@ -87,5 +87,6 @@ func (p *SubmitRatingProcessor) GetResponse() proto.Message {
 	response := &models.SubmitRatingResponse{
 		ErrorCode: int32(errorCode),
 	}
-	return response
+	responseWrapper := &models.RoomServiceToClientMessage_SubmitRatingResponse{SubmitRatingResponse: response}
+	return &models.RoomServiceToClientMessage{Response: responseWrapper}
 }
