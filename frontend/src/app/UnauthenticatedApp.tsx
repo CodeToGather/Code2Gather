@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactElement } from 'react';
 import {
   BrowserRouter as Router,
   Redirect,
@@ -6,8 +6,8 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import { CODE_EDITOR, ROOT } from 'constants/routes';
-import CodeEditor from 'routes/codeEditor';
+import { GUEST, ROOT } from 'constants/routes';
+import Guest from 'routes/guest';
 import Landing from 'routes/landing';
 
 const redirectToRoot = (): React.ReactNode => <Redirect to={ROOT} />;
@@ -17,7 +17,11 @@ const UnauthenticatedApp: FC = () => {
     <Router>
       <Switch>
         <Route component={Landing} exact={true} path={ROOT} />
-        <Route component={CodeEditor} exact={true} path={CODE_EDITOR} />
+        <Route
+          exact={true}
+          path={`${GUEST}/:id`}
+          render={(props): ReactElement<typeof Guest> => <Guest {...props} />}
+        />
         <Route path="/" render={redirectToRoot} />
       </Switch>
     </Router>

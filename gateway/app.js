@@ -9,6 +9,7 @@ const {
   historyProxy,
   authProxy,
   pairingWsProxy,
+  codingWsProxy,
 } = require('./proxy');
 
 const app = express();
@@ -37,8 +38,9 @@ app.get('/hello', (_req, res) => {
 // For authentication purposes
 app.use('/auth', authProxy);
 
-// Websocket routes are authenticated by the sockets
+// Websocket routes are authenticated by the sockets, if required
 app.use(pairingWsProxy);
+app.use(codingWsProxy);
 
 // Middleware: auth service
 // All routes after this will be authenticated

@@ -6,9 +6,9 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import { CODE_EDITOR, HOME } from 'constants/routes';
-import CodeEditor from 'routes/codeEditor';
+import { HOME, ROOM } from 'constants/routes';
 import Home from 'routes/home';
+import Room from 'routes/room';
 
 const redirectToHome = (): React.ReactNode => <Redirect to={HOME} />;
 
@@ -17,7 +17,7 @@ const AuthenticatedApp: FC = () => {
     <Router>
       <Switch>
         <Route component={Home} exact={true} path={HOME} />
-        <Route component={CodeEditor} exact={true} path={CODE_EDITOR} />
+        <Route component={Room} exact={true} path={ROOM} />
         <Route path="/" render={redirectToHome} />
       </Switch>
     </Router>
