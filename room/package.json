@@ -6,8 +6,10 @@
   "devDependencies": {},
   "scripts": {
     "start": "go run ./src/main.go",
+    "install": "go mod vendor",
     "lint": "gofmt -w src",
-    "lint:ci": "gofmt -w src"
+    "lint:ci": "gofmt -w src",
+    "db:seed": "go run ./src/infra/db/db_script/main/db_question_seed.go"
   },
   "lint-staged": {
     "**/*.go": [
