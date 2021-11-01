@@ -6,6 +6,7 @@ import Typography from 'components/typography';
 import { PracticeHistoryState } from '../states';
 
 import PracticeHistoryItem from './PracticeHistoryItem';
+import PracticeHistoryItemSkeleton from './PracticeHistoryItemSkeleton';
 import './PracticeHistory.scss';
 
 type Props = PracticeHistoryState;
@@ -13,9 +14,9 @@ type Props = PracticeHistoryState;
 const PracticeHistory: FC<Props> = ({ isLoading, isError, records }) => {
   const renderBody = (): ReactElement => {
     if (isLoading) {
-      return <>Loading...</>;
+      return <PracticeHistoryItemSkeleton />;
     }
-    if (!isError) {
+    if (isError) {
       return <Error />;
     }
     if (records.length === 0) {
