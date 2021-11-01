@@ -12,6 +12,8 @@
 .practice-history-item {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1rem;
+  padding: 0.8rem !important;
   width: 100%;
 
   &:hover {
@@ -28,22 +30,6 @@
       align-items: flex-start;
       display: flex;
       flex-direction: column;
-
-      &-language {
-        display: inline;
-
-        @include media('>desktop') {
-          display: none;
-        }
-      }
-    }
-
-    &-language {
-      display: none;
-
-      @include media('>desktop') {
-        display: block;
-      }
     }
   }
 
@@ -72,6 +58,21 @@
       .ace_gutter {
         background-color: $code-dark-background-color;
       }
+
+      .ace_scrollbar::-webkit-scrollbar {
+        appearance: none;
+        width: 10px;
+      }
+
+      .ace_scrollbar::-webkit-scrollbar-corner {
+        background: transparent;
+      }
+
+      .ace_scrollbar::-webkit-scrollbar-thumb {
+        background-color: $scrollbar-color;
+        border-radius: 5px;
+        box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+      }
     }
 
     &-right {
@@ -87,26 +88,37 @@
       }
 
       &__notes-wrapper {
+        text-align: left;
         width: 100%;
       }
 
       &__notes {
         border: 0;
-        height: 200px;
         padding: 0;
         resize: none;
         width: 100%;
+      }
 
-        @include media('>desktop') {
-          height: 400px;
-        }
+      &__notes::-webkit-scrollbar {
+        appearance: none;
+        width: 10px;
+      }
 
-        &:active,
-        &:hover,
-        &:focus {
-          border: 0;
-          outline: none;
-        }
+      &__notes::-webkit-scrollbar-corner {
+        background: transparent;
+      }
+
+      &__notes::-webkit-scrollbar-thumb {
+        background-color: $scrollbar-color;
+        border-radius: 5px;
+        box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+      }
+
+      &__notes:active,
+      &__notes:hover,
+      &__notes:focus {
+        border: 0;
+        outline: none;
       }
     }
 

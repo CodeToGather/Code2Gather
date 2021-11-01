@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useLayoutEffect, useRef } from 'react';
 
 import CodeEditor from 'components/codeEditor';
 import Typography from 'components/typography';
@@ -14,6 +14,18 @@ const languageMapping = {
 };
 
 const PracticeHistoryItem: FC<Props> = (props) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useLayoutEffect(() => {
+    if (!textareaRef.current) {
+      return;
+    }
+    textareaRef.current.style.height = `${Math.min(
+      textareaRef.current.scrollHeight,
+      300,
+    )}px`;
+  }, [textareaRef]);
+
   const date = new Date(props.createdAt);
   const day = date.toLocaleDateString('en-US', { day: 'numeric' });
   const month = date.toLocaleDateString('en-US', { month: 'long' });
@@ -23,17 +35,11 @@ const PracticeHistoryItem: FC<Props> = (props) => {
       <div className="practice-history-item--top">
         <div className="practice-history-item--top-left">
           <Typography className="is-gray" size="regular">
-            {[day, month, year].join(' ')}{' '}
-            <span className="practice-history-item--top-left-language">
-              | {languageMapping[props.language]}
-            </span>
+            {[day, month, year].join(' ')}
           </Typography>
           <Typography size="medium">{props.questionTitle}</Typography>
         </div>
-        <Typography
-          className="is-gray practice-history-item--top-language"
-          size="regular"
-        >
+        <Typography className="is-gray" size="regular">
           {languageMapping[props.language]}
         </Typography>
       </div>
@@ -51,7 +57,7 @@ const PracticeHistoryItem: FC<Props> = (props) => {
             )}
           </Typography>
           <CodeEditor
-            height="400px"
+            height="300px"
             language={props.language}
             onChange={(): void => undefined}
             readOnly={true}
@@ -70,11 +76,21 @@ const PracticeHistoryItem: FC<Props> = (props) => {
             className="practice-history-item--bottom-right__notes-wrapper"
             size="regular"
           >
-            <textarea
-              className="practice-history-item--bottom-right__notes"
-              readOnly={true}
-              value={props.feedbackToInterviewee}
-            />
+            {props.feedbackToInterviewee ? (
+              <textarea
+                className="practice-history-item--bottom-right__notes"
+                readOnly={true}
+                ref={textareaRef}
+                value={props.feedbackToInterviewee}
+              />
+            ) : (
+              <div>
+                The interviewer did not leave any notes{' '}
+                <span aria-label="sad-emoji" role="img">
+                  😞
+                </span>
+              </div>
+            )}
           </Typography>
         </div>
       </div>
