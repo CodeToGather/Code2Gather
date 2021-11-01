@@ -90,7 +90,7 @@ const Home: FC = () => {
         return "We're looking for a practice partner for you!";
       case PairingState.FOUND_PAIR:
       case PairingState.CREATED_ROOM:
-        return '';
+        return "We're getting you into a room now!";
       case PairingState.ERROR:
         return <Error error={errorMessage} />;
     }
@@ -113,7 +113,7 @@ const Home: FC = () => {
         {state !== PairingState.FOUND_PAIR &&
         state !== PairingState.CREATED_ROOM ? (
           <button className="border-button is-danger" onClick={onCancel}>
-            Cancel
+            <Typography size="regular">Cancel</Typography>
           </button>
         ) : null}
       </Modal>

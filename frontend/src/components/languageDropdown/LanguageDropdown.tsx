@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 
+import Typography from 'components/typography';
 import { Language } from 'types/crud/language';
 
 import './LanguageDropdown.scss';
@@ -34,19 +35,21 @@ const LanguageDropdown: FC<Props> = ({
         className={`border-button${className !== '' ? ` ${className}` : ''}`}
         onClick={(): void => setIsDropdownShown((isShown) => !isShown)}
       >
-        <div>{languageNames[language]}</div>
-        <i className="fas fa-caret-down" />
+        <Typography size="regular">
+          <div>{languageNames[language]}</div>
+          <i className="fas fa-caret-down" />
+        </Typography>
       </button>
       {isDropdownShown ? (
         <div className="language-dropdown__dropdown">
           <button onClick={(): void => handleSetLanguage(Language.PYTHON)}>
-            Python
+            <Typography size="regular">Python</Typography>
           </button>
           <button onClick={(): void => handleSetLanguage(Language.JAVASCRIPT)}>
-            JavaScript
+            <Typography size="regular">JavaScript</Typography>
           </button>
           <button onClick={(): void => handleSetLanguage(Language.JAVA)}>
-            Java
+            <Typography size="regular">Java</Typography>
           </button>
         </div>
       ) : null}

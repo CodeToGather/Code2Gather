@@ -4,6 +4,7 @@ import { match, RouteComponentProps } from 'react-router-dom';
 
 import CodeEditor from 'components/codeEditor';
 import LanguageDropdown from 'components/languageDropdown';
+import Typography from 'components/typography';
 import { GUEST } from 'constants/routes';
 import { SITE_URL } from 'constants/urls';
 import { useCodingSocket } from 'contexts/CodingSocketContext';
@@ -51,7 +52,9 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
             }}
           />
           <button className="border-button guest--top__help-button">
-            Help <i className="far fa-question-circle" />
+            <Typography size="regular">
+              Help <i className="far fa-question-circle" />
+            </Typography>
           </button>
         </div>
         <div className="guest--top__right-buttons">
@@ -59,7 +62,9 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
             className="border-button is-success guest--top__copy-button"
             onClick={onCopyInviteLink}
           >
-            {hasCopied ? 'Copied!' : 'Copy Invite Link'}
+            <Typography size="regular">
+              {hasCopied ? 'Copied!' : 'Copy Link'}
+            </Typography>
           </button>
         </div>
       </div>
