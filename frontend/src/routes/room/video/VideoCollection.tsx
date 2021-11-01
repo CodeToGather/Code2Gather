@@ -35,24 +35,22 @@ const Videos = (props: {
   const { users, tracks } = props;
 
   return (
-    <div>
-      <div className={users.length < 1 ? 'videos-single' : 'videos-double'}>
-        {users.length > 0 &&
-          users.map((user) => {
-            if (user.videoTrack) {
-              return (
-                <AgoraVideoPlayer
-                  className="vid"
-                  key={user.uid}
-                  videoTrack={user.videoTrack}
-                />
-              );
-            } else {
-              return null;
-            }
-          })}
-        <AgoraVideoPlayer className="vid" videoTrack={tracks[1]} />
-      </div>
+    <div className={users.length < 1 ? 'videos-single' : 'videos-double'}>
+      {users.length > 0 &&
+        users.map((user) => {
+          if (user.videoTrack) {
+            return (
+              <AgoraVideoPlayer
+                className="vid"
+                key={user.uid}
+                videoTrack={user.videoTrack}
+              />
+            );
+          } else {
+            return null;
+          }
+        })}
+      <AgoraVideoPlayer className="vid" videoTrack={tracks[1]} />
     </div>
   );
 };
