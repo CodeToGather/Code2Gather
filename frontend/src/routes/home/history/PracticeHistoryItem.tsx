@@ -30,6 +30,7 @@ const PracticeHistoryItem: FC<Props> = (props) => {
   const day = date.toLocaleDateString('en-US', { day: 'numeric' });
   const month = date.toLocaleDateString('en-US', { month: 'long' });
   const year = date.toLocaleDateString('en-US', { year: 'numeric' });
+
   return (
     <button className="border-button practice-history-item">
       <div className="practice-history-item--top">
