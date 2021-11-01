@@ -149,6 +149,16 @@ class MeetingRecordService extends BaseService<
       );
     }
     if (
+      (isCreate && !('questionTitle' in data)) ||
+      (data.questionTitle &&
+        (typeof data.questionTitle !== 'string' ||
+          data.questionTitle.length === 0))
+    ) {
+      throw new InvalidDataError(
+        'The meeting record must have a valid question title!',
+      );
+    }
+    if (
       (isCreate && !('questionDifficulty' in data)) ||
       (data.questionDifficulty &&
         (typeof data.questionDifficulty !== 'string' ||

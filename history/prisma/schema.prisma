@@ -44,6 +44,7 @@ model MeetingRecord {
   intervieweeId         String
   duration              Float // In seconds
   questionId            String
+  questionTitle         String // Reduce queries required
   questionDifficulty    Difficulty // Reduce queries required
   language              Language
   codeWritten           String // Code written by interviewee

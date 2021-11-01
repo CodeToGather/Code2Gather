@@ -19,6 +19,15 @@ code {
   font-weight: 500;
 }
 
+input,
+textarea {
+  background-color: inherit;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
 // Text styles
 .is-regular {
   font-weight: 400;
@@ -26,6 +35,19 @@ code {
 
 .is-bold {
   font-weight: 700;
+}
+
+.is-grey,
+.is-gray {
+  color: $text-secondary-color;
+}
+
+.is-success {
+  color: $text-success-color;
+}
+
+.is-danger {
+  color: $text-danger-color;
 }
 
 // Button styles

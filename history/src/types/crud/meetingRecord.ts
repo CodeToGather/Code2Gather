@@ -5,6 +5,7 @@ export interface MeetingRecordCreateData {
   intervieweeId: string;
   duration: number;
   questionId: string;
+  questionTitle: string;
   questionDifficulty: Difficulty;
   language: Language;
   codeWritten: string;
@@ -17,6 +18,7 @@ export interface MeetingRecordUpdateData {
   intervieweeId?: string;
   duration?: number;
   questionId?: string;
+  questionTitle?: string;
   questionDifficulty?: Difficulty;
   language?: Language;
   codeWritten?: string;

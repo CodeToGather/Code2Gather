@@ -7,14 +7,16 @@ import Modal from 'components/modal';
 import Typography from 'components/typography';
 import { usePairingSocket } from 'contexts/PairingSocketContext';
 import LeaderboardApi from 'lib/leaderboardApi';
+import MeetingRecordApi from 'lib/meetingRecordApi';
 import { findPair, stopFindingPair } from 'lib/pairingSocketService';
 import { PairingState } from 'reducers/pairingDux';
 import { RootState } from 'reducers/rootReducer';
 import { Difficulty } from 'types/crud/difficulty';
 
+import PracticeHistory from './history';
 import Leaderboard from './leaderboard';
 import PracticePanel from './PracticePanel';
-import { LeaderboardState } from './states';
+import { LeaderboardState, PracticeHistoryState } from './states';
 import './Home.scss';
 
 const initialLeaderboardState: LeaderboardState = {
@@ -25,10 +27,23 @@ const initialLeaderboardState: LeaderboardState = {
   isError: false,
 };
 
+const initialPracticeHistoryState: PracticeHistoryState = {
+  records: [],
+  isLoading: true,
+  isError: false,
+};
+
 const Home: FC = () => {
   const [leaderboardState, setLeaderboardState] = useReducer(
     (s: LeaderboardState, a: Partial<LeaderboardState>) => ({ ...s, ...a }),
     initialLeaderboardState,
+  );
+  const [historyState, setHistoryState] = useReducer(
+    (s: PracticeHistoryState, a: Partial<PracticeHistoryState>) => ({
+      ...s,
+      ...a,
+    }),
+    initialPracticeHistoryState,
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { socket } = usePairingSocket();
@@ -48,6 +63,28 @@ const Home: FC = () => {
       } catch (error) {
         if (!didCancel) {
           setLeaderboardState({ isLoading: false, isError: true });
+        }
+      }
+    };
+
+    fetchData();
+    return (): void => {
+      didCancel = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let didCancel = false;
+
+    const fetchData = async (): Promise<void> => {
+      try {
+        const response = await MeetingRecordApi.getMeetingRecords();
+        if (!didCancel) {
+          setHistoryState({ isLoading: false, records: response });
+        }
+      } catch (error) {
+        if (!didCancel) {
+          setHistoryState({ isLoading: false, isError: true });
         }
       }
     };
@@ -102,7 +139,7 @@ const Home: FC = () => {
         <Leaderboard {...leaderboardState} />
         <PracticePanel onPracticeNow={onPracticeNow} />
       </div>
-      {/* <div className="home__bottom">Practice History</div> */}
+      <PracticeHistory {...historyState} />
       <Modal className="home__modal" isVisible={isModalVisible}>
         <Typography className="is-bold" size="large">
           {getModalTitle()}

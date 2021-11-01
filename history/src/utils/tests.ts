@@ -118,6 +118,7 @@ export const createTestMeetingRecord = async (
       intervieweeId: data.intervieweeId ?? (await createTestUser()).id,
       duration: data.duration ?? faker.datatype.float(),
       questionId: data.questionId ?? faker.random.alpha(),
+      questionTitle: data?.questionTitle ?? faker.lorem.sentence(),
       questionDifficulty:
         data.questionDifficulty ??
         faker.random.arrayElement(Object.values(Difficulty)),
@@ -147,6 +148,7 @@ export const mockTestMeetingRecord = (
     intervieweeId,
     duration: data?.duration ?? faker.datatype.float(),
     questionId: data?.questionId ?? faker.random.alpha(),
+    questionTitle: data?.questionTitle ?? faker.lorem.sentence(),
     questionDifficulty:
       data?.questionDifficulty ??
       faker.random.arrayElement(Object.values(Difficulty)),

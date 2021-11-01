@@ -1,0 +1,135 @@
+@import '../../../assets/scss/main';
+
+.practice-history {
+  margin-bottom: 2rem;
+  width: 100%;
+
+  &__title {
+    margin-bottom: 1rem;
+  }
+
+  &__empty {
+    color: $text-secondary-color;
+    padding-top: 4rem;
+    text-align: center;
+  }
+}
+
+.practice-history-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  padding: 0.8rem !important;
+  width: 100%;
+
+  &:hover {
+    cursor: default;
+  }
+
+  &--top {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    &-left {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &--bottom {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    width: 100%;
+
+    @include media('>desktop') {
+      flex-direction: row;
+    }
+
+    &-left {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+
+      @include media('>desktop') {
+        flex: 3;
+        padding-right: 1rem;
+      }
+
+      .ace_editor,
+      .ace_gutter {
+        background-color: $code-dark-background-color;
+      }
+
+      .ace_scrollbar::-webkit-scrollbar {
+        appearance: none;
+        width: 10px;
+      }
+
+      .ace_scrollbar::-webkit-scrollbar-corner {
+        background: transparent;
+      }
+
+      .ace_scrollbar::-webkit-scrollbar-thumb {
+        background-color: $scrollbar-color;
+        border-radius: 5px;
+        box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    &-right {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      margin-top: 1rem;
+
+      @include media('>desktop') {
+        flex: 2;
+        margin-top: 0;
+        padding-left: 1rem;
+      }
+
+      &__notes-wrapper {
+        text-align: left;
+        width: 100%;
+      }
+
+      &__notes {
+        border: 0;
+        padding: 0;
+        resize: none;
+        width: 100%;
+      }
+
+      &__notes::-webkit-scrollbar {
+        appearance: none;
+        width: 10px;
+      }
+
+      &__notes::-webkit-scrollbar-corner {
+        background: transparent;
+      }
+
+      &__notes::-webkit-scrollbar-thumb {
+        background-color: $scrollbar-color;
+        border-radius: 5px;
+        box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+      }
+
+      &__notes:active,
+      &__notes:hover,
+      &__notes:focus {
+        border: 0;
+        outline: none;
+      }
+    }
+
+    &-title {
+      margin-bottom: 0.5rem;
+    }
+  }
+}

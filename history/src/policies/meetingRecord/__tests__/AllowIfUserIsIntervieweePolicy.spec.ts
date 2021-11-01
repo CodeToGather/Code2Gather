@@ -23,6 +23,7 @@ beforeAll(() => {
     intervieweeId: interviewee.id,
     duration: 5,
     questionId: 'question',
+    questionTitle: 'Hello',
     questionDifficulty: Difficulty.EASY,
     language: Language.JAVA,
     codeWritten: '',

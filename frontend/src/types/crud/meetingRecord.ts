@@ -9,6 +9,7 @@ export interface MeetingRecord {
   intervieweeId: string;
   duration: number;
   questionId: string;
+  questionTitle: string;
   questionDifficulty: Difficulty;
   language: Language;
   codeWritten: string;
