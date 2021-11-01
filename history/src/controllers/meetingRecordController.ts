@@ -65,7 +65,6 @@ export async function readMeetingRecordsForSelf(
     );
     response.status(StatusCodes.OK).json(meetingRecords);
   } catch (error: any) {
-    console.log(error);
     if (error instanceof AuthorizationError) {
       response.status(StatusCodes.FORBIDDEN).json({
         error: 'You do not have permissions to read the meeting records!',
