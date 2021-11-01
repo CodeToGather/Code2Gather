@@ -1,0 +1,24 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [staging]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Redeploy application on staging server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            cd ${{ secrets.REMOTE_STAGING_DIR }}
+            echo ${{ secrets.REMOTE_PASSWORD }} | sudo -S yarn stop
+            git checkout staging
+            git pull
+            git reset --hard origin/staging
+            echo ${{ secrets.REMOTE_PASSWORD }} | sudo -S yarn start -d
