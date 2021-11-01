@@ -11,6 +11,7 @@ const {
   pairingWsProxy,
   roomWsProxy,
   codingWsProxy,
+  videoProxy,
 } = require('./proxy');
 
 const app = express();
@@ -50,5 +51,6 @@ app.use(checkAuth);
 
 app.use('/room', roomProxy);
 app.use('/history', historyProxy);
+app.use('/video', videoProxy);
 
 module.exports = app;

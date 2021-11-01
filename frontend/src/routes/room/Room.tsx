@@ -9,6 +9,7 @@ import { changeLanguage, joinRoom, updateCode } from 'lib/codingSocketService';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 
+import VideoCollection from './video';
 import './Room.scss';
 
 const Room: FC = () => {
@@ -52,6 +53,7 @@ const Room: FC = () => {
         value={doc.text.toString()}
         width="100vw"
       />
+      <VideoCollection />
     </div>
   );
 };
