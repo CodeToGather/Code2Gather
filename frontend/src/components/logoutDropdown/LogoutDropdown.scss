@@ -1,0 +1,25 @@
+@import '../../assets/scss/variables';
+
+.logout-dropdown {
+
+  border-radius: $dropdown-border-radius;
+  margin-top: 0.5rem;
+  overflow: hidden;
+  position: absolute;
+  width: 8rem;
+  z-index: 5;
+
+  button {
+    background-color: $dropdown-background-color;
+    border: 0;
+    border-radius: 0;
+    color: $dropdown-text-color;
+    padding: 0.7rem 0.8rem;
+    text-align: center;
+    width: 100%;
+
+    &:hover {
+      background-color: $dropdown-background-hover-color;
+    }
+  }
+}
