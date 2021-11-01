@@ -4,12 +4,27 @@ import './Avatar.scss';
 
 interface Props {
   src: string;
-  href: string;
   alt: string;
+  href?: string;
+  onClick?: () => void;
   dataTestId?: string;
 }
 
-const Avatar: FC<Props> = ({ src, href, alt, dataTestId }) => {
+const Avatar: FC<Props> = ({ src, href, alt, onClick, dataTestId }) => {
+  if (onClick == null && href == null) {
+    return (
+      <img alt={alt} className="avatar" data-testid={dataTestId} src={src} />
+    );
+  }
+
+  if (onClick != null) {
+    return (
+      <button className="avatar avatar__button" onClick={onClick}>
+        <img alt={alt} className="avatar" data-testid={dataTestId} src={src} />
+      </button>
+    );
+  }
+
   return (
     <a
       className="avatar"
