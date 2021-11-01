@@ -20,15 +20,21 @@ test('renders title', () => {
   expect(titleTextElement).toBeInTheDocument();
 });
 
-test('renders profile', () => {
+test('renders avatar and dropdown button', () => {
   authUserContextRender(<Navbar />, { data: testUser });
-  const imageAnchorElement = screen.getByTestId(/profile-picture-anchor/i);
-  expect(imageAnchorElement).toBeInTheDocument();
-  expect(imageAnchorElement).toHaveAttribute('href', testUser.profileUrl);
-  expect(imageAnchorElement).toHaveAttribute('rel', 'noopener noreferrer');
-  expect(imageAnchorElement).toHaveAttribute('target', '_blank');
+  const imageButtonElement = screen.getByTestId(/profile-picture-anchor/i);
+  expect(imageButtonElement).toBeInTheDocument();
 
   const imageElement = screen.getByAltText('Profile');
   expect(imageElement).toBeInTheDocument();
   expect(imageElement).toHaveAttribute('src', testUser.photoUrl);
+});
+
+test('renders dropdown on clicking avatar', () => {
+  authUserContextRender(<Navbar />, { data: testUser });
+  const imageButtonElement = screen.getByTestId(/profile-picture-anchor/i);
+  expect(imageButtonElement).toBeInTheDocument();
+  imageButtonElement.click();
+  const dropdownElement = screen.getByTestId(/logout-dropdown/);
+  expect(dropdownElement).toBeInTheDocument();
 });

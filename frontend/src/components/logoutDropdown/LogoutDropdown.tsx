@@ -26,7 +26,10 @@ const LogoutDropdown: FC<Props> = ({
   };
 
   return isDropdownShown ? (
-    <div className={`logout-dropdown${className ? ` ${className}` : ''}`}>
+    <div
+      className={`logout-dropdown${className ? ` ${className}` : ''}`}
+      data-testid="logout-dropdown"
+    >
       <button
         onClick={(): void => {
           window.open(profileUrl);
