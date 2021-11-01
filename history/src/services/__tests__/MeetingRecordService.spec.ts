@@ -22,6 +22,7 @@ afterAll(async () => {
 describe('MeetingRecordService', () => {
   let duration: number;
   let questionId: string;
+  let questionTitle: string;
   let questionDifficulty: Difficulty;
   let language: Language;
   let codeWritten: string;
@@ -37,6 +38,7 @@ describe('MeetingRecordService', () => {
       );
       duration = mockMeetingRecordData.duration;
       questionId = mockMeetingRecordData.questionId;
+      questionTitle = mockMeetingRecordData.questionTitle;
       questionDifficulty =
         mockMeetingRecordData.questionDifficulty as Difficulty;
       language = mockMeetingRecordData.language as Language;
@@ -52,6 +54,7 @@ describe('MeetingRecordService', () => {
           intervieweeId: fixtures.userTwo.id,
           duration,
           questionId,
+          questionTitle,
           questionDifficulty,
           language,
           codeWritten,
@@ -64,6 +67,7 @@ describe('MeetingRecordService', () => {
       expect(meetingRecord.intervieweeId).toBe(fixtures.userTwo.id);
       expect(meetingRecord.duration).toBe(duration);
       expect(meetingRecord.questionId).toBe(questionId);
+      expect(meetingRecord.questionTitle).toBe(questionTitle);
       expect(meetingRecord.questionDifficulty).toBe(questionDifficulty);
       expect(meetingRecord.language).toBe(language);
       expect(meetingRecord.codeWritten).toBe(codeWritten);
@@ -84,6 +88,7 @@ describe('MeetingRecordService', () => {
             intervieweeId: fixtures.userTwo.id,
             duration: -1,
             questionId,
+            questionTitle,
             questionDifficulty,
             language,
             codeWritten,
@@ -103,6 +108,7 @@ describe('MeetingRecordService', () => {
             intervieweeId: fixtures.userOne.id,
             duration,
             questionId,
+            questionTitle,
             questionDifficulty,
             language,
             codeWritten,
@@ -123,6 +129,7 @@ describe('MeetingRecordService', () => {
             intervieweeId: fixtures.userTwo.id,
             duration,
             questionId,
+            questionTitle,
             questionDifficulty,
             language,
             codeWritten,
@@ -139,6 +146,7 @@ describe('MeetingRecordService', () => {
             intervieweeId: fixtures.userTwo.id,
             duration,
             questionId,
+            questionTitle,
             questionDifficulty,
             language,
             codeWritten,

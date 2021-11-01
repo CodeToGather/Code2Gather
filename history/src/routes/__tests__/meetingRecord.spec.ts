@@ -31,6 +31,7 @@ describe('POST /meeting', () => {
   let intervieweeId: string;
   let duration: number;
   let questionId: string;
+  let questionTitle: string;
   let questionDifficulty: Difficulty;
   let language: Language;
   let codeWritten: string;
@@ -50,6 +51,7 @@ describe('POST /meeting', () => {
     interviewerId = mockMeetingRecordData.interviewerId as string;
     duration = mockMeetingRecordData.duration;
     questionId = mockMeetingRecordData.questionId;
+    questionTitle = mockMeetingRecordData.questionTitle;
     questionDifficulty = mockMeetingRecordData.questionDifficulty as Difficulty;
     language = mockMeetingRecordData.language as Language;
     codeWritten = mockMeetingRecordData.codeWritten;
@@ -66,6 +68,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -77,6 +80,7 @@ describe('POST /meeting', () => {
     expect(response.body.interviewerId).toBe(interviewerId);
     expect(response.body.duration).toBe(duration);
     expect(response.body.questionId).toBe(questionId);
+    expect(response.body.questionTitle).toBe(questionTitle);
     expect(response.body.questionDifficulty).toBe(questionDifficulty);
     expect(response.body.language).toBe(language);
     expect(response.body.codeWritten).toBe(codeWritten);
@@ -96,6 +100,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -116,6 +121,7 @@ describe('POST /meeting', () => {
         intervieweeId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -136,6 +142,7 @@ describe('POST /meeting', () => {
         intervieweeId,
         interviewerId,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -156,6 +163,7 @@ describe('POST /meeting', () => {
         intervieweeId,
         interviewerId,
         duration,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -168,6 +176,27 @@ describe('POST /meeting', () => {
     );
   });
 
+  it('should not allow missing question title', async () => {
+    const response = await request(server.server)
+      .post('/meeting')
+      .set('Authorization', interviewerId)
+      .send({
+        intervieweeId,
+        interviewerId,
+        duration,
+        questionId,
+        questionDifficulty,
+        language,
+        codeWritten,
+        isSolved,
+        feedbackToInterviewee,
+      });
+    expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid question title!',
+    );
+  });
+
   it('should not allow missing question difficulty', async () => {
     const response = await request(server.server)
       .post('/meeting')
@@ -177,6 +206,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         language,
         codeWritten,
         isSolved,
@@ -197,6 +227,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         codeWritten,
         isSolved,
@@ -217,6 +248,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         isSolved,
@@ -237,6 +269,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -257,6 +290,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -277,6 +311,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -298,6 +333,7 @@ describe('POST /meeting', () => {
         interviewerId: [12345],
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -319,6 +355,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration: '500',
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -340,6 +377,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId: { hello: 'world' },
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -352,6 +390,28 @@ describe('POST /meeting', () => {
     );
   });
 
+  it('should not allow question title of non-string types', async () => {
+    const response = await request(server.server)
+      .post('/meeting')
+      .set('Authorization', interviewerId)
+      .send({
+        intervieweeId,
+        interviewerId,
+        duration,
+        questionId,
+        questionTitle: 1234,
+        questionDifficulty,
+        language,
+        codeWritten,
+        isSolved,
+        feedbackToInterviewee,
+      });
+    expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
+    expect(response.body.error).toBe(
+      'The meeting record must have a valid question title!',
+    );
+  });
+
   it('should not allow question difficulty of non-string types', async () => {
     const response = await request(server.server)
       .post('/meeting')
@@ -361,6 +421,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty: 100,
         language,
         codeWritten,
@@ -382,6 +443,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language: ['PYTHON'],
         codeWritten,
@@ -403,6 +465,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten: 456,
@@ -424,6 +487,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -445,6 +509,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -466,6 +531,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration: -1,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -487,6 +553,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty: 'DIFFICULT',
         language,
         codeWritten,
@@ -508,6 +575,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language: 'OCAML',
         codeWritten,
@@ -529,6 +597,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -548,6 +617,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -564,6 +634,7 @@ describe('POST /meeting', () => {
         interviewerId,
         duration,
         questionId,
+        questionTitle,
         questionDifficulty,
         language,
         codeWritten,
@@ -579,6 +650,7 @@ describe('POST /meeting', () => {
       interviewerId,
       duration,
       questionId,
+      questionTitle,
       questionDifficulty,
       language,
       codeWritten,
@@ -591,6 +663,7 @@ describe('POST /meeting', () => {
       interviewerId,
       duration,
       questionId,
+      questionTitle,
       questionDifficulty,
       language,
       codeWritten,

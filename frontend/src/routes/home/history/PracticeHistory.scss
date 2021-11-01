@@ -1,0 +1,117 @@
+@import '../../../assets/scss/main';
+
+.practice-history {
+  margin-bottom: 2rem;
+  width: 100%;
+
+  &__title {
+    margin-bottom: 1rem;
+  }
+}
+
+.practice-history-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &:hover {
+    cursor: default;
+  }
+
+  &--top {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    &-left {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+
+      &-language {
+        display: inline;
+
+        @include media('>desktop') {
+          display: none;
+        }
+      }
+    }
+
+    &-language {
+      display: none;
+
+      @include media('>desktop') {
+        display: block;
+      }
+    }
+  }
+
+  &--bottom {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    width: 100%;
+
+    @include media('>desktop') {
+      flex-direction: row;
+    }
+
+    &-left {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+
+      @include media('>desktop') {
+        flex: 3;
+        padding-right: 1rem;
+      }
+
+      .ace_editor,
+      .ace_gutter {
+        background-color: $code-dark-background-color;
+      }
+    }
+
+    &-right {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      margin-top: 1rem;
+
+      @include media('>desktop') {
+        flex: 2;
+        margin-top: 0;
+        padding-left: 1rem;
+      }
+
+      &__notes-wrapper {
+        width: 100%;
+      }
+
+      &__notes {
+        border: 0;
+        height: 200px;
+        padding: 0;
+        resize: none;
+        width: 100%;
+
+        @include media('>desktop') {
+          height: 400px;
+        }
+
+        &:active,
+        &:hover,
+        &:focus {
+          border: 0;
+          outline: none;
+        }
+      }
+    }
+
+    &-title {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
