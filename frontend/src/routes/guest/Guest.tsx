@@ -1,14 +1,19 @@
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { match, RouteComponentProps } from 'react-router-dom';
+import { match, RouteComponentProps, useHistory } from 'react-router-dom';
 
 import CodeEditor from 'components/codeEditor';
 import LanguageDropdown from 'components/languageDropdown';
 import Typography from 'components/typography';
-import { GUEST } from 'constants/routes';
+import { GUEST, ROOT } from 'constants/routes';
 import { SITE_URL } from 'constants/urls';
 import { useCodingSocket } from 'contexts/CodingSocketContext';
-import { changeLanguage, joinRoom, updateCode } from 'lib/codingSocketService';
+import {
+  changeLanguage,
+  joinRoom,
+  leaveRoom,
+  updateCode,
+} from 'lib/codingSocketService';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 
@@ -23,6 +28,7 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
   const { doc, language } = useSelector((state: RootState) => state.coding);
   const guestRoomId = match.params.id;
   const [hasCopied, setHasCopied] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     joinRoom(socket, guestRoomId);
@@ -74,6 +80,17 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
         value={doc.text.toString()}
         width="100vw"
       />
+      <div className="guest--bottom">
+        <button
+          className="border-button is-danger guest--bottom__leave-button"
+          onClick={(): void => {
+            leaveRoom(socket);
+            history.push(ROOT);
+          }}
+        >
+          <Typography size="regular">Leave Playground</Typography>
+        </button>
+      </div>
     </div>
   );
 };

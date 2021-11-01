@@ -9,7 +9,6 @@
 
   &--top {
     display: flex;
-    font-size: 0.9rem;
     justify-content: space-between;
     max-width: 100%;
     padding: 0.5rem;
@@ -25,6 +24,14 @@
     &__help-button i {
       margin-left: 0.3rem;
     }
+  }
+
+  &--bottom {
+    background-color: $code-editor-bottom-bar-background-color;
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+    padding: 0.5rem;
   }
 
   .ace_editor {

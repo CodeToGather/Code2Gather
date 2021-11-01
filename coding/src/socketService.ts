@@ -15,6 +15,7 @@ import {
   REQ_CHANGE_LANGUAGE,
   REQ_EXECUTE_CODE,
   REQ_JOIN_ROOM,
+  REQ_LEAVE_ROOM,
   REQ_UPDATE_CODE,
   RES_CHANGED_LANGUAGE,
   RES_CODE_OUTPUT,
@@ -53,6 +54,12 @@ const setUpIo = (io: Server): void => {
       );
       const language = roomIdToLanguage.get(roomId)!;
       socket.emit(RES_JOINED_ROOM, { allChanges, language });
+    });
+
+    socket.on(REQ_LEAVE_ROOM, () => {
+      if (socketIdToRoomId.has(socket.id)) {
+        socket.leave(socketIdToRoomId.get(socket.id)!);
+      }
     });
 
     socket.on(REQ_UPDATE_CODE, (changes: string[]) => {

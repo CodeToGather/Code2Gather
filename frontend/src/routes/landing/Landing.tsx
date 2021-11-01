@@ -1,9 +1,10 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { generateSlug } from 'random-word-slugs';
 
 import DemoImage from 'assets/images/demo.png';
 import Container from 'components/container';
+import LoadingAnimation from 'components/loading/LoadingAnimation';
 import Typography from 'components/typography';
 import { GUEST } from 'constants/routes';
 import { useAuth } from 'contexts/AuthContext';
@@ -13,14 +14,15 @@ import './Landing.scss';
 const Landing: FC = () => {
   const history = useHistory();
   const { login } = useAuth();
+  const [isSigningIn, setIsSigningIn] = useState(false);
 
   const handleGithubSignIn = async (): Promise<void> => {
+    setIsSigningIn(true);
     try {
       await login();
     } catch (error) {
       // TODO: Show error
-      // eslint-disable-next-line no-console
-      console.log(error);
+      setIsSigningIn(false);
     }
   };
 
@@ -37,13 +39,18 @@ const Landing: FC = () => {
           <div className="landing__left__button-container">
             <button
               className="primary-button landing__github-button"
+              disabled={isSigningIn}
               onClick={handleGithubSignIn}
             >
               <i className="fab fa-github" />
-              <Typography size="medium">Sign in with GitHub</Typography>
+              <Typography size="medium">
+                {isSigningIn ? 'Signing in...' : 'Sign in with GitHub'}
+                {isSigningIn ? <LoadingAnimation height={1} /> : null}
+              </Typography>
             </button>
             <button
               className="secondary-button"
+              disabled={isSigningIn}
               onClick={(): void => {
                 const slug = generateSlug();
                 history.push(`${GUEST}/${slug}`);

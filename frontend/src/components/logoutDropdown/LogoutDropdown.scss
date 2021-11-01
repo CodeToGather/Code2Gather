@@ -1,4 +1,4 @@
-@import '../../assets/scss/variables';
+@import '../../assets/scss/main';
 
 .logout-dropdown {
   border-radius: $dropdown-border-radius;
@@ -7,6 +7,10 @@
   position: absolute;
   width: 8rem;
   z-index: 5;
+
+  @include media('>desktop') {
+    width: 10rem;
+  }
 
   button {
     background-color: $dropdown-background-color;

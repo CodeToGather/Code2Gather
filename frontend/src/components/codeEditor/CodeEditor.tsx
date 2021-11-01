@@ -15,6 +15,7 @@ interface Props {
   onChange: (code: string) => void;
   value: string;
   width?: string;
+  height?: string;
   readOnly?: boolean;
 }
 
@@ -23,10 +24,12 @@ const CodeEditor: FC<Props> = ({
   onChange,
   value,
   width,
+  height,
   readOnly = false,
 }) => {
   return (
     <AceEditor
+      height={height}
       mode={language.toLowerCase()}
       name="code-editor"
       onChange={onChange}

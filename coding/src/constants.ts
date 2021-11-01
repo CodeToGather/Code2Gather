@@ -8,6 +8,10 @@ export const REQ_JOIN_ROOM = 'req_join_room';
 // From us: Sure. Btw, here's a copy of the code.
 export const RES_JOINED_ROOM = 'res_joined_room';
 
+// From frontend: We're leaving the room - don't send me updates anymore.
+// No response required.
+export const REQ_LEAVE_ROOM = 'req_leave_room';
+
 // From frontend: We updated da code.
 export const REQ_UPDATE_CODE = 'res_update_code';
 

@@ -6,6 +6,7 @@ import {
   REQ_CHANGE_LANGUAGE,
   REQ_EXECUTE_CODE,
   REQ_JOIN_ROOM,
+  REQ_LEAVE_ROOM,
   REQ_UPDATE_CODE,
   RES_CHANGED_LANGUAGE,
   RES_CODE_OUTPUT,
@@ -17,7 +18,7 @@ import {
   applyChanges,
   setCodeExecutionOutput,
   setDoc,
-  setIsExecutingCode,
+  setIsExecutingCodeAsTrue,
   setLanguage,
 } from 'reducers/codingDux';
 import { TextDoc } from 'types/automerge';
@@ -30,6 +31,10 @@ import {
 
 export const joinRoom = (socket: Socket, roomId: string): void => {
   socket.emit(REQ_JOIN_ROOM, roomId);
+};
+
+export const leaveRoom = (socket: Socket): void => {
+  socket.emit(REQ_LEAVE_ROOM);
 };
 
 export const updateCode = (
@@ -88,7 +93,7 @@ const changedLanguage = (socket: Socket): void => {
 
 const executingCode = (socket: Socket): void => {
   socket.on(RES_EXECUTING_CODE, () => {
-    store.dispatch(setIsExecutingCode(true));
+    store.dispatch(setIsExecutingCodeAsTrue());
   });
 };
 
