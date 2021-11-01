@@ -19,7 +19,7 @@ const setUpIo = (io: Server): void => {
   io.use((socket, next) => {
     const token = socket.handshake.auth.token;
     axios
-      .get('http://localhost:8001/auth', {
+      .get(`${process.env.AUTH_URL}/auth`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -33,8 +33,7 @@ const setUpIo = (io: Server): void => {
         socket.join(res.data.uid as string);
         next();
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
         next(new Error('Unauthorized'));
       });
   });
@@ -52,7 +51,7 @@ const setUpIo = (io: Server): void => {
       }
       let ratingResponse: AxiosResponse<any, any>;
       try {
-        ratingResponse = await axios.get('http://localhost:8002/rating', {
+        ratingResponse = await axios.get(`${process.env.HISTORY_URL}/rating`, {
           headers: {
             authorization: uid,
           },
@@ -82,11 +81,14 @@ const setUpIo = (io: Server): void => {
         const [user1, user2] = result;
         // Tell the two users we found a match! Going to create the room now.
         io.to(user1.uid).to(user2.uid).emit(RES_FOUND_PAIR);
-        const roomResponse = await axios.post('http://localhost:8007', {
-          uid1: user1.uid,
-          uid2: user2.uid,
-          difficulty,
-        });
+        const roomResponse = await axios.post(
+          `${process.env.ROOM_URL}/create`,
+          {
+            uid1: user1.uid,
+            uid2: user2.uid,
+            difficulty,
+          },
+        );
         if (roomResponse.status !== 200) {
           // TODO: Have some more elaborate recovery mechanism
         }

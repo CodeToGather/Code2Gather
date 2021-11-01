@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import CodeEditor from 'components/codeEditor';
 import LanguageDropdown from 'components/languageDropdown';
+import Typography from 'components/typography';
 import { useCodingSocket } from 'contexts/CodingSocketContext';
 import { changeLanguage, joinRoom, updateCode } from 'lib/codingSocketService';
 import { RootState } from 'reducers/rootReducer';
@@ -35,12 +36,14 @@ const Room: FC = () => {
             }}
           />
           <button className="border-button editor--top__help-button">
-            Help <i className="far fa-question-circle" />
+            <Typography size="regular">
+              Help <i className="far fa-question-circle" />
+            </Typography>
           </button>
         </div>
         <div className="editor--top__right-buttons">
           <button className="border-button is-danger editor--top__leave-button">
-            Leave Room
+            <Typography size="regular">Leave Room</Typography>
           </button>
         </div>
       </div>

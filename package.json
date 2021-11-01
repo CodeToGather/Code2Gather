@@ -32,7 +32,6 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
-    "foreman": "^3.0.1",
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
     "markdownlint-cli": "^0.29.0",
@@ -52,16 +51,19 @@
     "lint:css": "stylelint '**/*.{scss,sass,css}'",
     "lint:md": "markdownlint '**/*.md' --ignore-path .gitignore",
     "lint:py": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages .",
+    "lint:go": "gofmt -w .",
     "setup": "run-s setup:*",
     "setup:history": "cd history && yarn db:create && yarn db:migrate && cd ..",
     "setup:room": "yarn protobuf && cd room && yarn db:seed",
     "pre-commit": "lint-staged",
     "protobuf": "./compile-proto-messages.sh",
-    "postinstall": "run-p postinstall:*",
+    "postinstall": "run-s postinstall:*",
     "postinstall:root": "poetry install",
-    "postinstall:code-executor": "cd code-executor && poetry install",
+    "postinstall:code-executor": "cd code-executor && poetry install && cd ..",
+    "postinstall:room": "cd room && yarn install && cd ..",
     "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
-    "start": "nf start",
+    "start": "docker-compose -f docker-compose.local.yml up",
+    "stop": "docker-compose -f docker-compose.local.yml down",
     "stylelint-check": "stylelint-config-prettier-check"
   },
   "config": {
@@ -84,6 +86,9 @@
       "poetry run isort",
       "poetry run flake8 --select=F",
       "poetry run mypy --namespace-packages"
+    ],
+    "**/*.go": [
+      "gofmt -w ."
     ]
   }
 }

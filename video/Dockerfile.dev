@@ -1,0 +1,7 @@
+FROM node:14.17-alpine
+
+RUN mkdir -p /home/node/app
+
+WORKDIR /home/node/app/video
+
+CMD yarn && yarn start

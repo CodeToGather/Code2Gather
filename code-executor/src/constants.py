@@ -1,4 +1,6 @@
-URL = "http://localhost:2358"
+import os
+
+URL = os.getenv("JUDGE_URL", "http://localhost:2358")
 SUBMISSION_RETRIEVAL_URL = "{url}/submissions/{submission_id}?base64_encoded=true"
 SUBMISSIONS_SEND_URL = "{url}/submissions/?base64_encoded=false&wait=false"
 LANGUAGES_URL = "{url}/languages"

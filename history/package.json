@@ -38,12 +38,12 @@
   "scripts": {
     "build:prepare": "tsc --build --clean",
     "build": "yarn build:prepare && set debug=* && prisma generate && tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./build",
-    "db:create": "test -e scripts/db/db_create_local.sh && ./scripts/db/db_create_local.sh || ./scripts/db/db_create.sh",
+    "db:generate": "dotenv -e .env.development prisma generate",
     "db:migrate": "dotenv -e .env.development prisma migrate dev",
     "db:migrate:test": "dotenv -e .env.test prisma migrate dev",
     "lint": "eslint . --fix --ext .ts,.js && prettier --write \"src/**/*.{ts,js}\" --tab-width 2",
     "lint:ci": "eslint . --ext .ts,.js && prettier --check \"src/**/*.{ts,js}\" --tab-width 2",
-    "start": "set debug=* && prisma generate && cross-env NODE_ENV=development ts-node-dev --exit-child --respawn --transpile-only -r tsconfig-paths/register ./src/index.ts",
+    "start": "set debug=* && prisma migrate dev && prisma generate && cross-env NODE_ENV=development ts-node-dev --exit-child --respawn --transpile-only -r tsconfig-paths/register ./src/index.ts",
     "test:prepare": "yarn db:migrate:test",
     "test": "yarn test:prepare && dotenv -e .env.test cross-env NODE_ENV=test jest -- --runInBand --detectOpenHandles --forceExit --passWithNoTests --verbose"
   },

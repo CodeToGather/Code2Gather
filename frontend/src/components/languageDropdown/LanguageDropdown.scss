@@ -3,7 +3,8 @@
 .language-dropdown {
   position: relative;
 
-  button {
+  button,
+  button > div {
     display: flex;
     justify-content: space-between;
     width: 8rem;

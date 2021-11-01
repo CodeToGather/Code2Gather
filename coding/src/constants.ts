@@ -28,6 +28,3 @@ export const RES_EXECUTING_CODE = 'res_executing_code';
 
 // From frontend: Here's the code output y'all!
 export const RES_CODE_OUTPUT = 'res_code_output';
-
-// URL to the Code Executor.
-export const CODE_EXECUTION_SERVICE_URL = 'http://localhost:8005/submission';
