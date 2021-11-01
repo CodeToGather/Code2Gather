@@ -1,6 +1,6 @@
 @import '../../assets/scss/variables';
 
-.editor {
+.room {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -9,7 +9,6 @@
 
   &--top {
     display: flex;
-    font-size: 0.9rem;
     justify-content: space-between;
     max-width: 100%;
     padding: 0.5rem;
@@ -27,7 +26,32 @@
     }
   }
 
-  .ace_editor {
+  &--bottom {
+    background-color: $code-editor-bottom-bar-background-color;
+    display: flex;
+    max-width: 100%;
+    padding: 0.5rem;
+
+    &__execute-button {
+      i {
+        font-size: 80%;
+        margin-left: 0.7rem;
+      }
+
+      &-text {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      &-text > div {
+        margin-left: 0.3rem;
+      }
+    }
+  }
+
+  &--middle {
     flex: 1;
+    position: relative;
   }
 }

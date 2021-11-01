@@ -1,85 +1,68 @@
-.video-container {
-  bottom: 2rem;
+@import '../../../assets/scss/variables';
+
+.video-call-container {
+  align-items: center;
+  bottom: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  height: 17rem;
+  justify-content: space-between;
+  padding: 0.5rem;
   position: absolute;
   right: 0;
-}
+  width: 13rem;
 
-.video-call-single {
-  align-items: center;
-  bottom: 2rem;
-  display: grid;
-  grid-template-columns: 100%;
-  height: 15vh;
-  justify-items: center;
-  position: absolute;
-  right: 0;
-}
+  .video-panel {
+    background-color: black;
+    border-radius: $video-border-radius;
+    height: 48%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
 
-.video-call-double {
-  align-items: center;
-  bottom: 2rem;
-  display: grid;
-  grid-template-columns: 100%;
-  height: 30vh;
-  justify-items: center;
-  position: absolute;
-  right: 0;
-}
+    .video {
+      height: 100%;
+      width: 100%;
+    }
+  }
 
-.heading {
-  align-self: flex-start;
-  margin-bottom: 0;
-  text-align: center;
-}
+  .controls {
+    background-color: rgba(0, 0, 0, 0.4);
+    bottom: 0;
+    display: flex;
+    font-size: 0.9rem;
+    justify-content: space-between;
+    padding: 0.3rem;
+    position: absolute;
+    width: calc(100% - 0.6rem);
 
-.videos-single {
-  align-items: center;
-  align-self: flex-start;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(25vh, 1fr));
-  height: 15vh;
-  justify-items: center;
-  margin: auto;
-  position: relative;
-  width: 25vh;
-}
+    > div {
+      display: flex;
+    }
 
-.videos-double {
-  align-items: center;
-  align-self: flex-start;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(25vh, 1fr));
-  height: 30vh;
-  justify-items: center;
-  margin: auto;
-  position: relative;
-  width: 25vh;
-}
+    &--icon-wrapper {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      margin-right: 0.2rem;
+      width: 20px;
 
-.vid {
-  background-color: black;
-  border-color: #38373a;
-  border-style: solid;
-  border-width: 1px;
-  height: 90%;
-  position: relative;
-  width: 90%;
-}
+      .fa-microphone-slash {
+        margin-left: -4px;
+      }
 
-.controls {
-  align-items: center;
-  bottom: 0.75rem;
-  display: grid;
-  grid-template-columns: repeat(2, 50%);
-  justify-items: left;
-  margin-right: calc(23.75vh - 4rem);
-  position: absolute;
-  right: 0;
-  width: 3.5rem;
-  z-index: 1;
-}
+      .fa-microphone {
+        margin-left: 4px;
+      }
 
-.controls i {
-  cursor: pointer;
-  width: 1rem;
+      .fa-video {
+        margin-left: 1px;
+      }
+    }
+
+    i {
+      cursor: pointer;
+      width: 1rem;
+    }
+  }
 }
