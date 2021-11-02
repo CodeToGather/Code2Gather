@@ -7,13 +7,14 @@ Longest increasing substring
 Find the longest increasing substring from a string input
 
 Sample input
-```
+
+```markdown
 abcabdefghabcdef
 ```
 
-
 Sample output
-```
+
+```markdown
 abdefgh
 ```
 
