@@ -58,11 +58,12 @@ message CreateMeetingRequest {
   string interviewee_id = 2;
   int32 duration = 3;
   string question_id = 4;
-  QuestionDifficulty difficulty = 5;
-  Language language = 6;
-  string code_written = 7;
-  bool is_solved = 8;
-  string feedback_to_interviewee = 9;
+  string question_title = 5;
+  QuestionDifficulty difficulty = 6;
+  Language language = 7;
+  string code_written = 8;
+  bool is_solved = 9;
+  string feedback_to_interviewee = 10;
 }
 
 // HTTP POST request /rating (Room -> History)
