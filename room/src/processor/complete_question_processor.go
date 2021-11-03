@@ -44,6 +44,7 @@ func (p *CompleteQuestionProcessor) SendMeetingRecord() error {
 		IntervieweeId:         p.currentIntervieeId,
 		Duration:              0,
 		QuestionId:            p.currentQuestion.Id,
+		QuestionTitle:         p.currentQuestion.Title,
 		Difficulty:            p.currentQuestion.Difficulty,
 		Language:              p.request.Language,
 		CodeWritten:           p.request.CodeWritten,
