@@ -1,13 +1,13 @@
 {
   "name": "code-executor",
   "version": "0.0.1",
-  "description": "",
+  "description": "Code executor for Code2Gather",
   "private": true,
   "scripts": {
     "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt",
+    "lint": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages .",
     "start": "env PYTHONPATH=. poetry run python src/__main__.py",
-    "test": "poetry run pytest --cov-report term-missing:skip-covered --cov=src tests/",
-    "lint": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages ."
+    "test": "poetry run pytest --cov-report term-missing:skip-covered --cov=src tests/"
   },
   "devDependencies": {
     "lint-staged": "^11.2.6"

@@ -50,8 +50,6 @@
     "lint:js": "eslint . --ext .ts,.js,.tsx,.jsx",
     "lint:css": "stylelint '**/*.{scss,sass,css}'",
     "lint:md": "markdownlint '**/*.md' --ignore-path .gitignore",
-    "lint:py": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages .",
-    "lint:go": "gofmt -w .",
     "setup": "run-s setup:*",
     "setup:history": "cd history && yarn db:create && yarn db:migrate && cd ..",
     "setup:room": "yarn protobuf && cd room && yarn db:seed",
@@ -80,15 +78,6 @@
     ],
     "**/*.md": [
       "markdownlint --fix"
-    ],
-    "**/*.py": [
-      "poetry run black",
-      "poetry run isort",
-      "poetry run flake8 --select=F",
-      "poetry run mypy --namespace-packages"
-    ],
-    "**/*.go": [
-      "gofmt -w ."
     ]
   }
 }
