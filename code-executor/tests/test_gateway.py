@@ -5,6 +5,7 @@ import pytest
 import requests
 from flask.testing import FlaskClient
 from pytest_mock import MockerFixture
+
 from src import create_app
 from tests.utils.request_mock import (
     LANGUAGES,

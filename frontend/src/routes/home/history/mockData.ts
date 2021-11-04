@@ -118,6 +118,6 @@ I think for this question, since the coding is not very hard once you figure out
         return recurse(root)
 `,
     isSolved: true,
-    feedbackToInterviewee: ``,
+    feedbackToInterviewee: '',
   },
 ];

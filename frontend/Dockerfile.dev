@@ -1,19 +1,23 @@
 FROM node:14.17-alpine
 
-RUN apk add --no-cache jq
 RUN mkdir -p /home/node/app
-
-COPY ../.eslintignore /home/node/app/.eslintignore
-COPY ../.eslintrc.js /home/node/app/.eslintrc.js
-COPY ../.eslintrc.js /home/node/app/.eslintrc.js
-COPY ../tsconfig.base.json /home/node/app/tsconfig.base.json
-COPY ../tsconfig.eslint.json /home/node/app/tsconfig.eslint.json
-COPY ../package.json /home/node/app/package.json
 
 WORKDIR /home/node/app
 
-RUN mv package.json temp.json && jq -r '.workspaces |= ["frontend"] | .scripts |= {}' temp.json > package.json && rm -f temp.json && yarn
+COPY ../.eslintignore .
+COPY ../.eslintrc.js .
+COPY ../tsconfig.base.json .
+COPY ../tsconfig.eslint.json .
+COPY ../package.json .
+COPY ../yarn.lock .
+COPY package.json frontend/package.json
+COPY yarn.lock frontend/yarn.lock
+
+RUN yarn install
 
 WORKDIR /home/node/app/frontend
 
-CMD yarn && yarn start
+COPY . .
+
+# Not sure why it doesn't work without another round of install
+CMD yarn install && yarn start

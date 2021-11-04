@@ -18,7 +18,9 @@ networks:
 
 services:
   frontend:
+    container_name: frontend
     build:
+      # Context is . because of tsconfig.base.json and eslint in root
       dockerfile: frontend/Dockerfile.dev
       context: .
     volumes:
@@ -44,9 +46,10 @@ services:
       REACT_APP_AGORA_APP_ID: 6e61da63d86d4d96951c2d27054273b1
 
   gateway:
+    container_name: gateway
     build:
-      dockerfile: gateway/Dockerfile.dev
-      context: .
+      dockerfile: Dockerfile.dev
+      context: ./gateway
     volumes:
       - ~/.cache/yarn:/home/node/.cache/yarn
       - ./gateway:/home/node/app/gateway
@@ -60,9 +63,10 @@ services:
       <<: *shared-variables
 
   auth:
+    container_name: auth
     build:
-      dockerfile: auth/Dockerfile.dev
-      context: .
+      dockerfile: Dockerfile.dev
+      context: ./auth
     volumes:
       - ~/.cache/yarn:/home/node/.cache/yarn
       - ./auth:/home/node/app/auth
@@ -79,7 +83,9 @@ services:
       JWT_SECRET: code2gather
 
   coding:
+    container_name: coding
     build:
+      # Context is . because of tsconfig.base.json in root
       dockerfile: coding/Dockerfile.dev
       context: .
     volumes:
@@ -94,6 +100,7 @@ services:
       <<: *shared-variables
 
   code-executor:
+    container_name: code-executor
     build:
       dockerfile: Dockerfile.dev
       context: ./code-executor
@@ -109,7 +116,9 @@ services:
       <<: *shared-variables
 
   history:
+    container_name: history
     build:
+      # Context is . because of tsconfig.base.json in root
       dockerfile: history/Dockerfile.dev
       context: .
     volumes:
@@ -127,7 +136,9 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@db/postgres?connect_timeout=300
 
   pairing:
+    container_name: pairing
     build:
+      # Context is . because of tsconfig.base.json in root
       dockerfile: pairing/Dockerfile.dev
       context: .
     volumes:
@@ -142,6 +153,7 @@ services:
       <<: *shared-variables
 
   room:
+    container_name: room
     build:
       dockerfile: Dockerfile.dev
       context: ./room
@@ -157,9 +169,10 @@ services:
       MONGODB_URL: mongodb://mongo
 
   video:
+    container_name: video
     build:
-      dockerfile: video/Dockerfile.dev
-      context: .
+      dockerfile: Dockerfile.dev
+      context: ./video
     volumes:
       - ~/.cache/yarn:/home/node/.cache/yarn
       - ./video:/home/node/app/video
@@ -174,6 +187,7 @@ services:
       APP_CERTIFICATE:
 
   db:
+    container_name: db
     image: postgres:12
     restart: always
     volumes:
@@ -188,6 +202,7 @@ services:
       POSTGRES_PASSWORD: postgres
 
   mongo:
+    container_name: mongo
     image: mongo:4
     restart: always
     volumes:

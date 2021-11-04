@@ -13,4 +13,6 @@ RUN go mod download
 
 COPY . .
 
-CMD go mod vendor && go run ./src/main.go
+RUN go mod vendor
+
+CMD go run ./src/main.go

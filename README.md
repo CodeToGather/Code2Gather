@@ -73,10 +73,12 @@ Then, navigate to the **project root** and install the dependencies:
 
 ```sh
 cd cs3219-project-ay2122-2122-s1-g32
-yarn install
+yarn install-all
+# Or if your machine cannot cope with the installations being run parallel,
+# you can run `yarn install-all-ci` instead, which does things sequentially
 ```
 
-> Please do not navigate to the packages/services individually! This single `yarn install` will do the trick.
+> Please do not navigate to the packages/services individually! This single `yarn install-all` will do the trick.
 
 ### Set-up `docker-compose.yml` file
 
@@ -127,27 +129,64 @@ Then copy the following content into the new `package.json`:
 }
 ```
 
-The above is the bare minimum you must have for the new package.
-
-If you're not using Node, e.g. you're using Python or Go, you will need to add the following to the root `package.json` as well:
+The above is the bare minimum you must have for the new package. Then, head over to the root `package.json` and add a new `install-all:package` script:
 
 ```json
-  "scripts": {
-    // ...
-    "postinstall:package": "cd package && <insert command> && cd ..",
-    // ...
-  },
+"scripts": {
+  "install-all:package": "cd package && yarn install"
+}
 ```
 
-Finally, you will need to add the new package to the root `package.json` under `"workspaces"`.
+You will then need to check for the following cases:
 
-```json
-  "workspaces": [
-    "frontend",
-    "pairing",
-    // ...
-    "package"
-  ],
-```
+1. Do you have non-Node installations? For example, you're using Python and Poetry.
 
-Now, `yarn install` at the project root should work for all packages!
+   If so, add the relevant installation command under the `postinstall` script for your package's `package.json`:
+
+   ```json
+   "scripts": {
+     "postinstall": "poetry install"
+   }
+   ```
+
+   See [`code-executor/package.json`](code-executor/package.json) for an example.
+
+1. Do you have files besides `.js`, `.jsx`, `.ts` or `.tsx` to lint?
+
+   If so, add a lint command under your package's `package.json` and add the following to the root `package.json`:
+
+   ```json
+   "scripts": {
+     "lint:package": "cd package && lint"
+   }
+   ```
+
+   You will also need to add the `lint-staged` dev dependency to your package and add the relevant linting to `lint-staged` under your package's `package.json`. An example would be `room`'s `package.json`:
+
+   ```json
+   "lint-staged": {
+     "**/*.go": [
+       "gofmt -w ."
+     ]
+   }
+   ```
+
+   You will then need to head over to the root `package.json` and add a new `pre-commit:package` script:
+
+   ```json
+   "scripts": {
+     "pre-commit:package": "cd package && yarn lint-staged"
+   }
+   ```
+
+1. Do you have any set-up required? Such as creating a database.
+
+   If so, add a new `setup:package` script to the root `package.json`.
+
+   ```json
+   "scripts": {
+     "setup:package": "<insert commands here>"
+   }
+   ```
+
+   Note that this won't be utilised generally because of Docker Compose. But just to support local development without Docker, this would be ideal to add.
