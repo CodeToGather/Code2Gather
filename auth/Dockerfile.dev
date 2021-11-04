@@ -4,4 +4,11 @@ RUN mkdir -p /home/node/app
 
 WORKDIR /home/node/app/auth
 
-CMD yarn && yarn start
+COPY package.json .
+COPY yarn.lock .
+
+RUN yarn install
+
+COPY . .
+
+CMD ["yarn", "start"]

@@ -1,4 +1,5 @@
 from flask import Flask
+
 from src.gateway import executor_blueprint
 
 __version__ = "0.0.1"

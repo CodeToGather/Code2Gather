@@ -6,15 +6,7 @@
   "author": "Team 32",
   "private": true,
   "workspaces": [
-    "auth",
-    "code-executor",
-    "frontend",
-    "gateway",
-    "history",
-    "pairing",
-    "room",
-    "video",
-    "coding"
+    "frontend"
   ],
   "devDependencies": {
     "@commitlint/cli": "^13.2.1",
@@ -38,33 +30,35 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.4.1",
     "prettier-plugin-prisma": "^3.3.0",
-    "stylelint": "^13.13.1",
-    "stylelint-config-prettier": "^9.0.3",
-    "stylelint-config-sass-guidelines": "^8.0.0",
     "typescript": "^4.4.4"
   },
   "scripts": {
     "commit": "git-cz",
-    "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt",
     "lint": "run-p lint:*",
     "lint:js": "eslint . --ext .ts,.js,.tsx,.jsx",
-    "lint:css": "stylelint '**/*.{scss,sass,css}'",
     "lint:md": "markdownlint '**/*.md' --ignore-path .gitignore",
-    "lint:py": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages .",
-    "lint:go": "gofmt -w .",
-    "setup": "run-s setup:*",
-    "setup:history": "cd history && yarn db:create && yarn db:migrate && cd ..",
-    "setup:room": "yarn protobuf && cd room && yarn db:seed",
-    "pre-commit": "lint-staged",
+    "lint:frontend": "cd frontend && yarn lint",
+    "lint:code-executor": "cd code-executor && yarn lint",
+    "lint:room": "cd room && yarn lint",
+    "pre-commit": "run-p pre-commit:*",
+    "pre-commit:root": "lint-staged",
+    "pre-commit:frontend": "cd frontend && yarn lint-staged",
+    "pre-commit:room": "cd room && yarn lint-staged",
+    "pre-commit:code-executor": "cd code-executor && yarn lint-staged",
     "protobuf": "./compile-proto-messages.sh",
-    "postinstall": "run-s postinstall:*",
-    "postinstall:root": "poetry install",
-    "postinstall:code-executor": "cd code-executor && poetry install && cd ..",
-    "postinstall:room": "cd room && yarn install && cd ..",
+    "install-all": "yarn install && run-p install-all:*",
+    "install-all-ci": "yarn install && run-s install-all:*",
+    "install-all:auth": "cd auth && yarn install",
+    "install-all:code-executor": "cd code-executor && yarn install",
+    "install-all:coding": "cd coding && yarn install",
+    "install-all:gateway": "cd gateway && yarn install",
+    "install-all:history": "cd history && yarn install",
+    "install-all:pairing": "cd pairing && yarn install",
+    "install-all:room": "cd room && yarn install",
+    "install-all:video": "cd video && yarn install",
     "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
-    "start": "docker-compose -f docker-compose.local.yml up",
-    "stop": "docker-compose -f docker-compose.local.yml down",
-    "stylelint-check": "stylelint-config-prettier-check"
+    "start": "yarn protobuf && docker-compose -f docker-compose.local.yml up",
+    "stop": "docker-compose -f docker-compose.local.yml down"
   },
   "config": {
     "commitizen": {
@@ -75,20 +69,8 @@
     "**/*.{ts,js,tsx,jsx}": [
       "eslint --fix"
     ],
-    "**/*.{scss,sass,css}": [
-      "stylelint --fix"
-    ],
     "**/*.md": [
       "markdownlint --fix"
-    ],
-    "**/*.py": [
-      "poetry run black",
-      "poetry run isort",
-      "poetry run flake8 --select=F",
-      "poetry run mypy --namespace-packages"
-    ],
-    "**/*.go": [
-      "gofmt -w ."
     ]
   }
 }

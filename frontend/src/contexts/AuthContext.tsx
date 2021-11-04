@@ -81,7 +81,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
 const useAuth = (): AuthContextInterface => {
   const context = React.useContext(AuthContext);
   if (context === undefined) {
-    throw new Error(`useAuth must be used within a AuthProvider`);
+    throw new Error('useAuth must be used within a AuthProvider');
   }
   return context;
 };

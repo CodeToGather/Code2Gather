@@ -27,6 +27,11 @@ module.exports = {
     tsconfigRootDir: __dirname,
     warnOnUnsupportedTypeScriptVersion: false,
   },
+  settings: {
+    jest: {
+      version: 27,
+    },
+  },
   rules: {
     // ================== //
     // @typescript-eslint //

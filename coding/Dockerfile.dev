@@ -6,4 +6,11 @@ COPY ../tsconfig.base.json /home/node/app/tsconfig.base.json
 
 WORKDIR /home/node/app/coding
 
-CMD yarn && yarn start
+COPY package.json .
+COPY yarn.lock .
+
+RUN yarn install
+
+COPY . .
+
+CMD ["yarn", "start"]

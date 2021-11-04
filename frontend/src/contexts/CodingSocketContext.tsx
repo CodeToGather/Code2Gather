@@ -54,7 +54,7 @@ const useCodingSocket = (): SocketContextInterface => {
   const context = React.useContext(CodingSocketContext);
   if (context === undefined) {
     throw new Error(
-      `useCodingSocket must be used within a CodingSocketProvider`,
+      'useCodingSocket must be used within a CodingSocketProvider',
     );
   }
   return context;
