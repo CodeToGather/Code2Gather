@@ -74,6 +74,8 @@ Then, navigate to the **project root** and install the dependencies:
 ```sh
 cd cs3219-project-ay2122-2122-s1-g32
 yarn install-all
+# Or if your machine cannot cope with the installations being run parallel,
+# you can run `yarn install-all-ci` instead, which does things sequentially
 ```
 
 > Please do not navigate to the packages/services individually! This single `yarn install-all` will do the trick.
