@@ -3,6 +3,7 @@ package processor
 import (
 	"log"
 
+	"code2gather.com/room/src/agents/room_agents"
 	"code2gather.com/room/src/models"
 	"github.com/golang/protobuf/proto"
 )
@@ -21,14 +22,10 @@ func (p *CheckInRoomProcessor) GetRequest() proto.Message {
 	return nil
 }
 
-func (p *CheckInRoomProcessor) Process() error {
+func (p *CheckInRoomProcessor) Process() (err error) {
 	log.Println("Processing Check In Room Request")
-
-	//room, err := room_agents.CreateRoom(p.request.GetUid1(), p.request.GetUid2(), p.request.GetDifficulty())
-	//if room != nil {
-	//	p.roomId = room.Id
-	//}
-	return nil
+	p.isInRoom, p.roomId, err = room_agents.CheckUserInRoom(p.uid)
+	return err
 }
 
 func (p *CheckInRoomProcessor) GetResponse() proto.Message {

@@ -6,4 +6,5 @@ type RoomDAO interface {
 	CreateRoom(room *models.Room) error
 	GetRoomById(id string) (models.Room, error)
 	UpdateRoom(room *models.Room) error
+	GetActiveRoomOfUser(uid string) ([]models.Room, error)
 }
