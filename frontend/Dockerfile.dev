@@ -1,6 +1,5 @@
 FROM node:14.17-alpine
 
-RUN apk add --no-cache jq
 RUN mkdir -p /home/node/app
 
 WORKDIR /home/node/app
