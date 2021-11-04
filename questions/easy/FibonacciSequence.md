@@ -1,6 +1,7 @@
-# Title
-
-Fibonacci Sequence
+---
+title: Fibonacci Sequence
+diffibulty: Easy
+---
 
 ## Text
 
@@ -19,10 +20,6 @@ Sample Output:
 ```markdown
 2
 ```
-
-## Difficulty
-
-Easy
 
 ## Hints
 

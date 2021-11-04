@@ -1,6 +1,7 @@
-# Title
-
-Longest increasing substring
+---
+title: Longest increasing substring
+difficulty: Medium
+---
 
 ## Text
 
@@ -17,10 +18,6 @@ Sample output
 ```markdown
 abdefgh
 ```
-
-## Difficulty
-
-Medium
 
 ## Hints
 

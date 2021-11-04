@@ -1,6 +1,7 @@
-# Title
-
-Median of 2 sorted arrays
+---
+title: Median of 2 sorted arrays
+difficulty: Hard
+---
 
 ## Text
 
@@ -26,10 +27,6 @@ Sample Output
 ```markdown
 12
 ```
-
-## Difficulty
-
-Hard
 
 ## Hints
 

@@ -1,6 +1,7 @@
-# Title
-
-Number Picking
+---
+title: Number Picking
+difficulty: Hard
+---
 
 ## Text
 
@@ -37,10 +38,6 @@ Sample Output
 6
 // One possible maximal selection 1,2,3,6,7,8
 ```
-
-## Difficulty
-
-Hard
 
 ## Hints
 

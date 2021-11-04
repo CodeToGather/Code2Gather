@@ -1,6 +1,7 @@
-# Title
-
-FizzBuzz
+---
+title: FizzBuzz
+difficulty: Easy
+---
 
 ## Text
 
@@ -35,10 +36,6 @@ fizz
 14
 fizzbuzz
 ```
-
-## Difficulty
-
-Easy
 
 ## Hints
 
