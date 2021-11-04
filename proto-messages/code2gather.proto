@@ -52,6 +52,18 @@ message CreateRoomResponse {
   string room_id = 1;
 }
 
+
+// HTTP GET request (Frontend -> Room)
+message CheckInRoomRequest {
+  string uid = 1;
+}
+
+message CheckInRoomResponse {
+  bool is_in_room = 1;
+  string room_id = 2;
+}
+
+
 // HTTP POST request /meeting (Room -> History)
 message CreateMeetingRequest {
   string interviewer_id = 1;
