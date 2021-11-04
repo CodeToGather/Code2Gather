@@ -48,4 +48,4 @@ jobs:
       - name: Run tests
         run: |
           cd code-executor
-          yarn test
+          poetry run pytest --cov-report term-missing:skip-covered --cov=src tests/
