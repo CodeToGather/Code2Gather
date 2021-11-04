@@ -15,6 +15,10 @@ func handleInvalidRequestBody(c *gin.Context) {
 	})
 }
 
+func handleUnauthorizaedRequest(c *gin.Context) {
+	c.JSON(http.StatusUnauthorized, gin.H{})
+}
+
 func handleBadRequest(c *gin.Context) {
 	c.JSON(http.StatusBadRequest, gin.H{
 		"message": "something went wrong",
@@ -31,6 +35,34 @@ func RoomCreationHandler(c *gin.Context) {
 	}
 
 	if err := handler.Process(); err != nil {
+		log.Println(err)
+		handleBadRequest(c)
+		return
+	}
+
+	resp, err := middleware.MarshalToJson(handler.GetResponse())
+
+	if err != nil {
+		log.Println(err)
+		handleBadRequest(c)
+		return
+	}
+
+	c.Data(http.StatusOK, gin.MIMEJSON, resp)
+}
+
+func CheckInRoomHandler(c *gin.Context) {
+
+	uid, err := middleware.GetUidFromAuthToken(c.Request)
+
+	if err != nil {
+		handleUnauthorizaedRequest(c)
+		return
+	}
+
+	handler := processor.NewCheckInRoomProcessor(uid)
+
+	if err = handler.Process(); err != nil {
 		log.Println(err)
 		handleBadRequest(c)
 		return

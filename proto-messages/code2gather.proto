@@ -54,8 +54,8 @@ message CreateRoomResponse {
 
 
 // HTTP GET request (Frontend -> Room)
+// Empty request just for documentation purpose only
 message CheckInRoomRequest {
-  string uid = 1;
 }
 
 message CheckInRoomResponse {
