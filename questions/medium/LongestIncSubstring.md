@@ -22,7 +22,6 @@ abdefgh
 
 Medium
 
-
 ## Hints
 
 - Optimal solution is O(n)
