@@ -58,7 +58,7 @@ const usePairingSocket = (): PairingSocketContextInterface => {
   const context = React.useContext(PairingSocketContext);
   if (context === undefined) {
     throw new Error(
-      `usePairingSocket must be used within a PairingSocketProvider`,
+      'usePairingSocket must be used within a PairingSocketProvider',
     );
   }
   return context;

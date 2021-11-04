@@ -4,4 +4,3 @@ build
 jest.config.js
 coverage
 __snapshots__
-frontend

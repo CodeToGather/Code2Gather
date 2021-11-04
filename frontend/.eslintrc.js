@@ -13,6 +13,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    node: true,
   },
   extends: [
     'plugin:jsx-a11y/strict',
@@ -26,6 +27,7 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
+    project: ['./tsconfig.json'],
   },
   settings: {
     react: {
@@ -123,7 +125,7 @@ module.exports = {
       { commentPattern: '.*intentional fallthrough.*' },
     ],
     quotes: ['error', 'single', { avoidEscape: true }],
-    semi: ['error', 'always'],
+    // semi: ['error', 'always'],
 
     // ============================ //
     // eslint-plugin-eslint-comment //

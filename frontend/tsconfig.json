@@ -7,5 +7,5 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "noEmit": true
   },
-  "include": ["src"]
+  "include": ["src", ".eslintrc.js", "**/*.js"]
 }

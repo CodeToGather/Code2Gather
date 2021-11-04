@@ -7,7 +7,8 @@
     "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt",
     "lint": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages .",
     "start": "env PYTHONPATH=. poetry run python src/__main__.py",
-    "test": "poetry run pytest --cov-report term-missing:skip-covered --cov=src tests/"
+    "test": "poetry run pytest --cov-report term-missing:skip-covered --cov=src tests/",
+    "postinstall": "poetry install"
   },
   "devDependencies": {
     "lint-staged": "^11.2.6"

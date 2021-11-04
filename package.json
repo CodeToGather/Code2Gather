@@ -5,17 +5,6 @@
   "repository": "https://github.com/CS3219-SE-Principles-and-Patterns/cs3219-project-ay2122-2122-s1-g32",
   "author": "Team 32",
   "private": true,
-  "workspaces": [
-    "auth",
-    "code-executor",
-    "frontend",
-    "gateway",
-    "history",
-    "pairing",
-    "room",
-    "video",
-    "coding"
-  ],
   "devDependencies": {
     "@commitlint/cli": "^13.2.1",
     "@commitlint/config-conventional": "^13.2.0",
@@ -39,19 +28,31 @@
   },
   "scripts": {
     "commit": "git-cz",
-    "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt",
     "lint": "run-p lint:*",
     "lint:js": "eslint . --ext .ts,.js",
     "lint:md": "markdownlint '**/*.md' --ignore-path .gitignore",
-    "setup": "run-s setup:*",
-    "setup:history": "cd history && yarn db:create && yarn db:migrate && cd ..",
+    "lint:frontend": "cd frontend && yarn lint",
+    "lint:room": "cd frontend && yarn lint",
+    "lint:code-executor": "cd code-executor && yarn lint",
+    "setup": "run-p setup:*",
+    "setup:history": "cd history && yarn db:create && yarn db:migrate",
     "setup:room": "yarn protobuf && cd room && yarn db:seed",
-    "pre-commit": "lint-staged",
+    "pre-commit": "run-p pre-commit:*",
+    "pre-commit:root": "lint-staged",
+    "pre-commit:frontend": "cd frontend && yarn lint-staged",
+    "pre-commit:room": "cd room && yarn lint-staged",
+    "pre-commit:code-executor": "cd code-executor && yarn lint-staged",
     "protobuf": "./compile-proto-messages.sh",
-    "postinstall": "run-s postinstall:*",
-    "postinstall:root": "poetry install",
-    "postinstall:code-executor": "cd code-executor && poetry install && cd ..",
-    "postinstall:room": "cd room && yarn install && cd ..",
+    "postinstall": "run-p postinstall:*",
+    "postinstall:auth": "cd auth && yarn install",
+    "postinstall:code-executor": "cd code-executor && yarn install",
+    "postinstall:coding": "cd coding && yarn install",
+    "postinstall:frontend": "cd frontend && yarn install",
+    "postinstall:gateway": "cd gateway && yarn install",
+    "postinstall:history": "cd history && yarn install",
+    "postinstall:pairing": "cd pairing && yarn install",
+    "postinstall:room": "cd room && yarn install",
+    "postinstall:video": "cd video && yarn install",
     "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
     "start": "docker-compose -f docker-compose.local.yml up",
     "stop": "docker-compose -f docker-compose.local.yml down"
@@ -62,7 +63,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{ts,js,tsx,jsx}": [
+    "**/*.{ts,js}": [
       "eslint --fix"
     ],
     "**/*.md": [
