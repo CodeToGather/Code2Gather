@@ -46,7 +46,7 @@
     "pre-commit:room": "cd room && yarn lint-staged",
     "pre-commit:code-executor": "cd code-executor && yarn lint-staged",
     "protobuf": "./compile-proto-messages.sh",
-    "install-all": "yarn install && run-s install-all:* && yarn protobuf",
+    "install-all": "yarn install && run-s install-all:*",
     "install-all:auth": "cd auth && yarn install",
     "install-all:code-executor": "cd code-executor && yarn install",
     "install-all:coding": "cd coding && yarn install",
@@ -56,7 +56,7 @@
     "install-all:room": "cd room && yarn install",
     "install-all:video": "cd video && yarn install",
     "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
-    "start": "docker-compose -f docker-compose.local.yml up",
+    "start": "yarn protobuf && docker-compose -f docker-compose.local.yml up",
     "stop": "docker-compose -f docker-compose.local.yml down"
   },
   "config": {
