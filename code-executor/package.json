@@ -6,6 +6,18 @@
   "scripts": {
     "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt",
     "start": "env PYTHONPATH=. poetry run python src/__main__.py",
-    "test": "poetry run pytest --cov-report term-missing:skip-covered --cov=src tests/"
+    "test": "poetry run pytest --cov-report term-missing:skip-covered --cov=src tests/",
+    "lint": "poetry run black . && poetry run isort . && poetry run flake8 --select=F && poetry run mypy --namespace-packages ."
+  },
+  "devDependencies": {
+    "lint-staged": "^11.2.6"
+  },
+  "lint-staged": {
+    "**/*.py": [
+      "poetry run black",
+      "poetry run isort",
+      "poetry run flake8 --select=F",
+      "poetry run mypy --namespace-packages"
+    ]
   }
 }
