@@ -44,6 +44,7 @@ const setUpIo = (io: Server): void => {
     socket.on(CONNECT, () => console.log('Socket connected!'));
 
     socket.on(REQ_FIND_PAIR, async (difficulty: Difficulty) => {
+      console.log('Socket', socket.id, 'finding pair for', difficulty);
       const uid = SidUidMap.retrieveUid(socket.id);
       if (uid == null) {
         socket.emit(ERROR_FIND_PAIR, 'Unauthorized');
@@ -56,19 +57,21 @@ const setUpIo = (io: Server): void => {
             authorization: uid,
           },
         });
-        if (ratingResponse.status !== 200) {
+        if (!ratingResponse || ratingResponse.status !== 200) {
           throw new Error();
         }
       } catch (error) {
         socket.emit(ERROR_FIND_PAIR, 'Something went wrong!');
+        return;
       }
+      console.log(ratingResponse.data);
       const user = {
         uid,
         sid: socket.id,
         difficulty,
         rating: {
-          average: ratingResponse!.data.average,
-          count: ratingResponse!.data.count,
+          average: ratingResponse.data.average,
+          count: ratingResponse.data.count,
         },
       };
       SidUidMap.insertUser(socket.id, user);
@@ -99,21 +102,27 @@ const setUpIo = (io: Server): void => {
     });
 
     socket.on(REQ_STOP_FINDING_PAIR, async () => {
+      console.log('Socket', socket.id, 'stop finding pair');
       const user = SidUidMap.retrieveUser(socket.id);
       if (user == null) {
-        throw new Error("You're not enqueued!");
+        // Fail silently for now. Can look into better
+        // error handling in the future.
+        return;
+        // throw new Error("You're not enqueued!");
       }
+      console.log('Socket', socket.id, 'removed from queue');
       PairingQueue.remove(user);
     });
 
     socket.on(DISCONNECT, () => {
       const [uid, user] = SidUidMap.remove(socket.id);
       if (user) {
+        console.log('Socket', socket.id, 'removed from queue');
         PairingQueue.remove(user);
       }
       // Leave the room
       socket.leave(uid);
-      console.log('Disconnected');
+      console.log('Socket', socket.id, 'disconnected');
     });
   });
 

@@ -19,6 +19,7 @@ class PairingQueue {
   // sockets.
   public enqueue(user: User): [User, User] | undefined {
     if (this.alreadyEnqueued.has(user.uid)) {
+      console.log('User already in queue, no change');
       return;
     }
     const queue = this.queues.get(user.difficulty)!;
