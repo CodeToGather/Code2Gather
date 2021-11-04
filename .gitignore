@@ -277,3 +277,6 @@ mongodb-data
 
 # Local docker-compose
 docker-compose.local.yml
+
+# Copied tsconfig.base.jsons
+**/tsconfig.base.json

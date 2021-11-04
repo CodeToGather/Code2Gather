@@ -3,8 +3,22 @@ FROM node:14.17-alpine
 RUN apk add --no-cache jq
 RUN mkdir -p /home/node/app
 
-COPY ../tsconfig.base.json /home/node/app/tsconfig.base.json
+WORKDIR /home/node/app
+
+COPY ../.eslintignore .
+COPY ../.eslintrc.js .
+COPY ../tsconfig.base.json .
+COPY ../tsconfig.eslint.json .
+COPY ../package.json .
+COPY ../yarn.lock .
+COPY package.json frontend/package.json
+COPY yarn.lock frontend/yarn.lock
+
+RUN yarn install
 
 WORKDIR /home/node/app/frontend
 
-CMD yarn && yarn start
+COPY . .
+
+# Not sure why it doesn't work without another round of install
+CMD yarn install && yarn start
