@@ -34,6 +34,8 @@ func incomingRequestHandler(c *Client, request []byte) {
 		completeQuestionRequestHandler(c, r.CompleteQuestionRequest)
 	case *models.ClientRequest_SubmitRatingRequest:
 		submitRatingRequestHandler(c, r.SubmitRatingRequest)
+	case *models.ClientRequest_LeaveRoomRequest:
+		leaveRoomRequestHandler(c, r.LeaveRoomRequest)
 	default:
 		log.Println("Receive message of unknown type")
 		response = &models.ErrorResponse{
@@ -89,6 +91,21 @@ func submitRatingRequestHandler(c *Client, request *models.SubmitRatingRequest) 
 	log.Println("Handling Submit Rating Request")
 
 	handler := processor.NewSubmitRatingProcessor(request, c.uid)
+	err := handler.Process()
+	if err != nil {
+		log.Println(err)
+	}
+
+	// Check if the client has been registered to the room
+	checkClientRegisteredToRoom(handler.IsRequestAuthorized(), handler.GetRoomId(), c)
+	// Send response to requesting user only
+	sendResponseToRequestedClient(handler.GetResponse(), c)
+}
+
+func leaveRoomRequestHandler(c *Client, request *models.LeaveRoomRequest) {
+	log.Println("Handling Leave Room Request")
+
+	handler := processor.NewLeaveRoomProcessor(request, c.uid)
 	err := handler.Process()
 	if err != nil {
 		log.Println(err)

@@ -42,7 +42,7 @@ func (p *JoinRoomProcessor) Process() error {
 		p.err = err
 		return err
 	}
-	if p.uid == room.Uid1 || p.uid == room.Uid2 {
+	if room.HasUser(p.uid) {
 		p.authorized = true
 	} else {
 		return nil

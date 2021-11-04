@@ -27,3 +27,7 @@ func NewRoom() *Room {
 func (Room) TableName() string {
 	return "rooms"
 }
+
+func (r *Room) HasUser(uid string) bool {
+	return r.Uid1 == uid || r.Uid2 == uid
+}

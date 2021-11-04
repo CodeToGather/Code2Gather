@@ -118,6 +118,7 @@ message ClientRequest {
     ExecuteCodeRequest execute_code_request = 2;
     CompleteQuestionRequest complete_question_request = 3;
     SubmitRatingRequest submit_rating_request = 4;
+    LeaveRoomRequest leave_room_request = 5;
   }
 }
 
@@ -130,6 +131,7 @@ message RoomServiceToClientMessage {
     DisconnectBroadcast disconnect_broadcast = 5;
     CompleteQuestionResponse complete_question_response = 6;
     SubmitRatingResponse submit_rating_response = 7;
+    LeaveRoomResponse leave_room_response = 8;
   }
 }
 
@@ -186,5 +188,13 @@ message SubmitRatingRequest {
 }
 
 message SubmitRatingResponse {
+  int32 error_code = 1;
+}
+
+message LeaveRoomRequest {
+  string room_id = 1;
+}
+
+message LeaveRoomResponse {
   int32 error_code = 1;
 }
