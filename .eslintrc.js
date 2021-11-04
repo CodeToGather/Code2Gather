@@ -222,68 +222,6 @@ module.exports = {
         'jest/no-deprecated-functions': 'error',
       },
     },
-    // React files
-    {
-      files: ['frontend/**/*.tsx', 'frontend/**/*.ts'],
-      env: {
-        browser: true,
-        es2021: true,
-      },
-      plugins: [
-        'react',
-        'react-hooks',
-        '@typescript-eslint',
-        'jsx-a11y',
-        'import',
-        'eslint-comments',
-        'simple-import-sort',
-      ],
-      extends: [
-        'plugin:jsx-a11y/strict',
-        'eslint:recommended',
-        'plugin:react/recommended',
-        'plugin:react/jsx-runtime',
-        'plugin:@typescript-eslint/recommended',
-        'prettier',
-      ],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
-      rules: {
-        'react/jsx-boolean-value': ['error', 'always'],
-        'react/jsx-sort-props': 'error',
-        // Checks effect dependencies
-        'react-hooks/exhaustive-deps': 'error',
-        // Checks rules of Hooks
-        'react-hooks/rules-of-hooks': 'error',
-        'simple-import-sort/imports': [
-          'error',
-          {
-            groups: [
-              // Packages. `react` related packages come first.
-              ['^react', '^@?\\w'],
-              // Internal packages.
-              [
-                '^(app|assets|components|constants|contexts|data|lib|reducers|routes|sections|types|utils)(/.*|$)',
-              ],
-              // Side effect imports.
-              ['^\\u0000'],
-              // Parent imports. Put `..` last.
-              ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
-              // Other relative imports. Put same-folder imports and `.` behind, and style imports last.
-              ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$', '^.+\\.s?css$'],
-            ],
-          },
-        ],
-      },
-      settings: {
-        react: {
-          version: 'detect',
-        },
-      },
-    },
     // TypeScript backend files
     {
       files: ['history/**/*.ts', 'pairing/**/*.ts', 'coding/**/*.ts'],

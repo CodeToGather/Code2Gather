@@ -28,9 +28,6 @@
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-jest": "^25.2.2",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.26.1",
-    "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
@@ -38,17 +35,13 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.4.1",
     "prettier-plugin-prisma": "^3.3.0",
-    "stylelint": "^13.13.1",
-    "stylelint-config-prettier": "^9.0.3",
-    "stylelint-config-sass-guidelines": "^8.0.0",
     "typescript": "^4.4.4"
   },
   "scripts": {
     "commit": "git-cz",
     "export-requirements": "poetry export --without-hashes -f requirements.txt > requirements.txt",
     "lint": "run-p lint:*",
-    "lint:js": "eslint . --ext .ts,.js,.tsx,.jsx",
-    "lint:css": "stylelint '**/*.{scss,sass,css}'",
+    "lint:js": "eslint . --ext .ts,.js",
     "lint:md": "markdownlint '**/*.md' --ignore-path .gitignore",
     "setup": "run-s setup:*",
     "setup:history": "cd history && yarn db:create && yarn db:migrate && cd ..",
@@ -61,8 +54,7 @@
     "postinstall:room": "cd room && yarn install && cd ..",
     "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
     "start": "docker-compose -f docker-compose.local.yml up",
-    "stop": "docker-compose -f docker-compose.local.yml down",
-    "stylelint-check": "stylelint-config-prettier-check"
+    "stop": "docker-compose -f docker-compose.local.yml down"
   },
   "config": {
     "commitizen": {
@@ -72,9 +64,6 @@
   "lint-staged": {
     "**/*.{ts,js,tsx,jsx}": [
       "eslint --fix"
-    ],
-    "**/*.{scss,sass,css}": [
-      "stylelint --fix"
     ],
     "**/*.md": [
       "markdownlint --fix"
