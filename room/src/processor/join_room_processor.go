@@ -42,7 +42,9 @@ func (p *JoinRoomProcessor) Process() error {
 		p.err = err
 		return err
 	}
-	if room.HasUser(p.uid) {
+
+	// Disallow user to rejoin already closed room
+	if room.Status != models.Closed && room.HasUser(p.uid) {
 		p.authorized = true
 	} else {
 		return nil
