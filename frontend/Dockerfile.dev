@@ -2,22 +2,14 @@ FROM node:14.17-alpine
 
 RUN mkdir -p /home/node/app
 
-WORKDIR /home/node/app
-
-COPY ../.eslintignore .
-COPY ../.eslintrc.js .
-COPY ../tsconfig.base.json .
-COPY ../tsconfig.eslint.json .
-COPY ../package.json .
-COPY ../yarn.lock .
-COPY package.json frontend/package.json
-COPY yarn.lock frontend/yarn.lock
-
-RUN yarn install
-
 WORKDIR /home/node/app/frontend
 
+COPY ../.eslintignore ..
+COPY ../.eslintrc.js ..
+COPY ../tsconfig.eslint.json ..
+COPY ../package.json ..
+COPY ../yarn.lock ..
 COPY . .
 
-# Not sure why it doesn't work without another round of install
+# Not sure why it doesn't work without install right before start
 CMD yarn install && yarn start
