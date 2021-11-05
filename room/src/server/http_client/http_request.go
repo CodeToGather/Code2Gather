@@ -1,10 +1,10 @@
 package http_client
 
 import (
+	"code2gather.com/room/src/server/util"
 	"log"
 
 	"code2gather.com/room/src/models"
-	"code2gather.com/room/src/server/middleware"
 	"encoding/json"
 )
 
@@ -29,7 +29,7 @@ func GetUserId(token string) (uid string, err error) {
 }
 
 func SendMeetingRecord(meetingRecord *models.CreateMeetingRequest) error {
-	data, err := middleware.MarshalToJson(meetingRecord)
+	data, err := util.MarshalToJson(meetingRecord)
 	if err != nil {
 		log.Println(err)
 		return err
@@ -44,7 +44,7 @@ func SendMeetingRecord(meetingRecord *models.CreateMeetingRequest) error {
 }
 
 func SendRating(rating *models.CreateRatingRequest) error {
-	data, err := middleware.MarshalToJson(rating)
+	data, err := util.MarshalToJson(rating)
 	if err != nil {
 		log.Println(err)
 		return err

@@ -1,10 +1,10 @@
 package main
 
 import (
+	"code2gather.com/room/src/server/util"
 	"log"
 
 	"code2gather.com/room/src/models"
-	"code2gather.com/room/src/server/middleware"
 	"encoding/base64"
 )
 
@@ -35,6 +35,6 @@ func main() {
 
 	clientRequest := models.ClientRequest{Request: r}
 
-	bytes, _ := middleware.MarshalToBytes(&clientRequest)
+	bytes, _ := util.MarshalToBytes(&clientRequest)
 	log.Println(base64.StdEncoding.EncodeToString(bytes))
 }

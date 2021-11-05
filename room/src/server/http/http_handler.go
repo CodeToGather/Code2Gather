@@ -6,6 +6,7 @@ import (
 
 	"code2gather.com/room/src/processor"
 	"code2gather.com/room/src/server/middleware"
+	"code2gather.com/room/src/server/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,7 +29,7 @@ func handleBadRequest(c *gin.Context) {
 func RoomCreationHandler(c *gin.Context) {
 	handler := processor.NewRoomCreationProcessor()
 
-	if err := middleware.UnmarshalRequestBody(c.Request, handler.GetRequest()); err != nil {
+	if err := util.UnmarshalRequestBody(c.Request, handler.GetRequest()); err != nil {
 		log.Println(err)
 		handleInvalidRequestBody(c)
 		return
@@ -40,7 +41,7 @@ func RoomCreationHandler(c *gin.Context) {
 		return
 	}
 
-	resp, err := middleware.MarshalToJson(handler.GetResponse())
+	resp, err := util.MarshalToJson(handler.GetResponse())
 
 	if err != nil {
 		log.Println(err)
@@ -68,7 +69,7 @@ func CheckInRoomHandler(c *gin.Context) {
 		return
 	}
 
-	resp, err := middleware.MarshalToJson(handler.GetResponse())
+	resp, err := util.MarshalToJson(handler.GetResponse())
 
 	if err != nil {
 		log.Println(err)

@@ -1,11 +1,11 @@
 package socket
 
 import (
+	"code2gather.com/room/src/server/util"
 	"log"
 
 	"code2gather.com/room/src/models"
 	"code2gather.com/room/src/processor"
-	"code2gather.com/room/src/server/middleware"
 	"github.com/golang/protobuf/proto"
 )
 
@@ -13,7 +13,7 @@ func incomingRequestHandler(c *Client, request []byte) {
 	var response proto.Message
 
 	requestMessage := &models.ClientRequest{}
-	if err := middleware.UnmarshalBytes(request, requestMessage); err != nil {
+	if err := util.UnmarshalBytes(request, requestMessage); err != nil {
 		log.Println(err)
 		response = &models.ErrorResponse{
 			ErrorCode: int32(models.ErrorCode_MESSAGE_CODING_ERROR),
@@ -119,13 +119,13 @@ func leaveRoomRequestHandler(c *Client, request *models.LeaveRoomRequest) {
 
 func sendResponseToRequestedClient(response proto.Message, c *Client) {
 	log.Println(response)
-	respBytes, _ := middleware.MarshalToBytes(response)
+	respBytes, _ := util.MarshalToBytes(response)
 	c.send <- respBytes
 }
 
 func broadcastResponseToRoom(response proto.Message, rid string, c *Client) {
 	log.Println(response)
-	respBytes, _ := middleware.MarshalToBytes(response)
+	respBytes, _ := util.MarshalToBytes(response)
 	c.manager.broadcast <- RoomBroadcastMessage{
 		roomId:  rid,
 		message: respBytes,

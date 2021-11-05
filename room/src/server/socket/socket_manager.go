@@ -1,10 +1,10 @@
 package socket
 
 import (
+	"code2gather.com/room/src/server/util"
 	"log"
 
 	"code2gather.com/room/src/models"
-	"code2gather.com/room/src/server/middleware"
 )
 
 // Manager maintains the set of active clients,
@@ -94,13 +94,13 @@ type RoomBroadcastMessage struct {
 
 func NewDisconnectRoomBroadcastMessage(roomId string, disconnectedId string) *RoomBroadcastMessage {
 	message := &models.DisconnectBroadcast{DisconnectedUid: disconnectedId}
-	messageBytes, _ := middleware.MarshalToBytes(message)
+	messageBytes, _ := util.MarshalToBytes(message)
 	return &RoomBroadcastMessage{roomId: roomId, message: messageBytes}
 }
 
 func NewJoinedRoomBroadcastMessage(roomId string, joinedUid string) *RoomBroadcastMessage {
 	message := &models.JoinRoomBroadcast{JoinedUid: joinedUid}
-	messageBytes, _ := middleware.MarshalToBytes(message)
+	messageBytes, _ := util.MarshalToBytes(message)
 	return &RoomBroadcastMessage{roomId: roomId, message: messageBytes, exceptId: joinedUid}
 }
 
