@@ -10,6 +10,6 @@ RUN go mod download
 
 COPY . .
 
-RUN go build src -o /docker-gs-ping
+RUN go build -o /docker-gs-ping ./src
 
 ENTRYPOINT ["/docker-gs-ping"]
