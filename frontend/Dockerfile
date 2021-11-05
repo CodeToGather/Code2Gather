@@ -7,7 +7,6 @@ WORKDIR /home/node/app/frontend
 
 COPY ../.eslintignore ..
 COPY ../.eslintrc.js ..
-COPY ../tsconfig.base.json ..
 COPY ../tsconfig.eslint.json ..
 COPY ../package.json ..
 COPY ../yarn.lock ..

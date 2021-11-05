@@ -10,3 +10,14 @@
 **/*.md
 postgres-data
 mongodb-data
+
+# Ignoring the following because the only package with this as context is frontend
+auth
+code-executor
+coding
+gateway
+history
+pairing
+proto-messages
+room
+video

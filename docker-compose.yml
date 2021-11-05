@@ -20,7 +20,7 @@ services:
   frontend:
     container_name: frontend
     build:
-      # Context is . because of tsconfig.base.json and eslint in root
+      # Context is . because of eslint in root
       dockerfile: frontend/Dockerfile.dev
       context: .
     volumes:
@@ -85,9 +85,8 @@ services:
   coding:
     container_name: coding
     build:
-      # Context is . because of tsconfig.base.json in root
-      dockerfile: coding/Dockerfile.dev
-      context: .
+      dockerfile: Dockerfile.dev
+      context: ./coding
     volumes:
       - ~/.cache/yarn:/home/node/.cache/yarn
       - ./coding:/home/node/app/coding
@@ -118,9 +117,8 @@ services:
   history:
     container_name: history
     build:
-      # Context is . because of tsconfig.base.json in root
-      dockerfile: history/Dockerfile.dev
-      context: .
+      dockerfile: Dockerfile.dev
+      context: ./history
     volumes:
       - ~/.cache/yarn:/home/node/.cache/yarn
       - ./history:/home/node/app/history
@@ -138,9 +136,8 @@ services:
   pairing:
     container_name: pairing
     build:
-      # Context is . because of tsconfig.base.json in root
-      dockerfile: pairing/Dockerfile.dev
-      context: .
+      dockerfile: Dockerfile.dev
+      context: ./pairing
     volumes:
       - ~/.cache/yarn:/home/node/.cache/yarn
       - ./pairing:/home/node/app/pairing
