@@ -64,6 +64,27 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: pairing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: pairing
+  template:
+    metadata:
+      labels:
+        run: pairing
+    spec:
+      containers:
+      - name: pairing
+        image: asthenosphere/pairing
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8003
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: video
 spec:
   replicas: 1

@@ -49,6 +49,22 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: pairing-service
+  labels:
+    run: pairing
+spec:
+  type: NodePort
+  ports:
+    - port: 8003
+      targetPort: 8003
+      protocol: TCP
+      name: pairing
+  selector:
+    run: pairing
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: video-service
   labels:
     run: video
