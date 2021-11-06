@@ -32,10 +32,8 @@ func (c *HttpClient) Post(path string, data []byte) ([]byte, error) {
 	return respBody, err
 }
 
-func (c *HttpClient) Get(path string, data []byte) ([]byte, error) {
-	dataBuffer := bytes.NewBuffer(data)
-
-	req, err := http.NewRequest("GET", path, dataBuffer)
+func (c *HttpClient) Get(path string) ([]byte, error) {
+	req, err := http.NewRequest("GET", path, nil)
 	if err != nil {
 		return nil, err
 	}
