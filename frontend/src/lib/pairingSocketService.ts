@@ -18,9 +18,15 @@ export const findPair = (socket: Socket, difficulty: Difficulty): void => {
   socket.emit(REQ_FIND_PAIR, difficulty);
 };
 
-export const stopFindingPair = (socket: Socket): void => {
+export const stopFindingPair = (socket: Socket, isDelayed = false): void => {
   socket.emit(REQ_STOP_FINDING_PAIR);
-  store.dispatch(resetState());
+  if (isDelayed) {
+    setTimeout(() => {
+      store.dispatch(resetState());
+    }, 500);
+  } else {
+    store.dispatch(resetState());
+  }
 };
 
 const findingPair = (socket: Socket): void => {

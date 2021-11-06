@@ -48,13 +48,20 @@ export async function createRating(
  * being queried here.
  *
  * @param request No requirement for request format
- * @param response Response with body { average: number, count: number }
+ * @param response Response with body { average: number, count: number,
+ *                 githubUsername: string, photoUrl: string }
  *                 or { error: string }
  */
 export async function readAverageRatingForSelf(
   _request: Request<unknown, unknown, unknown>,
   response: Response<
-    ErrorResponse | { average: number; count: number },
+    | ErrorResponse
+    | {
+        average: number;
+        count: number;
+        githubUsername: string;
+        photoUrl: string;
+      },
     UserLocals
   >,
 ): Promise<void> {
@@ -64,7 +71,11 @@ export async function readAverageRatingForSelf(
       user.id,
       user,
     );
-    response.status(StatusCodes.OK).json(stats);
+    response.status(StatusCodes.OK).json({
+      ...stats,
+      githubUsername: user.githubUsername,
+      photoUrl: user.photoUrl,
+    });
   } catch (error: any) {
     if (error instanceof ResourceNotFoundError) {
       response

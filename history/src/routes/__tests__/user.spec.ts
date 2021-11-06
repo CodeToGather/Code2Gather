@@ -172,14 +172,14 @@ describe('POST /user', () => {
   });
 });
 
-describe('GET /user', () => {
+describe('GET /user/self', () => {
   beforeAll(async () => {
     await fixtures.reload();
   });
 
   it('should return self when valid uid is provided', async () => {
     const response = await request(server.server)
-      .get('/user')
+      .get('/user/self')
       .set('Authorization', fixtures.userOne.id)
       .send();
     expect(response.status).toBe(StatusCodes.OK);
@@ -190,7 +190,7 @@ describe('GET /user', () => {
     let response = await request(server.server).get('/user').send();
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
     response = await request(server.server)
-      .get('/user')
+      .get('/user/self')
       .set('Authorization', '123456')
       .send();
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED);

@@ -7,9 +7,10 @@ import './Home.scss';
 
 interface Props {
   onPracticeNow: (difficulty: Difficulty) => void;
+  isDisabled: boolean;
 }
 
-const PracticePanel: FC<Props> = ({ onPracticeNow }) => {
+const PracticePanel: FC<Props> = ({ onPracticeNow, isDisabled }) => {
   const [difficulty, setDifficulty] = useState<Difficulty | undefined>(
     undefined,
   );
@@ -26,6 +27,7 @@ const PracticePanel: FC<Props> = ({ onPracticeNow }) => {
         className={`border-button practice-panel__button${
           difficulty === Difficulty.EASY ? ' is-success' : ''
         }`}
+        disabled={isDisabled}
         onClick={(): void => setDifficulty(Difficulty.EASY)}
       >
         <Typography size="regular">Easy Question</Typography>
@@ -34,6 +36,7 @@ const PracticePanel: FC<Props> = ({ onPracticeNow }) => {
         className={`border-button practice-panel__button${
           difficulty === Difficulty.MEDIUM ? ' is-success' : ''
         }`}
+        disabled={isDisabled}
         onClick={(): void => setDifficulty(Difficulty.MEDIUM)}
       >
         <Typography size="regular">Medium Question</Typography>
@@ -42,6 +45,7 @@ const PracticePanel: FC<Props> = ({ onPracticeNow }) => {
         className={`border-button practice-panel__button${
           difficulty === Difficulty.HARD ? ' is-success' : ''
         }`}
+        disabled={isDisabled}
         onClick={(): void => setDifficulty(Difficulty.HARD)}
       >
         <Typography size="regular">Hard Question</Typography>
@@ -52,7 +56,7 @@ const PracticePanel: FC<Props> = ({ onPracticeNow }) => {
       </Typography>
       <button
         className="primary-button practice-panel__button"
-        disabled={difficulty == null}
+        disabled={difficulty == null || isDisabled}
         onClick={(): void => {
           if (difficulty == null) {
             return;

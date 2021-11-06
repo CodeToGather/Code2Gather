@@ -75,6 +75,38 @@ export async function readSelf(
 }
 
 /**
+ * Reads the user that is associated with the UID provided.
+ *
+ * @param request Request with body of format { uid: string }
+ * @param response Response with body of type User or { error: string }
+ */
+export async function readUser(
+  request: Request<unknown, unknown, { uid: string }>,
+  response: Response<ErrorResponse | User>,
+): Promise<void> {
+  const { uid } = request.body;
+  try {
+    const user = await userService.read(uid, botUser);
+    response.status(StatusCodes.OK).json(user);
+  } catch (error: any) {
+    if (error instanceof ResourceNotFoundError) {
+      response
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'User cannot be found!' });
+      return;
+    } else if (error instanceof AuthorizationError) {
+      response
+        .status(StatusCodes.FORBIDDEN)
+        .json({ error: 'You do not have permissions to read this user!' });
+      return;
+    }
+    response.status(StatusCodes.BAD_REQUEST).json({
+      error: error?.message ?? 'Something went wrong. Please try again!',
+    });
+  }
+}
+
+/**
  * Updates the information of the user. Primarily used to keep the
  * GitHub username updated. Other fields should be more or less immutable.
  *
