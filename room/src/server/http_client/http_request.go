@@ -8,9 +8,6 @@ import (
 	"encoding/json"
 )
 
-var authBaseUrl = "http://localhost:8001"
-var historyBaseUrl = "http://localhost:8002"
-
 var httpClient *HttpClient
 
 func init() {
@@ -18,7 +15,7 @@ func init() {
 }
 
 func GetUserId(token string) (uid string, err error) {
-	resp, err := httpClient.GetWithAuthHeader(authBaseUrl+"/auth", token)
+	resp, err := httpClient.GetWithAuthHeader(AuthBaseUrl+"/auth", token)
 	var responseMessage *models.AuthResponse
 	err = json.Unmarshal(resp, &responseMessage)
 	if err != nil {
@@ -35,7 +32,7 @@ func SendMeetingRecord(meetingRecord *models.CreateMeetingRequest) error {
 		return err
 	}
 	// TODO: handle error response from history service
-	_, err = httpClient.Post(historyBaseUrl+"/meeting", data)
+	_, err = httpClient.Post(HistoryBaseUrl+"/meeting", data)
 	if err != nil {
 		log.Println(err)
 		return err
@@ -50,7 +47,7 @@ func SendRating(rating *models.CreateRatingRequest) error {
 		return err
 	}
 	// TODO: handle error response from history service
-	_, err = httpClient.Post(historyBaseUrl+"/rating", data)
+	_, err = httpClient.Post(HistoryBaseUrl+"/rating", data)
 	if err != nil {
 		log.Println(err)
 		return err
