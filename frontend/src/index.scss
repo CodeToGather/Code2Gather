@@ -60,7 +60,7 @@ button {
   font-size: inherit;
   font-weight: inherit;
   padding: 1rem;
-  transition: background-color 0.3s, opacity 0.3s;
+  transition: background-color 0.3s, opacity 0.3s, color 0.3s;
 
   &:hover {
     cursor: pointer;
@@ -91,7 +91,6 @@ button.secondary-button {
   border: 0;
   color: $secondary-button-text-color;
   padding: 0;
-  transition: color 0.3s;
 
   &:hover {
     color: $secondary-button-text-hover-color;

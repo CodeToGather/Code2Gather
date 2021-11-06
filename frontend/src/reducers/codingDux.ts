@@ -10,7 +10,6 @@ export interface CodingDux {
   language: Language;
   isExecutingCode: boolean;
   codeExecutionOutput: string;
-  isCodeOutputPanelShown: boolean;
 }
 
 const initialState: CodingDux = {
@@ -18,7 +17,6 @@ const initialState: CodingDux = {
   language: Language.PYTHON,
   isExecutingCode: false,
   codeExecutionOutput: '',
-  isCodeOutputPanelShown: false,
 };
 
 const coding = createSlice({
@@ -34,16 +32,10 @@ const coding = createSlice({
     setIsExecutingCodeAsTrue: (state): void => {
       state.codeExecutionOutput = 'Executing code...';
       state.isExecutingCode = true;
-      state.isCodeOutputPanelShown = true;
     },
     setCodeExecutionOutput: (state, action: PayloadAction<string>): void => {
       state.isExecutingCode = false;
-      state.isCodeOutputPanelShown = true;
       state.codeExecutionOutput = action.payload;
-    },
-    closeCodeOutputPanel: (state): void => {
-      // We won't clear the output - will be done on the next execution
-      state.isCodeOutputPanelShown = false;
     },
     applyChanges: (
       state,
@@ -60,7 +52,6 @@ const coding = createSlice({
       state.language = Language.PYTHON;
       state.isExecutingCode = false;
       state.codeExecutionOutput = '';
-      state.isCodeOutputPanelShown = false;
     },
   },
 });
@@ -71,7 +62,6 @@ export const {
   applyChanges,
   setIsExecutingCodeAsTrue,
   setCodeExecutionOutput,
-  closeCodeOutputPanel,
   resetState,
 } = coding.actions;
 

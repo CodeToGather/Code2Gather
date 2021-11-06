@@ -14,6 +14,7 @@ import {
 } from 'lib/codingSocketService';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
+import useWindowDimensions from 'utils/hookUtils';
 
 import RightPanel from './panel';
 import VideoCollection from './video';
@@ -21,15 +22,20 @@ import './Room.scss';
 
 const Room: FC = () => {
   const { socket } = useCodingSocket();
-  const { doc, language, isExecutingCode, isCodeOutputPanelShown } =
-    useSelector((state: RootState) => state.coding);
-  const { isInterviewer } = useSelector((state: RootState) => state.room);
-  const [isPanelShown, _setIsPanelShown] = useState(
-    isCodeOutputPanelShown || !isInterviewer,
+  const { doc, language, isExecutingCode, codeExecutionOutput } = useSelector(
+    (state: RootState) => state.coding,
   );
+  const { isInterviewer, question } = useSelector(
+    (state: RootState) => state.room,
+  );
+  const [isPanelShown, setIsPanelShown] = useState(isInterviewer);
+  const [notes, setNotes] = useState('');
+  const { height, width } = useWindowDimensions();
 
   useEffect(() => {
+    // This one joins the coding room
     joinRoom(socket, 'default-room-id');
+    // TODO: Join the actual room via room WS
   }, [socket]);
 
   const onCodeChange = (code: string): void => {
@@ -37,7 +43,30 @@ const Room: FC = () => {
   };
 
   const onExecuteCode = (): void => {
+    setIsPanelShown(true);
     executeCode(socket);
+  };
+
+  const getCodeEditorHeight = (): string => {
+    const isVertical = width <= 768;
+    if (!isVertical || !isPanelShown) {
+      return '100%';
+    }
+    // 95 for top and bottom button panels, 32 for panel border + padding
+    const editorHeight = Math.round(height * 0.55 - 95 - 32);
+    return `${editorHeight}px`;
+  };
+
+  const getCodeEditorWidth = (): string => {
+    const isVertical = width <= 768;
+    if (isVertical || !isPanelShown) {
+      return '100vw';
+    }
+    // 32 for panel border + padding
+    if (width <= 1024) {
+      return `${Math.round(0.67 * width) - 32}px`;
+    }
+    return `${Math.round(0.73 * width) - 32}px`;
   };
 
   const code = doc.text.toString();
@@ -67,14 +96,27 @@ const Room: FC = () => {
               </button>
             </div>
           </div>
-          <CodeEditor
-            className="room--top-left__editor"
-            language={language}
-            onChange={onCodeChange}
-            value={doc.text.toString()}
-          />
+          <div className="room--top-left__editor">
+            <CodeEditor
+              height={getCodeEditorHeight()}
+              language={language}
+              onChange={onCodeChange}
+              value={doc.text.toString()}
+              width={getCodeEditorWidth()}
+            />
+          </div>
         </div>
-        {isPanelShown ? <RightPanel /> : null}
+        {isPanelShown ? (
+          <RightPanel
+            isExecutingCode={isExecutingCode}
+            isInterviewer={isInterviewer}
+            notes={notes}
+            onChangeNotes={setNotes}
+            onClosePanel={(): void => setIsPanelShown(false)}
+            output={codeExecutionOutput}
+            question={question}
+          />
+        ) : null}
         <VideoCollection />
       </div>
       <div className="room--bottom">

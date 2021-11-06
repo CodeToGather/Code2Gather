@@ -19,22 +19,23 @@ enum LeaderboardTab {
   MONTH,
 }
 
+const tabs = [
+  {
+    label: 'Today',
+    value: LeaderboardTab.DAY,
+  },
+  {
+    label: 'This Week',
+    value: LeaderboardTab.WEEK,
+  },
+  {
+    label: 'This Month',
+    value: LeaderboardTab.MONTH,
+  },
+];
+
 const Leaderboard: FC<Props> = ({ day, week, month, isLoading, isError }) => {
   const [tab, setTab] = useState(LeaderboardTab.DAY);
-  const tabs = [
-    {
-      label: 'Today',
-      value: LeaderboardTab.DAY,
-    },
-    {
-      label: 'This Week',
-      value: LeaderboardTab.WEEK,
-    },
-    {
-      label: 'This Month',
-      value: LeaderboardTab.MONTH,
-    },
-  ];
 
   const getData = (): LeaderboardData[] => {
     switch (tab) {
