@@ -143,6 +143,7 @@ message RoomServiceToClientMessage {
     CompleteQuestionResponse complete_question_response = 4;
     SubmitRatingResponse submit_rating_response = 5;
     LeaveRoomResponse leave_room_response = 6;
+    LeaveRoomBroadcast leave_room_broadcast = 7;
   }
 }
 
@@ -195,4 +196,8 @@ message LeaveRoomRequest {
 
 message LeaveRoomResponse {
   int32 error_code = 1;
+}
+
+message LeaveRoomBroadcast {
+  string left_uid = 1;
 }

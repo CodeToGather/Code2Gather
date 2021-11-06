@@ -94,13 +94,22 @@ type RoomBroadcastMessage struct {
 
 func NewDisconnectRoomBroadcastMessage(roomId string, disconnectedId string) *RoomBroadcastMessage {
 	message := &models.DisconnectBroadcast{DisconnectedUid: disconnectedId}
-	messageBytes, _ := util.MarshalToBytes(message)
-	return &RoomBroadcastMessage{roomId: roomId, message: messageBytes}
+	messageWrapper := &models.RoomServiceToClientMessage_DisconnectBroadcast{DisconnectBroadcast: message}
+	messageBytes, _ := util.MarshalToBytes(&models.RoomServiceToClientMessage{Response: messageWrapper})
+	return &RoomBroadcastMessage{roomId: roomId, message: messageBytes, exceptId: disconnectedId}
+}
+
+func NewLeftRoomBroadcastMessage(roomId string, leftId string) *RoomBroadcastMessage {
+	message := &models.LeaveRoomBroadcast{LeftUid: leftId}
+	messageWrapper := &models.RoomServiceToClientMessage_LeaveRoomBroadcast{LeaveRoomBroadcast: message}
+	messageBytes, _ := util.MarshalToBytes(&models.RoomServiceToClientMessage{Response: messageWrapper})
+	return &RoomBroadcastMessage{roomId: roomId, message: messageBytes, exceptId: leftId}
 }
 
 func NewJoinedRoomBroadcastMessage(roomId string, joinedUid string) *RoomBroadcastMessage {
 	message := &models.JoinRoomBroadcast{JoinedUid: joinedUid}
-	messageBytes, _ := util.MarshalToBytes(message)
+	messageWrapper := &models.RoomServiceToClientMessage_JoinRoomBroadcast{JoinRoomBroadcast: message}
+	messageBytes, _ := util.MarshalToBytes(&models.RoomServiceToClientMessage{Response: messageWrapper})
 	return &RoomBroadcastMessage{roomId: roomId, message: messageBytes, exceptId: joinedUid}
 }
 

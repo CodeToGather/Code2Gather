@@ -34,7 +34,7 @@ func (p *LeaveRoomProcessor) GetRequest() proto.Message {
 }
 
 func (p *LeaveRoomProcessor) Process() error {
-	log.Println("Processing Submit Rating Request")
+	log.Println("Processing Leave Room Request")
 	room, err := room_agents.GetRoomById(p.rid)
 	if err != nil {
 		p.err = err

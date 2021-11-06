@@ -55,7 +55,7 @@ func (p *JoinRoomProcessor) Process() error {
 	}
 
 	// Disallow user to rejoin already closed room
-	if room.Status == models.Closed && room.HasUser(p.uid) {
+	if room.Status != models.Closed && room.HasUser(p.uid) {
 		p.authorized = true
 	} else {
 		return nil
@@ -63,9 +63,13 @@ func (p *JoinRoomProcessor) Process() error {
 
 	// Get information on paired user
 	if p.uid == room.Uid1 {
-		p.pairedUser.Id = room.Uid2
+		p.pairedUser = &models.User{
+			Id: room.Uid2,
+		}
 	} else if p.uid == room.Uid2 {
-		p.pairedUser.Id = room.Uid1
+		p.pairedUser = &models.User{
+			Id: room.Uid1,
+		}
 	} else {
 		return nil
 	}

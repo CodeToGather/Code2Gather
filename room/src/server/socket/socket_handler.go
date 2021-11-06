@@ -28,8 +28,6 @@ func incomingRequestHandler(c *Client, request []byte) {
 	switch r := intermediateRequest.(type) {
 	case *models.ClientRequest_JoinRoomRequest:
 		joinRoomRequestHandler(c, r.JoinRoomRequest)
-	//case *models.ClientRequest_ExecuteCodeRequest:
-	//	executeCodeRequestHandler(c, r.ExecuteCodeRequest)
 	case *models.ClientRequest_CompleteQuestionRequest:
 		completeQuestionRequestHandler(c, r.CompleteQuestionRequest)
 	case *models.ClientRequest_SubmitRatingRequest:
@@ -53,25 +51,14 @@ func joinRoomRequestHandler(c *Client, request *models.JoinRoomRequest) {
 	err := handler.Process()
 	if err != nil {
 		log.Println(err)
+	} else {
+		// Check if the client has been registered to the room
+		checkClientRegisteredToRoom(handler.IsRequestAuthorized(), handler.GetRoomId(), c)
 	}
 
-	// Check if the client has been registered to the room
-	checkClientRegisteredToRoom(handler.IsRequestAuthorized(), handler.GetRoomId(), c)
 	// Send response to requesting user only
 	sendResponseToRequestedClient(handler.GetResponse(), c)
 }
-
-//func executeCodeRequestHandler(c *Client, request *models.ExecuteCodeRequest) {
-//	log.Println("Handling Execute Code Request")
-//
-//	// TODO: send response to both users in the room
-//	response := &models.ExecuteCodeResponse{
-//		ErrorCode: 0,
-//	}
-//	log.Println(response)
-//	respBytes, _ := middleware.MarshalToBytes(response)
-//	c.send <- respBytes
-//}
 
 func completeQuestionRequestHandler(c *Client, request *models.CompleteQuestionRequest) {
 	log.Println("Handling Complete Question Request")
@@ -109,10 +96,10 @@ func leaveRoomRequestHandler(c *Client, request *models.LeaveRoomRequest) {
 	err := handler.Process()
 	if err != nil {
 		log.Println(err)
+	} else if handler.IsRequestAuthorized() {
+		c.leaveRoom()
 	}
 
-	// Check if the client has been registered to the room
-	checkClientRegisteredToRoom(handler.IsRequestAuthorized(), handler.GetRoomId(), c)
 	// Send response to requesting user only
 	sendResponseToRequestedClient(handler.GetResponse(), c)
 }
@@ -137,11 +124,6 @@ func checkClientRegisteredToRoom(authorized bool, rid string, c *Client) {
 		return
 	}
 	if authorized {
-		c.rid = rid
-		c.manager.roomRegister <- ClientRoomRegistration{
-			roomId: rid,
-			client: c,
-		}
-		c.manager.broadcast <- *NewJoinedRoomBroadcastMessage(rid, c.uid)
+		c.joinRoom(rid)
 	}
 }

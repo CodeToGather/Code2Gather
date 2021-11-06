@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 
-	"code2gather.com/room/src/server"
 	"code2gather.com/room/src/server/socket"
 	"github.com/gin-gonic/gin"
 )
@@ -24,7 +23,7 @@ func StartHttpServer() {
 		socket.WSHandler(c.Writer, c.Request)
 	})
 
-	err := r.Run(server.ConnHost + ":" + server.ConnPort)
+	err := r.Run(ConnHost + ":" + ConnPort)
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)
 		return
