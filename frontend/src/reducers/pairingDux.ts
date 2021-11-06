@@ -2,10 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export enum PairingState {
   NOT_PAIRING,
-  STARTED_PAIRING,
   FINDING_PAIR,
+  CANNOT_FIND_PAIR,
   FOUND_PAIR,
-  CREATED_ROOM,
   ERROR,
 }
 

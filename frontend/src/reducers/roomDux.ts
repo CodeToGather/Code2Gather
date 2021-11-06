@@ -30,6 +30,19 @@ const room = createSlice({
   name: 'room',
   initialState,
   reducers: {
+    // Used by pairing socket service
+    setPartialRoomInfo: (
+      state,
+      action: PayloadAction<{
+        roomId: string;
+        partnerUsername: string;
+        partnerPhotoUrl: string;
+      }>,
+    ): void => {
+      state.roomId = action.payload.roomId;
+      state.partnerUsername = action.payload.partnerUsername;
+      state.partnerPhotoUrl = action.payload.partnerPhotoUrl;
+    },
     setRoomInfo: (
       state,
       action: PayloadAction<{
@@ -78,6 +91,14 @@ const room = createSlice({
   },
 });
 
-export const { setRoomInfo, resetState } = room.actions;
+export const {
+  setPartialRoomInfo,
+  setRoomInfo,
+  switchRoles,
+  setPartnerHasDisconnected,
+  setPartnerHasLeft,
+  setErrorMessage,
+  resetState,
+} = room.actions;
 
 export default room.reducer;
