@@ -22,6 +22,27 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: history
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: history
+  template:
+    metadata:
+      labels:
+        run: history
+    spec:
+      containers:
+      - name: history
+        image: asthenosphere/history
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8002
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: video
 spec:
   replicas: 1

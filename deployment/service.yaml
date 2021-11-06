@@ -17,6 +17,22 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: history-service
+  labels:
+    run: history
+spec:
+  type: NodePort
+  ports:
+    - port: 8002
+      targetPort: 8002
+      protocol: TCP
+      name: history
+  selector:
+    run: history
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: video-service
   labels:
     run: video
