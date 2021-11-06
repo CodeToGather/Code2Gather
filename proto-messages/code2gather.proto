@@ -95,6 +95,11 @@ message CreateRatingRequest {
   string room_id = 4;
 }
 
+// HTTP GET request (Room -> History)
+message GetUserRequest {
+  string uid = 1;
+}
+
 // HTTP GET request /auth (Auth -> Room)
 message AuthResponse {
   string uid = 1;

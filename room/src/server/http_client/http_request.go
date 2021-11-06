@@ -25,6 +25,21 @@ func GetUserId(token string) (uid string, err error) {
 	return
 }
 
+func GetUserInfo(uid string) (user *models.User, err error) {
+	request := models.GetUserRequest{Uid: uid}
+	data, err := util.MarshalToJson(&request)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	resp, err := httpClient.Get(HistoryBaseUrl+"/", data)
+	err = json.Unmarshal(resp, &user)
+	if err != nil {
+		return
+	}
+	return
+}
+
 func SendMeetingRecord(meetingRecord *models.CreateMeetingRequest) error {
 	data, err := util.MarshalToJson(meetingRecord)
 	if err != nil {
