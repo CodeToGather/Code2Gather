@@ -41,6 +41,15 @@ message RoomMessage {
   string qid2 = 5;
 }
 
+// User
+
+message User {
+  string id = 1;
+  string github_username = 2;
+  string photo_url = 3;
+  string profile_url = 4;
+}
+
 // HTTP POST request (Pairing -> Room)
 message CreateRoomRequest {
   string uid1 = 1;
@@ -115,23 +124,20 @@ message ErrorResponse {
 message ClientRequest {
   oneof request {
     JoinRoomRequest join_room_request = 1;
-    ExecuteCodeRequest execute_code_request = 2;
-    CompleteQuestionRequest complete_question_request = 3;
-    SubmitRatingRequest submit_rating_request = 4;
-    LeaveRoomRequest leave_room_request = 5;
+    CompleteQuestionRequest complete_question_request = 2;
+    SubmitRatingRequest submit_rating_request = 3;
+    LeaveRoomRequest leave_room_request = 4;
   }
 }
 
 message RoomServiceToClientMessage {
   oneof response {
     JoinRoomResponse join_room_response = 1;
-    ExecuteCodeResponse execute_code_response = 2;
-    ExecuteCodeBroadcast execute_code_broadcast = 3;
-    JoinRoomBroadcast join_room_broadcast = 4;
-    DisconnectBroadcast disconnect_broadcast = 5;
-    CompleteQuestionResponse complete_question_response = 6;
-    SubmitRatingResponse submit_rating_response = 7;
-    LeaveRoomResponse leave_room_response = 8;
+    JoinRoomBroadcast join_room_broadcast = 2;
+    DisconnectBroadcast disconnect_broadcast = 3;
+    CompleteQuestionResponse complete_question_response = 4;
+    SubmitRatingResponse submit_rating_response = 5;
+    LeaveRoomResponse leave_room_response = 6;
   }
 }
 
@@ -141,27 +147,14 @@ message JoinRoomRequest {
 
 message JoinRoomResponse {
   int32 error_code = 1;
-  string interviewer_id = 2;
-  QuestionMessage question = 3;
+  bool is_interviewer = 2;
+  string interviewer_id = 3;
+  QuestionMessage question = 4;
+  User paired_user = 5;
 }
 
 message JoinRoomBroadcast {
   string joined_uid = 1;
-}
-
-message ExecuteCodeRequest {
-  string room_id = 1;
-  string code = 2;
-  Language language = 3;
-}
-
-message ExecuteCodeBroadcast {
-  string executing_uid = 1;
-}
-
-message ExecuteCodeResponse {
-  int32 error_code = 1;
-  string output = 2;
 }
 
 message DisconnectBroadcast {
