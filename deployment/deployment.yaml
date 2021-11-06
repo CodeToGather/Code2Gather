@@ -1,27 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: video
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      run: video
-  template:
-    metadata:
-      labels:
-        run: video
-    spec:
-      containers:
-      - name: video
-        image: asthenosphere/video
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 3000
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: auth
 spec:
   replicas: 1
@@ -38,4 +17,25 @@ spec:
         image: asthenosphere/auth
         imagePullPolicy: Always
         ports:
-        - containerPort: 3000
+        - containerPort: 8001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: video
+  template:
+    metadata:
+      labels:
+        run: video
+    spec:
+      containers:
+      - name: video
+        image: asthenosphere/video
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8004

@@ -1,31 +1,31 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: video-service
-  labels:
-    run: video
-spec:
-  type: NodePort
-  ports:
-    - port: 3000
-      targetPort: 3000
-      protocol: TCP
-      name: video
-  selector:
-    run: video
----
-apiVersion: v1
-kind: Service
-metadata:
   name: auth-service
   labels:
     run: auth
 spec:
   type: NodePort
   ports:
-    - port: 3000
-      targetPort: 3000
+    - port: 8001
+      targetPort: 8001
       protocol: TCP
       name: auth
   selector:
     run: auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: video-service
+  labels:
+    run: video
+spec:
+  type: NodePort
+  ports:
+    - port: 8004
+      targetPort: 8004
+      protocol: TCP
+      name: video
+  selector:
+    run: video
