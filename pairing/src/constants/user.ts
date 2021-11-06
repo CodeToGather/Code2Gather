@@ -8,4 +8,6 @@ export interface User {
     average: number;
     count: number;
   };
+  githubUsername: string;
+  photoUrl: string;
 }

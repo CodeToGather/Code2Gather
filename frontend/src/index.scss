@@ -126,6 +126,15 @@ button.border-button.is-danger {
   &:hover {
     background-color: $danger-border-button-background-hover-color;
   }
+
+  &:disabled {
+    background-color: $background-color;
+    opacity: $danger-border-button-disabled-opacity;
+
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
 }
 
 button.border-button.is-success {
@@ -134,6 +143,15 @@ button.border-button.is-success {
 
   &:hover {
     background-color: $success-border-button-background-hover-color;
+  }
+
+  &:disabled {
+    background-color: $background-color;
+    opacity: $success-border-button-disabled-opacity;
+
+    &:hover {
+      cursor: not-allowed;
+    }
   }
 }
 

@@ -14,6 +14,19 @@
       margin-bottom: 1.5rem;
       margin-top: 0.75rem;
     }
+
+    &-partner {
+      align-items: center;
+      display: flex;
+
+      > * {
+        margin-right: 1rem;
+      }
+    }
+
+    &-partner-title {
+      margin-bottom: 1rem;
+    }
   }
 }
 
@@ -32,9 +45,13 @@
     width: 100%;
 
     &.new-to-process {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
       margin-top: 0;
       padding: 0.25rem;
+
+      @include media('>desktop') {
+        margin-bottom: 1rem;
+      }
     }
   }
 

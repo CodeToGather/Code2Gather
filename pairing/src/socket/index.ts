@@ -1,131 +1,25 @@
-import axios, { AxiosResponse } from 'axios';
 import { Server } from 'socket.io';
 
-import { Difficulty } from 'constants/difficulty';
 import {
   CONNECT,
   DISCONNECT,
-  ERROR_FIND_PAIR,
   REQ_FIND_PAIR,
   REQ_STOP_FINDING_PAIR,
-  RES_CREATED_ROOM,
-  RES_FIND_PAIR,
-  RES_FOUND_PAIR,
 } from 'constants/socket';
-import PairingQueue from 'structures/PairingQueue';
-import SidUidMap from 'structures/SidUidMap';
+
+import { authMiddleware } from './authMiddleware';
+import { handleDisconnect } from './handleDisconnect';
+import { handleFindPair } from './handleFindPair';
+import { handleStopFindingPair } from './handleStopFindingPair';
 
 const setUpIo = (io: Server): void => {
-  io.use((socket, next) => {
-    const token = socket.handshake.auth.token;
-    axios
-      .get(`${process.env.AUTH_URL}/auth`, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        if (res.status !== 200) {
-          throw new Error();
-        }
-        SidUidMap.insertUid(socket.id, res.data.uid as string);
-        // Join the room
-        socket.join(res.data.uid as string);
-        next();
-      })
-      .catch(() => {
-        next(new Error('Unauthorized'));
-      });
-  });
-
+  io.use(authMiddleware);
   io.on(CONNECT, (socket) => {
     console.log('IO connected');
-    // Doesn't seem to be called due to the middleware before
-    socket.on(CONNECT, () => console.log('Socket connected!'));
-
-    socket.on(REQ_FIND_PAIR, async (difficulty: Difficulty) => {
-      console.log('Socket', socket.id, 'finding pair for', difficulty);
-      const uid = SidUidMap.retrieveUid(socket.id);
-      if (uid == null) {
-        socket.emit(ERROR_FIND_PAIR, 'Unauthorized');
-        return;
-      }
-      let ratingResponse: AxiosResponse<any, any>;
-      try {
-        ratingResponse = await axios.get(`${process.env.HISTORY_URL}/rating`, {
-          headers: {
-            authorization: uid,
-          },
-        });
-        if (!ratingResponse || ratingResponse.status !== 200) {
-          throw new Error();
-        }
-      } catch (error) {
-        socket.emit(ERROR_FIND_PAIR, 'Something went wrong!');
-        return;
-      }
-      console.log(ratingResponse.data);
-      const user = {
-        uid,
-        sid: socket.id,
-        difficulty,
-        rating: {
-          average: ratingResponse.data.average,
-          count: ratingResponse.data.count,
-        },
-      };
-      SidUidMap.insertUser(socket.id, user);
-      const result = PairingQueue.enqueue(user);
-      // Let the frontend know we're looking for a pair now.
-      socket.emit(RES_FIND_PAIR);
-
-      // We found a match!
-      if (result != null) {
-        const [user1, user2] = result;
-        // Tell the two users we found a match! Going to create the room now.
-        io.to(user1.uid).to(user2.uid).emit(RES_FOUND_PAIR);
-        const roomResponse = await axios.post(
-          `${process.env.ROOM_URL}/create`,
-          {
-            uid1: user1.uid,
-            uid2: user2.uid,
-            difficulty,
-          },
-        );
-        if (roomResponse.status !== 200) {
-          // TODO: Have some more elaborate recovery mechanism
-        }
-        io.to(user1.uid)
-          .to(user2.uid)
-          .emit(RES_CREATED_ROOM, roomResponse.data.roomId);
-      }
-    });
-
-    socket.on(REQ_STOP_FINDING_PAIR, async () => {
-      console.log('Socket', socket.id, 'stop finding pair');
-      const user = SidUidMap.retrieveUser(socket.id);
-      if (user == null) {
-        // Fail silently for now. Can look into better
-        // error handling in the future.
-        return;
-        // throw new Error("You're not enqueued!");
-      }
-      console.log('Socket', socket.id, 'removed from queue');
-      PairingQueue.remove(user);
-    });
-
-    socket.on(DISCONNECT, () => {
-      const [uid, user] = SidUidMap.remove(socket.id);
-      if (user) {
-        console.log('Socket', socket.id, 'removed from queue');
-        PairingQueue.remove(user);
-      }
-      // Leave the room
-      socket.leave(uid);
-      console.log('Socket', socket.id, 'disconnected');
-    });
+    socket.on(REQ_FIND_PAIR, handleFindPair(socket, io));
+    socket.on(REQ_STOP_FINDING_PAIR, handleStopFindingPair(socket, io));
+    socket.on(DISCONNECT, handleDisconnect(socket, io));
   });
-
   console.log('IO has been set up.');
 };
 

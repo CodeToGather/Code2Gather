@@ -1,12 +1,13 @@
 @import '../../../assets/scss/main';
 
 .leaderboard {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 
   @include media('>desktop') {
     display: flex;
     flex: 2;
     flex-direction: column;
+    margin-bottom: 1rem;
     padding-right: 2rem;
   }
 
@@ -20,8 +21,12 @@
 
   &__empty {
     color: $text-secondary-color;
-    padding-top: 4rem;
+    padding-top: 1rem;
     text-align: center;
+
+    @include media('>desktop') {
+      padding-top: 4rem;
+    }
   }
 }
 
