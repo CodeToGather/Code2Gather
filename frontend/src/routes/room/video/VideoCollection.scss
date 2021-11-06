@@ -1,24 +1,40 @@
-@import '../../../assets/scss/variables';
+@import '../../../assets/scss/main';
 
 .video-call-container {
   align-items: center;
   bottom: 0;
   display: flex;
-  flex-direction: column-reverse;
-  height: 17rem;
+  flex-direction: row-reverse;
+  height: 25vw;
   justify-content: space-between;
   padding: 0.5rem;
   position: absolute;
   right: 0;
-  width: 13rem;
+  width: calc(100vw - 1rem);
+  z-index: 4;
+
+  @include media('>mobile', '<=tablet') {
+    height: 15vw;
+    width: 50vw;
+  }
+
+  @include media('>tablet', '<=desktop') {
+    height: 10vw;
+    width: 33vw;
+  }
+
+  @include media('>desktop') {
+    height: 8vw;
+    width: 27vw;
+  }
 
   .video-panel {
     background-color: black;
     border-radius: $video-border-radius;
-    height: 48%;
+    height: 100%;
     overflow: hidden;
     position: relative;
-    width: 100%;
+    width: 48%;
 
     .video {
       height: 100%;
