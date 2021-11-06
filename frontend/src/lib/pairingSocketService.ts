@@ -11,6 +11,7 @@ import {
 } from 'constants/pairing';
 import { PairingState, resetState, setPairingState } from 'reducers/pairingDux';
 import { Difficulty } from 'types/crud/difficulty';
+import roomIdUtils from 'utils/roomIdUtils';
 
 export const findPair = (socket: Socket, difficulty: Difficulty): void => {
   store.dispatch(setPairingState({ state: PairingState.STARTED_PAIRING }));
@@ -44,10 +45,9 @@ const errorFindingPair = (socket: Socket): void => {
 };
 
 const createdRoom = (socket: Socket): void => {
-  socket.on(RES_CREATED_ROOM, (roomId: number) => {
-    store.dispatch(
-      setPairingState({ state: PairingState.CREATED_ROOM, roomId }),
-    );
+  socket.on(RES_CREATED_ROOM, (roomId: string) => {
+    store.dispatch(setPairingState({ state: PairingState.CREATED_ROOM }));
+    roomIdUtils.storeRoomId(roomId);
   });
 };
 
