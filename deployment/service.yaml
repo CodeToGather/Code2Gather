@@ -93,3 +93,35 @@ spec:
       name: code-executor
   selector:
     run: code-executor
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: room-service
+  labels:
+    run: room
+spec:
+  type: NodePort
+  ports:
+    - port: 8006
+      targetPort: 8006
+      protocol: TCP
+      name: room
+  selector:
+    run: room
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coding-service
+  labels:
+    run: coding
+spec:
+  type: NodePort
+  ports:
+    - port: 8007
+      targetPort: 8007
+      protocol: TCP
+      name: coding
+  selector:
+    run: coding

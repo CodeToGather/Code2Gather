@@ -123,3 +123,45 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8005
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: room
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: room
+  template:
+    metadata:
+      labels:
+        run: room
+    spec:
+      containers:
+      - name: room
+        image: asthenosphere/room
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8006
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coding
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: coding
+  template:
+    metadata:
+      labels:
+        run: coding
+    spec:
+      containers:
+      - name: coding
+        image: asthenosphere/coding
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8007

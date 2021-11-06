@@ -57,3 +57,17 @@ spec:
                 name: code-executor-service
                 port:
                   number: 8005
+          - path: /room
+            pathType: Prefix
+            backend:
+              service:
+                name: room-service
+                port:
+                  number: 8006
+          - path: /coding
+            pathType: Prefix
+            backend:
+              service:
+                name: coding-service
+                port:
+                  number: 8007
