@@ -17,6 +17,7 @@ interface Props {
   width?: string;
   height?: string;
   readOnly?: boolean;
+  className?: string;
 }
 
 const CodeEditor: FC<Props> = ({
@@ -26,9 +27,11 @@ const CodeEditor: FC<Props> = ({
   width,
   height,
   readOnly = false,
+  className = '',
 }) => {
   return (
     <AceEditor
+      className={className}
       height={height}
       mode={language.toLowerCase()}
       name="code-editor"

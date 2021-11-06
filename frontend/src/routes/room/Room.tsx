@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import CodeEditor from 'components/codeEditor';
@@ -15,13 +15,17 @@ import {
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 
+import RightPanel from './panel';
 import VideoCollection from './video';
 import './Room.scss';
 
 const Room: FC = () => {
   const { socket } = useCodingSocket();
-  const { doc, language, isExecutingCode } = useSelector(
-    (state: RootState) => state.coding,
+  const { doc, language, isExecutingCode, isCodeOutputPanelShown } =
+    useSelector((state: RootState) => state.coding);
+  const { isInterviewer } = useSelector((state: RootState) => state.room);
+  const [isPanelShown, _setIsPanelShown] = useState(
+    isCodeOutputPanelShown || !isInterviewer,
   );
 
   useEffect(() => {
@@ -41,34 +45,36 @@ const Room: FC = () => {
   return (
     <div className="room">
       <div className="room--top">
-        <div className="room--top__left-buttons">
-          <LanguageDropdown
-            className="room--top__language-button"
+        <div className="room--top-left">
+          <div className="room--top-left__controls">
+            <div className="room--top-left__left-buttons">
+              <LanguageDropdown
+                className="room--top-left__language-button"
+                language={language}
+                setLanguage={(language: Language): void => {
+                  changeLanguage(socket, language);
+                }}
+              />
+              <button className="border-button room--top-left__help-button">
+                <Typography size="regular">
+                  Help <i className="far fa-question-circle" />
+                </Typography>
+              </button>
+            </div>
+            <div className="room--top-left__right-buttons">
+              <button className="border-button is-danger room--top-left__leave-button">
+                <Typography size="regular">Leave Room</Typography>
+              </button>
+            </div>
+          </div>
+          <CodeEditor
+            className="room--top-left__editor"
             language={language}
-            setLanguage={(language: Language): void => {
-              changeLanguage(socket, language);
-            }}
+            onChange={onCodeChange}
+            value={doc.text.toString()}
           />
-          <button className="border-button room--top__help-button">
-            <Typography size="regular">
-              Help <i className="far fa-question-circle" />
-            </Typography>
-          </button>
         </div>
-        <div className="room--top__right-buttons">
-          <button className="border-button is-danger room--top__leave-button">
-            <Typography size="regular">Leave Room</Typography>
-          </button>
-        </div>
-      </div>
-      <div className="room--middle">
-        <CodeEditor
-          height="100%"
-          language={language}
-          onChange={onCodeChange}
-          value={doc.text.toString()}
-          width="100vw"
-        />
+        {isPanelShown ? <RightPanel /> : null}
         <VideoCollection />
       </div>
       <div className="room--bottom">

@@ -161,6 +161,10 @@ const VideoCollection: FC = () => {
             <AgoraVideoPlayer className="video" videoTrack={tracks[1]} />
             <Controls tracks={tracks} user={user} />
           </div>
+          <div className="video-panel">
+            <AgoraVideoPlayer className="video" videoTrack={tracks[1]} />
+            <Controls tracks={tracks} user={user} />
+          </div>
           {users.length > 0 && users[0].videoTrack ? (
             <div className="video-panel">
               <AgoraVideoPlayer

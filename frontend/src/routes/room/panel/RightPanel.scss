@@ -1,0 +1,18 @@
+@import '../../../assets/scss/main';
+
+.right-panel {
+  border-top: 1rem solid $code-editor-separator-background-color;
+  width: 100vw;
+
+  @include media('>tablet', '<=desktop') {
+    border-left: 1rem solid $code-editor-separator-background-color;
+    border-top: 0;
+    width: 35vw;
+  }
+
+  @include media('>desktop') {
+    border-left: 1rem solid $code-editor-separator-background-color;
+    border-top: 0;
+    width: 28vw;
+  }
+}
