@@ -32,9 +32,13 @@
     width: 100%;
 
     &.new-to-process {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
       margin-top: 0;
       padding: 0.25rem;
+
+      @include media('>desktop') {
+        margin-bottom: 1rem;
+      }
     }
   }
 

@@ -10,8 +10,12 @@
 
   &__empty {
     color: $text-secondary-color;
-    padding-top: 4rem;
+    padding-top: 1rem;
     text-align: center;
+
+    @include media('>desktop') {
+      padding-top: 4rem;
+    }
   }
 }
 
