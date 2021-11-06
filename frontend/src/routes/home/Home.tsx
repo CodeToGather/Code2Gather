@@ -1,6 +1,7 @@
-import { FC, useEffect, useReducer, useState } from 'react';
+import { FC, ReactElement, useEffect, useReducer, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import Avatar from 'components/avatar';
 import Container from 'components/container';
 import Modal from 'components/modal';
 import Typography from 'components/typography';
@@ -50,6 +51,9 @@ const Home: FC = () => {
   const { socket } = usePairingSocket();
   const { state, errorMessage } = useSelector(
     (state: RootState) => state.pairing,
+  );
+  const { partnerUsername, partnerPhotoUrl } = useSelector(
+    (state: RootState) => state.room,
   );
 
   useEffect(() => {
@@ -123,10 +127,8 @@ const Home: FC = () => {
     if (state === PairingState.FOUND_PAIR) {
       return;
     }
-    if (state !== PairingState.CANNOT_FIND_PAIR) {
-      // We will do this even on error, just in case
-      stopFindingPair(socket, state !== PairingState.NOT_PAIRING);
-    }
+    // We will always do this, just in case
+    stopFindingPair(socket, state !== PairingState.NOT_PAIRING);
     setIsModalVisible(false);
   };
 
@@ -144,14 +146,21 @@ const Home: FC = () => {
     }
   };
 
-  const getModalBody = (): string => {
+  const getModalBody = (): string | ReactElement<'div'> => {
     switch (state) {
       case PairingState.NOT_PAIRING:
       case PairingState.FINDING_PAIR:
         return "We're looking for a practice partner for you!";
       case PairingState.FOUND_PAIR:
-        // TODO: Make this return a body with the partner details
-        return 'Your partner is:';
+        return (
+          <>
+            <div className="home__modal-partner-title">Your partner is:</div>
+            <div className="home__modal-partner">
+              <Avatar alt={partnerUsername} src={partnerPhotoUrl} />
+              <div>{partnerUsername}</div>
+            </div>
+          </>
+        );
       case PairingState.CANNOT_FIND_PAIR:
         return "We couldn't find a partner for you in time. Try again soon!";
       case PairingState.ERROR:
