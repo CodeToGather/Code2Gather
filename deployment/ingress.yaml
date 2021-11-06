@@ -50,3 +50,10 @@ spec:
                 name: video-service
                 port:
                   number: 8004
+          - path: /code-executor
+            pathType: Prefix
+            backend:
+              service:
+                name: code-executor-service
+                port:
+                  number: 8005

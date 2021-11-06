@@ -102,3 +102,24 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8004
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: code-executor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: code-executor
+  template:
+    metadata:
+      labels:
+        run: code-executor
+    spec:
+      containers:
+      - name: code-executor
+        image: asthenosphere/code-executor
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8005

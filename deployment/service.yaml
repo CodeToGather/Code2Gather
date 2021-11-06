@@ -77,3 +77,19 @@ spec:
       name: video
   selector:
     run: video
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: code-executor-service
+  labels:
+    run: code-executor
+spec:
+  type: NodePort
+  ports:
+    - port: 8005
+      targetPort: 8005
+      protocol: TCP
+      name: code-executor
+  selector:
+    run: code-executor
