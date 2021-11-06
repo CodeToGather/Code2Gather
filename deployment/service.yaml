@@ -13,3 +13,19 @@ spec:
       name: video
   selector:
     run: video
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+  labels:
+    run: auth
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP
+      name: auth
+  selector:
+    run: auth

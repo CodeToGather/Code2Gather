@@ -18,3 +18,24 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: auth
+  template:
+    metadata:
+      labels:
+        run: auth
+    spec:
+      containers:
+      - name: auth
+        image: asthenosphere/auth
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
