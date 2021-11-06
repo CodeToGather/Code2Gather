@@ -30,12 +30,8 @@ func (daoi RoomDaoImpl) UpdateRoom(room *models.Room) error {
 	return err
 }
 
-func (daoi RoomDaoImpl) GetActiveRoomOfUser(uid string) ([]models.Room, error) {
+func (daoi RoomDaoImpl) FindRooms(query bson.M) ([]models.Room, error) {
 	var rooms []models.Room
-	err := daoi.collection.Find(
-		bson.M{"$and": []bson.M{{"$or": []bson.M{{"uid1": uid}, {"uid2": uid}}},
-			{"status": bson.M{"$ne": models.Closed}},
-		},
-		}).All(&rooms)
+	err := daoi.collection.Find(query).All(&rooms)
 	return rooms, err
 }
