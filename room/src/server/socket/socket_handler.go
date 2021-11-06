@@ -1,11 +1,11 @@
 package socket
 
 import (
-	"code2gather.com/room/src/server/util"
 	"log"
 
 	"code2gather.com/room/src/models"
 	"code2gather.com/room/src/processor"
+	"code2gather.com/room/src/server/util"
 	"github.com/golang/protobuf/proto"
 )
 

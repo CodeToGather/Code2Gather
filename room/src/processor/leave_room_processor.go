@@ -46,7 +46,7 @@ func (p *LeaveRoomProcessor) Process() error {
 		return nil
 	}
 
-	// TODO: double closing or rooms?
+	// TODO: double closing of rooms?
 	room.Status = models.Closed
 	if err = room_agents.UpdateRoom(room); err != nil {
 		p.err = err
