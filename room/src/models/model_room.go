@@ -31,3 +31,13 @@ func (Room) TableName() string {
 func (r *Room) HasUser(uid string) bool {
 	return r.Uid1 == uid || r.Uid2 == uid
 }
+
+func (r *Room) GetTurnsCompleted() int32 {
+	if r.Status == FirstQuestion {
+		return 0
+	} else if r.Status == SecondQuestion {
+		return 1
+	} else {
+		return 2
+	}
+}
