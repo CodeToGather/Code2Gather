@@ -660,7 +660,7 @@ export namespace code2gather {
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], []);
             if (!Array.isArray(data) && typeof data == "object") { }
         }
-        static fromObject(data: {}) {
+        static fromObject(_data: {}) {
             const message = new CheckInRoomRequest({});
             return message;
         }
