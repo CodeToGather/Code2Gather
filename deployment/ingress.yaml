@@ -21,53 +21,60 @@ spec:
               service:
                 name: gateway-service
                 port:
-                  number: 8000
+                  number: 3000
           - path: /auth
             pathType: Prefix
             backend:
               service:
                 name: auth-service
                 port:
-                  number: 8001
+                  number: 3000
           - path: /history
             pathType: Prefix
             backend:
               service:
                 name: history-service
                 port:
-                  number: 8002
+                  number: 3000
           - path: /pairing
             pathType: Prefix
             backend:
               service:
                 name: pairing-service
                 port:
-                  number: 8003
+                  number: 3000
           - path: /video
             pathType: Prefix
             backend:
               service:
                 name: video-service
                 port:
-                  number: 8004
+                  number: 3000
           - path: /code-executor
             pathType: Prefix
             backend:
               service:
                 name: code-executor-service
                 port:
-                  number: 8005
+                  number: 3000
           - path: /room
             pathType: Prefix
             backend:
               service:
                 name: room-service
                 port:
-                  number: 8006
+                  number: 3000
           - path: /coding
             pathType: Prefix
             backend:
               service:
                 name: coding-service
                 port:
-                  number: 8007
+                  number: 3000
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80

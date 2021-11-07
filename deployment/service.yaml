@@ -7,12 +7,29 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8000
-      targetPort: 8000
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
       name: gateway
   selector:
     run: gateway
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  labels:
+    run: frontend
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: frontend
+  selector:
+    run: frontend
+
 ---
 apiVersion: v1
 kind: Service
@@ -23,8 +40,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8001
-      targetPort: 8001
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
       name: auth
   selector:
@@ -39,8 +56,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8002
-      targetPort: 8002
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
       name: history
   selector:
@@ -55,8 +72,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8003
-      targetPort: 8003
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
       name: pairing
   selector:
@@ -71,8 +88,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8004
-      targetPort: 8004
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
       name: video
   selector:
@@ -87,8 +104,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8005
-      targetPort: 8005
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
       name: code-executor
   selector:
@@ -103,8 +120,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8006
-      targetPort: 8006
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
       name: room
   selector:
@@ -119,9 +136,42 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8007
-      targetPort: 8007
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
       name: coding
   selector:
     run: coding
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+  labels:
+    run: mongo
+spec:
+  type: NodePort
+  ports:
+    - port: 27017
+      targetPort: 27017
+      protocol: TCP
+      name: mongo
+  selector:
+    run: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+  labels:
+    run: db
+spec:
+  type: NodePort
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+      name: db
+  selector:
+    run: db
+---    
