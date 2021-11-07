@@ -177,8 +177,10 @@ message CompleteQuestionRequest {
 
 message CompleteQuestionResponse {
   int32 error_code = 1;
-  string interviewer_id = 2;
-  QuestionMessage next_question = 3;
+  bool is_interviewer = 2;
+  string interviewer_id = 3;
+  QuestionMessage next_question = 4;
+  bool is_interview_completed = 5;
 }
 
 message SubmitRatingRequest {
