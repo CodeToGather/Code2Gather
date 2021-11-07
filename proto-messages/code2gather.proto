@@ -70,6 +70,10 @@ message CheckInRoomResponse {
   string room_id = 2;
 }
 
+// HTTP GET requqest (Frontend -> Room)
+message GetQuestionResponse {
+  QuestionMessage question = 1;
+}
 
 // HTTP POST request /meeting (Room -> History)
 message CreateMeetingRequest {
@@ -153,7 +157,7 @@ message JoinRoomResponse {
   int32 error_code = 1;
   bool is_interviewer = 2;
   string interviewer_id = 3;
-  QuestionMessage question = 4;
+  string question_id = 4;
   User paired_user = 5;
   int32 turns_completed = 6;
 }
@@ -178,7 +182,7 @@ message CompleteQuestionResponse {
   int32 error_code = 1;
   bool is_interviewer = 2;
   string interviewer_id = 3;
-  QuestionMessage next_question = 4;
+  string next_question_id = 4;
   bool is_interview_completed = 5;
   int32 turns_completed = 6;
 }
