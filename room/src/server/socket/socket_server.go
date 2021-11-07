@@ -22,7 +22,7 @@ func init() {
 	go WSManager.Run()
 }
 
-func WSHandler(w http.ResponseWriter, r *http.Request) {
+func WSHandler(w http.ResponseWriter, r *http.Request, authToken string) {
 	conn, err := WSUpgrader.Upgrade(w, r, nil)
 
 	if err != nil {
@@ -31,7 +31,7 @@ func WSHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	uid, err := middleware.GetUidFromAuthToken(r)
+	uid, err := middleware.GetUidFromAuthToken(authToken)
 
 	if err != nil {
 		conn.Close()
