@@ -30,9 +30,25 @@ func GetUserInfo(uid string) (user *models.User, err error) {
 	if err != nil {
 		return
 	}
-	err = json.Unmarshal(resp, &user)
+
+	user = &models.User{
+		Id: uid,
+	}
+
+	var m map[string]interface{}
+	err = json.Unmarshal(resp, &m)
 	if err != nil {
 		return
+	}
+
+	if v, ok := m["githubUsername"]; ok {
+		user.GithubUsername = v.(string)
+	}
+	if v, ok := m["profileUrl"]; ok {
+		user.ProfileUrl = v.(string)
+	}
+	if v, ok := m["photoUrl"]; ok {
+		user.PhotoUrl = v.(string)
 	}
 	return
 }

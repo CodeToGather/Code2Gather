@@ -172,14 +172,20 @@ const VideoCollection: FC<Props> = ({ partnerUsername, roomId }) => {
             <AgoraVideoPlayer className="video" videoTrack={tracks[1]} />
             <Controls tracks={tracks} username={user.githubUsername} />
           </div>
-          {users.length > 0 && users[0].videoTrack ? (
-            <div className="video-panel">
-              <AgoraVideoPlayer
-                className="video"
-                videoTrack={users[0].videoTrack}
-              />
-              <Controls username={partnerUsername} />
-            </div>
+          {users.length > 0 ? (
+            users[0].videoTrack ? (
+              <div className="video-panel">
+                <AgoraVideoPlayer
+                  className="video"
+                  videoTrack={users[0].videoTrack}
+                />
+                <Controls username={partnerUsername} />
+              </div>
+            ) : (
+              <div className="video-panel">
+                <Controls username={partnerUsername} />
+              </div>
+            )
           ) : null}
         </>
       )}
