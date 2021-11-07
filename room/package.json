@@ -4,7 +4,8 @@
   "description": "Room Management service for Code2Gather",
   "private": true,
   "devDependencies": {
-    "lint-staged": "^11.2.6"
+    "lint-staged": "^11.2.6",
+    "nodemon": "^2.0.14"
   },
   "scripts": {
     "db:seed": "go run ./src/infra/db/db_script/main/db_question_seed.go",
@@ -16,8 +17,5 @@
     "**/*.go": [
       "gofmt -w ."
     ]
-  },
-  "dependencies": {
-    "nodemon": "^2.0.14"
   }
 }
