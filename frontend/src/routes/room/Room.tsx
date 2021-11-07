@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import WebSocket from 'ws';
 
 import CodeEditor from 'components/codeEditor';
 import LanguageDropdown from 'components/languageDropdown';
@@ -17,6 +18,7 @@ import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 import useWindowDimensions from 'utils/hookUtils';
 import roomIdUtils from 'utils/roomIdUtils';
+import tokenUtils from 'utils/tokenUtils';
 
 import RightPanel from './panel';
 import VideoCollection from './video';
@@ -46,6 +48,23 @@ const Room: FC = () => {
       leaveRoom(socket);
     };
   }, [socket, roomId]);
+
+  useEffect(() => {
+    if (!roomId) {
+      return;
+    }
+    const webSocket = new WebSocket(
+      `${process.env.REACT_APP_BACKEND_API}/roomws`,
+      {
+        headers: {
+          Authorization: `${tokenUtils.getToken()}`,
+        },
+      },
+    );
+    webSocket.on('open', () => {
+      //
+    });
+  }, [roomId]);
 
   const onCodeChange = (code: string): void => {
     updateCode(socket, doc, code);
