@@ -5,6 +5,7 @@ import { Question } from 'types/crud/question';
 export interface RoomDux {
   roomId: string; // Also persisted into localStorage
   isInterviewer: boolean;
+  isInterviewComplete: boolean;
   question: Question | null;
   partnerUid: string;
   partnerUsername: string;
@@ -17,6 +18,7 @@ export interface RoomDux {
 const initialState: RoomDux = {
   roomId: '',
   isInterviewer: false,
+  isInterviewComplete: false,
   question: null,
   partnerUid: '',
   partnerUsername: '',
@@ -77,6 +79,9 @@ const room = createSlice({
     setErrorMessage: (state, action: PayloadAction<string>): void => {
       state.errorMessage = action.payload;
     },
+    setIsInterviewComplete: (state, action: PayloadAction<boolean>): void => {
+      state.isInterviewComplete = action.payload;
+    },
     resetState: (state): void => {
       state.roomId = '';
       state.isInterviewer = false;
@@ -98,6 +103,7 @@ export const {
   setPartnerHasDisconnected,
   setPartnerHasLeft,
   setErrorMessage,
+  setIsInterviewComplete,
   resetState,
 } = room.actions;
 
