@@ -5,6 +5,7 @@ import Typography from 'components/typography';
 import { Question } from 'types/crud/question';
 
 import CodeOutput from './CodeOutput';
+import InterviewerNotes from './InterviewerNotes';
 import './RightPanel.scss';
 
 enum RightPanelTab {
@@ -25,6 +26,10 @@ interface Props {
 }
 
 const intervieweeTabs = [
+  {
+    label: 'Interviewer Notes',
+    value: RightPanelTab.NOTES,
+  },
   {
     label: 'Output',
     value: RightPanelTab.OUTPUT,
@@ -51,6 +56,8 @@ const RightPanel: FC<Props> = ({
   output,
   isExecutingCode,
   onClosePanel,
+  notes,
+  onChangeNotes,
 }) => {
   const [tab, setTab] = useState(
     isInterviewer ? RightPanelTab.QUESTION : RightPanelTab.OUTPUT,
@@ -63,7 +70,7 @@ const RightPanel: FC<Props> = ({
       case RightPanelTab.OUTPUT:
         return <CodeOutput output={output} />;
       case RightPanelTab.NOTES:
-        return 'Notes';
+        return <InterviewerNotes notes={notes} onChangeNotes={onChangeNotes} />;
     }
   };
 
