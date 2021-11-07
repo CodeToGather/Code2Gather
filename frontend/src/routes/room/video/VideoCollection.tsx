@@ -87,11 +87,11 @@ const Controls = (props: {
 
 interface Props {
   partnerUsername: string;
+  roomId: string;
 }
 
-const VideoCollection: FC<Props> = ({ partnerUsername }) => {
+const VideoCollection: FC<Props> = ({ partnerUsername, roomId }) => {
   const [inCall, setInCall] = useState(true);
-  const [channelName] = useState('c2g');
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
   const [hasInitialised, setHasInitialised] = useState<boolean>(false);
@@ -155,10 +155,10 @@ const VideoCollection: FC<Props> = ({ partnerUsername }) => {
 
     if (ready && tracks && !hasInitialised) {
       setHasInitialised(true);
-      init(channelName);
+      init(roomId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [channelName, client, ready, tracks]);
+  }, [roomId, client, ready, tracks]);
 
   if (!client || !user) {
     return null;
@@ -172,14 +172,20 @@ const VideoCollection: FC<Props> = ({ partnerUsername }) => {
             <AgoraVideoPlayer className="video" videoTrack={tracks[1]} />
             <Controls tracks={tracks} username={user.githubUsername} />
           </div>
-          {users.length > 0 && users[0].videoTrack ? (
-            <div className="video-panel">
-              <AgoraVideoPlayer
-                className="video"
-                videoTrack={users[0].videoTrack}
-              />
-              <Controls username={partnerUsername} />
-            </div>
+          {users.length > 0 ? (
+            users[0].videoTrack ? (
+              <div className="video-panel">
+                <AgoraVideoPlayer
+                  className="video"
+                  videoTrack={users[0].videoTrack}
+                />
+                <Controls username={partnerUsername} />
+              </div>
+            ) : (
+              <div className="video-panel">
+                <Controls username={partnerUsername} />
+              </div>
+            )
           ) : null}
         </>
       )}

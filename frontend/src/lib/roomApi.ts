@@ -1,4 +1,5 @@
-import { CheckInRoomResponse } from 'types/api/room';
+import { CheckInRoomResponse, QuestionReadResponse } from 'types/api/room';
+import { Question } from 'types/crud/question';
 import roomIdUtils from 'utils/roomIdUtils';
 
 import BaseApi from './baseApi';
@@ -12,6 +13,12 @@ class RoomApi extends BaseApi {
         roomIdUtils.removeRoomId();
       }
       return res.isInRoom ?? false;
+    });
+  }
+
+  async getQuestion(id: string): Promise<Question> {
+    return this.get(`room/question/${id}`, (res: QuestionReadResponse) => {
+      return res.question;
     });
   }
 }

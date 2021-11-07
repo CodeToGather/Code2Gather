@@ -59,6 +59,6 @@ export const createRoom = async (
       if (res.status !== 200) {
         throw new Error();
       }
-      return res.data.room_id as string;
+      return res.data.roomId as string;
     });
 };

@@ -10,8 +10,8 @@ import { SITE_URL } from 'constants/urls';
 import { useCodingSocket } from 'contexts/CodingSocketContext';
 import {
   changeLanguage,
-  joinRoom,
-  leaveRoom,
+  joinCodingService,
+  leaveCodingService,
   updateCode,
 } from 'lib/codingSocketService';
 import { RootState } from 'reducers/rootReducer';
@@ -24,18 +24,22 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
 }: {
   match: match<{ id: string }>;
 }) => {
-  const { socket } = useCodingSocket();
+  const { codingSocket } = useCodingSocket();
   const { doc, language } = useSelector((state: RootState) => state.coding);
   const guestRoomId = match.params.id;
   const [hasCopied, setHasCopied] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
-    joinRoom(socket, guestRoomId);
-  }, [socket, guestRoomId]);
+    joinCodingService(codingSocket, guestRoomId);
+
+    return (): void => {
+      leaveCodingService(codingSocket);
+    };
+  }, [codingSocket, guestRoomId]);
 
   const onCodeChange = (code: string): void => {
-    updateCode(socket, doc, code);
+    updateCode(codingSocket, doc, code);
   };
 
   const onCopyInviteLink = async (): Promise<void> => {
@@ -54,7 +58,7 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
             className="guest--top__language-button"
             language={language}
             setLanguage={(language: Language): void => {
-              changeLanguage(socket, language);
+              changeLanguage(codingSocket, language);
             }}
           />
           <button className="border-button guest--top__help-button">
@@ -84,7 +88,7 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
         <button
           className="border-button is-danger guest--bottom__leave-button"
           onClick={(): void => {
-            leaveRoom(socket);
+            leaveCodingService(codingSocket);
             history.push(ROOT);
           }}
         >

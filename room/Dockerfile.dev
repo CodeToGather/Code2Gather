@@ -2,6 +2,8 @@ FROM golang:alpine
 
 ENV GO111MODULE=on
 
+RUN apk add yarn
+
 RUN mkdir -p /home/node/app
 
 WORKDIR /home/node/app/room
@@ -15,4 +17,4 @@ COPY . .
 
 RUN go mod vendor
 
-CMD go run ./src/main.go
+CMD yarn install && yarn start

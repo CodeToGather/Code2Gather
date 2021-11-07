@@ -29,11 +29,11 @@ import {
   changeTextDoc,
 } from 'utils/automergeUtils';
 
-export const joinRoom = (socket: Socket, roomId: string): void => {
+export const joinCodingService = (socket: Socket, roomId: string): void => {
   socket.emit(REQ_JOIN_ROOM, roomId);
 };
 
-export const leaveRoom = (socket: Socket): void => {
+export const leaveCodingService = (socket: Socket): void => {
   socket.emit(REQ_LEAVE_ROOM);
 };
 
