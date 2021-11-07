@@ -36,7 +36,7 @@
     "commit": "git-cz",
     "lint": "run-p lint:*",
     "lint:js": "eslint . --ext .ts,.js,.tsx,.jsx",
-    "lint:md": "markdownlint '**/*.md' --ignore-path .gitignore",
+    "lint:md": "markdownlint '**/*.md' --ignore-path .markdownlintignore",
     "lint:frontend": "cd frontend && yarn lint",
     "lint:code-executor": "cd code-executor && yarn lint",
     "lint:room": "cd room && yarn lint",
