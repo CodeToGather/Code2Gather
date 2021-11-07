@@ -29,7 +29,7 @@ const PairingSocketProvider: React.FunctionComponent = (props) => {
     initializeSocketForPairing(socket);
     socket.on(CONNECT, () => {
       // eslint-disable-next-line no-console
-      console.log('Socket connected!');
+      console.log('Pairing socket connected!');
     });
     socket.on('connect_error', (err) => {
       // eslint-disable-next-line no-console

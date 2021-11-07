@@ -6,6 +6,7 @@ import LanguageDropdown from 'components/languageDropdown';
 import LoadingAnimation from 'components/loading/LoadingAnimation';
 import Typography from 'components/typography';
 import { useCodingSocket } from 'contexts/CodingSocketContext';
+import { useRoomSocket } from 'contexts/RoomSocketContext';
 import {
   changeLanguage,
   executeCode,
@@ -13,6 +14,7 @@ import {
   leaveRoom,
   updateCode,
 } from 'lib/codingSocketService';
+import { joinRoomService } from 'lib/roomSocketService';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 import useWindowDimensions from 'utils/hookUtils';
@@ -24,6 +26,7 @@ import './Room.scss';
 
 const Room: FC = () => {
   const { socket } = useCodingSocket();
+  const { roomSocket } = useRoomSocket();
   const { doc, language, isExecutingCode, codeExecutionOutput } = useSelector(
     (state: RootState) => state.coding,
   );
@@ -40,12 +43,13 @@ const Room: FC = () => {
     // This one joins the coding room
     joinRoom(socket, roomId ?? 'default-room-id');
     // TODO: Join the actual room via room WS
+    joinRoomService(roomSocket, roomId ?? 'default-room-id');
 
     // Clean up
     (): void => {
       leaveRoom(socket);
     };
-  }, [socket, roomId]);
+  }, [socket, roomId, roomSocket]);
 
   const onCodeChange = (code: string): void => {
     updateCode(socket, doc, code);
