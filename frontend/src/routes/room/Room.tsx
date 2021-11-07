@@ -1,10 +1,12 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, ReactElement, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import CodeEditor from 'components/codeEditor';
 import LanguageDropdown from 'components/languageDropdown';
 import LoadingAnimation from 'components/loading/LoadingAnimation';
+import Modal from 'components/modal';
 import Typography from 'components/typography';
+import { HOME } from 'constants/routes';
 import { useCodingSocket } from 'contexts/CodingSocketContext';
 import {
   changeLanguage,
@@ -18,6 +20,8 @@ import { Language } from 'types/crud/language';
 import useWindowDimensions from 'utils/hookUtils';
 import roomIdUtils from 'utils/roomIdUtils';
 
+import EndTurnModal from './modals/EndTurnModal';
+import LeaveRoomModal from './modals/LeaveRoomModal';
 import RightPanel from './panel';
 import VideoCollection from './video';
 import './Room.scss';
@@ -27,10 +31,11 @@ const Room: FC = () => {
   const { doc, language, isExecutingCode, codeExecutionOutput } = useSelector(
     (state: RootState) => state.coding,
   );
-  const { isInterviewer, question, partnerUsername } = useSelector(
-    (state: RootState) => state.room,
-  );
+  const { isInterviewer, question, partnerUsername, turnsCompleted } =
+    useSelector((state: RootState) => state.room);
   const [isPanelShown, setIsPanelShown] = useState(isInterviewer);
+  const [isEndingTurn, setIsEndingTurn] = useState(false);
+  const [isLeavingRoom, setIsLeavingRoom] = useState(false);
   const [notes, setNotes] = useState('');
   const { height, width } = useWindowDimensions();
   const roomId = roomIdUtils.getRoomId();
@@ -78,7 +83,36 @@ const Room: FC = () => {
     return `${Math.round(0.73 * width) - 32}px`;
   };
 
+  const renderModalContent = (): ReactElement => {
+    if (isLeavingRoom) {
+      return (
+        <LeaveRoomModal
+          onCancel={(): void => setIsLeavingRoom(false)}
+          onLeave={(): void => {
+            // This one is for coding service.
+            leaveRoom(socket);
+            // TODO: Send message to room websocket that we're leaving room.
+            window.location.href = HOME;
+          }}
+        />
+      );
+    }
+    if (isEndingTurn) {
+      return (
+        <EndTurnModal
+          onCancel={(): void => setIsEndingTurn(false)}
+          onSolved={(): void => {}}
+          onUnsolved={(): void => {}}
+          partnerUsername={partnerUsername}
+          turnsCompleted={turnsCompleted}
+        />
+      );
+    }
+    return <div>Going back to interviewing...</div>;
+  };
+
   const code = doc.text.toString();
+  const isModalVisible = isEndingTurn || isLeavingRoom;
 
   return (
     <div className="room">
@@ -100,7 +134,10 @@ const Room: FC = () => {
               </button>
             </div>
             <div className="room--top-left__right-buttons">
-              <button className="border-button is-danger room--top-left__leave-button">
+              <button
+                className="border-button is-danger room--top-left__leave-button"
+                onClick={(): void => setIsLeavingRoom(true)}
+              >
                 <Typography size="regular">Leave Room</Typography>
               </button>
             </div>
@@ -151,11 +188,15 @@ const Room: FC = () => {
           </Typography>
         </button>
         {isInterviewer ? (
-          <button className="border-button is-success">
+          <button
+            className="border-button is-success"
+            onClick={(): void => setIsEndingTurn(true)}
+          >
             <Typography size="regular">End Turn</Typography>
           </button>
         ) : null}
       </div>
+      <Modal isVisible={isModalVisible}>{renderModalContent()}</Modal>
     </div>
   );
 };
