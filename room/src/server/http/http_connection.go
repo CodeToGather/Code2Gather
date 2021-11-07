@@ -19,8 +19,9 @@ func StartHttpServer() {
 
 	r.POST("/create", RoomCreationHandler)
 	r.GET("/", CheckInRoomHandler)
-	r.GET("/roomws", func(c *gin.Context) {
-		socket.WSHandler(c.Writer, c.Request)
+	r.GET("/roomws/:Token", func(c *gin.Context) {
+		authToken := c.Params.ByName("Token")
+		socket.WSHandler(c.Writer, c.Request, authToken)
 	})
 
 	err := r.Run(":" + ConnPort)
