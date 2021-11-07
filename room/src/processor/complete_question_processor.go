@@ -11,15 +11,16 @@ import (
 )
 
 type CompleteQuestionProcessor struct {
-	request            *models.CompleteQuestionRequest
-	uid                string
-	rid                string
-	currentIntervieeId string
-	currentQuestion    *models.Question
-	nextInterviewerId  string
-	nextQuestion       *models.QuestionMessage
-	authorized         bool
-	err                error
+	request             *models.CompleteQuestionRequest
+	uid                 string
+	rid                 string
+	currentIntervieeId  string
+	currentQuestion     *models.Question
+	nextInterviewerId   string
+	nextQuestion        *models.QuestionMessage
+	isInterviewComplete bool
+	authorized          bool
+	err                 error
 }
 
 func NewCompleteQuestionProcessor(request *models.CompleteQuestionRequest, uid string) *CompleteQuestionProcessor {
@@ -91,10 +92,12 @@ func (p *CompleteQuestionProcessor) Process() error {
 		p.nextQuestion = secondQuestion.ToQuestionMessage()
 		// Update room status to SecondQuestion
 		room.Status = models.SecondQuestion
+		p.isInterviewComplete = false
 	} else {
 		p.currentQuestion = secondQuestion
 		// Update room status to Completed
 		room.Status = models.Completed
+		p.isInterviewComplete = true
 	}
 
 	if err = room_agents.UpdateRoom(room); err != nil {
@@ -119,9 +122,11 @@ func (p *CompleteQuestionProcessor) GetResponse() proto.Message {
 		errorCode = models.ErrorCode_UNAUTHORIZED_USER
 	}
 	response := &models.CompleteQuestionResponse{
-		ErrorCode:     int32(errorCode),
-		InterviewerId: p.nextInterviewerId,
-		NextQuestion:  p.nextQuestion,
+		ErrorCode:            int32(errorCode),
+		IsInterviewer:        p.nextInterviewerId == p.uid,
+		InterviewerId:        p.nextInterviewerId,
+		NextQuestion:         p.nextQuestion,
+		IsInterviewCompleted: p.isInterviewComplete,
 	}
 	responseWrapper := &models.RoomServiceToClientMessage_CompleteQuestionResponse{CompleteQuestionResponse: response}
 	return &models.RoomServiceToClientMessage{Response: responseWrapper}

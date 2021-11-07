@@ -29,3 +29,9 @@ func (daoi RoomDaoImpl) UpdateRoom(room *models.Room) error {
 	err := daoi.collection.Update(bson.M{"id": room.Id}, room)
 	return err
 }
+
+func (daoi RoomDaoImpl) FindRooms(query bson.M) ([]models.Room, error) {
+	var rooms []models.Room
+	err := daoi.collection.Find(query).All(&rooms)
+	return rooms, err
+}

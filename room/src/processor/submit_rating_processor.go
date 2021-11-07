@@ -62,12 +62,6 @@ func (p *SubmitRatingProcessor) Process() error {
 		return nil
 	}
 
-	room.Status = models.Closed
-	if err = room_agents.UpdateRoom(room); err != nil {
-		p.err = err
-		return err
-	}
-
 	if err = p.SendMeetingRecord(); err != nil {
 		p.err = err
 		return err

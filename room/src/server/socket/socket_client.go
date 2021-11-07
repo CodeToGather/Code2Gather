@@ -12,21 +12,49 @@ type Client struct {
 	uid string
 	// Room id
 	rid string
+	// If user left room
+	hasLeft bool
 	// Websocket connection.
 	conn *websocket.Conn
 	// Buffered channel of outgoing messages.
 	send chan []byte
 }
 
+func (c *Client) unregisterFromRoom() {
+	c.manager.unregister <- c
+	c.manager.roomUnregister <- ClientRoomRegistration{
+		roomId: c.rid,
+		client: c,
+	}
+}
+
+func (c *Client) joinRoom(rid string) {
+	log.Printf("Client (%s) joining room", c.uid)
+	c.rid = rid
+	c.manager.roomRegister <- ClientRoomRegistration{
+		roomId: rid,
+		client: c,
+	}
+	c.manager.broadcast <- *NewJoinedRoomBroadcastMessage(rid, c.uid)
+}
+
+func (c *Client) leaveRoom() {
+	if len(c.rid) == 0 {
+		log.Printf("Client (%s) has yet to join any room", c.uid)
+		return
+	}
+	log.Printf("Client (%s) leaving room", c.uid)
+	c.manager.broadcast <- *NewLeftRoomBroadcastMessage(c.rid, c.uid)
+	c.hasLeft = true
+}
+
 func (c *Client) read() {
 	defer func() {
 		log.Printf("Socket read (%s) closed", c.uid)
-		c.manager.unregister <- c
-		c.manager.roomUnregister <- ClientRoomRegistration{
-			roomId: c.rid,
-			client: c,
+		c.unregisterFromRoom()
+		if !c.hasLeft {
+			c.manager.broadcast <- *NewDisconnectRoomBroadcastMessage(c.rid, c.uid)
 		}
-		c.manager.broadcast <- *NewDisconnectRoomBroadcastMessage(c.rid, c.uid)
 		if err := c.conn.Close(); err != nil {
 			return
 		}
