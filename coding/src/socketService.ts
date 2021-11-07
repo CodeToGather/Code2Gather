@@ -153,7 +153,7 @@ const setUpIo = (io: Server): void => {
           io.to(roomId).emit(
             RES_CODE_OUTPUT,
             `Time limit exceeded${
-              execResult.data.stderr ? `: ${execResult.data.stderr}` : '.'
+              execResult.data.stderr ? `:\n${execResult.data.stderr}` : '.'
             }`,
           );
           return;
@@ -161,7 +161,7 @@ const setUpIo = (io: Server): void => {
           io.to(roomId).emit(
             RES_CODE_OUTPUT,
             `Compilation error${
-              execResult.data.stderr ? `: ${execResult.data.stderr}` : '.'
+              execResult.data.stderr ? `:\n${execResult.data.stderr}` : '.'
             }`,
           );
           return;
@@ -174,7 +174,7 @@ const setUpIo = (io: Server): void => {
           io.to(roomId).emit(
             RES_CODE_OUTPUT,
             `Runtime error${
-              execResult.data.stderr ? `: ${execResult.data.stderr}` : '.'
+              execResult.data.stderr ? `:\n${execResult.data.stderr}` : '.'
             }`,
           );
           return;
@@ -182,7 +182,7 @@ const setUpIo = (io: Server): void => {
           io.to(roomId).emit(
             RES_CODE_OUTPUT,
             `Internal error${
-              execResult.data.stderr ? `: ${execResult.data.stderr}` : '.'
+              execResult.data.stderr ? `:\n${execResult.data.stderr}` : '.'
             }`,
           );
           return;
@@ -190,7 +190,7 @@ const setUpIo = (io: Server): void => {
           io.to(roomId).emit(
             RES_CODE_OUTPUT,
             `Something went wrong${
-              execResult.data.stderr ? `: ${execResult.data.stderr}` : '.'
+              execResult.data.stderr ? `:\n${execResult.data.stderr}` : '.'
             }`,
           );
           return;
