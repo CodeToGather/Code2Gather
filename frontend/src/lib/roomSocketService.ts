@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import store from 'app/store';
 import {
   partnerHasJoinedRoom,
@@ -90,11 +91,14 @@ export const leaveRoomService = (socket: WebSocket, roomId: string): void => {
 
 export const initializeSocketForRoom = (socket: WebSocket): void => {
   socket.onmessage = (event): void => {
-    // eslint-disable-next-line no-console
     console.log(event);
     const messageData = event.data;
-    const message =
-      code2gather.RoomServiceToClientMessage.deserialize(messageData);
+    console.log(messageData);
+    console.log(window.atob(messageData));
+    const message = code2gather.RoomServiceToClientMessage.deserialize(
+      window.atob(messageData),
+    );
+    console.log(message);
     if (message.join_room_response) {
       if (message.join_room_response.error_code !== 0) {
         store.dispatch(setShouldKickUser(true));
