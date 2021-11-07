@@ -49,12 +49,21 @@
     flex-direction: row-reverse;
     font-size: 0.9rem;
     justify-content: space-between;
+
+    min-width: 0;
     padding: 0.3rem;
     position: absolute;
     width: calc(100% - 0.6rem);
 
-    > div {
+    &--username {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &--icons {
       display: flex;
+      flex-shrink: 0;
     }
 
     &--icon-wrapper {

@@ -12,6 +12,7 @@ import {
   IMicrophoneAudioTrack,
 } from 'agora-rtc-sdk-ng';
 
+import Typography from 'components/typography';
 import { useUser } from 'contexts/UserContext';
 import VideoApi from 'lib/videoService';
 
@@ -53,9 +54,11 @@ const Controls = (props: {
 
   return (
     <div className="controls">
-      {username}
+      <Typography className="controls--username" size="regular">
+        {username}
+      </Typography>
       {tracks && (
-        <div>
+        <div className="controls--icons">
           <div className="controls--icon-wrapper">
             <i
               className={`fas ${
