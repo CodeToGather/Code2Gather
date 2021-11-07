@@ -96,9 +96,12 @@ export const initializeSocketForRoom = (socket: WebSocket): void => {
     console.log(messageData);
     console.log(window.atob(messageData));
     const message = code2gather.RoomServiceToClientMessage.deserialize(
-      window.atob(messageData),
+      new Uint8Array(
+        [...window.atob(messageData)].map((char) => char.charCodeAt(0)),
+      ),
     );
     console.log(message);
+
     if (message.join_room_response) {
       if (message.join_room_response.error_code !== 0) {
         store.dispatch(setShouldKickUser(true));
