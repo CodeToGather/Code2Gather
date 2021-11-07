@@ -55,9 +55,7 @@ const RoomSocketProvider: React.FunctionComponent = (props) => {
 const useRoomSocket = (): SocketContextInterface => {
   const context = React.useContext(RoomSocketContext);
   if (context === undefined) {
-    throw new Error(
-      'useCodingSocket must be used within a CodingSocketProvider',
-    );
+    throw new Error('useRoomSocket must be used within a RoomSocketProvider');
   }
   return context;
 };
