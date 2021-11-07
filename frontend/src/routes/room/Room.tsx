@@ -16,6 +16,7 @@ import {
 } from 'lib/codingSocketService';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
+import { code2gather } from 'types/protobuf/code2gather';
 import useWindowDimensions from 'utils/hookUtils';
 import roomIdUtils from 'utils/roomIdUtils';
 
@@ -42,11 +43,20 @@ const Room: FC = () => {
     joinRoom(socket, roomId ?? 'default-room-id');
     // TODO: Join the actual room via room WS
     const ws = new WebSocket(`${process.env.REACT_APP_BACKEND_WS_API}/roomws`);
-    ws.onopen = (_evt): void => {
-      console.log('Open');
+
+    const joinRoomRequest = new code2gather.JoinRoomRequest({
+      room_id: roomId ?? undefined,
+    });
+    const message = new code2gather.ClientRequest({
+      join_room_request: joinRoomRequest,
+    });
+
+    ws.onopen = (_event): void => {
+      console.log('Room socket opened');
+      ws.send(message.serialize());
     };
-    ws.onmessage = (evt): void => {
-      console.log(evt);
+    ws.onmessage = (event): void => {
+      console.log(event);
     };
     // Clean up
     (): void => {
