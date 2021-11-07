@@ -112,6 +112,7 @@ const room = createSlice({
       state.partnerPhotoUrl = '';
       state.partnerHasDisconnected = false;
       state.partnerHasLeft = false;
+      state.ratingSubmissionStatus = RatingSubmissionState.NOT_SUBMITTING;
       state.errorMessage = '';
     },
   },
