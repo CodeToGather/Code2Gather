@@ -204,6 +204,8 @@ services:
     restart: always
     volumes:
       - ./mongodb-data:/data/db
+    logging:
+      driver: none
     networks:
       - backend
     ports:
