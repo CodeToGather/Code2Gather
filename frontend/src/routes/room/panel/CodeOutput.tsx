@@ -2,6 +2,8 @@ import { FC } from 'react';
 
 import Typography from 'components/typography';
 
+import './RightPanel.scss';
+
 interface Props {
   output: string;
 }

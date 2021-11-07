@@ -2,7 +2,9 @@ import { FC } from 'react';
 
 import Avatar from 'components/avatar';
 import Typography from 'components/typography';
+import { Difficulty } from 'types/crud/difficulty';
 import { LeaderboardData } from 'types/crud/leaderboard';
+import { toTitleCase } from 'utils/stringUtils';
 
 import './Leaderboard.scss';
 
@@ -11,14 +13,14 @@ interface Props extends LeaderboardData {
 }
 
 const Statistic: FC<{
-  difficulty: string;
+  difficulty: Difficulty;
   numQuestions: number;
 }> = ({ difficulty, numQuestions }) => {
   return (
     <div className="statistic">
       <Typography size="medium">{numQuestions}</Typography>
       <Typography className="statistic__difficulty" size="small">
-        {difficulty}
+        {toTitleCase(difficulty)}
       </Typography>
     </div>
   );
@@ -43,9 +45,18 @@ const LeaderboardRow: FC<Props> = ({
         </a>
       </div>
       <div className="leaderboard-row__right">
-        <Statistic difficulty="Easy" numQuestions={numEasyQuestions} />
-        <Statistic difficulty="Medium" numQuestions={numMediumQuestions} />
-        <Statistic difficulty="Hard" numQuestions={numHardQuestions} />
+        <Statistic
+          difficulty={Difficulty.EASY}
+          numQuestions={numEasyQuestions}
+        />
+        <Statistic
+          difficulty={Difficulty.MEDIUM}
+          numQuestions={numMediumQuestions}
+        />
+        <Statistic
+          difficulty={Difficulty.HARD}
+          numQuestions={numHardQuestions}
+        />
       </div>
     </button>
   );

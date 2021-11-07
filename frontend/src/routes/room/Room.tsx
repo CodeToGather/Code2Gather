@@ -16,6 +16,7 @@ import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 import useWindowDimensions from 'utils/hookUtils';
 
+import { mockQuestion } from './mockData';
 import RightPanel from './panel';
 import VideoCollection from './video';
 import './Room.scss';
@@ -114,7 +115,7 @@ const Room: FC = () => {
             onChangeNotes={setNotes}
             onClosePanel={(): void => setIsPanelShown(false)}
             output={codeExecutionOutput}
-            question={question}
+            question={question ?? mockQuestion}
           />
         ) : null}
         <VideoCollection />

@@ -6,6 +6,7 @@ import { Question } from 'types/crud/question';
 
 import CodeOutput from './CodeOutput';
 import InterviewerNotes from './InterviewerNotes';
+import QuestionPanel from './QuestionPanel';
 import './RightPanel.scss';
 
 enum RightPanelTab {
@@ -27,10 +28,6 @@ interface Props {
 
 const intervieweeTabs = [
   {
-    label: 'Interviewer Notes',
-    value: RightPanelTab.NOTES,
-  },
-  {
     label: 'Output',
     value: RightPanelTab.OUTPUT,
   },
@@ -42,7 +39,7 @@ const interviewerTabs = [
     value: RightPanelTab.QUESTION,
   },
   {
-    label: 'Interviewer Notes',
+    label: 'Notes',
     value: RightPanelTab.NOTES,
   },
   {
@@ -58,6 +55,7 @@ const RightPanel: FC<Props> = ({
   onClosePanel,
   notes,
   onChangeNotes,
+  question,
 }) => {
   const [tab, setTab] = useState(
     isInterviewer ? RightPanelTab.QUESTION : RightPanelTab.OUTPUT,
@@ -66,7 +64,7 @@ const RightPanel: FC<Props> = ({
   const renderBody = (): string | ReactElement => {
     switch (tab) {
       case RightPanelTab.QUESTION:
-        return 'Question';
+        return <QuestionPanel question={question} />;
       case RightPanelTab.OUTPUT:
         return <CodeOutput output={output} />;
       case RightPanelTab.NOTES:

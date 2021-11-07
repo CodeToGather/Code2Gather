@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import autosize from 'autosize';
 
+import './RightPanel.scss';
+
 interface Props {
   notes: string;
   onChangeNotes: (notes: string) => void;

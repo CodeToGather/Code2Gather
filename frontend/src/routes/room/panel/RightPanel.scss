@@ -45,18 +45,18 @@
   &__body {
     flex: 1;
     overflow: scroll;
-    padding-bottom: 25vw;
+    padding-bottom: 30vw;
 
     @include media('>mobile', '<=tablet') {
-      padding-bottom: 16vw;
+      padding-bottom: 18vw;
     }
 
     @include media('>tablet', '<=desktop') {
-      padding-bottom: 11vw;
+      padding-bottom: 12vw;
     }
 
     @include media('>desktop') {
-      padding-bottom: 9vw;
+      padding-bottom: 10vw;
     }
   }
 
@@ -73,7 +73,15 @@
     width: 100%;
 
     &::placeholder {
-      color: $text-secondary-color;
+      color: $code-editor-interviewer-notes-placeholder-text-color;
+    }
+  }
+
+  .question-panel {
+    color: $code-editor-question-text-color;
+
+    &__difficulty {
+      margin-bottom: 0.25rem;
     }
   }
 }
