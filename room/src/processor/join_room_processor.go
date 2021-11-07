@@ -109,11 +109,12 @@ func (p *JoinRoomProcessor) GetResponse() proto.Message {
 	} else if !p.authorized {
 		errorCode = models.ErrorCode_UNAUTHORIZED_USER
 	}
+
 	response := &models.JoinRoomResponse{
 		ErrorCode:      int32(errorCode),
 		IsInterviewer:  p.interviewerId == p.uid,
 		InterviewerId:  p.interviewerId,
-		Question:       p.question,
+		QuestionId:     p.question.Id,
 		PairedUser:     p.pairedUser,
 		TurnsCompleted: p.turnsCompleted,
 	}

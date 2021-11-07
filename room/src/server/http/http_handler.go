@@ -77,3 +77,24 @@ func CheckInRoomHandler(c *gin.Context) {
 
 	c.Data(http.StatusOK, gin.MIMEJSON, resp)
 }
+
+func GetQuestionHandler(c *gin.Context) {
+	qid := c.Params.ByName("Qid")
+	handler := processor.NewGetQuestionProcessor(qid)
+
+	if err := handler.Process(); err != nil {
+		log.Println(err)
+		handleBadRequest(c)
+		return
+	}
+
+	resp, err := util.MarshalToJson(handler.GetResponse())
+
+	if err != nil {
+		log.Println(err)
+		handleBadRequest(c)
+		return
+	}
+
+	c.Data(http.StatusOK, gin.MIMEJSON, resp)
+}
