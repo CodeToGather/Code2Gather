@@ -154,6 +154,8 @@ services:
     build:
       dockerfile: Dockerfile.dev
       context: ./room
+    volumes:
+      - ./room:/home/node/app/room
     expose:
       - 3000
     restart: on-failure
