@@ -99,7 +99,13 @@ const executingCode = (socket: Socket): void => {
 
 const executedCodeOutput = (socket: Socket): void => {
   socket.on(RES_CODE_OUTPUT, (output: string) => {
-    store.dispatch(setCodeExecutionOutput(output));
+    if (!output || output.length === 0) {
+      store.dispatch(
+        setCodeExecutionOutput('No output. Did you forget to print?'),
+      );
+    } else {
+      store.dispatch(setCodeExecutionOutput(output));
+    }
   });
 };
 

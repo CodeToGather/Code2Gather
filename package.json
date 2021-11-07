@@ -40,7 +40,7 @@
     "lint:frontend": "cd frontend && yarn lint",
     "lint:code-executor": "cd code-executor && yarn lint",
     "lint:room": "cd room && yarn lint",
-    "pre-commit": "run-p pre-commit:*",
+    "pre-commit": "run-s pre-commit:*",
     "pre-commit:root": "lint-staged",
     "pre-commit:frontend": "cd frontend && yarn lint-staged",
     "pre-commit:room": "cd room && yarn lint-staged",

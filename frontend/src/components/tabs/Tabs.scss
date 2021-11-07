@@ -9,6 +9,8 @@
     border-bottom: 2px solid $tab-unselected-color;
     border-radius: 0;
     color: $tab-unselected-color;
+
+    outline: 0;
     padding: 0 0 0.2rem;
 
     transition: color 0.3s, border-bottom-color 0.3s;
