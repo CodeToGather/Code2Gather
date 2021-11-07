@@ -145,10 +145,55 @@ const setUpIo = (io: Server): void => {
         return;
       }
 
-      if (execResult.data.status.description !== 'Accepted') {
-        io.to(roomId).emit(RES_CODE_OUTPUT, execResult.data.stderr);
-      } else {
-        io.to(roomId).emit(RES_CODE_OUTPUT, execResult.data.stdout);
+      switch (execResult.data.status.id) {
+        case 3:
+          io.to(roomId).emit(RES_CODE_OUTPUT, execResult.data.stdout);
+          return;
+        case 5:
+          io.to(roomId).emit(
+            RES_CODE_OUTPUT,
+            `Time limit exceeded${
+              execResult.data.stderr ? `: ${execResult.data.stderr}` : '.'
+            }`,
+          );
+          return;
+        case 6:
+          io.to(roomId).emit(
+            RES_CODE_OUTPUT,
+            `Compilation error${
+              execResult.data.stderr ? `: ${execResult.data.stderr}` : '.'
+            }`,
+          );
+          return;
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+          io.to(roomId).emit(
+            RES_CODE_OUTPUT,
+            `Runtime error${
+              execResult.data.stderr ? `: ${execResult.data.stderr}` : '.'
+            }`,
+          );
+          return;
+        case 13:
+          io.to(roomId).emit(
+            RES_CODE_OUTPUT,
+            `Internal error${
+              execResult.data.stderr ? `: ${execResult.data.stderr}` : '.'
+            }`,
+          );
+          return;
+        case 14:
+          io.to(roomId).emit(
+            RES_CODE_OUTPUT,
+            `Something went wrong${
+              execResult.data.stderr ? `: ${execResult.data.stderr}` : '.'
+            }`,
+          );
+          return;
       }
     });
 
