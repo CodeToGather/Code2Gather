@@ -1,13 +1,13 @@
 ---
-title: Median of 2 sorted arrays
+title: Median of 2 Sorted Arrays
 difficulty: Hard
 ---
 
 ## Text
 
-Find the median of 2 sorted arrays
+Find the median of 2 sorted arrays.
 
-Sample Input
+**Sample Input**
 
 ```markdown
 1
@@ -22,7 +22,7 @@ Sample Input
 16
 ```
 
-Sample Output
+**Sample Output**
 
 ```markdown
 12
@@ -30,5 +30,5 @@ Sample Output
 
 ## Hints
 
-- Optimal solution is in O(log(n))
-- Definition of median
+- The optimal solution has a time complexity of O(log(n)).
+- The median is the middle number in a sorted, ascending or descending, list of numbers. If there is an even amount of numbers in the list, the middle pair must be determined, added together, and divided by two to find the median value.

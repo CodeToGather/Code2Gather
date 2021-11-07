@@ -1,19 +1,19 @@
 ---
-title: Longest increasing substring
+title: Longest Increasing Substring
 difficulty: Medium
 ---
 
 ## Text
 
-Find the longest increasing substring from a string input
+Find the longest increasing substring from a string input.
 
-Sample input
+**Sample Input**
 
 ```markdown
 abcabdefghabcdef
 ```
 
-Sample output
+**Sample Output**
 
 ```markdown
 abdefgh
@@ -21,5 +21,5 @@ abdefgh
 
 ## Hints
 
-- Optimal solution is O(n)
+- The optimal solution has a time complexity of O(n).
 - Is there a way to do it in one pass?

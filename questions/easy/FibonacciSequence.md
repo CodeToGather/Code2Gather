@@ -1,6 +1,6 @@
 ---
 title: Fibonacci Sequence
-diffibulty: Easy
+difficulty: Easy
 ---
 
 ## Text
@@ -9,13 +9,13 @@ Given an integer `n`. Print the `n`th fibonacci number.
 
 Input: `n`
 
-Sample Input:
+**Sample Input**
 
 ```markdown
 3
 ```
 
-Sample Output:
+**Sample Output**
 
 ```markdown
 2
@@ -23,4 +23,4 @@ Sample Output:
 
 ## Hints
 
-- The fibonacci sequence starts with first 2 terms as 1 and every subsequent term is the sum of the 2 previous terms
+- The fibonacci sequence starts with first 2 terms as 1 and every subsequent term is the sum of the 2 previous terms.

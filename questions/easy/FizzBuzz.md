@@ -6,18 +6,18 @@ difficulty: Easy
 ## Text
 
 Print integers 1 to `n`.
-But print `fizz` if the number is divisible by 3 and print `buzz` if the number is divisible by 5
-If the number is divisible by both, print `fizzbuzz`
+But print `fizz` if the number is divisible by 3 and print `buzz` if the number is divisible by 5.
+If the number is divisible by both, print `fizzbuzz`.
 
 Input: `n`
 
-Sample Input:
+**Sample Input**
 
 ```markdown
 15
 ```
 
-Sample Output:
+**Sample Output**
 
 ```markdown
 1
@@ -40,4 +40,4 @@ fizzbuzz
 ## Hints
 
 - What is an operator that can tell you if a number divides 3 / 5?
-- What is the best way to get a range of numbers from 1 to n
+- What is the best way to get a range of numbers from 1 to n?
