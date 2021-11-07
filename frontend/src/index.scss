@@ -95,6 +95,15 @@ button.secondary-button {
   &:hover {
     color: $secondary-button-text-hover-color;
   }
+
+  &:disabled {
+    color: $secondary-button-text-color;
+    opacity: $secondary-button-disabled-opacity;
+
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
 }
 
 button.border-button {
@@ -157,4 +166,9 @@ button.border-button.is-success {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+// Misc styles
+.is-faded {
+  opacity: 0.5;
 }
