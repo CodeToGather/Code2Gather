@@ -11,7 +11,6 @@ import {
   setTurnsCompleted,
   switchRoles,
 } from 'reducers/roomDux';
-import { Difficulty } from 'types/crud/difficulty';
 import { Language } from 'types/crud/language';
 import { code2gather } from 'types/protobuf/code2gather';
 import roomIdUtils from 'utils/roomIdUtils';
@@ -22,12 +21,6 @@ const languageMap = {
   [Language.PYTHON]: code2gather.Language.PYTHON,
   [Language.JAVA]: code2gather.Language.JAVA,
   [Language.JAVASCRIPT]: code2gather.Language.JAVASCRIPT,
-};
-
-const difficultyMap = {
-  [code2gather.QuestionDifficulty.EASY]: Difficulty.EASY,
-  [code2gather.QuestionDifficulty.MEDIUM]: Difficulty.HARD,
-  [code2gather.QuestionDifficulty.HARD]: Difficulty.MEDIUM,
 };
 
 export const joinRoomService = (socket: WebSocket, roomId: string): void => {
