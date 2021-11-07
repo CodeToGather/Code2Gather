@@ -180,7 +180,11 @@ const VideoCollection: FC<Props> = ({ partnerUsername, roomId }) => {
               />
               <Controls username={partnerUsername} />
             </div>
-          ) : null}
+          ) : (
+            <div className="video-panel">
+              <Controls username={partnerUsername} />
+            </div>
+          )}
         </>
       )}
     </div>
