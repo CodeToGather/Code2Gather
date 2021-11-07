@@ -20,8 +20,10 @@ import { Language } from 'types/crud/language';
 import useWindowDimensions from 'utils/hookUtils';
 import roomIdUtils from 'utils/roomIdUtils';
 
+import DisconnectedModal from './modals/DisconnectedModal';
 import EndTurnModal from './modals/EndTurnModal';
 import LeaveRoomModal from './modals/LeaveRoomModal';
+import LeftModal from './modals/LeftModal';
 import RightPanel from './panel';
 import VideoCollection from './video';
 import './Room.scss';
@@ -31,8 +33,14 @@ const Room: FC = () => {
   const { doc, language, isExecutingCode, codeExecutionOutput } = useSelector(
     (state: RootState) => state.coding,
   );
-  const { isInterviewer, question, partnerUsername, turnsCompleted } =
-    useSelector((state: RootState) => state.room);
+  const {
+    isInterviewer,
+    question,
+    partnerUsername,
+    turnsCompleted,
+    partnerHasDisconnected,
+    partnerHasLeft,
+  } = useSelector((state: RootState) => state.room);
   const [isPanelShown, setIsPanelShown] = useState(isInterviewer);
   const [isEndingTurn, setIsEndingTurn] = useState(false);
   const [isLeavingRoom, setIsLeavingRoom] = useState(false);
@@ -83,17 +91,30 @@ const Room: FC = () => {
     return `${Math.round(0.73 * width) - 32}px`;
   };
 
+  const exitRoom = (): void => {
+    // This one is for coding service.
+    leaveRoom(socket);
+    // TODO: Send message to room websocket that we're leaving room.
+    window.location.href = HOME;
+  };
+
   const renderModalContent = (): ReactElement => {
+    if (partnerHasDisconnected) {
+      return (
+        <DisconnectedModal
+          onLeave={exitRoom}
+          partnerHasDisconnected={partnerHasDisconnected}
+        />
+      );
+    }
+    if (partnerHasLeft) {
+      return <LeftModal onLeave={exitRoom} />;
+    }
     if (isLeavingRoom) {
       return (
         <LeaveRoomModal
           onCancel={(): void => setIsLeavingRoom(false)}
-          onLeave={(): void => {
-            // This one is for coding service.
-            leaveRoom(socket);
-            // TODO: Send message to room websocket that we're leaving room.
-            window.location.href = HOME;
-          }}
+          onLeave={exitRoom}
         />
       );
     }
@@ -112,7 +133,8 @@ const Room: FC = () => {
   };
 
   const code = doc.text.toString();
-  const isModalVisible = isEndingTurn || isLeavingRoom;
+  const isModalVisible =
+    isEndingTurn || isLeavingRoom || partnerHasDisconnected || partnerHasLeft;
 
   return (
     <div className="room">
