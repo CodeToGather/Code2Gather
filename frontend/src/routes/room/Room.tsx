@@ -24,6 +24,7 @@ import DisconnectedModal from './modals/DisconnectedModal';
 import EndTurnModal from './modals/EndTurnModal';
 import LeaveRoomModal from './modals/LeaveRoomModal';
 import LeftModal from './modals/LeftModal';
+import RatingModal from './modals/RatingModal';
 import RightPanel from './panel';
 import VideoCollection from './video';
 import './Room.scss';
@@ -47,6 +48,8 @@ const Room: FC = () => {
   const [notes, setNotes] = useState('');
   const { height, width } = useWindowDimensions();
   const roomId = roomIdUtils.getRoomId();
+
+  const isInterviewComplete = turnsCompleted === 2;
 
   useEffect(() => {
     // TODO: Add logic to redirect back to home if roomId is null
@@ -96,9 +99,23 @@ const Room: FC = () => {
     leaveRoom(socket);
     // TODO: Send message to room websocket that we're leaving room.
     window.location.href = HOME;
+
+    // TODO: Reset room redux and clear roomId token
   };
 
   const renderModalContent = (): ReactElement => {
+    if (isInterviewComplete) {
+      return (
+        <RatingModal
+          onRate={(rating: number): void => {
+            // TODO: Send the rating to room service
+            // eslint-disable-next-line no-console
+            console.log(rating);
+            exitRoom();
+          }}
+        />
+      );
+    }
     if (partnerHasDisconnected) {
       return (
         <DisconnectedModal
@@ -134,7 +151,11 @@ const Room: FC = () => {
 
   const code = doc.text.toString();
   const isModalVisible =
-    isEndingTurn || isLeavingRoom || partnerHasDisconnected || partnerHasLeft;
+    isEndingTurn ||
+    isLeavingRoom ||
+    partnerHasDisconnected ||
+    partnerHasLeft ||
+    isInterviewComplete;
 
   return (
     <div className="room">
