@@ -25,7 +25,7 @@ const CodingSocketProvider: React.FunctionComponent = (props) => {
     initializeSocketForCoding(socket);
     socket.on(CONNECT, () => {
       // eslint-disable-next-line no-console
-      console.log('Socket connected!');
+      console.log('Coding socket connected!');
     });
     socket.on('connect_error', (err) => {
       // eslint-disable-next-line no-console

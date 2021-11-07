@@ -24,6 +24,8 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "google-protobuf": "^3.17.3",
+    "protoc-gen-ts": "^0.6.0",
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
     "markdownlint-cli": "^0.29.0",
@@ -36,7 +38,7 @@
     "commit": "git-cz",
     "lint": "run-p lint:*",
     "lint:js": "eslint . --ext .ts,.js,.tsx,.jsx",
-    "lint:md": "markdownlint '**/*.md' --ignore-path .gitignore",
+    "lint:md": "markdownlint '**/*.md' --ignore-path .markdownlintignore",
     "lint:frontend": "cd frontend && yarn lint",
     "lint:code-executor": "cd code-executor && yarn lint",
     "lint:room": "cd room && yarn lint",
@@ -57,7 +59,7 @@
     "install-all:room": "cd room && yarn install",
     "install-all:video": "cd video && yarn install",
     "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
-    "start": "yarn protobuf && docker-compose -f docker-compose.local.yml up",
+    "start": "docker-compose -f docker-compose.local.yml up",
     "stop": "docker-compose -f docker-compose.local.yml down"
   },
   "config": {
