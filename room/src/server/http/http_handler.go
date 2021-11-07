@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"code2gather.com/room/src/processor"
-	"code2gather.com/room/src/server/middleware"
 	"code2gather.com/room/src/server/util"
 	"github.com/gin-gonic/gin"
 )
@@ -53,17 +52,16 @@ func RoomCreationHandler(c *gin.Context) {
 }
 
 func CheckInRoomHandler(c *gin.Context) {
-
-	uid, err := middleware.GetUidFromAuthToken(c.Request)
-
-	if err != nil {
-		handleUnauthorizaedRequest(c)
+	values, ok := c.Request.Header["Authorization"]
+	if !ok || len(values) == 0 {
+		log.Printf("Missing authorization header")
+		handleBadRequest(c)
 		return
 	}
 
-	handler := processor.NewCheckInRoomProcessor(uid)
+	handler := processor.NewCheckInRoomProcessor(values[0])
 
-	if err = handler.Process(); err != nil {
+	if err := handler.Process(); err != nil {
 		log.Println(err)
 		handleBadRequest(c)
 		return

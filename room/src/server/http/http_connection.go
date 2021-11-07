@@ -17,8 +17,8 @@ func StartHttpServer() {
 		})
 	})
 
-	r.GET("/", CheckInRoomHandler)
 	r.POST("/create", RoomCreationHandler)
+	r.GET("/", CheckInRoomHandler)
 	r.GET("/roomws", func(c *gin.Context) {
 		socket.WSHandler(c.Writer, c.Request)
 	})
