@@ -104,7 +104,7 @@ const setUpIo = (io: Server): void => {
       }
       const language = roomIdToLanguage.get(roomId);
       if (!language) {
-        console.log('Missing doc!');
+        console.log('Missing language!');
         return;
       }
 
@@ -118,6 +118,8 @@ const setUpIo = (io: Server): void => {
         code: doc.text.toString(),
         language: languageToId[language],
       };
+
+      console.log('Executing code now...');
 
       const resp = await axios.post(
         `${process.env.CODE_EXECUTOR_URL}/submission`,
@@ -143,7 +145,11 @@ const setUpIo = (io: Server): void => {
         return;
       }
 
-      io.to(roomId).emit(RES_CODE_OUTPUT, execResult.data);
+      if (execResult.data.status.description !== 'Accepted') {
+        io.to(roomId).emit(RES_CODE_OUTPUT, execResult.data.stderr);
+      } else {
+        io.to(roomId).emit(RES_CODE_OUTPUT, execResult.data.stdout);
+      }
     });
 
     socket.on(DISCONNECT, () => {

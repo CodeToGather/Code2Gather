@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 
-	"code2gather.com/room/src/server"
 	"code2gather.com/room/src/server/socket"
 	"github.com/gin-gonic/gin"
 )
@@ -19,11 +18,13 @@ func StartHttpServer() {
 	})
 
 	r.POST("/create", RoomCreationHandler)
-	r.GET("/room/ws", func(c *gin.Context) {
-		socket.WSHandler(c.Writer, c.Request)
+	r.GET("/", CheckInRoomHandler)
+	r.GET("/roomws/:Token", func(c *gin.Context) {
+		authToken := c.Params.ByName("Token")
+		socket.WSHandler(c.Writer, c.Request, authToken)
 	})
 
-	err := r.Run(server.ConnHost + ":" + server.ConnPort)
+	err := r.Run(":" + ConnPort)
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)
 		return

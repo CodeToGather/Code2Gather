@@ -1,0 +1,9 @@
+# Dependency directories
+node_modules/
+
+# Go dependencies
+room/vendor
+
+# Question Seed Data
+room/src/data
+

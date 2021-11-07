@@ -5,7 +5,7 @@ import { CONNECT } from 'constants/socket';
 import { initializeSocketForCoding } from 'lib/codingSocketService';
 
 export default interface SocketContextInterface {
-  socket: Socket;
+  codingSocket: Socket;
 }
 
 const CodingSocketContext = React.createContext<
@@ -25,7 +25,7 @@ const CodingSocketProvider: React.FunctionComponent = (props) => {
     initializeSocketForCoding(socket);
     socket.on(CONNECT, () => {
       // eslint-disable-next-line no-console
-      console.log('Socket connected!');
+      console.log('Coding socket connected!');
     });
     socket.on('connect_error', (err) => {
       // eslint-disable-next-line no-console
@@ -47,7 +47,9 @@ const CodingSocketProvider: React.FunctionComponent = (props) => {
     };
   }, [socket]);
 
-  return <CodingSocketContext.Provider value={{ socket }} {...props} />;
+  return (
+    <CodingSocketContext.Provider value={{ codingSocket: socket }} {...props} />
+  );
 };
 
 const useCodingSocket = (): SocketContextInterface => {

@@ -1,0 +1,53 @@
+@import '../../../assets/scss/variables';
+
+.modal-instruction {
+  margin-bottom: 1.5rem;
+  margin-top: 0.75rem;
+  white-space: pre-wrap;
+}
+
+.modal-buttons {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+
+  &--right {
+    display: flex;
+
+    > button:first-child {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.modal-rating-container {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-rating {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  max-width: 13rem;
+  width: 100%;
+
+  i {
+    color: $rating-star-color;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.modal-submit-button-text {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  > div {
+    margin-left: 0.3rem;
+  }
+}

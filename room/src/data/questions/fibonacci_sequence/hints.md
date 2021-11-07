@@ -1,0 +1,2 @@
+<!-- markdownlint-disable MD001 MD005 -->
+- The fibonacci sequence starts with first 2 terms as 1 and every subsequent term is the sum of the 2 previous terms.

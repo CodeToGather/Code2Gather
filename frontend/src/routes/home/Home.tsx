@@ -10,9 +10,11 @@ import { usePairingSocket } from 'contexts/PairingSocketContext';
 import LeaderboardApi from 'lib/leaderboardApi';
 import MeetingRecordApi from 'lib/meetingRecordApi';
 import { findPair, stopFindingPair } from 'lib/pairingSocketService';
+import RoomApi from 'lib/roomApi';
 import { PairingState } from 'reducers/pairingDux';
 import { RootState } from 'reducers/rootReducer';
 import { Difficulty } from 'types/crud/difficulty';
+import roomIdUtils from 'utils/roomIdUtils';
 
 import PracticeHistory from './history';
 import Leaderboard from './leaderboard';
@@ -48,7 +50,8 @@ const Home: FC = () => {
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [redirectCount, setRedirectCount] = useState(5);
-  const { socket } = usePairingSocket();
+  const [isInRoom, setIsInRoom] = useState(false);
+  const { pairingSocket } = usePairingSocket();
   const { state, errorMessage } = useSelector(
     (state: RootState) => state.pairing,
   );
@@ -101,6 +104,27 @@ const Home: FC = () => {
   }, []);
 
   useEffect(() => {
+    let didCancel = false;
+
+    const fetchData = async (): Promise<void> => {
+      try {
+        const response = await RoomApi.checkInRoom();
+        if (!didCancel) {
+          setIsInRoom(response);
+        }
+      } catch (error) {
+        setIsInRoom(false);
+        roomIdUtils.removeRoomId();
+      }
+    };
+
+    fetchData();
+    return (): void => {
+      didCancel = true;
+    };
+  }, []);
+
+  useEffect(() => {
     let interval: NodeJS.Timer;
     if (state === PairingState.FOUND_PAIR) {
       interval = setInterval(() => {
@@ -119,7 +143,7 @@ const Home: FC = () => {
   }, [state, redirectCount]);
 
   const onPracticeNow = (difficulty: Difficulty): void => {
-    findPair(socket, difficulty);
+    findPair(pairingSocket, difficulty);
     setIsModalVisible(true);
   };
 
@@ -128,7 +152,7 @@ const Home: FC = () => {
       return;
     }
     // We will always do this, just in case
-    stopFindingPair(socket, state !== PairingState.NOT_PAIRING);
+    stopFindingPair(pairingSocket, state !== PairingState.NOT_PAIRING);
     setIsModalVisible(false);
   };
 
@@ -187,6 +211,7 @@ const Home: FC = () => {
         <Leaderboard {...leaderboardState} />
         <PracticePanel
           isDisabled={state !== PairingState.NOT_PAIRING}
+          isInRoom={isInRoom}
           onPracticeNow={onPracticeNow}
         />
       </div>

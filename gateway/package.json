@@ -4,7 +4,7 @@
   "description": "API Gateway for Code2Gather",
   "private": true,
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon -x 'node index.js || (sleep 10; touch index.js)'"
   },
   "dependencies": {
     "axios": "^0.24.0",

@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"code2gather.com/room/src/server/http_client"
+	"code2gather.com/room/src/server/middleware"
 	"github.com/gorilla/websocket"
 )
 
@@ -22,7 +22,7 @@ func init() {
 	go WSManager.Run()
 }
 
-func WSHandler(w http.ResponseWriter, r *http.Request) {
+func WSHandler(w http.ResponseWriter, r *http.Request, authToken string) {
 	conn, err := WSUpgrader.Upgrade(w, r, nil)
 
 	if err != nil {
@@ -31,18 +31,9 @@ func WSHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Read user id from authorization header
-	values, ok := r.Header["Authorization"]
-	if !ok || len(values) == 0 {
-		log.Printf("Missing authorization header")
-		conn.Close()
-		return
-	}
-
-	uid, err := http_client.GetUserId(values[0])
+	uid, err := middleware.GetUidFromAuthToken(authToken)
 
 	if err != nil {
-		log.Printf("Failed to get user id from authorization header")
 		conn.Close()
 		return
 	}
