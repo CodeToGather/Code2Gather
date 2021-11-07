@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { FC, ReactElement, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -12,11 +13,17 @@ import { useRoomSocket } from 'contexts/RoomSocketContext';
 import {
   changeLanguage,
   executeCode,
-  joinRoom,
-  leaveRoom,
+  joinCodingService,
+  leaveCodingService,
   updateCode,
 } from 'lib/codingSocketService';
-import { joinRoomService } from 'lib/roomSocketService';
+import {
+  completeQuestion,
+  joinRoomService,
+  leaveRoomService,
+  submitRating,
+} from 'lib/roomSocketService';
+import { RatingSubmissionState } from 'reducers/roomDux';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 import useWindowDimensions from 'utils/hookUtils';
@@ -32,7 +39,7 @@ import VideoCollection from './video';
 import './Room.scss';
 
 const Room: FC = () => {
-  const { socket } = useCodingSocket();
+  const { codingSocket } = useCodingSocket();
   const { roomSocket } = useRoomSocket();
   const { doc, language, isExecutingCode, codeExecutionOutput } = useSelector(
     (state: RootState) => state.coding,
@@ -44,6 +51,7 @@ const Room: FC = () => {
     turnsCompleted,
     partnerHasDisconnected,
     partnerHasLeft,
+    ratingSubmissionStatus,
   } = useSelector((state: RootState) => state.room);
   const [isPanelShown, setIsPanelShown] = useState(isInterviewer);
   const [isEndingTurn, setIsEndingTurn] = useState(false);
@@ -53,27 +61,38 @@ const Room: FC = () => {
   const roomId = roomIdUtils.getRoomId();
 
   const isInterviewComplete = turnsCompleted === 2;
+  const code = doc.text.toString();
 
   useEffect(() => {
-    // TODO: Add logic to redirect back to home if roomId is null
-    // This one joins the coding room
-    joinRoom(socket, roomId ?? 'default-room-id');
-    // TODO: Join the actual room via room WS
-    joinRoomService(roomSocket, roomId ?? 'default-room-id');
+    if (roomId == null) {
+      window.location.href = HOME;
+      return (): void => undefined;
+    }
+    joinCodingService(codingSocket, roomId);
+    joinRoomService(roomSocket, roomId);
 
     // Clean up
-    (): void => {
-      leaveRoom(socket);
+    return (): void => {
+      leaveCodingService(codingSocket);
+      leaveRoomService(roomSocket, roomId);
     };
-  }, [socket, roomId, roomSocket]);
+  }, [codingSocket, roomId, roomSocket]);
+
+  useEffect(() => {
+    if (ratingSubmissionStatus === RatingSubmissionState.SUBMITTED) {
+      leaveCodingService(codingSocket);
+      leaveRoomService(roomSocket, roomId!);
+      window.location.href = HOME;
+    }
+  }, [ratingSubmissionStatus, codingSocket, roomSocket, roomId]);
 
   const onCodeChange = (code: string): void => {
-    updateCode(socket, doc, code);
+    updateCode(codingSocket, doc, code);
   };
 
   const onExecuteCode = (): void => {
     setIsPanelShown(true);
-    executeCode(socket);
+    executeCode(codingSocket);
   };
 
   const getCodeEditorHeight = (): string => {
@@ -99,24 +118,23 @@ const Room: FC = () => {
   };
 
   const exitRoom = (): void => {
-    // This one is for coding service.
-    leaveRoom(socket);
-    // TODO: Send message to room websocket that we're leaving room.
+    leaveCodingService(codingSocket);
+    leaveRoomService(roomSocket, roomId!);
     window.location.href = HOME;
+  };
 
-    // TODO: Reset room redux and clear roomId token
+  const onCompleteQuestion = (isSolved: boolean): void => {
+    completeQuestion(roomSocket, roomId!, isSolved, notes, code, language);
   };
 
   const renderModalContent = (): ReactElement => {
     if (isInterviewComplete) {
       return (
         <RatingModal
-          onRate={(rating: number): void => {
-            // TODO: Send the rating to room service
-            // eslint-disable-next-line no-console
-            console.log(rating);
-            exitRoom();
-          }}
+          onRate={(rating: number): void =>
+            submitRating(roomSocket, roomId!, rating)
+          }
+          ratingSubmissionStatus={ratingSubmissionStatus}
         />
       );
     }
@@ -143,8 +161,14 @@ const Room: FC = () => {
       return (
         <EndTurnModal
           onCancel={(): void => setIsEndingTurn(false)}
-          onSolved={(): void => {}}
-          onUnsolved={(): void => {}}
+          onSolved={(): void => {
+            onCompleteQuestion(true);
+            setIsEndingTurn(false);
+          }}
+          onUnsolved={(): void => {
+            onCompleteQuestion(false);
+            setIsEndingTurn(false);
+          }}
           partnerUsername={partnerUsername}
           turnsCompleted={turnsCompleted}
         />
@@ -153,7 +177,6 @@ const Room: FC = () => {
     return <div>Going back to interviewing...</div>;
   };
 
-  const code = doc.text.toString();
   const isModalVisible =
     isEndingTurn ||
     isLeavingRoom ||
@@ -171,7 +194,7 @@ const Room: FC = () => {
                 className="room--top-left__language-button"
                 language={language}
                 setLanguage={(language: Language): void => {
-                  changeLanguage(socket, language);
+                  changeLanguage(codingSocket, language);
                 }}
               />
               <button className="border-button room--top-left__help-button">

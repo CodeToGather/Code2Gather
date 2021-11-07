@@ -2,6 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Question } from 'types/crud/question';
 
+export enum RatingSubmissionState {
+  NOT_SUBMITTING,
+  SUBMITTING,
+  SUBMITTED,
+}
+
 export interface RoomDux {
   roomId: string; // Also persisted into localStorage
   isInterviewer: boolean;
@@ -12,6 +18,7 @@ export interface RoomDux {
   partnerPhotoUrl: string;
   partnerHasDisconnected: boolean; // Note that this != !partnerHasConnected. This is explicitly used for connection.
   partnerHasLeft: boolean;
+  ratingSubmissionStatus: RatingSubmissionState;
   errorMessage: string;
 }
 
@@ -25,6 +32,7 @@ const initialState: RoomDux = {
   partnerPhotoUrl: '',
   partnerHasDisconnected: false,
   partnerHasLeft: false,
+  ratingSubmissionStatus: RatingSubmissionState.NOT_SUBMITTING,
   errorMessage: '',
 };
 
@@ -79,11 +87,21 @@ const room = createSlice({
     setPartnerHasLeft: (state, action: PayloadAction<boolean>): void => {
       state.partnerHasLeft = action.payload;
     },
+    partnerHasJoinedRoom: (state): void => {
+      state.partnerHasDisconnected = false;
+      state.partnerHasLeft = false;
+    },
     setErrorMessage: (state, action: PayloadAction<string>): void => {
       state.errorMessage = action.payload;
     },
     setTurnsCompleted: (state, action: PayloadAction<number>): void => {
       state.turnsCompleted = action.payload;
+    },
+    setRatingSubmissionStatus: (
+      state,
+      action: PayloadAction<RatingSubmissionState>,
+    ): void => {
+      state.ratingSubmissionStatus = action.payload;
     },
     resetState: (state): void => {
       state.roomId = '';
@@ -104,9 +122,11 @@ export const {
   setRoomInfo,
   switchRoles,
   setPartnerHasDisconnected,
+  partnerHasJoinedRoom,
   setPartnerHasLeft,
   setErrorMessage,
   setTurnsCompleted,
+  setRatingSubmissionStatus,
   resetState,
 } = room.actions;
 

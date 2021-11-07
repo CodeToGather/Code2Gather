@@ -6,7 +6,7 @@ import { initializeSocketForPairing } from 'lib/pairingSocketService';
 import tokenUtils from 'utils/tokenUtils';
 
 export default interface PairingSocketContextInterface {
-  socket: Socket;
+  pairingSocket: Socket;
 }
 
 const PairingSocketContext = React.createContext<
@@ -51,7 +51,12 @@ const PairingSocketProvider: React.FunctionComponent = (props) => {
     };
   }, [socket]);
 
-  return <PairingSocketContext.Provider value={{ socket }} {...props} />;
+  return (
+    <PairingSocketContext.Provider
+      value={{ pairingSocket: socket }}
+      {...props}
+    />
+  );
 };
 
 const usePairingSocket = (): PairingSocketContextInterface => {

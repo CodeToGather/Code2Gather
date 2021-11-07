@@ -51,7 +51,7 @@ const Home: FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [redirectCount, setRedirectCount] = useState(5);
   const [isInRoom, setIsInRoom] = useState(false);
-  const { socket } = usePairingSocket();
+  const { pairingSocket } = usePairingSocket();
   const { state, errorMessage } = useSelector(
     (state: RootState) => state.pairing,
   );
@@ -143,7 +143,7 @@ const Home: FC = () => {
   }, [state, redirectCount]);
 
   const onPracticeNow = (difficulty: Difficulty): void => {
-    findPair(socket, difficulty);
+    findPair(pairingSocket, difficulty);
     setIsModalVisible(true);
   };
 
@@ -152,7 +152,7 @@ const Home: FC = () => {
       return;
     }
     // We will always do this, just in case
-    stopFindingPair(socket, state !== PairingState.NOT_PAIRING);
+    stopFindingPair(pairingSocket, state !== PairingState.NOT_PAIRING);
     setIsModalVisible(false);
   };
 

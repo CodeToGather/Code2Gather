@@ -5,7 +5,7 @@ import { CONNECT } from 'constants/socket';
 import { initializeSocketForCoding } from 'lib/codingSocketService';
 
 export default interface SocketContextInterface {
-  socket: Socket;
+  codingSocket: Socket;
 }
 
 const CodingSocketContext = React.createContext<
@@ -47,7 +47,9 @@ const CodingSocketProvider: React.FunctionComponent = (props) => {
     };
   }, [socket]);
 
-  return <CodingSocketContext.Provider value={{ socket }} {...props} />;
+  return (
+    <CodingSocketContext.Provider value={{ codingSocket: socket }} {...props} />
+  );
 };
 
 const useCodingSocket = (): SocketContextInterface => {

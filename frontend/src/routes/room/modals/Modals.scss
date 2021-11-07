@@ -41,3 +41,13 @@
     }
   }
 }
+
+.modal-submit-button-text {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  > div {
+    margin-left: 0.3rem;
+  }
+}
