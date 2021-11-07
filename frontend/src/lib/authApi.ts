@@ -29,7 +29,7 @@ class AuthApi extends BaseApi {
     }
 
     try {
-      const response = await api.get('history/user/self');
+      const response = await api.get('history/user');
       if (response.status === 200) {
         return response.data as GetSelfResponse;
       }

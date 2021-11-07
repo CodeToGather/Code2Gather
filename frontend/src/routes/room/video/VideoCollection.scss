@@ -1,24 +1,40 @@
-@import '../../../assets/scss/variables';
+@import '../../../assets/scss/main';
 
 .video-call-container {
   align-items: center;
   bottom: 0;
   display: flex;
-  flex-direction: column-reverse;
-  height: 17rem;
+  flex-direction: row-reverse;
+  height: 25vw;
   justify-content: space-between;
   padding: 0.5rem;
   position: absolute;
   right: 0;
-  width: 13rem;
+  width: calc(100vw - 1rem);
+  z-index: 4;
+
+  @include media('>mobile', '<=tablet') {
+    height: 15vw;
+    width: 50vw;
+  }
+
+  @include media('>tablet', '<=desktop') {
+    height: 10vw;
+    width: 33vw;
+  }
+
+  @include media('>desktop') {
+    height: 8vw;
+    width: 27vw;
+  }
 
   .video-panel {
     background-color: black;
     border-radius: $video-border-radius;
-    height: 48%;
+    height: 100%;
     overflow: hidden;
     position: relative;
-    width: 100%;
+    width: 48%;
 
     .video {
       height: 100%;
@@ -30,14 +46,24 @@
     background-color: rgba(0, 0, 0, 0.4);
     bottom: 0;
     display: flex;
+    flex-direction: row-reverse;
     font-size: 0.9rem;
     justify-content: space-between;
+
+    min-width: 0;
     padding: 0.3rem;
     position: absolute;
     width: calc(100% - 0.6rem);
 
-    > div {
+    &--username {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &--icons {
       display: flex;
+      flex-shrink: 0;
     }
 
     &--icon-wrapper {

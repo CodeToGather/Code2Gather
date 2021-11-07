@@ -3,7 +3,12 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import userService from 'services/UserService';
-import { ErrorResponse, SuccessResponse, UserLocals } from 'types/api';
+import {
+  ErrorResponse,
+  IdParams,
+  SuccessResponse,
+  UserLocals,
+} from 'types/api';
 import { UserCreateData, UserUpdateData } from 'types/crud/user';
 import { AuthorizationError, ResourceNotFoundError } from 'types/error';
 import { botUser } from 'utils/botUser';
@@ -77,16 +82,16 @@ export async function readSelf(
 /**
  * Reads the user that is associated with the UID provided.
  *
- * @param request Request with body of format { uid: string }
+ * @param request Request with params :id
  * @param response Response with body of type User or { error: string }
  */
 export async function readUser(
-  request: Request<unknown, unknown, { uid: string }>,
+  request: Request<IdParams, unknown, unknown>,
   response: Response<ErrorResponse | User>,
 ): Promise<void> {
-  const { uid } = request.body;
+  const { id } = request.params;
   try {
-    const user = await userService.read(uid, botUser);
+    const user = await userService.read(id, botUser);
     response.status(StatusCodes.OK).json(user);
   } catch (error: any) {
     if (error instanceof ResourceNotFoundError) {

@@ -1,0 +1,87 @@
+@import '../../../assets/scss/main';
+
+.right-panel {
+  border-top: 1rem solid $code-editor-separator-background-color;
+  display: flex;
+  flex-direction: column;
+  height: 45vh;
+  padding: 0.5rem 0.5rem 0;
+  width: calc(100vw - 1rem);
+
+  @include media('>tablet') {
+    border-left: 1rem solid $code-editor-separator-background-color;
+    border-top: 0;
+  }
+
+  @include media('>tablet', '<=desktop') {
+    height: calc(100vh - 59px);
+    width: 33vw;
+  }
+
+  @include media('>desktop') {
+    height: calc(100vh - 61px);
+    width: 27vw;
+  }
+
+  &__tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+
+    button {
+      transition: background-color 0.3s, color 0.3s;
+
+      &.is-hidden {
+        opacity: 0;
+      }
+
+      i {
+        font-size: 90%;
+        margin-left: 0.3rem;
+      }
+    }
+  }
+
+  &__body {
+    flex: 1;
+    overflow: scroll;
+    padding-bottom: 30vw;
+
+    @include media('>mobile', '<=tablet') {
+      padding-bottom: 18vw;
+    }
+
+    @include media('>tablet', '<=desktop') {
+      padding-bottom: 12vw;
+    }
+
+    @include media('>desktop') {
+      padding-bottom: 10vw;
+    }
+  }
+
+  .code-output {
+    white-space: pre;
+  }
+
+  .interviewer-notes {
+    border: 0;
+    min-height: 100%;
+    outline: none;
+    padding: 0;
+    resize: none;
+    width: 100%;
+
+    &::placeholder {
+      color: $code-editor-interviewer-notes-placeholder-text-color;
+    }
+  }
+
+  .question-panel {
+    color: $code-editor-question-text-color;
+
+    &__difficulty {
+      margin-bottom: 0.25rem;
+    }
+  }
+}
