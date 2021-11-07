@@ -14,7 +14,6 @@ import {
 
 import { useUser } from 'contexts/UserContext';
 import VideoApi from 'lib/videoService';
-import { User } from 'types/crud/user';
 
 import './VideoCollection.scss';
 
@@ -29,13 +28,16 @@ const useClient = createClient(config);
 const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
 
 const Controls = (props: {
-  tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
-  user: User;
+  tracks?: [IMicrophoneAudioTrack, ICameraVideoTrack];
+  username: string;
 }): ReactElement<'div'> => {
-  const { tracks, user } = props;
+  const { tracks, username } = props;
   const [trackState, setTrackState] = useState({ video: true, audio: true });
 
   const toggle = async (type: 'audio' | 'video'): Promise<void> => {
+    if (!tracks) {
+      return;
+    }
     if (type === 'audio') {
       await tracks[0].setEnabled(!trackState.audio);
       setTrackState((ps) => {
@@ -51,34 +53,40 @@ const Controls = (props: {
 
   return (
     <div className="controls">
-      <div>
-        <div className="controls--icon-wrapper">
-          <i
-            className={`fas ${
-              trackState.audio ? 'fa-microphone' : 'fa-microphone-slash'
-            }`}
-            onClick={(): Promise<void> => toggle('audio')}
-            onKeyDown={(): Promise<void> => toggle('audio')}
-            role="button"
-          />
+      {username}
+      {tracks && (
+        <div>
+          <div className="controls--icon-wrapper">
+            <i
+              className={`fas ${
+                trackState.audio ? 'fa-microphone' : 'fa-microphone-slash'
+              }`}
+              onClick={(): Promise<void> => toggle('audio')}
+              onKeyDown={(): Promise<void> => toggle('audio')}
+              role="button"
+            />
+          </div>
+          <div className="controls--icon-wrapper">
+            <i
+              className={`fas ${
+                trackState.video ? 'fa-video' : 'fa-video-slash'
+              }`}
+              onClick={(): Promise<void> => toggle('video')}
+              onKeyDown={(): Promise<void> => toggle('video')}
+              role="button"
+            />
+          </div>
         </div>
-        <div className="controls--icon-wrapper">
-          <i
-            className={`fas ${
-              trackState.video ? 'fa-video' : 'fa-video-slash'
-            }`}
-            onClick={(): Promise<void> => toggle('video')}
-            onKeyDown={(): Promise<void> => toggle('video')}
-            role="button"
-          />
-        </div>
-      </div>
-      {user.githubUsername}
+      )}
     </div>
   );
 };
 
-const VideoCollection: FC = () => {
+interface Props {
+  partnerUsername: string;
+}
+
+const VideoCollection: FC<Props> = ({ partnerUsername }) => {
   const [inCall, setInCall] = useState(true);
   const [channelName] = useState('c2g');
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
@@ -159,7 +167,7 @@ const VideoCollection: FC = () => {
         <>
           <div className="video-panel">
             <AgoraVideoPlayer className="video" videoTrack={tracks[1]} />
-            <Controls tracks={tracks} user={user} />
+            <Controls tracks={tracks} username={user.githubUsername} />
           </div>
           {users.length > 0 && users[0].videoTrack ? (
             <div className="video-panel">
@@ -167,6 +175,7 @@ const VideoCollection: FC = () => {
                 className="video"
                 videoTrack={users[0].videoTrack}
               />
+              <Controls username={partnerUsername} />
             </div>
           ) : null}
         </>

@@ -27,7 +27,7 @@ const Room: FC = () => {
   const { doc, language, isExecutingCode, codeExecutionOutput } = useSelector(
     (state: RootState) => state.coding,
   );
-  const { isInterviewer, question } = useSelector(
+  const { isInterviewer, question, partnerUsername } = useSelector(
     (state: RootState) => state.room,
   );
   const [isPanelShown, setIsPanelShown] = useState(isInterviewer);
@@ -126,7 +126,11 @@ const Room: FC = () => {
             question={question}
           />
         ) : null}
-        <VideoCollection />
+        <VideoCollection
+          partnerUsername={
+            partnerUsername.length > 0 ? partnerUsername : 'Interview Partner'
+          }
+        />
       </div>
       <div className="room--bottom">
         <button
