@@ -3,7 +3,6 @@ package db_seed
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/google/uuid"
 	"io/ioutil"
 	"log"
 	"os"
@@ -75,7 +74,7 @@ func processQuestion(seed QuestionSeed) (question *models.Question, err error) {
 	}
 
 	question = &models.Question{
-		Id:         uuid.New().String(),
+		Id:         seed.DirectoryName,
 		Title:      seed.Title,
 		Text:       text,
 		Difficulty: models.QuestionDifficulty(models.QuestionDifficulty_value[seed.Difficulty]),
