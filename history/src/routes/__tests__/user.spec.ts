@@ -172,14 +172,14 @@ describe('POST /user', () => {
   });
 });
 
-describe('GET /user/self', () => {
+describe('GET /user', () => {
   beforeAll(async () => {
     await fixtures.reload();
   });
 
   it('should return self when valid uid is provided', async () => {
     const response = await request(server.server)
-      .get('/user/self')
+      .get('/user')
       .set('Authorization', fixtures.userOne.id)
       .send();
     expect(response.status).toBe(StatusCodes.OK);
@@ -187,33 +187,33 @@ describe('GET /user/self', () => {
   });
 
   it('should not allow invalid uid', async () => {
-    let response = await request(server.server).get('/user/self').send();
+    let response = await request(server.server).get('/user').send();
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
     response = await request(server.server)
-      .get('/user/self')
+      .get('/user')
       .set('Authorization', '123456')
       .send();
     expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
   });
 });
 
-describe('GET /user', () => {
+describe('GET /user/:id', () => {
   beforeAll(async () => {
     await fixtures.reload();
   });
 
   it('should return user when valid uid is provided', async () => {
     const response = await request(server.server)
-      .get('/user')
-      .send({ uid: fixtures.userOne.id });
+      .get(`/user/${fixtures.userOne.id}`)
+      .send();
     expect(response.status).toBe(StatusCodes.OK);
     expect(response.body).toEqual(convertDatesToJson(fixtures.userOne));
   });
 
   it('should not allow invalid uid', async () => {
     let response = await request(server.server).get('/user').send();
-    expect(response.status).toBe(StatusCodes.BAD_REQUEST);
-    response = await request(server.server).get('/user').send({ uid: '12345' });
+    expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
+    response = await request(server.server).get('/user/12345').send();
     expect(response.status).toBe(StatusCodes.NOT_FOUND);
   });
 });
