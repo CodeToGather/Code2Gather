@@ -7,6 +7,7 @@ import {
   setPartnerHasLeft,
   setRatingSubmissionStatus,
   setRoomInfo,
+  setShouldKickUser,
   setTurnsCompleted,
   switchRoles,
 } from 'reducers/roomDux';
@@ -101,6 +102,10 @@ export const initializeSocketForRoom = (socket: WebSocket): void => {
     const message =
       code2gather.RoomServiceToClientMessage.deserialize(messageData);
     if (message.join_room_response) {
+      if (message.join_room_response.error_code !== 0) {
+        store.dispatch(setShouldKickUser(true));
+        return;
+      }
       store.dispatch(
         setRoomInfo({
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

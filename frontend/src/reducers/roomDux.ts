@@ -10,6 +10,7 @@ export enum RatingSubmissionState {
 
 export interface RoomDux {
   roomId: string; // Also persisted into localStorage
+  shouldKickUser: boolean;
   isInterviewer: boolean;
   turnsCompleted: number;
   question: Question | null;
@@ -24,6 +25,7 @@ export interface RoomDux {
 
 const initialState: RoomDux = {
   roomId: '',
+  shouldKickUser: false,
   isInterviewer: false,
   turnsCompleted: 0,
   question: null,
@@ -73,6 +75,9 @@ const room = createSlice({
       state.partnerUsername = action.payload.partnerUsername;
       state.partnerPhotoUrl = action.payload.partnerPhotoUrl;
     },
+    setShouldKickUser: (state, action: PayloadAction<boolean>): void => {
+      state.shouldKickUser = action.payload;
+    },
     switchRoles: (state, action: PayloadAction<Question>): void => {
       state.isInterviewer = !state.isInterviewer;
       state.question = action.payload;
@@ -105,6 +110,7 @@ const room = createSlice({
     },
     resetState: (state): void => {
       state.roomId = '';
+      state.shouldKickUser = false;
       state.isInterviewer = false;
       state.question = null;
       state.partnerUid = '';
@@ -121,6 +127,7 @@ const room = createSlice({
 export const {
   setPartialRoomInfo,
   setRoomInfo,
+  setShouldKickUser,
   switchRoles,
   setPartnerHasDisconnected,
   partnerHasJoinedRoom,

@@ -52,6 +52,7 @@ const Room: FC = () => {
     partnerHasDisconnected,
     partnerHasLeft,
     ratingSubmissionStatus,
+    shouldKickUser,
   } = useSelector((state: RootState) => state.room);
   const [isPanelShown, setIsPanelShown] = useState(isInterviewer);
   const [isEndingTurn, setIsEndingTurn] = useState(false);
@@ -85,6 +86,14 @@ const Room: FC = () => {
       window.location.href = HOME;
     }
   }, [ratingSubmissionStatus, codingSocket, roomSocket, roomId]);
+
+  useEffect(() => {
+    if (shouldKickUser) {
+      window.location.href = HOME;
+      leaveCodingService(codingSocket);
+      leaveRoomService(roomSocket, roomId!);
+    }
+  }, [shouldKickUser, codingSocket, roomSocket, roomId]);
 
   const onCodeChange = (code: string): void => {
     updateCode(codingSocket, doc, code);
@@ -237,6 +246,7 @@ const Room: FC = () => {
           partnerUsername={
             partnerUsername.length > 0 ? partnerUsername : 'Interview Partner'
           }
+          roomId={roomId!}
         />
       </div>
       <div className="room--bottom">
