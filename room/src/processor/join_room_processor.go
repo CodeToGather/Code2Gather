@@ -11,14 +11,15 @@ import (
 )
 
 type JoinRoomProcessor struct {
-	request       *models.JoinRoomRequest
-	uid           string
-	rid           string
-	interviewerId string
-	question      *models.QuestionMessage
-	pairedUser    *models.User
-	authorized    bool
-	err           error
+	request        *models.JoinRoomRequest
+	uid            string
+	rid            string
+	interviewerId  string
+	question       *models.QuestionMessage
+	pairedUser     *models.User
+	turnsCompleted int32
+	authorized     bool
+	err            error
 }
 
 func NewJoinRoomProcessor(request *models.JoinRoomRequest, uid string) *JoinRoomProcessor {
@@ -96,7 +97,7 @@ func (p *JoinRoomProcessor) Process() error {
 		}
 		p.question = question.ToQuestionMessage()
 	}
-
+	p.turnsCompleted = room.GetTurnsCompleted()
 	return nil
 }
 
@@ -109,11 +110,12 @@ func (p *JoinRoomProcessor) GetResponse() proto.Message {
 		errorCode = models.ErrorCode_UNAUTHORIZED_USER
 	}
 	response := &models.JoinRoomResponse{
-		ErrorCode:     int32(errorCode),
-		IsInterviewer: p.interviewerId == p.uid,
-		InterviewerId: p.interviewerId,
-		Question:      p.question,
-		PairedUser:    p.pairedUser,
+		ErrorCode:      int32(errorCode),
+		IsInterviewer:  p.interviewerId == p.uid,
+		InterviewerId:  p.interviewerId,
+		Question:       p.question,
+		PairedUser:     p.pairedUser,
+		TurnsCompleted: p.turnsCompleted,
 	}
 	responseWrapper := &models.RoomServiceToClientMessage_JoinRoomResponse{JoinRoomResponse: response}
 	return &models.RoomServiceToClientMessage{Response: responseWrapper}
