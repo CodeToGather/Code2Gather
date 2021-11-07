@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -7,6 +6,7 @@ import LanguageDropdown from 'components/languageDropdown';
 import LoadingAnimation from 'components/loading/LoadingAnimation';
 import Typography from 'components/typography';
 import { useCodingSocket } from 'contexts/CodingSocketContext';
+import { useRoomSocket } from 'contexts/RoomSocketContext';
 import {
   changeLanguage,
   executeCode,
@@ -14,12 +14,11 @@ import {
   leaveRoom,
   updateCode,
 } from 'lib/codingSocketService';
+import { joinRoomService } from 'lib/roomSocketService';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
-import { code2gather } from 'types/protobuf/code2gather';
 import useWindowDimensions from 'utils/hookUtils';
 import roomIdUtils from 'utils/roomIdUtils';
-import tokenUtils from 'utils/tokenUtils';
 
 import RightPanel from './panel';
 import VideoCollection from './video';
@@ -27,6 +26,7 @@ import './Room.scss';
 
 const Room: FC = () => {
   const { socket } = useCodingSocket();
+  const { roomSocket } = useRoomSocket();
   const { doc, language, isExecutingCode, codeExecutionOutput } = useSelector(
     (state: RootState) => state.coding,
   );
@@ -43,48 +43,13 @@ const Room: FC = () => {
     // This one joins the coding room
     joinRoom(socket, roomId ?? 'default-room-id');
     // TODO: Join the actual room via room WS
-    const ws = new WebSocket(
-      `${process.env.REACT_APP_BACKEND_WS_API}/roomws/${tokenUtils.getToken()}`,
-    );
+    joinRoomService(roomSocket, roomId ?? 'default-room-id');
 
-    const joinRoomRequest = new code2gather.JoinRoomRequest({
-      room_id: roomId ?? 'default-room-id',
-    });
-
-    const message = new code2gather.ClientRequest({
-      join_room_request: joinRoomRequest,
-    });
-
-    ws.onopen = (_event): void => {
-      console.log('Room socket opened');
-      ws.send(message.serialize());
-    };
-    ws.onmessage = (event): void => {
-      console.log(event);
-      const messageData = event.data;
-      const message =
-        code2gather.RoomServiceToClientMessage.deserialize(messageData);
-      if (message.join_room_response) {
-        // Handle join room response
-      } else if (message.join_room_broadcast) {
-        // Handle other person join room
-      } else if (message.disconnect_broadcast) {
-        // Handle other person disconnects
-      } else if (message.complete_question_response) {
-        // Handle complete question response
-      } else if (message.submit_rating_response) {
-        // Handle submit rating event
-      } else if (message.leave_room_response) {
-        // Handle leave room event
-      } else if (message.leave_room_broadcast) {
-        // Handle other person leave room
-      }
-    };
     // Clean up
     (): void => {
       leaveRoom(socket);
     };
-  }, [socket, roomId]);
+  }, [socket, roomId, roomSocket]);
 
   const onCodeChange = (code: string): void => {
     updateCode(socket, doc, code);
