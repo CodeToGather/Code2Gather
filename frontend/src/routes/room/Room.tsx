@@ -10,13 +10,14 @@ import {
   changeLanguage,
   executeCode,
   joinRoom,
+  leaveRoom,
   updateCode,
 } from 'lib/codingSocketService';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 import useWindowDimensions from 'utils/hookUtils';
+import roomIdUtils from 'utils/roomIdUtils';
 
-import { mockQuestion } from './mockData';
 import RightPanel from './panel';
 import VideoCollection from './video';
 import './Room.scss';
@@ -32,12 +33,19 @@ const Room: FC = () => {
   const [isPanelShown, setIsPanelShown] = useState(isInterviewer);
   const [notes, setNotes] = useState('');
   const { height, width } = useWindowDimensions();
+  const roomId = roomIdUtils.getRoomId();
 
   useEffect(() => {
+    // TODO: Add logic to redirect back to home if roomId is null
     // This one joins the coding room
-    joinRoom(socket, 'default-room-id');
+    joinRoom(socket, roomId ?? 'default-room-id');
     // TODO: Join the actual room via room WS
-  }, [socket]);
+
+    // Clean up
+    (): void => {
+      leaveRoom(socket);
+    };
+  }, [socket, roomId]);
 
   const onCodeChange = (code: string): void => {
     updateCode(socket, doc, code);
@@ -115,7 +123,7 @@ const Room: FC = () => {
             onChangeNotes={setNotes}
             onClosePanel={(): void => setIsPanelShown(false)}
             output={codeExecutionOutput}
-            question={question ?? mockQuestion}
+            question={question}
           />
         ) : null}
         <VideoCollection />
