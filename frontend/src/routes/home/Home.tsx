@@ -10,9 +10,11 @@ import { usePairingSocket } from 'contexts/PairingSocketContext';
 import LeaderboardApi from 'lib/leaderboardApi';
 import MeetingRecordApi from 'lib/meetingRecordApi';
 import { findPair, stopFindingPair } from 'lib/pairingSocketService';
+import RoomApi from 'lib/roomApi';
 import { PairingState } from 'reducers/pairingDux';
 import { RootState } from 'reducers/rootReducer';
 import { Difficulty } from 'types/crud/difficulty';
+import roomIdUtils from 'utils/roomIdUtils';
 
 import PracticeHistory from './history';
 import Leaderboard from './leaderboard';
@@ -48,6 +50,7 @@ const Home: FC = () => {
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [redirectCount, setRedirectCount] = useState(5);
+  const [isInRoom, setIsInRoom] = useState(false);
   const { socket } = usePairingSocket();
   const { state, errorMessage } = useSelector(
     (state: RootState) => state.pairing,
@@ -91,6 +94,27 @@ const Home: FC = () => {
         if (!didCancel) {
           setHistoryState({ isLoading: false, isError: true });
         }
+      }
+    };
+
+    fetchData();
+    return (): void => {
+      didCancel = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let didCancel = false;
+
+    const fetchData = async (): Promise<void> => {
+      try {
+        const response = await RoomApi.checkInRoom();
+        if (!didCancel) {
+          setIsInRoom(response);
+        }
+      } catch (error) {
+        setIsInRoom(false);
+        roomIdUtils.removeRoomId();
       }
     };
 
@@ -187,6 +211,7 @@ const Home: FC = () => {
         <Leaderboard {...leaderboardState} />
         <PracticePanel
           isDisabled={state !== PairingState.NOT_PAIRING}
+          isInRoom={isInRoom}
           onPracticeNow={onPracticeNow}
         />
       </div>
