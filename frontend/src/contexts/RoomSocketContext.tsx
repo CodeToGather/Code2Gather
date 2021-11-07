@@ -17,6 +17,7 @@ const RoomSocketProvider: React.FunctionComponent = (props) => {
   const roomSocket = new WebSocket(
     `${process.env.REACT_APP_BACKEND_WS_API}/roomws/${tokenUtils.getToken()}`,
   );
+  roomSocket.binaryType = 'arraybuffer';
 
   useEffect(() => {
     roomSocket.onopen = (_event): void => {
