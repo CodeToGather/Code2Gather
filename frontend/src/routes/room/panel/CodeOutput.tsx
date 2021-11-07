@@ -11,7 +11,9 @@ interface Props {
 const CodeOutput: FC<Props> = ({ output }) => {
   return (
     <Typography size="regular">
-      <code className="code-output">{output}</code>
+      <code className="code-output">
+        {output.length > 0 ? output : 'Execute the code to see its output!'}
+      </code>
     </Typography>
   );
 };
