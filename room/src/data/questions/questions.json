@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Fibonacci Sequence",
+    "difficulty": "EASY",
+    "directory_name": "fibonacci_sequence"
+  },
+  {
+    "title": "FizzBuzz",
+    "difficulty": "EASY",
+    "directory_name": "fizz_buzz"
+  },
+  {
+    "title": "Longest Increasing Substring",
+    "difficulty": "MEDIUM",
+    "directory_name": "longest_increasing_substring"
+  },
+  {
+    "title": "Longest Palindrome Substring",
+    "difficulty": "MEDIUM",
+    "directory_name": "longest_palindrome_substring"
+  },
+  {
+    "title": "Median of 2 Sorted Arrays",
+    "difficulty": "HARD",
+    "directory_name": "median_of_2_sorted_arrays"
+  },
+  {
+    "title": "Number Picking",
+    "difficulty": "HARD",
+    "directory_name": "number_picking"
+  }
+]
