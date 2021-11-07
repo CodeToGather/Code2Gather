@@ -17,9 +17,9 @@ echo "Compiling message.proto in JavaScript ..."
 protoc -I=./proto-messages --ts_out=frontend/src/types/protobuf ./proto-messages/*.proto
 echo "Compiling message.proto in JavaScript Successfully."
 
-# echo "Compiling message.proto in Go ..."
-# export PATH=$PATH:$HOME/go/bin
-# export PATH=$PATH:/usr/local/go/bin
-# protoc -I=./proto-messages --go_out=./room/src ./proto-messages/*.proto
-# echo "Compiling message.proto in Go Successfully."
+ echo "Compiling message.proto in Go ..."
+ export PATH=$PATH:$HOME/go/bin
+ export PATH=$PATH:/usr/local/go/bin
+ protoc -I=./proto-messages --go_out=./room/src ./proto-messages/*.proto
+ echo "Compiling message.proto in Go Successfully."
 

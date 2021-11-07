@@ -8,19 +8,17 @@ option go_package = "models/";
 // Difficulty level for questions
 
 enum QuestionDifficulty {
-  UNKNOWN_DIFFICULTY = 0;
-  EASY = 1;
-  MEDIUM = 2;
-  HARD = 3;
+  EASY = 0;
+  MEDIUM = 1;
+  HARD = 2;
 }
 
 // Language for questions
 
 enum Language {
-  UNKNOWN_LANGUGAE = 0;
-  PYTHON = 1;
-  JAVA = 2;
-  JAVASCRIPT = 3;
+  PYTHON = 0;
+  JAVA = 1;
+  JAVASCRIPT = 2;
 }
 
 // Question represents a question given by the interviewer to the interviewee during a mock interview session
@@ -157,6 +155,7 @@ message JoinRoomResponse {
   string interviewer_id = 3;
   QuestionMessage question = 4;
   User paired_user = 5;
+  int32 turns_completed = 6;
 }
 
 message JoinRoomBroadcast {
@@ -181,6 +180,7 @@ message CompleteQuestionResponse {
   string interviewer_id = 3;
   QuestionMessage next_question = 4;
   bool is_interview_completed = 5;
+  int32 turns_completed = 6;
 }
 
 message SubmitRatingRequest {
