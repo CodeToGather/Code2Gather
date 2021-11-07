@@ -5,7 +5,7 @@ import { Question } from 'types/crud/question';
 export interface RoomDux {
   roomId: string; // Also persisted into localStorage
   isInterviewer: boolean;
-  isInterviewComplete: boolean;
+  turnsCompleted: number;
   question: Question | null;
   partnerUid: string;
   partnerUsername: string;
@@ -18,7 +18,7 @@ export interface RoomDux {
 const initialState: RoomDux = {
   roomId: '',
   isInterviewer: false,
-  isInterviewComplete: false,
+  turnsCompleted: 0,
   question: null,
   partnerUid: '',
   partnerUsername: '',
@@ -50,6 +50,7 @@ const room = createSlice({
       action: PayloadAction<{
         roomId: string;
         isInterviewer: boolean;
+        turnsCompleted: number;
         question: Question;
         partnerUid: string;
         partnerUsername: string;
@@ -58,6 +59,7 @@ const room = createSlice({
     ): void => {
       state.roomId = action.payload.roomId;
       state.isInterviewer = action.payload.isInterviewer;
+      state.turnsCompleted = action.payload.turnsCompleted;
       state.question = action.payload.question;
       state.partnerUid = action.payload.partnerUid;
       state.partnerUsername = action.payload.partnerUsername;
@@ -66,6 +68,7 @@ const room = createSlice({
     switchRoles: (state, action: PayloadAction<Question>): void => {
       state.isInterviewer = !state.isInterviewer;
       state.question = action.payload;
+      state.turnsCompleted = 1; // Invariant
     },
     setPartnerHasDisconnected: (
       state,
@@ -79,8 +82,8 @@ const room = createSlice({
     setErrorMessage: (state, action: PayloadAction<string>): void => {
       state.errorMessage = action.payload;
     },
-    setIsInterviewComplete: (state, action: PayloadAction<boolean>): void => {
-      state.isInterviewComplete = action.payload;
+    setTurnsCompleted: (state, action: PayloadAction<number>): void => {
+      state.turnsCompleted = action.payload;
     },
     resetState: (state): void => {
       state.roomId = '';
@@ -103,7 +106,7 @@ export const {
   setPartnerHasDisconnected,
   setPartnerHasLeft,
   setErrorMessage,
-  setIsInterviewComplete,
+  setTurnsCompleted,
   resetState,
 } = room.actions;
 
