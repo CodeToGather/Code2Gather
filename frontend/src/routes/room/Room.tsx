@@ -146,6 +146,11 @@ const Room: FC = () => {
             )}
           </Typography>
         </button>
+        {isInterviewer ? (
+          <button className="border-button is-success">
+            <Typography size="regular">End Turn</Typography>
+          </button>
+        ) : null}
       </div>
     </div>
   );
