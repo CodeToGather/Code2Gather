@@ -23,7 +23,7 @@ import {
   leaveRoomService,
   submitRating,
 } from 'lib/roomSocketService';
-import { RatingSubmissionState } from 'reducers/roomDux';
+// import { RatingSubmissionState } from 'reducers/roomDux';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 import useWindowDimensions from 'utils/hookUtils';
@@ -52,7 +52,7 @@ const Room: FC = () => {
     partnerHasDisconnected,
     partnerHasLeft,
     ratingSubmissionStatus,
-    shouldKickUser,
+    // shouldKickUser,
   } = useSelector((state: RootState) => state.room);
   const [isPanelShown, setIsPanelShown] = useState(isInterviewer);
   const [isEndingTurn, setIsEndingTurn] = useState(false);
@@ -73,27 +73,27 @@ const Room: FC = () => {
     joinRoomService(roomSocket, roomId);
 
     // Clean up
-    return (): void => {
-      leaveCodingService(codingSocket);
-      leaveRoomService(roomSocket, roomId);
-    };
+    // return (): void => {
+    //   leaveCodingService(codingSocket);
+    //   leaveRoomService(roomSocket, roomId);
+    // };
   }, [codingSocket, roomId, roomSocket]);
 
-  useEffect(() => {
-    if (ratingSubmissionStatus === RatingSubmissionState.SUBMITTED) {
-      leaveCodingService(codingSocket);
-      leaveRoomService(roomSocket, roomId!);
-      window.location.href = HOME;
-    }
-  }, [ratingSubmissionStatus, codingSocket, roomSocket, roomId]);
+  // useEffect(() => {
+  //   if (ratingSubmissionStatus === RatingSubmissionState.SUBMITTED) {
+  //     leaveCodingService(codingSocket);
+  //     leaveRoomService(roomSocket, roomId!);
+  //     window.location.href = HOME;
+  //   }
+  // }, [ratingSubmissionStatus, codingSocket, roomSocket, roomId]);
 
-  useEffect(() => {
-    if (shouldKickUser) {
-      window.location.href = HOME;
-      leaveCodingService(codingSocket);
-      leaveRoomService(roomSocket, roomId!);
-    }
-  }, [shouldKickUser, codingSocket, roomSocket, roomId]);
+  // useEffect(() => {
+  //   if (shouldKickUser) {
+  //     window.location.href = HOME;
+  //     leaveCodingService(codingSocket);
+  //     leaveRoomService(roomSocket, roomId!);
+  //   }
+  // }, [shouldKickUser, codingSocket, roomSocket, roomId]);
 
   const onCodeChange = (code: string): void => {
     updateCode(codingSocket, doc, code);
