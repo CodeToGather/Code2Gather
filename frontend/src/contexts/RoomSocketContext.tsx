@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 
 import { code2gather } from 'types/protobuf/code2gather';
-import roomIdUtils from 'utils/roomIdUtils';
 import tokenUtils from 'utils/tokenUtils';
 
 export default interface SocketContextInterface {
@@ -20,19 +19,8 @@ const RoomSocketProvider: React.FunctionComponent = (props) => {
   );
 
   useEffect(() => {
-    const roomId = roomIdUtils.getRoomId();
-
-    const joinRoomRequest = new code2gather.JoinRoomRequest({
-      room_id: roomId ?? 'default-room-id',
-    });
-
-    const message = new code2gather.ClientRequest({
-      join_room_request: joinRoomRequest,
-    });
-
     roomSocket.onopen = (_event): void => {
-      console.log('Room socket opened');
-      roomSocket.send(message.serialize());
+      console.log('Room socket connected!');
     };
     roomSocket.onmessage = (event): void => {
       console.log(event);
