@@ -17,13 +17,13 @@ func StartHttpServer() {
 		})
 	})
 
+	r.GET("/", CheckInRoomHandler)
 	r.POST("/create", RoomCreationHandler)
-	r.GET("/room", CheckInRoomHandler)
-	r.GET("/room/ws", func(c *gin.Context) {
+	r.GET("/roomws", func(c *gin.Context) {
 		socket.WSHandler(c.Writer, c.Request)
 	})
 
-	err := r.Run(ConnHost + ":" + ConnPort)
+	err := r.Run(":" + ConnPort)
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)
 		return
