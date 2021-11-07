@@ -127,7 +127,7 @@ func (p *CompleteQuestionProcessor) GetResponse() proto.Message {
 		ErrorCode:            int32(errorCode),
 		IsInterviewer:        p.nextInterviewerId == p.uid,
 		InterviewerId:        p.nextInterviewerId,
-		NextQuestion:         p.nextQuestion,
+		NextQuestionId:       p.nextQuestion.Id,
 		IsInterviewCompleted: p.isInterviewComplete,
 		TurnsCompleted:       p.turnsCompleted,
 	}
