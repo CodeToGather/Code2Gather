@@ -26,7 +26,7 @@ func StartHttpServer() {
 		socket.WSHandler(c.Writer, c.Request, authToken)
 	})
 
-	err := r.Run("localhost:" + ConnPort)
+	err := r.Run(":" + ConnPort)
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)
 		return
