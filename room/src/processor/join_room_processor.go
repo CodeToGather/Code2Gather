@@ -3,7 +3,6 @@ package processor
 import (
 	"log"
 
-	"code2gather.com/room/src/agents/question_agents"
 	"code2gather.com/room/src/agents/room_agents"
 	"code2gather.com/room/src/models"
 	"code2gather.com/room/src/server/http_client"
@@ -15,7 +14,7 @@ type JoinRoomProcessor struct {
 	uid            string
 	rid            string
 	interviewerId  string
-	question       *models.QuestionMessage
+	questionId     string
 	pairedUser     *models.User
 	turnsCompleted int32
 	authorized     bool
@@ -82,20 +81,10 @@ func (p *JoinRoomProcessor) Process() error {
 
 	if room.Status == models.FirstQuestion {
 		p.interviewerId = room.Uid1
-		question, err := question_agents.GetQuestionById(room.Qid1)
-		if err != nil {
-			p.err = err
-			return err
-		}
-		p.question = question.ToQuestionMessage()
+		p.questionId = room.Qid1
 	} else {
 		p.interviewerId = room.Uid2
-		question, err := question_agents.GetQuestionById(room.Qid2)
-		if err != nil {
-			p.err = err
-			return err
-		}
-		p.question = question.ToQuestionMessage()
+		p.questionId = room.Qid2
 	}
 	p.turnsCompleted = room.GetTurnsCompleted()
 	return nil
@@ -114,7 +103,7 @@ func (p *JoinRoomProcessor) GetResponse() proto.Message {
 		ErrorCode:      int32(errorCode),
 		IsInterviewer:  p.interviewerId == p.uid,
 		InterviewerId:  p.interviewerId,
-		QuestionId:     p.question.Id,
+		QuestionId:     p.questionId,
 		PairedUser:     p.pairedUser,
 		TurnsCompleted: p.turnsCompleted,
 	}

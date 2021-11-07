@@ -17,7 +17,7 @@ type CompleteQuestionProcessor struct {
 	currentIntervieeId  string
 	currentQuestion     *models.Question
 	nextInterviewerId   string
-	nextQuestion        *models.QuestionMessage
+	nextQuestionId      string
 	isInterviewComplete bool
 	turnsCompleted      int32
 	authorized          bool
@@ -90,7 +90,7 @@ func (p *CompleteQuestionProcessor) Process() error {
 	if room.Status == models.FirstQuestion {
 		p.currentQuestion = firstQuestion
 		p.nextInterviewerId = room.Uid2
-		p.nextQuestion = secondQuestion.ToQuestionMessage()
+		p.nextQuestionId = room.Qid2
 		// Update room status to SecondQuestion
 		room.Status = models.SecondQuestion
 		p.isInterviewComplete = false
@@ -127,7 +127,7 @@ func (p *CompleteQuestionProcessor) GetResponse() proto.Message {
 		ErrorCode:            int32(errorCode),
 		IsInterviewer:        p.nextInterviewerId == p.uid,
 		InterviewerId:        p.nextInterviewerId,
-		NextQuestionId:       p.nextQuestion.Id,
+		NextQuestionId:       p.nextQuestionId,
 		IsInterviewCompleted: p.isInterviewComplete,
 		TurnsCompleted:       p.turnsCompleted,
 	}
