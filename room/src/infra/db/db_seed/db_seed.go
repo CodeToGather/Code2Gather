@@ -18,8 +18,7 @@ func SeedDB() (err error) {
 
 	err = questionManager.ClearQuestions()
 	if err != nil {
-		log.Fatal(err)
-		return
+		log.Println(err)
 	}
 
 	for _, question := range GetSeedQuestions() {
