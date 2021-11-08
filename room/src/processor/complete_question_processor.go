@@ -2,6 +2,7 @@ package processor
 
 import (
 	"log"
+	"time"
 
 	"code2gather.com/room/src/agents/question_agents"
 	"code2gather.com/room/src/agents/room_agents"
@@ -14,10 +15,11 @@ type CompleteQuestionProcessor struct {
 	request             *models.CompleteQuestionRequest
 	uid                 string
 	rid                 string
+	room                *models.Room
 	currentIntervieeId  string
 	currentQuestion     *models.Question
 	nextInterviewerId   string
-	nextQuestion        *models.QuestionMessage
+	nextQuestionId      string
 	isInterviewComplete bool
 	turnsCompleted      int32
 	authorized          bool
@@ -41,13 +43,14 @@ func (p *CompleteQuestionProcessor) GetRequest() proto.Message {
 }
 
 func (p *CompleteQuestionProcessor) SendMeetingRecord() error {
+	duration := time.Now().Sub(p.room.UpdatedAt).Seconds()
 	meetingRecord := &models.CreateMeetingRequest{
 		InterviewerId:         p.uid,
 		IntervieweeId:         p.currentIntervieeId,
-		Duration:              0,
+		Duration:              int32(duration),
 		QuestionId:            p.currentQuestion.Id,
 		QuestionTitle:         p.currentQuestion.Title,
-		Difficulty:            p.currentQuestion.Difficulty,
+		QuestionDifficulty:    p.currentQuestion.Difficulty,
 		Language:              p.request.Language,
 		CodeWritten:           p.request.CodeWritten,
 		IsSolved:              p.request.IsSolved,
@@ -64,10 +67,12 @@ func (p *CompleteQuestionProcessor) Process() error {
 		p.err = err
 		return err
 	}
-	if p.uid == room.Uid1 {
+
+	p.room = room
+	if p.uid == p.room.Uid1 {
 		p.authorized = true
 		p.currentIntervieeId = room.Uid2
-	} else if p.uid == room.Uid2 {
+	} else if p.uid == p.room.Uid2 {
 		p.authorized = true
 		p.currentIntervieeId = room.Uid1
 	} else {
@@ -90,7 +95,7 @@ func (p *CompleteQuestionProcessor) Process() error {
 	if room.Status == models.FirstQuestion {
 		p.currentQuestion = firstQuestion
 		p.nextInterviewerId = room.Uid2
-		p.nextQuestion = secondQuestion.ToQuestionMessage()
+		p.nextQuestionId = room.Qid2
 		// Update room status to SecondQuestion
 		room.Status = models.SecondQuestion
 		p.isInterviewComplete = false
@@ -102,12 +107,12 @@ func (p *CompleteQuestionProcessor) Process() error {
 	}
 	p.turnsCompleted = room.GetTurnsCompleted()
 
-	if err = room_agents.UpdateRoom(room); err != nil {
+	if err = p.SendMeetingRecord(); err != nil {
 		p.err = err
 		return err
 	}
 
-	if err = p.SendMeetingRecord(); err != nil {
+	if err = room_agents.UpdateRoom(room); err != nil {
 		p.err = err
 		return err
 	}
@@ -127,7 +132,7 @@ func (p *CompleteQuestionProcessor) GetResponse() proto.Message {
 		ErrorCode:            int32(errorCode),
 		IsInterviewer:        p.nextInterviewerId == p.uid,
 		InterviewerId:        p.nextInterviewerId,
-		NextQuestion:         p.nextQuestion,
+		NextQuestionId:       p.nextQuestionId,
 		IsInterviewCompleted: p.isInterviewComplete,
 		TurnsCompleted:       p.turnsCompleted,
 	}

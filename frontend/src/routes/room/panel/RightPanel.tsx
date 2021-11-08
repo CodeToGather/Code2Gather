@@ -1,4 +1,4 @@
-import { FC, ReactElement, useState } from 'react';
+import { FC, ReactElement, useEffect, useState } from 'react';
 
 import Tabs from 'components/tabs';
 import Typography from 'components/typography';
@@ -60,6 +60,12 @@ const RightPanel: FC<Props> = ({
   const [tab, setTab] = useState(
     isInterviewer ? RightPanelTab.QUESTION : RightPanelTab.OUTPUT,
   );
+
+  useEffect(() => {
+    if (!isInterviewer && tab !== RightPanelTab.OUTPUT) {
+      setTab(RightPanelTab.OUTPUT);
+    }
+  }, [isInterviewer, tab]);
 
   const renderBody = (): string | ReactElement => {
     switch (tab) {

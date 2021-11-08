@@ -2,6 +2,7 @@ package socket
 
 import (
 	"code2gather.com/room/src/server/util"
+	"encoding/base64"
 	"log"
 
 	"code2gather.com/room/src/models"
@@ -67,6 +68,9 @@ func (m *Manager) Run() {
 				}
 			}
 		case message := <-m.broadcast:
+			b64Bytes := make([]byte, base64.StdEncoding.EncodedLen(len(message.message)))
+			base64.StdEncoding.Encode(b64Bytes, message.message)
+			log.Println(string(b64Bytes))
 			if _, exists := m.rooms[message.roomId]; !exists {
 				continue
 			}
@@ -76,7 +80,7 @@ func (m *Manager) Run() {
 				}
 				log.Printf("Broadcast to %s", client.uid)
 				select {
-				case client.send <- message.message:
+				case client.send <- b64Bytes:
 				default:
 					close(client.send)
 					delete(m.clients, client)

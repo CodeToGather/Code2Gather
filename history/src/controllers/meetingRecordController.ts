@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import meetingRecordService from 'services/MeetingRecordService';
 import { ErrorResponse } from 'types/api';
+import { Difficulty, Language } from 'types/crud/enums';
 import { MeetingRecordCreateData } from 'types/crud/meetingRecord';
 import { AuthorizationError } from 'types/error';
 
@@ -23,7 +24,17 @@ export async function createMeetingRecord(
   try {
     const meetingRecordCreateData = request.body;
     const createdMeetingRecord = await meetingRecordService.create(
-      meetingRecordCreateData,
+      {
+        ...meetingRecordCreateData,
+        duration: meetingRecordCreateData.duration ?? 0,
+        questionDifficulty:
+          meetingRecordCreateData.questionDifficulty ?? Difficulty.EASY,
+        language: meetingRecordCreateData.language ?? Language.PYTHON,
+        codeWritten: meetingRecordCreateData.codeWritten ?? '',
+        isSolved: meetingRecordCreateData.isSolved ?? false,
+        feedbackToInterviewee:
+          meetingRecordCreateData.feedbackToInterviewee ?? '',
+      },
       user,
     );
     response.status(StatusCodes.OK).json(createdMeetingRecord);

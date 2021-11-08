@@ -1,6 +1,7 @@
 package socket
 
 import (
+	"encoding/base64"
 	"log"
 
 	"code2gather.com/room/src/models"
@@ -96,21 +97,21 @@ func leaveRoomRequestHandler(c *Client, request *models.LeaveRoomRequest) {
 	err := handler.Process()
 	if err != nil {
 		log.Println(err)
+	} else if handler.IsRequestAuthorized() {
+		c.leaveRoom()
 	}
 
 	// Send response to requesting user only
 	sendResponseToRequestedClient(handler.GetResponse(), c)
-
-	if err != nil && handler.IsRequestAuthorized() {
-		c.unregisterFromRoom()
-		c.leaveRoom()
-	}
 }
 
 func sendResponseToRequestedClient(response proto.Message, c *Client) {
 	log.Println(response)
 	respBytes, _ := util.MarshalToBytes(response)
-	c.send <- respBytes
+	b64Bytes := make([]byte, base64.StdEncoding.EncodedLen(len(respBytes)))
+	base64.StdEncoding.Encode(b64Bytes, respBytes)
+	log.Println(string(b64Bytes))
+	c.send <- b64Bytes
 }
 
 func broadcastResponseToRoom(response proto.Message, rid string, c *Client) {

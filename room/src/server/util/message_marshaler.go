@@ -12,7 +12,7 @@ func UnmarshalRequestBody(request *http.Request, message proto.Message) error {
 }
 
 func MarshalToJson(message proto.Message) ([]byte, error) {
-	m := jsonpb.Marshaler{}
+	m := jsonpb.Marshaler{EmitDefaults: true}
 	json, err := m.MarshalToString(message)
 	if err != nil {
 		return nil, err

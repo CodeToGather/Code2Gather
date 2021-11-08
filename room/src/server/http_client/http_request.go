@@ -54,13 +54,17 @@ func GetUserInfo(uid string) (user *models.User, err error) {
 }
 
 func SendMeetingRecord(meetingRecord *models.CreateMeetingRequest) error {
+	log.Println("Sending Meeting Record to History Service")
+
 	data, err := util.MarshalToJson(meetingRecord)
+	log.Println(string(data))
+
 	if err != nil {
 		log.Println(err)
 		return err
 	}
 	// TODO: handle error response from history service
-	_, err = httpClient.Post(HistoryBaseUrl+"/meeting", data)
+	_, err = httpClient.PostWithAuthHeader(HistoryBaseUrl+"/meeting", data, meetingRecord.InterviewerId)
 	if err != nil {
 		log.Println(err)
 		return err
@@ -69,13 +73,17 @@ func SendMeetingRecord(meetingRecord *models.CreateMeetingRequest) error {
 }
 
 func SendRating(rating *models.CreateRatingRequest) error {
+	log.Println("Sending Rating to History Service")
+
 	data, err := util.MarshalToJson(rating)
+	log.Println(string(data))
+
 	if err != nil {
 		log.Println(err)
 		return err
 	}
 	// TODO: handle error response from history service
-	_, err = httpClient.Post(HistoryBaseUrl+"/rating", data)
+	_, err = httpClient.PostWithAuthHeader(HistoryBaseUrl+"/rating", data, rating.RatingUserId)
 	if err != nil {
 		log.Println(err)
 		return err
