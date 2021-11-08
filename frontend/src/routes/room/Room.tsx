@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CodeEditor from 'components/codeEditor';
 import LanguageDropdown from 'components/languageDropdown';
@@ -24,7 +24,10 @@ import {
   leaveRoomService,
   submitRating,
 } from 'lib/roomSocketService';
-import { RatingSubmissionState } from 'reducers/roomDux';
+import {
+  incrementCheckRoomIdCounter,
+  RatingSubmissionState,
+} from 'reducers/roomDux';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 import { useWindowDimensions } from 'utils/hookUtils';
@@ -58,6 +61,7 @@ const Room: FC = () => {
     partnerHasLeft,
     ratingSubmissionStatus,
     shouldKickUser,
+    checkRoomIdCounter,
   } = useSelector((state: RootState) => state.room);
   const [isPanelShown, setIsPanelShown] = useState(isInterviewer);
   const [isEndingTurn, setIsEndingTurn] = useState(false);
@@ -65,6 +69,7 @@ const Room: FC = () => {
   const [notes, setNotes] = useState('');
   const { height, width } = useWindowDimensions();
   const roomId = roomIdUtils.getRoomId();
+  const dispatch = useDispatch();
 
   const isInterviewComplete = turnsCompleted === 2;
   const code = doc.text.toString();
@@ -87,7 +92,7 @@ const Room: FC = () => {
     joinCodingService(codingSocket, roomId);
     joinRoomService(roomSocket, roomId);
     console.log('Joined sockets');
-  }, [codingSocket, roomId, roomSocket]);
+  }, [codingSocket, roomId, roomSocket, checkRoomIdCounter]);
 
   useEffect(() => {
     if (shouldShowOutputPanel) {
@@ -115,8 +120,9 @@ const Room: FC = () => {
       console.log('Kicking user');
       // We don't leave room because this user did not join the room in the first place
       roomIdUtils.removeRoomId();
+      dispatch(incrementCheckRoomIdCounter());
     }
-  }, [shouldKickUser]);
+  }, [shouldKickUser, dispatch]);
 
   const onCodeChange = (code: string): void => {
     updateCode(codingSocket, doc, code);

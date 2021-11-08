@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import store from 'app/store';
 import {
+  incrementCheckRoomIdCounter,
   partnerHasJoinedRoom,
   RatingSubmissionState,
   setPartnerHasDisconnected,
@@ -188,6 +189,7 @@ export const initializeSocketForRoom = (socket: WebSocket): void => {
       }
       console.log('Leave room response success');
       roomIdUtils.removeRoomId();
+      store.dispatch(incrementCheckRoomIdCounter());
     } else if (message.leave_room_broadcast) {
       console.log('Leave room broadcast');
       store.dispatch(setPartnerHasLeft(true));

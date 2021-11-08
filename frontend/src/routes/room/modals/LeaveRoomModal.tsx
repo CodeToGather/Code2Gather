@@ -23,7 +23,11 @@ const LeaveRoomModal: FC<Props> = ({ onCancel, onLeave }) => {
         both you and the other person.
       </Typography>
       <div className="modal-buttons">
-        <button className="border-button" onClick={onCancel}>
+        <button
+          className="border-button"
+          disabled={isLeaving}
+          onClick={onCancel}
+        >
           <Typography size="regular">Cancel</Typography>
         </button>
         <button

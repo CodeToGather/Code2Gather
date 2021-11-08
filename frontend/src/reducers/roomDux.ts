@@ -21,6 +21,7 @@ export interface RoomDux {
   partnerHasLeft: boolean;
   ratingSubmissionStatus: RatingSubmissionState;
   errorMessage: string;
+  checkRoomIdCounter: number; // Is basically a counter that we'll keep incrementing in order to trigger room's useEffect
 }
 
 const initialState: RoomDux = {
@@ -36,6 +37,7 @@ const initialState: RoomDux = {
   partnerHasLeft: false,
   ratingSubmissionStatus: RatingSubmissionState.NOT_SUBMITTING,
   errorMessage: '',
+  checkRoomIdCounter: 0,
 };
 
 const room = createSlice({
@@ -108,6 +110,9 @@ const room = createSlice({
     ): void => {
       state.ratingSubmissionStatus = action.payload;
     },
+    incrementCheckRoomIdCounter: (state): void => {
+      state.checkRoomIdCounter += 1;
+    },
     resetState: (state): void => {
       state.roomId = '';
       state.shouldKickUser = false;
@@ -120,6 +125,7 @@ const room = createSlice({
       state.partnerHasLeft = false;
       state.ratingSubmissionStatus = RatingSubmissionState.NOT_SUBMITTING;
       state.errorMessage = '';
+      state.checkRoomIdCounter = 0;
     },
   },
 });
@@ -135,6 +141,7 @@ export const {
   setErrorMessage,
   setTurnsCompleted,
   setRatingSubmissionStatus,
+  incrementCheckRoomIdCounter,
   resetState,
 } = room.actions;
 
