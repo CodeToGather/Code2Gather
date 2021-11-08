@@ -157,8 +157,7 @@ const VideoCollection: FC<Props> = ({ partnerUsername, roomId }) => {
       setHasInitialised(true);
       init(roomId);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roomId, client, ready, tracks]);
+  }, [roomId, client, ready, tracks, hasInitialised]);
 
   if (!client || !user) {
     return null;
@@ -172,21 +171,19 @@ const VideoCollection: FC<Props> = ({ partnerUsername, roomId }) => {
             <AgoraVideoPlayer className="video" videoTrack={tracks[1]} />
             <Controls tracks={tracks} username={user.githubUsername} />
           </div>
-          {users.length > 0 ? (
-            users[0].videoTrack ? (
-              <div className="video-panel">
-                <AgoraVideoPlayer
-                  className="video"
-                  videoTrack={users[0].videoTrack}
-                />
-                <Controls username={partnerUsername} />
-              </div>
-            ) : (
-              <div className="video-panel">
-                <Controls username={partnerUsername} />
-              </div>
-            )
-          ) : null}
+          {users.length > 0 && users[0].videoTrack ? (
+            <div className="video-panel">
+              <AgoraVideoPlayer
+                className="video"
+                videoTrack={users[0].videoTrack}
+              />
+              <Controls username={partnerUsername} />
+            </div>
+          ) : (
+            <div className="video-panel">
+              <Controls username={partnerUsername} />
+            </div>
+          )}
         </>
       )}
     </div>
