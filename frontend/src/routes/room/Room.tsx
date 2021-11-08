@@ -53,6 +53,7 @@ const Room: FC = () => {
     isExecutingCode,
     codeExecutionOutput,
     shouldShowOutputPanel,
+    hasNewExecutionOutput,
   } = useSelector((state: RootState) => state.coding);
   const {
     isInterviewer,
@@ -290,6 +291,7 @@ const Room: FC = () => {
         </div>
         {isPanelShown ? (
           <RightPanel
+            hasNewExecutionOutput={hasNewExecutionOutput}
             isExecutingCode={isExecutingCode}
             isInterviewer={isInterviewer}
             notes={notes}

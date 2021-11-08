@@ -1,7 +1,9 @@
 import { FC, ReactElement, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import Tabs from 'components/tabs';
 import Typography from 'components/typography';
+import { setHasNewExecutionOutputToFalse } from 'reducers/codingDux';
 import { Question } from 'types/crud/question';
 
 import CodeOutput from './CodeOutput';
@@ -23,6 +25,7 @@ interface Props {
   onChangeNotes: (notes: string) => void;
   output: string;
   isExecutingCode: boolean;
+  hasNewExecutionOutput: boolean;
   onClosePanel: () => void;
 }
 
@@ -56,11 +59,13 @@ const RightPanel: FC<Props> = ({
   notes,
   onChangeNotes,
   question,
+  hasNewExecutionOutput,
 }) => {
   const [tab, setTab] = useState(
     isInterviewer ? RightPanelTab.QUESTION : RightPanelTab.OUTPUT,
   );
   const [showBadge, setShowBadge] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isInterviewer && tab !== RightPanelTab.OUTPUT) {
@@ -69,10 +74,14 @@ const RightPanel: FC<Props> = ({
   }, [isInterviewer, tab]);
 
   useEffect(() => {
-    if (!isExecutingCode && isInterviewer && tab !== RightPanelTab.OUTPUT) {
+    if (
+      hasNewExecutionOutput &&
+      isInterviewer &&
+      tab !== RightPanelTab.OUTPUT
+    ) {
       setShowBadge(true);
     }
-  }, [isExecutingCode, isInterviewer, tab]);
+  }, [hasNewExecutionOutput, isInterviewer, tab]);
 
   const renderBody = (): string | ReactElement => {
     switch (tab) {
@@ -94,6 +103,7 @@ const RightPanel: FC<Props> = ({
               setTab(newTab);
               if (newTab === RightPanelTab.OUTPUT) {
                 setShowBadge(false);
+                dispatch(setHasNewExecutionOutputToFalse());
               }
             }}
             selected={tab}
