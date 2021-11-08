@@ -32,6 +32,7 @@ const RoomSocketProvider: React.FunctionComponent = (props) => {
       console.log('Room socket connected!');
     };
     initializeSocketForRoom(roomSocket);
+    keepAlive();
     return (): void => {
       roomSocket.close();
     };
