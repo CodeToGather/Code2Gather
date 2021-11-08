@@ -91,23 +91,26 @@ export const handleFindPair = (
     const [user1, user2] = result;
     const roomId = await createRoom(user1.uid, user2.uid, difficulty).catch(
       () => {
-        console.log('Failed to create room despite match.');
-        // Tell both users that an error occurred.
-        // Reason: If we slot them back in again, they will just match again and pass away.
-        io.to(user1.uid)
-          .to(user2.uid)
-          .emit(
-            ERROR_FIND_PAIR,
-            "We found someone for you, but we couldn't get you a room! Please try again later.",
-          );
-        // Clear both users' timeout (although only the other user will have it)
-        UidCallbackMap.stopAndRemove(user1.uid);
-        UidCallbackMap.stopAndRemove(user2.uid);
+        // no-op, consume the error
       },
     );
+
     if (!roomId) {
+      console.log('Failed to create room despite match.');
+      // Tell both users that an error occurred.
+      // Reason: If we slot them back in again, they will just match again and pass away.
+      io.to(user1.uid)
+        .to(user2.uid)
+        .emit(
+          ERROR_FIND_PAIR,
+          "We found someone for you, but we couldn't get you a room! Please try again later.",
+        );
+      // Clear both users' timeout (although only the other user will have it)
+      UidCallbackMap.stopAndRemove(user1.uid);
+      UidCallbackMap.stopAndRemove(user2.uid);
       return;
     }
+
     UidCallbackMap.stopAndRemove(user1.uid);
     UidCallbackMap.stopAndRemove(user2.uid);
     io.to(user1.uid).emit(RES_FOUND_PAIR, {
