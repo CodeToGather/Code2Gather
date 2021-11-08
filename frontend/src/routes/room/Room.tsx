@@ -27,6 +27,7 @@ import {
 import {
   incrementCheckRoomIdCounter,
   RatingSubmissionState,
+  setShouldClearCode,
 } from 'reducers/roomDux';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
@@ -62,6 +63,7 @@ const Room: FC = () => {
     ratingSubmissionStatus,
     shouldKickUser,
     checkRoomIdCounter,
+    shouldClearCode,
   } = useSelector((state: RootState) => state.room);
   const [isPanelShown, setIsPanelShown] = useState(isInterviewer);
   const [isEndingTurn, setIsEndingTurn] = useState(false);
@@ -78,7 +80,7 @@ const Room: FC = () => {
     console.log('Exiting room via exitRoom');
     leaveCodingService(codingSocket);
     leaveRoomService(roomSocket, roomId!);
-  }, [codingSocket, roomSocket, roomId]);
+  }, [codingSocket, roomId, roomSocket]);
 
   useEffect(() => {
     // This is the mechanism that we will use to leave the room
@@ -92,7 +94,7 @@ const Room: FC = () => {
     joinCodingService(codingSocket, roomId);
     joinRoomService(roomSocket, roomId);
     console.log('Joined sockets');
-  }, [codingSocket, roomId, roomSocket, checkRoomIdCounter]);
+  }, [checkRoomIdCounter, codingSocket, roomId, roomSocket]);
 
   useEffect(() => {
     if (shouldShowOutputPanel) {
@@ -113,7 +115,7 @@ const Room: FC = () => {
       console.log('Rating submitted');
       exitRoom();
     }
-  }, [ratingSubmissionStatus, exitRoom]);
+  }, [exitRoom, ratingSubmissionStatus]);
 
   useEffect(() => {
     if (shouldKickUser) {
@@ -122,7 +124,14 @@ const Room: FC = () => {
       roomIdUtils.removeRoomId();
       dispatch(incrementCheckRoomIdCounter());
     }
-  }, [shouldKickUser, dispatch]);
+  }, [dispatch, shouldKickUser]);
+
+  useEffect(() => {
+    if (shouldClearCode) {
+      updateCode(codingSocket, doc, '');
+      dispatch(setShouldClearCode(false));
+    }
+  }, [codingSocket, dispatch, doc, shouldClearCode]);
 
   const onCodeChange = (code: string): void => {
     updateCode(codingSocket, doc, code);

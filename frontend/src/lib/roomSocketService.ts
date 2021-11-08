@@ -8,6 +8,7 @@ import {
   setPartnerHasLeft,
   setRatingSubmissionStatus,
   setRoomInfo,
+  setShouldClearCode,
   setShouldKickUser,
   setTurnsCompleted,
   switchRoles,
@@ -158,6 +159,7 @@ export const initializeSocketForRoom = (socket: WebSocket): void => {
               difficulty: question.difficulty ?? Difficulty.EASY,
             }),
           );
+          store.dispatch(setShouldClearCode(true));
         });
       } else {
         console.log('No more turns left');
