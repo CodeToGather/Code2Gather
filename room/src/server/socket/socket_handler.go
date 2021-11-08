@@ -120,12 +120,9 @@ func sendResponseToRequestedClient(response proto.Message, c *Client) {
 func broadcastResponseToRoom(response proto.Message, rid string, c *Client) {
 	log.Println(response)
 	respBytes, _ := util.MarshalToBytes(response)
-	b64Bytes := make([]byte, base64.StdEncoding.EncodedLen(len(respBytes)))
-	base64.StdEncoding.Encode(b64Bytes, respBytes)
-	log.Println(string(b64Bytes))
 	c.manager.broadcast <- RoomBroadcastMessage{
 		roomId:  rid,
-		message: b64Bytes,
+		message: respBytes,
 	}
 }
 
