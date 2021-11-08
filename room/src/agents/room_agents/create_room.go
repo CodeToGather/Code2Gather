@@ -2,6 +2,7 @@ package room_agents
 
 import (
 	"log"
+	"math/rand"
 
 	"code2gather.com/room/src/agents/question_agents"
 	"code2gather.com/room/src/infra/db"
@@ -10,8 +11,15 @@ import (
 
 func CreateRoom(uid1 string, uid2 string, difficulty models.QuestionDifficulty) (*models.Room, error) {
 	newRoom := models.NewRoom()
-	newRoom.Uid1 = uid1
-	newRoom.Uid2 = uid2
+
+	randNumber := rand.Intn(2)
+	if randNumber == 0 {
+		newRoom.Uid1 = uid1
+		newRoom.Uid2 = uid2
+	} else {
+		newRoom.Uid1 = uid2
+		newRoom.Uid2 = uid1
+	}
 
 	question1, question2, err := question_agents.GetRandomQuestionsWithDifficulty(difficulty)
 
