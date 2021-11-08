@@ -111,17 +111,21 @@ func leaveRoomRequestHandler(c *Client, request *models.LeaveRoomRequest) {
 func sendResponseToRequestedClient(response proto.Message, c *Client) {
 	log.Println(response)
 	respBytes, _ := util.MarshalToBytes(response)
-	b64 := base64.StdEncoding.EncodeToString(respBytes)
-	log.Println(b64)
-	c.send <- []byte(b64)
+	b64Bytes := make([]byte, base64.StdEncoding.EncodedLen(len(respBytes)))
+	base64.StdEncoding.Encode(b64Bytes, respBytes)
+	log.Println(string(b64Bytes))
+	c.send <- b64Bytes
 }
 
 func broadcastResponseToRoom(response proto.Message, rid string, c *Client) {
 	log.Println(response)
 	respBytes, _ := util.MarshalToBytes(response)
+	b64Bytes := make([]byte, base64.StdEncoding.EncodedLen(len(respBytes)))
+	base64.StdEncoding.Encode(b64Bytes, respBytes)
+	log.Println(string(b64Bytes))
 	c.manager.broadcast <- RoomBroadcastMessage{
 		roomId:  rid,
-		message: respBytes,
+		message: b64Bytes,
 	}
 }
 
