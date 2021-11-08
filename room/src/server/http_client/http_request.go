@@ -74,9 +74,10 @@ func SendMeetingRecord(meetingRecord *models.CreateMeetingRequest) error {
 
 func SendRating(rating *models.CreateRatingRequest) error {
 	log.Println("Sending Rating to History Service")
-	log.Println(rating)
 
 	data, err := util.MarshalToJson(rating)
+	log.Println(string(data))
+
 	if err != nil {
 		log.Println(err)
 		return err
