@@ -50,7 +50,7 @@ func (p *CompleteQuestionProcessor) SendMeetingRecord() error {
 		Duration:              int32(duration),
 		QuestionId:            p.currentQuestion.Id,
 		QuestionTitle:         p.currentQuestion.Title,
-		Difficulty:            p.currentQuestion.Difficulty,
+		QuestionDifficulty:    p.currentQuestion.Difficulty,
 		Language:              p.request.Language,
 		CodeWritten:           p.request.CodeWritten,
 		IsSolved:              p.request.IsSolved,
