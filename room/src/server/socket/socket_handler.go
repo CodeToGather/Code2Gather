@@ -103,8 +103,8 @@ func leaveRoomRequestHandler(c *Client, request *models.LeaveRoomRequest) {
 	sendResponseToRequestedClient(handler.GetResponse(), c)
 
 	if err != nil && handler.IsRequestAuthorized() {
-		c.unregisterFromRoom()
 		c.leaveRoom()
+		c.unregisterFromRoom()
 	}
 }
 
