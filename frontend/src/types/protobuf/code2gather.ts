@@ -1274,7 +1274,6 @@ export namespace code2gather {
             rating?: number;
             rating_user_id?: string;
             rated_user_id?: string;
-            room_id?: string;
           },
     ) {
       super();
@@ -1296,9 +1295,6 @@ export namespace code2gather {
         if ('rated_user_id' in data && data.rated_user_id != undefined) {
           this.rated_user_id = data.rated_user_id;
         }
-        if ('room_id' in data && data.room_id != undefined) {
-          this.room_id = data.room_id;
-        }
       }
     }
     get rating() {
@@ -1319,17 +1315,10 @@ export namespace code2gather {
     set rated_user_id(value: string) {
       pb_1.Message.setField(this, 3, value);
     }
-    get room_id() {
-      return pb_1.Message.getField(this, 4) as string;
-    }
-    set room_id(value: string) {
-      pb_1.Message.setField(this, 4, value);
-    }
     static fromObject(data: {
       rating?: number;
       rating_user_id?: string;
       rated_user_id?: string;
-      room_id?: string;
     }) {
       const message = new CreateRatingRequest({});
       if (data.rating != null) {
@@ -1341,9 +1330,6 @@ export namespace code2gather {
       if (data.rated_user_id != null) {
         message.rated_user_id = data.rated_user_id;
       }
-      if (data.room_id != null) {
-        message.room_id = data.room_id;
-      }
       return message;
     }
     toObject() {
@@ -1351,7 +1337,6 @@ export namespace code2gather {
         rating?: number;
         rating_user_id?: string;
         rated_user_id?: string;
-        room_id?: string;
       } = {};
       if (this.rating != null) {
         data.rating = this.rating;
@@ -1361,9 +1346,6 @@ export namespace code2gather {
       }
       if (this.rated_user_id != null) {
         data.rated_user_id = this.rated_user_id;
-      }
-      if (this.room_id != null) {
-        data.room_id = this.room_id;
       }
       return data;
     }
@@ -1376,8 +1358,6 @@ export namespace code2gather {
         writer.writeString(2, this.rating_user_id);
       if (typeof this.rated_user_id === 'string' && this.rated_user_id.length)
         writer.writeString(3, this.rated_user_id);
-      if (typeof this.room_id === 'string' && this.room_id.length)
-        writer.writeString(4, this.room_id);
       if (!w) return writer.getResultBuffer();
     }
     static deserialize(
@@ -1399,9 +1379,6 @@ export namespace code2gather {
             break;
           case 3:
             message.rated_user_id = reader.readString();
-            break;
-          case 4:
-            message.room_id = reader.readString();
             break;
           default:
             reader.skipField();
