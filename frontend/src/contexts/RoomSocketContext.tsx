@@ -36,7 +36,7 @@ const RoomSocketProvider: React.FunctionComponent = (props) => {
       roomSocket.close();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keepAlive]);
+  }, [roomSocket]);
 
   return <RoomSocketContext.Provider value={{ roomSocket }} {...props} />;
 };
