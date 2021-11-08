@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { initializeSocketForRoom } from 'lib/roomSocketService';
 import tokenUtils from 'utils/tokenUtils';
@@ -13,30 +13,29 @@ const RoomSocketContext = React.createContext<
 >(undefined);
 
 const RoomSocketProvider: React.FunctionComponent = (props) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const roomSocket = new WebSocket(
     `${process.env.REACT_APP_BACKEND_WS_API}/roomws/${tokenUtils.getToken()}`,
   );
   roomSocket.binaryType = 'arraybuffer';
 
-  const keepAlive = (): void => {
+  const keepAlive = useCallback((): void => {
     const timeout = 5000;
     if (roomSocket.readyState == WebSocket.OPEN) {
       roomSocket.send('');
     }
     setTimeout(keepAlive, timeout);
-  };
+  }, [roomSocket]);
 
   useEffect(() => {
     roomSocket.onopen = (_event): void => {
       console.log('Room socket connected!');
     };
     initializeSocketForRoom(roomSocket);
-    keepAlive();
     return (): void => {
       roomSocket.close();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roomSocket]);
+  }, [keepAlive, roomSocket]);
 
   return <RoomSocketContext.Provider value={{ roomSocket }} {...props} />;
 };
