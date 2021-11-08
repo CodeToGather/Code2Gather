@@ -122,11 +122,6 @@ enum ErrorCode {
   UNAUTHORIZED_USER = 2;
 }
 
-message ErrorResponse {
-  int32 error_code = 1;
-  string message = 2;
-}
-
 message ClientRequest {
   oneof request {
     JoinRoomRequest join_room_request = 1;
@@ -145,7 +140,13 @@ message RoomServiceToClientMessage {
     SubmitRatingResponse submit_rating_response = 5;
     LeaveRoomResponse leave_room_response = 6;
     LeaveRoomBroadcast leave_room_broadcast = 7;
+    ErrorResponse error_response = 8;
   }
+}
+
+message ErrorResponse {
+  int32 error_code = 1;
+  string message = 2;
 }
 
 message JoinRoomRequest {
