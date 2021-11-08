@@ -31,7 +31,7 @@ import {
 } from 'reducers/roomDux';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
-import { useWindowDimensions } from 'utils/hookUtils';
+import { useLocalStorage, useWindowDimensions } from 'utils/hookUtils';
 import roomIdUtils from 'utils/roomIdUtils';
 
 import DisconnectedModal from './modals/DisconnectedModal';
@@ -70,7 +70,7 @@ const Room: FC = () => {
   const [isEndingTurn, setIsEndingTurn] = useState(false);
   const [isLeavingRoom, setIsLeavingRoom] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(true);
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useLocalStorage('notes', '');
   const { height, width } = useWindowDimensions();
   const roomId = roomIdUtils.getRoomId();
   const dispatch = useDispatch();
@@ -80,9 +80,10 @@ const Room: FC = () => {
 
   const exitRoom = useCallback((): void => {
     console.log('Exiting room via exitRoom');
+    setNotes('');
     leaveCodingService(codingSocket);
     leaveRoomService(roomSocket, roomId!);
-  }, [codingSocket, roomId, roomSocket]);
+  }, [codingSocket, setNotes, roomId, roomSocket]);
 
   useEffect(() => {
     // This is the mechanism that we will use to leave the room
@@ -127,10 +128,11 @@ const Room: FC = () => {
     if (shouldKickUser) {
       console.log('Kicking user');
       // We don't leave room because this user did not join the room in the first place
+      setNotes('');
       roomIdUtils.removeRoomId();
       dispatch(incrementCheckRoomIdCounter());
     }
-  }, [dispatch, shouldKickUser]);
+  }, [dispatch, setNotes, shouldKickUser]);
 
   useEffect(() => {
     if (shouldClearCode) {
