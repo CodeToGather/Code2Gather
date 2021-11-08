@@ -1,11 +1,12 @@
 package room_agents
 
 import (
+	"log"
+	"math/rand"
+
 	"code2gather.com/room/src/agents/question_agents"
 	"code2gather.com/room/src/infra/db"
 	"code2gather.com/room/src/models"
-	"log"
-	"math/rand"
 )
 
 func CreateRoom(uid1 string, uid2 string, difficulty models.QuestionDifficulty) (*models.Room, error) {
