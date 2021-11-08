@@ -39,7 +39,6 @@ func (p *SubmitRatingProcessor) SendMeetingRecord() error {
 		Rating:       p.request.GetRating(),
 		RatingUserId: p.uid,
 		RatedUserId:  p.ratedUid,
-		RoomId:       p.rid,
 	}
 	err := http_client.SendRating(rating)
 	return err
