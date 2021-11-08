@@ -5,7 +5,7 @@ metadata:
   namespace: default
 data:
   NODE_ENV: development
-  PORT: "3000"
+  PORT: '3000'
   AUTH_URL: http://auth-service:3000
   CODE_EXECUTOR_URL: http://code-executor-service:3000
   CODING_URL: http://coding-service:3000
