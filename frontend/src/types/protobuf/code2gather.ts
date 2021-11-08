@@ -8,7 +8,6 @@
  * buymeacoffee: https://www.buymeacoffee.com/thesayyn
  *  */
 import * as pb_1 from 'google-protobuf';
-
 export namespace code2gather {
   export enum QuestionDifficulty {
     EASY = 0,
@@ -982,7 +981,7 @@ export namespace code2gather {
             duration?: number;
             question_id?: string;
             question_title?: string;
-            difficulty?: QuestionDifficulty;
+            question_difficulty?: QuestionDifficulty;
             language?: Language;
             code_written?: string;
             is_solved?: boolean;
@@ -1014,8 +1013,11 @@ export namespace code2gather {
         if ('question_title' in data && data.question_title != undefined) {
           this.question_title = data.question_title;
         }
-        if ('difficulty' in data && data.difficulty != undefined) {
-          this.difficulty = data.difficulty;
+        if (
+          'question_difficulty' in data &&
+          data.question_difficulty != undefined
+        ) {
+          this.question_difficulty = data.question_difficulty;
         }
         if ('language' in data && data.language != undefined) {
           this.language = data.language;
@@ -1064,10 +1066,10 @@ export namespace code2gather {
     set question_title(value: string) {
       pb_1.Message.setField(this, 5, value);
     }
-    get difficulty() {
+    get question_difficulty() {
       return pb_1.Message.getField(this, 6) as QuestionDifficulty;
     }
-    set difficulty(value: QuestionDifficulty) {
+    set question_difficulty(value: QuestionDifficulty) {
       pb_1.Message.setField(this, 6, value);
     }
     get language() {
@@ -1100,7 +1102,7 @@ export namespace code2gather {
       duration?: number;
       question_id?: string;
       question_title?: string;
-      difficulty?: QuestionDifficulty;
+      question_difficulty?: QuestionDifficulty;
       language?: Language;
       code_written?: string;
       is_solved?: boolean;
@@ -1122,8 +1124,8 @@ export namespace code2gather {
       if (data.question_title != null) {
         message.question_title = data.question_title;
       }
-      if (data.difficulty != null) {
-        message.difficulty = data.difficulty;
+      if (data.question_difficulty != null) {
+        message.question_difficulty = data.question_difficulty;
       }
       if (data.language != null) {
         message.language = data.language;
@@ -1146,7 +1148,7 @@ export namespace code2gather {
         duration?: number;
         question_id?: string;
         question_title?: string;
-        difficulty?: QuestionDifficulty;
+        question_difficulty?: QuestionDifficulty;
         language?: Language;
         code_written?: string;
         is_solved?: boolean;
@@ -1167,8 +1169,8 @@ export namespace code2gather {
       if (this.question_title != null) {
         data.question_title = this.question_title;
       }
-      if (this.difficulty != null) {
-        data.difficulty = this.difficulty;
+      if (this.question_difficulty != null) {
+        data.question_difficulty = this.question_difficulty;
       }
       if (this.language != null) {
         data.language = this.language;
@@ -1197,7 +1199,8 @@ export namespace code2gather {
         writer.writeString(4, this.question_id);
       if (typeof this.question_title === 'string' && this.question_title.length)
         writer.writeString(5, this.question_title);
-      if (this.difficulty !== undefined) writer.writeEnum(6, this.difficulty);
+      if (this.question_difficulty !== undefined)
+        writer.writeEnum(6, this.question_difficulty);
       if (this.language !== undefined) writer.writeEnum(7, this.language);
       if (typeof this.code_written === 'string' && this.code_written.length)
         writer.writeString(8, this.code_written);
@@ -1236,7 +1239,7 @@ export namespace code2gather {
             message.question_title = reader.readString();
             break;
           case 6:
-            message.difficulty = reader.readEnum();
+            message.question_difficulty = reader.readEnum();
             break;
           case 7:
             message.language = reader.readEnum();
