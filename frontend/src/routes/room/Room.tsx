@@ -41,9 +41,13 @@ import './Room.scss';
 const Room: FC = () => {
   const { codingSocket } = useCodingSocket();
   const { roomSocket } = useRoomSocket();
-  const { doc, language, isExecutingCode, codeExecutionOutput } = useSelector(
-    (state: RootState) => state.coding,
-  );
+  const {
+    doc,
+    language,
+    isExecutingCode,
+    codeExecutionOutput,
+    shouldShowOutputPanel,
+  } = useSelector((state: RootState) => state.coding);
   const {
     isInterviewer,
     question,
@@ -78,6 +82,12 @@ const Room: FC = () => {
     //   leaveRoomService(roomSocket, roomId);
     // };
   }, [codingSocket, roomId, roomSocket]);
+
+  useEffect(() => {
+    if (shouldShowOutputPanel) {
+      setIsPanelShown(true);
+    }
+  }, [shouldShowOutputPanel]);
 
   // useEffect(() => {
   //   if (ratingSubmissionStatus === RatingSubmissionState.SUBMITTED) {
