@@ -6,7 +6,7 @@ import (
 )
 
 func GetQuestionById(id string) (*models.Question, error) {
-	questionDaoImpl := db.NewQuestionDaoImpl()
+	questionDaoImpl := db.NewQuestionRepositoryImpl()
 	question, err := questionDaoImpl.GetQuestionById(id)
 	if err != nil {
 		return nil, err

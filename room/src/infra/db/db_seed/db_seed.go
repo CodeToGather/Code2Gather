@@ -14,7 +14,7 @@ func SeedDB() (err error) {
 	}
 	defer db.CloseDBConnection()
 
-	questionManager := db.NewQuestionDaoImpl()
+	questionManager := db.NewQuestionRepositoryImpl()
 
 	err = questionManager.ClearQuestions()
 	if err != nil {
