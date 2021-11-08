@@ -46,16 +46,16 @@ const LeaderboardRow: FC<Props> = ({
       </div>
       <div className="leaderboard-row__right">
         <Statistic
-          difficulty={Difficulty.EASY}
-          numQuestions={numEasyQuestions}
+          difficulty={Difficulty.HARD}
+          numQuestions={numHardQuestions}
         />
         <Statistic
           difficulty={Difficulty.MEDIUM}
           numQuestions={numMediumQuestions}
         />
         <Statistic
-          difficulty={Difficulty.HARD}
-          numQuestions={numHardQuestions}
+          difficulty={Difficulty.EASY}
+          numQuestions={numEasyQuestions}
         />
       </div>
     </button>
