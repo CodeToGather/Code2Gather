@@ -95,9 +95,17 @@ const Room: FC = () => {
     }
     console.log('Joining sockets');
     joinCodingService(codingSocket, roomId);
-    joinRoomService(roomSocket, roomId);
+    if (roomSocket.readyState === WebSocket.OPEN) {
+      joinRoomService(roomSocket, roomId);
+    }
     console.log('Joined sockets');
-  }, [checkRoomIdCounter, codingSocket, roomId, roomSocket]);
+  }, [
+    checkRoomIdCounter,
+    codingSocket,
+    roomId,
+    roomSocket,
+    roomSocket.readyState,
+  ]);
 
   useEffect(() => {
     setShowHelpModal(true);
