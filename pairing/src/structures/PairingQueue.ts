@@ -30,6 +30,7 @@ class PairingQueue {
     const index = queue.findIndex(
       (other) =>
         user.rating.count < 5 ||
+        other.rating.count < 5 ||
         Math.abs(other.rating.average - user.rating.average) <= 0.5,
     );
 
