@@ -97,15 +97,12 @@ func leaveRoomRequestHandler(c *Client, request *models.LeaveRoomRequest) {
 	err := handler.Process()
 	if err != nil {
 		log.Println(err)
+	} else if handler.IsRequestAuthorized() {
+		c.leaveRoom()
 	}
 
 	// Send response to requesting user only
 	sendResponseToRequestedClient(handler.GetResponse(), c)
-
-	if err != nil && handler.IsRequestAuthorized() {
-		c.leaveRoom()
-		c.unregisterFromRoom()
-	}
 }
 
 func sendResponseToRequestedClient(response proto.Message, c *Client) {
