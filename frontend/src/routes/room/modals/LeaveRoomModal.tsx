@@ -1,5 +1,6 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
+import LoadingAnimation from 'components/loading/LoadingAnimation';
 import Typography from 'components/typography';
 
 import './Modals.scss';
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const LeaveRoomModal: FC<Props> = ({ onCancel, onLeave }) => {
+  const [isLeaving, setIsLeaving] = useState(false);
+
   return (
     <>
       <Typography className="is-bold" size="large">
@@ -23,8 +26,17 @@ const LeaveRoomModal: FC<Props> = ({ onCancel, onLeave }) => {
         <button className="border-button" onClick={onCancel}>
           <Typography size="regular">Cancel</Typography>
         </button>
-        <button className="border-button is-danger" onClick={onLeave}>
-          <Typography size="regular">Leave</Typography>
+        <button
+          className="border-button is-danger"
+          onClick={(): void => {
+            setIsLeaving(true);
+            onLeave();
+          }}
+        >
+          <Typography className="modal-loading-button-text" size="regular">
+            {isLeaving ? 'Leaving' : 'Leave'}{' '}
+            {isLeaving ? <LoadingAnimation height={0.7} /> : null}
+          </Typography>
         </button>
       </div>
     </>

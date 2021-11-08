@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { FC, ReactElement, useEffect, useState } from 'react';
+import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import CodeEditor from 'components/codeEditor';
@@ -23,7 +23,7 @@ import {
   leaveRoomService,
   submitRating,
 } from 'lib/roomSocketService';
-// import { RatingSubmissionState } from 'reducers/roomDux';
+import { RatingSubmissionState } from 'reducers/roomDux';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 import useWindowDimensions from 'utils/hookUtils';
@@ -56,7 +56,7 @@ const Room: FC = () => {
     partnerHasDisconnected,
     partnerHasLeft,
     ratingSubmissionStatus,
-    // shouldKickUser,
+    shouldKickUser,
   } = useSelector((state: RootState) => state.room);
   const [isPanelShown, setIsPanelShown] = useState(isInterviewer);
   const [isEndingTurn, setIsEndingTurn] = useState(false);
@@ -68,19 +68,20 @@ const Room: FC = () => {
   const isInterviewComplete = turnsCompleted === 2;
   const code = doc.text.toString();
 
+  const exitRoom = useCallback((): void => {
+    leaveCodingService(codingSocket);
+    leaveRoomService(roomSocket, roomId!);
+  }, [codingSocket, roomSocket, roomId]);
+
   useEffect(() => {
+    // This is the mechanism that we will use to leave the room
+    // ALL leave rooms will ultimately lead here.
     if (roomId == null) {
       window.location.href = HOME;
       return (): void => undefined;
     }
     joinCodingService(codingSocket, roomId);
     joinRoomService(roomSocket, roomId);
-
-    // Clean up
-    // return (): void => {
-    //   leaveCodingService(codingSocket);
-    //   leaveRoomService(roomSocket, roomId);
-    // };
   }, [codingSocket, roomId, roomSocket]);
 
   useEffect(() => {
@@ -89,21 +90,23 @@ const Room: FC = () => {
     }
   }, [shouldShowOutputPanel]);
 
-  // useEffect(() => {
-  //   if (ratingSubmissionStatus === RatingSubmissionState.SUBMITTED) {
-  //     leaveCodingService(codingSocket);
-  //     leaveRoomService(roomSocket, roomId!);
-  //     window.location.href = HOME;
-  //   }
-  // }, [ratingSubmissionStatus, codingSocket, roomSocket, roomId]);
+  useEffect(() => {
+    if (isInterviewer) {
+      setIsPanelShown(true);
+    }
+  }, [isInterviewer]);
 
-  // useEffect(() => {
-  //   if (shouldKickUser) {
-  //     window.location.href = HOME;
-  //     leaveCodingService(codingSocket);
-  //     leaveRoomService(roomSocket, roomId!);
-  //   }
-  // }, [shouldKickUser, codingSocket, roomSocket, roomId]);
+  useEffect(() => {
+    if (ratingSubmissionStatus === RatingSubmissionState.SUBMITTED) {
+      exitRoom();
+    }
+  }, [ratingSubmissionStatus, exitRoom]);
+
+  useEffect(() => {
+    if (shouldKickUser) {
+      exitRoom();
+    }
+  }, [shouldKickUser, exitRoom]);
 
   const onCodeChange = (code: string): void => {
     updateCode(codingSocket, doc, code);
@@ -134,12 +137,6 @@ const Room: FC = () => {
       return `${Math.round(0.67 * width) - 32}px`;
     }
     return `${Math.round(0.73 * width) - 32}px`;
-  };
-
-  const exitRoom = (): void => {
-    leaveCodingService(codingSocket);
-    leaveRoomService(roomSocket, roomId!);
-    window.location.href = HOME;
   };
 
   const onCompleteQuestion = (isSolved: boolean): void => {

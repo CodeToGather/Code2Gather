@@ -74,7 +74,7 @@ const RatingModal: FC<Props> = ({ onRate, ratingSubmissionStatus }) => {
           }
           onClick={(): void => onRate(rating)}
         >
-          <Typography className="modal-submit-button-text" size="regular">
+          <Typography className="modal-loading-button-text" size="regular">
             {ratingSubmissionStatus === RatingSubmissionState.SUBMITTING
               ? 'Submitting'
               : 'Confirm'}{' '}

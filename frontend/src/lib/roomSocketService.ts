@@ -3,7 +3,6 @@ import store from 'app/store';
 import {
   partnerHasJoinedRoom,
   RatingSubmissionState,
-  resetState,
   setPartnerHasDisconnected,
   setPartnerHasLeft,
   setRatingSubmissionStatus,
@@ -158,7 +157,6 @@ export const initializeSocketForRoom = (socket: WebSocket): void => {
       );
     } else if (message.leave_room_response) {
       // TODO: Handle error
-      store.dispatch(resetState());
       roomIdUtils.removeRoomId();
     } else if (message.leave_room_broadcast) {
       store.dispatch(setPartnerHasLeft(true));
