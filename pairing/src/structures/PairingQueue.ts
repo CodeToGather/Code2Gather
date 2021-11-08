@@ -53,8 +53,8 @@ class PairingQueue {
     const queue = this.queues.get(user.difficulty)!;
     const index = queue.findIndex((other) => other.uid === user.uid);
     if (index === -1) {
-      // Inconsistent representation.
-      throw new Error('Something went wrong!');
+      // Inconsistent representation, but we'll fail silently.
+      return;
     }
     queue.splice(index);
     this.alreadyEnqueued.delete(user.uid);
