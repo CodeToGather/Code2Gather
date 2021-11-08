@@ -1,6 +1,9 @@
 package models
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+	"time"
+)
 
 type RoomStatus int32
 
@@ -12,12 +15,14 @@ const (
 )
 
 type Room struct {
-	Id     string     `json:"id"`
-	Uid1   string     `json:"uid1"`
-	Uid2   string     `json:"uid2"`
-	Qid1   string     `json:"qid1"`
-	Qid2   string     `json:"qid2"`
-	Status RoomStatus `json:"status"`
+	Id        string     `json:"id"`
+	Uid1      string     `json:"uid1"`
+	Uid2      string     `json:"uid2"`
+	Qid1      string     `json:"qid1"`
+	Qid2      string     `json:"qid2"`
+	Status    RoomStatus `json:"status"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
 }
 
 func NewRoom() *Room {
