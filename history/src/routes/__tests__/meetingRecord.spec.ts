@@ -134,7 +134,7 @@ describe('POST /meeting', () => {
     );
   });
 
-  it('should not allow missing duration', async () => {
+  it('should default missing duration to 0', async () => {
     const response = await request(server.server)
       .post('/meeting')
       .set('Authorization', interviewerId)
@@ -149,10 +149,8 @@ describe('POST /meeting', () => {
         isSolved,
         feedbackToInterviewee,
       });
-    expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toBe(
-      'The meeting record must have a valid non-negative duration (in seconds)!',
-    );
+    expect(response.status).toEqual(StatusCodes.OK);
+    expect(response.body.duration).toBe(0);
   });
 
   it('should not allow missing question id', async () => {
@@ -197,7 +195,7 @@ describe('POST /meeting', () => {
     );
   });
 
-  it('should not allow missing question difficulty', async () => {
+  it('should default missing question difficulty to easy', async () => {
     const response = await request(server.server)
       .post('/meeting')
       .set('Authorization', interviewerId)
@@ -212,13 +210,11 @@ describe('POST /meeting', () => {
         isSolved,
         feedbackToInterviewee,
       });
-    expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toBe(
-      'The meeting record must have a valid question difficulty!',
-    );
+    expect(response.status).toEqual(StatusCodes.OK);
+    expect(response.body.questionDifficulty).toBe(Difficulty.EASY);
   });
 
-  it('should not allow missing language', async () => {
+  it('should default missing language to python', async () => {
     const response = await request(server.server)
       .post('/meeting')
       .set('Authorization', interviewerId)
@@ -233,13 +229,11 @@ describe('POST /meeting', () => {
         isSolved,
         feedbackToInterviewee,
       });
-    expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toBe(
-      'The meeting record must have a valid programming language!',
-    );
+    expect(response.status).toEqual(StatusCodes.OK);
+    expect(response.body.language).toBe(Language.PYTHON);
   });
 
-  it('should not allow missing code written', async () => {
+  it('should default missing code written to empty string', async () => {
     const response = await request(server.server)
       .post('/meeting')
       .set('Authorization', interviewerId)
@@ -254,13 +248,11 @@ describe('POST /meeting', () => {
         isSolved,
         feedbackToInterviewee,
       });
-    expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toBe(
-      'The meeting record must have valid code written!',
-    );
+    expect(response.status).toEqual(StatusCodes.OK);
+    expect(response.body.codeWritten).toBe('');
   });
 
-  it('should not allow missing is solved state', async () => {
+  it('should default missing is solved state to false', async () => {
     const response = await request(server.server)
       .post('/meeting')
       .set('Authorization', interviewerId)
@@ -275,13 +267,11 @@ describe('POST /meeting', () => {
         codeWritten,
         feedbackToInterviewee,
       });
-    expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toBe(
-      'The meeting record must have valid is solved state!',
-    );
+    expect(response.status).toEqual(StatusCodes.OK);
+    expect(response.body.isSolved).toBe(false);
   });
 
-  it('should not allow missing feedback to interviewee', async () => {
+  it('should default missing feedback to interviewee to empty string', async () => {
     const response = await request(server.server)
       .post('/meeting')
       .set('Authorization', interviewerId)
@@ -296,10 +286,8 @@ describe('POST /meeting', () => {
         codeWritten,
         isSolved,
       });
-    expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-    expect(response.body.error).toBe(
-      'The meeting record must have valid feedback to interviewee!',
-    );
+    expect(response.status).toEqual(StatusCodes.OK);
+    expect(response.body.feedbackToInterviewee).toBe('');
   });
 
   it('should not allow interviewee id of non-string types', async () => {

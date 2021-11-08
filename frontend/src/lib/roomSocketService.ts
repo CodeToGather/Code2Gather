@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import store from 'app/store';
+import { clearCodeExecutionOutput } from 'reducers/codingDux';
 import {
   incrementCheckRoomIdCounter,
   partnerHasJoinedRoom,
@@ -8,6 +9,7 @@ import {
   setPartnerHasLeft,
   setRatingSubmissionStatus,
   setRoomInfo,
+  setShouldClearCode,
   setShouldKickUser,
   setTurnsCompleted,
   switchRoles,
@@ -158,6 +160,8 @@ export const initializeSocketForRoom = (socket: WebSocket): void => {
               difficulty: question.difficulty ?? Difficulty.EASY,
             }),
           );
+          store.dispatch(setShouldClearCode(true));
+          store.dispatch(clearCodeExecutionOutput());
         });
       } else {
         console.log('No more turns left');
