@@ -40,6 +40,7 @@ func (c *HttpClient) PostWithAuthHeader(path string, data []byte, authHeader str
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set("Content-Type", "application/json")
 	req.Header.Add("Authorization", authHeader)
 	resp, err := c.client.Do(req)
 	if err != nil {
