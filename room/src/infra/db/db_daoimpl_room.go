@@ -1,6 +1,8 @@
 package db
 
 import (
+	"time"
+
 	"code2gather.com/room/src/models"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -15,6 +17,8 @@ func NewRoomDaoImpl() *RoomDaoImpl {
 }
 
 func (daoi RoomDaoImpl) CreateRoom(room *models.Room) error {
+	room.CreatedAt = time.Now()
+	room.UpdatedAt = time.Now()
 	err := daoi.collection.Insert(room)
 	return err
 }
@@ -26,6 +30,7 @@ func (daoi RoomDaoImpl) GetRoomById(id string) (models.Room, error) {
 }
 
 func (daoi RoomDaoImpl) UpdateRoom(room *models.Room) error {
+	room.UpdatedAt = time.Now()
 	err := daoi.collection.Update(bson.M{"id": room.Id}, room)
 	return err
 }
