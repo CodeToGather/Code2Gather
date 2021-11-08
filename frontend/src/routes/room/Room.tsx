@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -26,8 +27,8 @@ import {
 import { RatingSubmissionState } from 'reducers/roomDux';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
-import { useLocalStorage, useWindowDimensions } from 'utils/hookUtils';
-import { ROOM_ID_KEY } from 'utils/roomIdUtils';
+import { useWindowDimensions } from 'utils/hookUtils';
+import roomIdUtils from 'utils/roomIdUtils';
 
 import DisconnectedModal from './modals/DisconnectedModal';
 import EndTurnModal from './modals/EndTurnModal';
@@ -63,7 +64,7 @@ const Room: FC = () => {
   const [isLeavingRoom, setIsLeavingRoom] = useState(false);
   const [notes, setNotes] = useState('');
   const { height, width } = useWindowDimensions();
-  const [roomId, setRoomId] = useLocalStorage<string | null>(ROOM_ID_KEY, null);
+  const roomId = roomIdUtils.getRoomId();
 
   const isInterviewComplete = turnsCompleted === 2;
   const code = doc.text.toString();
@@ -77,6 +78,7 @@ const Room: FC = () => {
     // This is the mechanism that we will use to leave the room
     // ALL leave rooms will ultimately lead here.
     if (roomId == null) {
+      console.log('Room ID is now null.');
       window.location.href = HOME;
       return (): void => undefined;
     }
@@ -104,10 +106,10 @@ const Room: FC = () => {
 
   useEffect(() => {
     if (shouldKickUser) {
-      // We don't leave room because this user does not belong to the room in the first place
-      setRoomId(null);
+      // We don't leave room because this user did not join the room in the first place
+      roomIdUtils.removeRoomId();
     }
-  }, [shouldKickUser, setRoomId]);
+  }, [shouldKickUser]);
 
   const onCodeChange = (code: string): void => {
     updateCode(codingSocket, doc, code);
