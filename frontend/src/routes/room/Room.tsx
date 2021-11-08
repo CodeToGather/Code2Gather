@@ -101,6 +101,10 @@ const Room: FC = () => {
 
   useEffect(() => {
     setShowHelpModal(true);
+    if (isInterviewer) {
+      console.log('Is interviewer');
+      setIsPanelShown(true);
+    }
   }, [isInterviewer]);
 
   useEffect(() => {
@@ -109,13 +113,6 @@ const Room: FC = () => {
       setIsPanelShown(true);
     }
   }, [shouldShowOutputPanel]);
-
-  useEffect(() => {
-    if (isInterviewer) {
-      console.log('Is interviewer');
-      setIsPanelShown(true);
-    }
-  }, [isInterviewer]);
 
   useEffect(() => {
     if (ratingSubmissionStatus === RatingSubmissionState.SUBMITTED) {

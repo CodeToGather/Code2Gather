@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import store from 'app/store';
+import { clearCodeExecutionOutput } from 'reducers/codingDux';
 import {
   incrementCheckRoomIdCounter,
   partnerHasJoinedRoom,
@@ -160,6 +161,7 @@ export const initializeSocketForRoom = (socket: WebSocket): void => {
             }),
           );
           store.dispatch(setShouldClearCode(true));
+          store.dispatch(clearCodeExecutionOutput());
         });
       } else {
         console.log('No more turns left');

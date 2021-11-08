@@ -41,6 +41,11 @@ const coding = createSlice({
       state.shouldShowOutputPanel = true;
       state.codeExecutionOutput = action.payload;
     },
+    clearCodeExecutionOutput: (state): void => {
+      state.isExecutingCode = false;
+      state.codeExecutionOutput = '';
+      state.shouldShowOutputPanel = false;
+    },
     applyChanges: (
       state,
       action: PayloadAction<Automerge.BinaryChange[]>,
@@ -67,6 +72,7 @@ export const {
   applyChanges,
   setIsExecutingCodeAsTrue,
   setCodeExecutionOutput,
+  clearCodeExecutionOutput,
   resetState,
 } = coding.actions;
 
