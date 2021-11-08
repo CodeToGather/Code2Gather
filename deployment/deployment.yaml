@@ -1,0 +1,363 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: gateway
+  template:
+    metadata:
+      labels:
+        run: gateway
+    spec:
+      containers:
+      - name: gateway
+        image: cs3219-project-ay2122-2122-s1-g32_gateway
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: code2gather-config
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "400m"
+          requests:
+            memory: 256Mi
+            cpu: "400m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: auth
+  template:
+    metadata:
+      labels:
+        run: auth
+    spec:
+      containers:
+      - name: auth
+        image: cs3219-project-ay2122-2122-s1-g32_auth
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: code2gather-config
+        env:
+        - name: FIREBASE_PROJECT_ID
+          value: ""
+        - name: FIREBASE_CLIENT_EMAIL
+          value: ""
+        - name: FIREBASE_PRIVATE_KEY
+          value: ""
+        - name: JWT_SECRET
+          value: ""
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "400m"
+          requests:
+            memory: 256Mi
+            cpu: "400m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: history
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: history
+  template:
+    metadata:
+      labels:
+        run: history
+    spec:
+      containers:
+      - name: history
+        image: cs3219-project-ay2122-2122-s1-g32_history
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: code2gather-config
+        env: 
+        - name: DATABASE_URL
+          value: ""
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "400m"
+          requests:
+            memory: 256Mi
+            cpu: "400m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pairing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: pairing
+  template:
+    metadata:
+      labels:
+        run: pairing
+    spec:
+      containers:
+      - name: pairing
+        image: cs3219-project-ay2122-2122-s1-g32_pairing
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: code2gather-config
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "400m"
+          requests:
+            memory: 256Mi
+            cpu: "400m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: video
+  template:
+    metadata:
+      labels:
+        run: video
+    spec:
+      containers:
+      - name: video
+        image: cs3219-project-ay2122-2122-s1-g32_video
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: code2gather-config
+        env:
+        - name: APP_ID
+          value: ""
+        - name: APP_CERTIFICATE
+          value: ""
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "400m"
+          requests:
+            memory: 256Mi
+            cpu: "400m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: code-executor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: code-executor
+  template:
+    metadata:
+      labels:
+        run: code-executor
+    spec:
+      containers:
+      - name: code-executor
+        image: cs3219-project-ay2122-2122-s1-g32_code-executor
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: code2gather-config
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "400m"
+          requests:
+            memory: 256Mi
+            cpu: "400m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: room
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: room
+  template:
+    metadata:
+      labels:
+        run: room
+    spec:
+      containers:
+      - name: room
+        image: cs3219-project-ay2122-2122-s1-g32_room
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: code2gather-config
+        env:
+        - name: MONGODB_URL
+          value: "mongodb://mongo-service:27017"
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "400m"
+          requests:
+            memory: 256Mi
+            cpu: "400m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coding
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: coding
+  template:
+    metadata:
+      labels:
+        run: coding
+    spec:
+      containers:
+      - name: coding
+        image: cs3219-project-ay2122-2122-s1-g32_coding
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: code2gather-config
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "400m"
+          requests:
+            memory: 256Mi
+            cpu: "400m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: frontend
+  template:
+    metadata:
+      labels:
+        run: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: cs3219-project-ay2122-2122-s1-g32_frontend
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: code2gather-config
+        - configMapRef:
+            name: code2gather-frontend-config
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "400m"
+          requests:
+            memory: 256Mi
+            cpu: "400m"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: mongo
+  template:
+    metadata:
+      labels:
+        run: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:4
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 27017
+        envFrom:
+        - configMapRef:
+            name: code2gather-config
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "400m"
+          requests:
+            memory: 256Mi
+            cpu: "400m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: db
+  template:
+    metadata:
+      labels:
+        run: db
+    spec:
+      containers:
+      - name: db
+        image: postgres:12
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          value: ""
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "400m"
+          requests:
+            memory: 256Mi
+            cpu: "400m"
