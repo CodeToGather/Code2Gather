@@ -95,12 +95,24 @@ const Room: FC = () => {
     }
     console.log('Joining sockets');
     joinCodingService(codingSocket, roomId);
-    joinRoomService(roomSocket, roomId);
+    if (roomSocket.readyState === WebSocket.OPEN) {
+      joinRoomService(roomSocket, roomId);
+    }
     console.log('Joined sockets');
-  }, [checkRoomIdCounter, codingSocket, roomId, roomSocket]);
+  }, [
+    checkRoomIdCounter,
+    codingSocket,
+    roomId,
+    roomSocket,
+    roomSocket.readyState,
+  ]);
 
   useEffect(() => {
     setShowHelpModal(true);
+    if (isInterviewer) {
+      console.log('Is interviewer');
+      setIsPanelShown(true);
+    }
   }, [isInterviewer]);
 
   useEffect(() => {
@@ -109,13 +121,6 @@ const Room: FC = () => {
       setIsPanelShown(true);
     }
   }, [shouldShowOutputPanel]);
-
-  useEffect(() => {
-    if (isInterviewer) {
-      console.log('Is interviewer');
-      setIsPanelShown(true);
-    }
-  }, [isInterviewer]);
 
   useEffect(() => {
     if (ratingSubmissionStatus === RatingSubmissionState.SUBMITTED) {
