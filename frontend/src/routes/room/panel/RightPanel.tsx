@@ -60,12 +60,19 @@ const RightPanel: FC<Props> = ({
   const [tab, setTab] = useState(
     isInterviewer ? RightPanelTab.QUESTION : RightPanelTab.OUTPUT,
   );
+  const [showBadge, setShowBadge] = useState(false);
 
   useEffect(() => {
     if (!isInterviewer && tab !== RightPanelTab.OUTPUT) {
       setTab(RightPanelTab.OUTPUT);
     }
   }, [isInterviewer, tab]);
+
+  useEffect(() => {
+    if (!isExecutingCode && isInterviewer && tab !== RightPanelTab.OUTPUT) {
+      setShowBadge(true);
+    }
+  }, [isExecutingCode, isInterviewer, tab]);
 
   const renderBody = (): string | ReactElement => {
     switch (tab) {
@@ -81,11 +88,19 @@ const RightPanel: FC<Props> = ({
   return (
     <div className="right-panel">
       <div className="right-panel__tabs">
-        <Tabs
-          onClick={setTab}
-          selected={tab}
-          tabs={isInterviewer ? interviewerTabs : intervieweeTabs}
-        />
+        <div className="right-panel__tabs-container">
+          <Tabs
+            onClick={(newTab): void => {
+              setTab(newTab);
+              if (newTab === RightPanelTab.OUTPUT) {
+                setShowBadge(false);
+              }
+            }}
+            selected={tab}
+            tabs={isInterviewer ? interviewerTabs : intervieweeTabs}
+          />
+          {showBadge ? <i className="fas fa-circle" /> : null}
+        </div>
         <button
           className={`border-button${
             isInterviewer || isExecutingCode ? ' is-hidden' : ''
