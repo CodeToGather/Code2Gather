@@ -26,8 +26,8 @@ import {
 import { RatingSubmissionState } from 'reducers/roomDux';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
-import useWindowDimensions from 'utils/hookUtils';
-import roomIdUtils from 'utils/roomIdUtils';
+import { useLocalStorage, useWindowDimensions } from 'utils/hookUtils';
+import { ROOM_ID_KEY } from 'utils/roomIdUtils';
 
 import DisconnectedModal from './modals/DisconnectedModal';
 import EndTurnModal from './modals/EndTurnModal';
@@ -63,7 +63,7 @@ const Room: FC = () => {
   const [isLeavingRoom, setIsLeavingRoom] = useState(false);
   const [notes, setNotes] = useState('');
   const { height, width } = useWindowDimensions();
-  const roomId = roomIdUtils.getRoomId();
+  const [roomId, setRoomId] = useLocalStorage<string | null>(ROOM_ID_KEY, null);
 
   const isInterviewComplete = turnsCompleted === 2;
   const code = doc.text.toString();
@@ -105,9 +105,9 @@ const Room: FC = () => {
   useEffect(() => {
     if (shouldKickUser) {
       // We don't leave room because this user does not belong to the room in the first place
-      roomIdUtils.removeRoomId();
+      setRoomId(null);
     }
-  }, [shouldKickUser]);
+  }, [shouldKickUser, setRoomId]);
 
   const onCodeChange = (code: string): void => {
     updateCode(codingSocket, doc, code);
