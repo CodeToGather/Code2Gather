@@ -20,7 +20,7 @@ const RoomSocketProvider: React.FunctionComponent = (props) => {
   roomSocket.binaryType = 'arraybuffer';
 
   const keepAlive = useCallback((): void => {
-    const timeout = 5000;
+    const timeout = 10000;
     if (roomSocket.readyState == WebSocket.OPEN) {
       roomSocket.send('');
     }
