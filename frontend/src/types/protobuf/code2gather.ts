@@ -1549,105 +1549,6 @@ export namespace code2gather {
       return AuthResponse.deserialize(bytes);
     }
   }
-  export class ErrorResponse extends pb_1.Message {
-    constructor(
-      data?:
-        | any[]
-        | {
-            error_code?: number;
-            message?: string;
-          },
-    ) {
-      super();
-      pb_1.Message.initialize(
-        this,
-        Array.isArray(data) ? data : [],
-        0,
-        -1,
-        [],
-        [],
-      );
-      if (!Array.isArray(data) && typeof data == 'object') {
-        if ('error_code' in data && data.error_code != undefined) {
-          this.error_code = data.error_code;
-        }
-        if ('message' in data && data.message != undefined) {
-          this.message = data.message;
-        }
-      }
-    }
-    get error_code() {
-      return pb_1.Message.getField(this, 1) as number;
-    }
-    set error_code(value: number) {
-      pb_1.Message.setField(this, 1, value);
-    }
-    get message() {
-      return pb_1.Message.getField(this, 2) as string;
-    }
-    set message(value: string) {
-      pb_1.Message.setField(this, 2, value);
-    }
-    static fromObject(data: { error_code?: number; message?: string }) {
-      const message = new ErrorResponse({});
-      if (data.error_code != null) {
-        message.error_code = data.error_code;
-      }
-      if (data.message != null) {
-        message.message = data.message;
-      }
-      return message;
-    }
-    toObject() {
-      const data: {
-        error_code?: number;
-        message?: string;
-      } = {};
-      if (this.error_code != null) {
-        data.error_code = this.error_code;
-      }
-      if (this.message != null) {
-        data.message = this.message;
-      }
-      return data;
-    }
-    serialize(): Uint8Array;
-    serialize(w: pb_1.BinaryWriter): void;
-    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-      const writer = w || new pb_1.BinaryWriter();
-      if (this.error_code !== undefined) writer.writeInt32(1, this.error_code);
-      if (typeof this.message === 'string' && this.message.length)
-        writer.writeString(2, this.message);
-      if (!w) return writer.getResultBuffer();
-    }
-    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ErrorResponse {
-      const reader =
-          bytes instanceof pb_1.BinaryReader
-            ? bytes
-            : new pb_1.BinaryReader(bytes),
-        message = new ErrorResponse();
-      while (reader.nextField()) {
-        if (reader.isEndGroup()) break;
-        switch (reader.getFieldNumber()) {
-          case 1:
-            message.error_code = reader.readInt32();
-            break;
-          case 2:
-            message.message = reader.readString();
-            break;
-          default:
-            reader.skipField();
-        }
-      }
-      return message;
-    }
-    serializeBinary(): Uint8Array {
-      return this.serialize();
-    }
-    static override deserializeBinary(bytes: Uint8Array): ErrorResponse {
-      return ErrorResponse.deserialize(bytes);
-    }
-  }
   export class ClientRequest extends pb_1.Message {
     constructor(
       data?:
@@ -1926,6 +1827,7 @@ export namespace code2gather {
                 submit_rating_response?: never;
                 leave_room_response?: never;
                 leave_room_broadcast?: never;
+                error_response?: never;
               }
             | {
                 join_room_response?: never;
@@ -1935,6 +1837,7 @@ export namespace code2gather {
                 submit_rating_response?: never;
                 leave_room_response?: never;
                 leave_room_broadcast?: never;
+                error_response?: never;
               }
             | {
                 join_room_response?: never;
@@ -1944,6 +1847,7 @@ export namespace code2gather {
                 submit_rating_response?: never;
                 leave_room_response?: never;
                 leave_room_broadcast?: never;
+                error_response?: never;
               }
             | {
                 join_room_response?: never;
@@ -1953,6 +1857,7 @@ export namespace code2gather {
                 submit_rating_response?: never;
                 leave_room_response?: never;
                 leave_room_broadcast?: never;
+                error_response?: never;
               }
             | {
                 join_room_response?: never;
@@ -1962,6 +1867,7 @@ export namespace code2gather {
                 submit_rating_response?: SubmitRatingResponse;
                 leave_room_response?: never;
                 leave_room_broadcast?: never;
+                error_response?: never;
               }
             | {
                 join_room_response?: never;
@@ -1971,6 +1877,7 @@ export namespace code2gather {
                 submit_rating_response?: never;
                 leave_room_response?: LeaveRoomResponse;
                 leave_room_broadcast?: never;
+                error_response?: never;
               }
             | {
                 join_room_response?: never;
@@ -1980,6 +1887,17 @@ export namespace code2gather {
                 submit_rating_response?: never;
                 leave_room_response?: never;
                 leave_room_broadcast?: LeaveRoomBroadcast;
+                error_response?: never;
+              }
+            | {
+                join_room_response?: never;
+                join_room_broadcast?: never;
+                disconnect_broadcast?: never;
+                complete_question_response?: never;
+                submit_rating_response?: never;
+                leave_room_response?: never;
+                leave_room_broadcast?: never;
+                error_response?: ErrorResponse;
               }
           )),
     ) {
@@ -1990,7 +1908,7 @@ export namespace code2gather {
         0,
         -1,
         [],
-        [[1, 2, 3, 4, 5, 6, 7]],
+        [[1, 2, 3, 4, 5, 6, 7, 8]],
       );
       if (!Array.isArray(data) && typeof data == 'object') {
         if (
@@ -2035,6 +1953,9 @@ export namespace code2gather {
         ) {
           this.leave_room_broadcast = data.leave_room_broadcast;
         }
+        if ('error_response' in data && data.error_response != undefined) {
+          this.error_response = data.error_response;
+        }
       }
     }
     get join_room_response() {
@@ -2045,7 +1966,12 @@ export namespace code2gather {
       ) as JoinRoomResponse;
     }
     set join_room_response(value: JoinRoomResponse) {
-      pb_1.Message.setOneofWrapperField(this, 1, [1, 2, 3, 4, 5, 6, 7], value);
+      pb_1.Message.setOneofWrapperField(
+        this,
+        1,
+        [1, 2, 3, 4, 5, 6, 7, 8],
+        value,
+      );
     }
     get join_room_broadcast() {
       return pb_1.Message.getWrapperField(
@@ -2055,7 +1981,12 @@ export namespace code2gather {
       ) as JoinRoomBroadcast;
     }
     set join_room_broadcast(value: JoinRoomBroadcast) {
-      pb_1.Message.setOneofWrapperField(this, 2, [1, 2, 3, 4, 5, 6, 7], value);
+      pb_1.Message.setOneofWrapperField(
+        this,
+        2,
+        [1, 2, 3, 4, 5, 6, 7, 8],
+        value,
+      );
     }
     get disconnect_broadcast() {
       return pb_1.Message.getWrapperField(
@@ -2065,7 +1996,12 @@ export namespace code2gather {
       ) as DisconnectBroadcast;
     }
     set disconnect_broadcast(value: DisconnectBroadcast) {
-      pb_1.Message.setOneofWrapperField(this, 3, [1, 2, 3, 4, 5, 6, 7], value);
+      pb_1.Message.setOneofWrapperField(
+        this,
+        3,
+        [1, 2, 3, 4, 5, 6, 7, 8],
+        value,
+      );
     }
     get complete_question_response() {
       return pb_1.Message.getWrapperField(
@@ -2075,7 +2011,12 @@ export namespace code2gather {
       ) as CompleteQuestionResponse;
     }
     set complete_question_response(value: CompleteQuestionResponse) {
-      pb_1.Message.setOneofWrapperField(this, 4, [1, 2, 3, 4, 5, 6, 7], value);
+      pb_1.Message.setOneofWrapperField(
+        this,
+        4,
+        [1, 2, 3, 4, 5, 6, 7, 8],
+        value,
+      );
     }
     get submit_rating_response() {
       return pb_1.Message.getWrapperField(
@@ -2085,7 +2026,12 @@ export namespace code2gather {
       ) as SubmitRatingResponse;
     }
     set submit_rating_response(value: SubmitRatingResponse) {
-      pb_1.Message.setOneofWrapperField(this, 5, [1, 2, 3, 4, 5, 6, 7], value);
+      pb_1.Message.setOneofWrapperField(
+        this,
+        5,
+        [1, 2, 3, 4, 5, 6, 7, 8],
+        value,
+      );
     }
     get leave_room_response() {
       return pb_1.Message.getWrapperField(
@@ -2095,7 +2041,12 @@ export namespace code2gather {
       ) as LeaveRoomResponse;
     }
     set leave_room_response(value: LeaveRoomResponse) {
-      pb_1.Message.setOneofWrapperField(this, 6, [1, 2, 3, 4, 5, 6, 7], value);
+      pb_1.Message.setOneofWrapperField(
+        this,
+        6,
+        [1, 2, 3, 4, 5, 6, 7, 8],
+        value,
+      );
     }
     get leave_room_broadcast() {
       return pb_1.Message.getWrapperField(
@@ -2105,7 +2056,27 @@ export namespace code2gather {
       ) as LeaveRoomBroadcast;
     }
     set leave_room_broadcast(value: LeaveRoomBroadcast) {
-      pb_1.Message.setOneofWrapperField(this, 7, [1, 2, 3, 4, 5, 6, 7], value);
+      pb_1.Message.setOneofWrapperField(
+        this,
+        7,
+        [1, 2, 3, 4, 5, 6, 7, 8],
+        value,
+      );
+    }
+    get error_response() {
+      return pb_1.Message.getWrapperField(
+        this,
+        ErrorResponse,
+        8,
+      ) as ErrorResponse;
+    }
+    set error_response(value: ErrorResponse) {
+      pb_1.Message.setOneofWrapperField(
+        this,
+        8,
+        [1, 2, 3, 4, 5, 6, 7, 8],
+        value,
+      );
     }
     get response() {
       const cases: {
@@ -2117,7 +2088,8 @@ export namespace code2gather {
           | 'complete_question_response'
           | 'submit_rating_response'
           | 'leave_room_response'
-          | 'leave_room_broadcast';
+          | 'leave_room_broadcast'
+          | 'error_response';
       } = {
         0: 'none',
         1: 'join_room_response',
@@ -2127,8 +2099,11 @@ export namespace code2gather {
         5: 'submit_rating_response',
         6: 'leave_room_response',
         7: 'leave_room_broadcast',
+        8: 'error_response',
       };
-      return cases[pb_1.Message.computeOneofCase(this, [1, 2, 3, 4, 5, 6, 7])];
+      return cases[
+        pb_1.Message.computeOneofCase(this, [1, 2, 3, 4, 5, 6, 7, 8])
+      ];
     }
     static fromObject(data: {
       join_room_response?: ReturnType<
@@ -2152,6 +2127,7 @@ export namespace code2gather {
       leave_room_broadcast?: ReturnType<
         typeof LeaveRoomBroadcast.prototype.toObject
       >;
+      error_response?: ReturnType<typeof ErrorResponse.prototype.toObject>;
     }) {
       const message = new RoomServiceToClientMessage({});
       if (data.join_room_response != null) {
@@ -2188,6 +2164,9 @@ export namespace code2gather {
           data.leave_room_broadcast,
         );
       }
+      if (data.error_response != null) {
+        message.error_response = ErrorResponse.fromObject(data.error_response);
+      }
       return message;
     }
     toObject() {
@@ -2213,6 +2192,7 @@ export namespace code2gather {
         leave_room_broadcast?: ReturnType<
           typeof LeaveRoomBroadcast.prototype.toObject
         >;
+        error_response?: ReturnType<typeof ErrorResponse.prototype.toObject>;
       } = {};
       if (this.join_room_response != null) {
         data.join_room_response = this.join_room_response.toObject();
@@ -2235,6 +2215,9 @@ export namespace code2gather {
       }
       if (this.leave_room_broadcast != null) {
         data.leave_room_broadcast = this.leave_room_broadcast.toObject();
+      }
+      if (this.error_response != null) {
+        data.error_response = this.error_response.toObject();
       }
       return data;
     }
@@ -2269,6 +2252,10 @@ export namespace code2gather {
       if (this.leave_room_broadcast !== undefined)
         writer.writeMessage(7, this.leave_room_broadcast, () =>
           this.leave_room_broadcast.serialize(writer),
+        );
+      if (this.error_response !== undefined)
+        writer.writeMessage(8, this.error_response, () =>
+          this.error_response.serialize(writer),
         );
       if (!w) return writer.getResultBuffer();
     }
@@ -2339,6 +2326,13 @@ export namespace code2gather {
                   LeaveRoomBroadcast.deserialize(reader)),
             );
             break;
+          case 8:
+            reader.readMessage(
+              message.error_response,
+              () =>
+                (message.error_response = ErrorResponse.deserialize(reader)),
+            );
+            break;
           default:
             reader.skipField();
         }
@@ -2352,6 +2346,105 @@ export namespace code2gather {
       bytes: Uint8Array,
     ): RoomServiceToClientMessage {
       return RoomServiceToClientMessage.deserialize(bytes);
+    }
+  }
+  export class ErrorResponse extends pb_1.Message {
+    constructor(
+      data?:
+        | any[]
+        | {
+            error_code?: number;
+            message?: string;
+          },
+    ) {
+      super();
+      pb_1.Message.initialize(
+        this,
+        Array.isArray(data) ? data : [],
+        0,
+        -1,
+        [],
+        [],
+      );
+      if (!Array.isArray(data) && typeof data == 'object') {
+        if ('error_code' in data && data.error_code != undefined) {
+          this.error_code = data.error_code;
+        }
+        if ('message' in data && data.message != undefined) {
+          this.message = data.message;
+        }
+      }
+    }
+    get error_code() {
+      return pb_1.Message.getField(this, 1) as number;
+    }
+    set error_code(value: number) {
+      pb_1.Message.setField(this, 1, value);
+    }
+    get message() {
+      return pb_1.Message.getField(this, 2) as string;
+    }
+    set message(value: string) {
+      pb_1.Message.setField(this, 2, value);
+    }
+    static fromObject(data: { error_code?: number; message?: string }) {
+      const message = new ErrorResponse({});
+      if (data.error_code != null) {
+        message.error_code = data.error_code;
+      }
+      if (data.message != null) {
+        message.message = data.message;
+      }
+      return message;
+    }
+    toObject() {
+      const data: {
+        error_code?: number;
+        message?: string;
+      } = {};
+      if (this.error_code != null) {
+        data.error_code = this.error_code;
+      }
+      if (this.message != null) {
+        data.message = this.message;
+      }
+      return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+      const writer = w || new pb_1.BinaryWriter();
+      if (this.error_code !== undefined) writer.writeInt32(1, this.error_code);
+      if (typeof this.message === 'string' && this.message.length)
+        writer.writeString(2, this.message);
+      if (!w) return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ErrorResponse {
+      const reader =
+          bytes instanceof pb_1.BinaryReader
+            ? bytes
+            : new pb_1.BinaryReader(bytes),
+        message = new ErrorResponse();
+      while (reader.nextField()) {
+        if (reader.isEndGroup()) break;
+        switch (reader.getFieldNumber()) {
+          case 1:
+            message.error_code = reader.readInt32();
+            break;
+          case 2:
+            message.message = reader.readString();
+            break;
+          default:
+            reader.skipField();
+        }
+      }
+      return message;
+    }
+    serializeBinary(): Uint8Array {
+      return this.serialize();
+    }
+    static override deserializeBinary(bytes: Uint8Array): ErrorResponse {
+      return ErrorResponse.deserialize(bytes);
     }
   }
   export class JoinRoomRequest extends pb_1.Message {
