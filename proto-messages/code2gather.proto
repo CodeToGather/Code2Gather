@@ -94,7 +94,6 @@ message CreateRatingRequest {
   int32 rating = 1;
   string rating_user_id = 2;
   string rated_user_id = 3;
-  string room_id = 4;
 }
 
 // HTTP GET request (Room -> History)
