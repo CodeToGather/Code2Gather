@@ -70,6 +70,7 @@ const Room: FC = () => {
   const code = doc.text.toString();
 
   const exitRoom = useCallback((): void => {
+    console.log('Exiting room via exitRoom');
     leaveCodingService(codingSocket);
     leaveRoomService(roomSocket, roomId!);
   }, [codingSocket, roomSocket, roomId]);
@@ -82,30 +83,36 @@ const Room: FC = () => {
       window.location.href = HOME;
       return (): void => undefined;
     }
+    console.log('Joining sockets');
     joinCodingService(codingSocket, roomId);
     joinRoomService(roomSocket, roomId);
+    console.log('Joined sockets');
   }, [codingSocket, roomId, roomSocket]);
 
   useEffect(() => {
     if (shouldShowOutputPanel) {
+      console.log('Showing output panel');
       setIsPanelShown(true);
     }
   }, [shouldShowOutputPanel]);
 
   useEffect(() => {
     if (isInterviewer) {
+      console.log('Is interviewer');
       setIsPanelShown(true);
     }
   }, [isInterviewer]);
 
   useEffect(() => {
     if (ratingSubmissionStatus === RatingSubmissionState.SUBMITTED) {
+      console.log('Rating submitted');
       exitRoom();
     }
   }, [ratingSubmissionStatus, exitRoom]);
 
   useEffect(() => {
     if (shouldKickUser) {
+      console.log('Kicking user');
       // We don't leave room because this user did not join the room in the first place
       roomIdUtils.removeRoomId();
     }
@@ -193,7 +200,7 @@ const Room: FC = () => {
         />
       );
     }
-    return <div>Going back to interviewing...</div>;
+    return <div>Back to interviewing...</div>;
   };
 
   const isModalVisible =
