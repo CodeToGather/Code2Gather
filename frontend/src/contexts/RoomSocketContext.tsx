@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { initializeSocketForRoom } from 'lib/roomSocketService';
 import tokenUtils from 'utils/tokenUtils';
@@ -19,15 +19,24 @@ const RoomSocketProvider: React.FunctionComponent = (props) => {
   );
   roomSocket.binaryType = 'arraybuffer';
 
+  const keepAlive = useCallback((): void => {
+    const timeout = 5000;
+    if (roomSocket.readyState == WebSocket.OPEN) {
+      roomSocket.send('');
+    }
+    setTimeout(keepAlive, timeout);
+  }, [roomSocket]);
+
   useEffect(() => {
     roomSocket.onopen = (_event): void => {
       console.log('Room socket connected!');
     };
     initializeSocketForRoom(roomSocket);
+    keepAlive();
     return (): void => {
       roomSocket.close();
     };
-  }, [roomSocket]);
+  }, [keepAlive, roomSocket]);
 
   return <RoomSocketContext.Provider value={{ roomSocket }} {...props} />;
 };
