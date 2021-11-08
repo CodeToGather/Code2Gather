@@ -1,24 +1,19 @@
 # First image is for building the client files
 FROM node:14.17-alpine as build
 
-RUN mkdir -p /home/node/app
+WORKDIR /app
 
-WORKDIR /home/node/app/frontend
-
-COPY ../.eslintignore ..
-COPY ../.eslintrc.js ..
-COPY ../tsconfig.eslint.json ..
-COPY ../package.json ..
-COPY ../yarn.lock ..
 COPY . .
 
-# TODO: Debug why this building fails
-RUN yarn install && yarn build
+RUN yarn install
+
+ENV DISABLE_ESLINT_PLUGIN=true
+RUN yarn build
 
 # Second image is for serving the files
 FROM nginx:stable-alpine
 
-COPY --from=build /home/node/app/frontend/build /usr/share/nginx/html
+COPY --from=build /app/build /usr/share/nginx/html
 
 EXPOSE 80
 
