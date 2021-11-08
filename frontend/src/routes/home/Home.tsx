@@ -58,6 +58,27 @@ const Home: FC = () => {
   const { partnerUsername, partnerPhotoUrl } = useSelector(
     (state: RootState) => state.room,
   );
+  const [asterisks, setAsterisks] = useState('');
+
+  useEffect(() => {
+    let interval: NodeJS.Timer;
+    if (isModalVisible && state === PairingState.FINDING_PAIR) {
+      interval = setInterval(() => {
+        if (asterisks === '...') {
+          setAsterisks('');
+        } else {
+          setAsterisks((asterisks) => asterisks + '.');
+        }
+      }, 500);
+    } else {
+      setAsterisks('');
+    }
+    return (): void => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [asterisks, isModalVisible, state]);
 
   useEffect(() => {
     let didCancel = false;
@@ -160,7 +181,7 @@ const Home: FC = () => {
     switch (state) {
       case PairingState.NOT_PAIRING:
       case PairingState.FINDING_PAIR:
-        return 'Finding a partner...';
+        return `Finding a partner${asterisks}`;
       case PairingState.FOUND_PAIR:
         return 'Found you a partner!';
       case PairingState.CANNOT_FIND_PAIR:
