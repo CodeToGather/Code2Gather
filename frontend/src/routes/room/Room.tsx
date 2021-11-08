@@ -104,9 +104,10 @@ const Room: FC = () => {
 
   useEffect(() => {
     if (shouldKickUser) {
-      exitRoom();
+      // We don't leave room because this user does not belong to the room in the first place
+      roomIdUtils.removeRoomId();
     }
-  }, [shouldKickUser, exitRoom]);
+  }, [shouldKickUser]);
 
   const onCodeChange = (code: string): void => {
     updateCode(codingSocket, doc, code);
