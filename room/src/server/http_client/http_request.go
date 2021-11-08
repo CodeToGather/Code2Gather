@@ -55,9 +55,10 @@ func GetUserInfo(uid string) (user *models.User, err error) {
 
 func SendMeetingRecord(meetingRecord *models.CreateMeetingRequest) error {
 	log.Println("Sending Meeting Record to History Service")
-	log.Println(meetingRecord)
 
 	data, err := util.MarshalToJson(meetingRecord)
+	log.Println(string(data))
+
 	if err != nil {
 		log.Println(err)
 		return err
