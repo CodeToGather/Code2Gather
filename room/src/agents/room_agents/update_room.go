@@ -8,7 +8,7 @@ import (
 )
 
 func UpdateRoom(room *models.Room) error {
-	roomDaoImpl := db.NewRoomDaoImpl()
+	roomDaoImpl := db.NewRoomRepositoryImpl()
 	err := roomDaoImpl.UpdateRoom(room)
 	if err != nil {
 		log.Println(err)

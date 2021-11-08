@@ -31,7 +31,7 @@ func CreateRoom(uid1 string, uid2 string, difficulty models.QuestionDifficulty) 
 	newRoom.Qid1 = question1.Id
 	newRoom.Qid2 = question2.Id
 
-	roomDaoImpl := db.NewRoomDaoImpl()
+	roomDaoImpl := db.NewRoomRepositoryImpl()
 	err = roomDaoImpl.CreateRoom(newRoom)
 	if err != nil {
 		log.Fatal(err)

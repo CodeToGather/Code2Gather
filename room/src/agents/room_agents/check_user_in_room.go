@@ -24,7 +24,7 @@ func CheckUserInRoom(uid string) (isInRoom bool, roomId string, err error) {
 }
 
 func getActiveRoomsOfUser(uid string) ([]models.Room, error) {
-	roomDaoImpl := db.NewRoomDaoImpl()
+	roomDaoImpl := db.NewRoomRepositoryImpl()
 	query := bson.M{"$and": []bson.M{{"$or": []bson.M{{"uid1": uid}, {"uid2": uid}}},
 		{"status": bson.M{"$ne": models.Closed}}}}
 	return roomDaoImpl.FindRooms(query)

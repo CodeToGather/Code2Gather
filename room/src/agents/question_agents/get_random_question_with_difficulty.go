@@ -8,7 +8,7 @@ import (
 )
 
 func GetRandomQuestionsWithDifficulty(difficulty models.QuestionDifficulty) (question1 models.Question, question2 models.Question, err error) {
-	questionDaoImpl := db.NewQuestionDaoImpl()
+	questionDaoImpl := db.NewQuestionRepositoryImpl()
 	allQuestions, err := questionDaoImpl.GetQuestionsWithDifficulty(difficulty)
 
 	if err != nil {

@@ -8,7 +8,7 @@ import (
 )
 
 func GetRoomById(id string) (*models.Room, error) {
-	roomDaoImpl := db.NewRoomDaoImpl()
+	roomDaoImpl := db.NewRoomRepositoryImpl()
 	room, err := roomDaoImpl.GetRoomById(id)
 	if err != nil {
 		log.Println(err)
