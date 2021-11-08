@@ -36,6 +36,7 @@ import roomIdUtils from 'utils/roomIdUtils';
 
 import DisconnectedModal from './modals/DisconnectedModal';
 import EndTurnModal from './modals/EndTurnModal';
+import HelpModal from './modals/HelpModal';
 import LeaveRoomModal from './modals/LeaveRoomModal';
 import LeftModal from './modals/LeftModal';
 import RatingModal from './modals/RatingModal';
@@ -68,6 +69,7 @@ const Room: FC = () => {
   const [isPanelShown, setIsPanelShown] = useState(isInterviewer);
   const [isEndingTurn, setIsEndingTurn] = useState(false);
   const [isLeavingRoom, setIsLeavingRoom] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(true);
   const [notes, setNotes] = useState('');
   const { height, width } = useWindowDimensions();
   const roomId = roomIdUtils.getRoomId();
@@ -95,6 +97,10 @@ const Room: FC = () => {
     joinRoomService(roomSocket, roomId);
     console.log('Joined sockets');
   }, [checkRoomIdCounter, codingSocket, roomId, roomSocket]);
+
+  useEffect(() => {
+    setShowHelpModal(true);
+  }, [isInterviewer]);
 
   useEffect(() => {
     if (shouldShowOutputPanel) {
@@ -215,6 +221,14 @@ const Room: FC = () => {
         />
       );
     }
+    if (showHelpModal) {
+      return (
+        <HelpModal
+          isInterviewer={isInterviewer}
+          onClose={(): void => setShowHelpModal(false)}
+        />
+      );
+    }
     return <div>Back to interviewing...</div>;
   };
 
@@ -223,7 +237,8 @@ const Room: FC = () => {
     isLeavingRoom ||
     partnerHasDisconnected ||
     partnerHasLeft ||
-    isInterviewComplete;
+    isInterviewComplete ||
+    showHelpModal;
 
   return (
     <div className="room">
@@ -238,7 +253,10 @@ const Room: FC = () => {
                   changeLanguage(codingSocket, language);
                 }}
               />
-              <button className="border-button room--top-left__help-button">
+              <button
+                className="border-button room--top-left__help-button"
+                onClick={(): void => setShowHelpModal(true)}
+              >
                 <Typography size="regular">
                   Help <i className="far fa-question-circle" />
                 </Typography>
