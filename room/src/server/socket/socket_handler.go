@@ -13,7 +13,7 @@ import (
 func incomingRequestHandler(c *Client, request []byte) {
 	requestMessage := &models.ClientRequest{}
 	if err := util.UnmarshalBytes(request, requestMessage); err != nil {
-		log.Println("Receive Non-client Request Message")
+		log.Println("Receive Non-ClientRequest Message")
 		log.Println(err)
 		sendErrorResponse(c)
 		return
