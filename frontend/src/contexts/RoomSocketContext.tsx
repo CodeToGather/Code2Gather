@@ -29,7 +29,9 @@ const RoomSocketProvider: React.FunctionComponent = (props) => {
 
   useEffect(() => {
     roomSocket.onopen = (_event): void => {
-      console.log('Room socket connected!');
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Room socket connected!');
+      }
     };
     initializeSocketForRoom(roomSocket);
     keepAlive();
