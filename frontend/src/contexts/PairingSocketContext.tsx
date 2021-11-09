@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
 
@@ -28,21 +29,22 @@ const PairingSocketProvider: React.FunctionComponent = (props) => {
   useEffect(() => {
     initializeSocketForPairing(socket);
     socket.on(CONNECT, () => {
-      // eslint-disable-next-line no-console
-      console.log('Pairing socket connected!');
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Pairing socket connected!');
+      }
     });
     socket.on('connect_error', (err) => {
-      // eslint-disable-next-line no-console
-      console.error(`connect_error due to ${err.message}`);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(`connect_error due to ${err.message}`);
+      }
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const listener = (eventName: string, ...args: any): void => {
-      // eslint-disable-next-line no-console
       console.log(eventName, args);
     };
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'production') {
       socket.onAny(listener);
     }
 
