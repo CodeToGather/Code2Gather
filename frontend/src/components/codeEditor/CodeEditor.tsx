@@ -57,6 +57,9 @@ const CodeEditor: FC<Props> = ({
         {
           name: 'customcut',
           bindKey: { win: 'Ctrl-X', mac: 'Cmd-X' },
+          // This function is actually cached heavily, i.e. we cannot
+          // refer to props within this function, because it is still
+          // referencing the original props.
           exec: (editor: Ace.Editor): void => {
             const selection = editor.getCopyText();
             if (selection && selection !== '') {
