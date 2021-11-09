@@ -1,11 +1,8 @@
 import { FC, ReactElement, useEffect, useReducer, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import Avatar from 'components/avatar';
 import Container from 'components/container';
 import Modal from 'components/modal';
-import Typography from 'components/typography';
-import { ROOM } from 'constants/routes';
 import { usePairingSocket } from 'contexts/PairingSocketContext';
 import LeaderboardApi from 'lib/leaderboardApi';
 import MeetingRecordApi from 'lib/meetingRecordApi';
@@ -16,6 +13,8 @@ import { RootState } from 'reducers/rootReducer';
 import { Difficulty } from 'types/crud/difficulty';
 import roomIdUtils from 'utils/roomIdUtils';
 
+import LeaderboardModal from './modals/LeaderboardModal';
+import PairingModal from './modals/PairingModal';
 import PracticeHistory from './history';
 import Leaderboard from './leaderboard';
 import PracticePanel from './PracticePanel';
@@ -48,8 +47,8 @@ const Home: FC = () => {
     }),
     initialPracticeHistoryState,
   );
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [redirectCount, setRedirectCount] = useState(5);
+  const [isPairing, setIsPairing] = useState(false);
+  const [showLeaderboardModal, setShowLeaderboardModal] = useState(false);
   const [isInRoom, setIsInRoom] = useState(false);
   const { pairingSocket } = usePairingSocket();
   const { state, errorMessage } = useSelector(
@@ -58,27 +57,6 @@ const Home: FC = () => {
   const { partnerUsername, partnerPhotoUrl } = useSelector(
     (state: RootState) => state.room,
   );
-  const [asterisks, setAsterisks] = useState('');
-
-  useEffect(() => {
-    let interval: NodeJS.Timer;
-    if (isModalVisible && state === PairingState.FINDING_PAIR) {
-      interval = setInterval(() => {
-        if (asterisks === '...') {
-          setAsterisks('');
-        } else {
-          setAsterisks((asterisks) => asterisks + '.');
-        }
-      }, 500);
-    } else {
-      setAsterisks('');
-    }
-    return (): void => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [asterisks, isModalVisible, state]);
 
   useEffect(() => {
     let didCancel = false;
@@ -145,27 +123,9 @@ const Home: FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    let interval: NodeJS.Timer;
-    if (state === PairingState.FOUND_PAIR) {
-      interval = setInterval(() => {
-        if (redirectCount === 1) {
-          window.location.href = ROOM;
-          return;
-        }
-        setRedirectCount((count) => count - 1);
-      }, 1000);
-    }
-    return (): void => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [state, redirectCount]);
-
   const onPracticeNow = (difficulty: Difficulty): void => {
     findPair(pairingSocket, difficulty);
-    setIsModalVisible(true);
+    setIsPairing(true);
   };
 
   const onButtonClick = (): void => {
@@ -174,62 +134,37 @@ const Home: FC = () => {
     }
     // We will always do this, just in case
     stopFindingPair(pairingSocket, state !== PairingState.NOT_PAIRING);
-    setIsModalVisible(false);
+    setIsPairing(false);
   };
 
-  const getModalTitle = (): string => {
-    switch (state) {
-      case PairingState.NOT_PAIRING:
-      case PairingState.FINDING_PAIR:
-        return `Finding a partner${asterisks}`;
-      case PairingState.FOUND_PAIR:
-        return 'Found you a partner!';
-      case PairingState.CANNOT_FIND_PAIR:
-        return 'Oh man!';
-      case PairingState.ERROR:
-        return 'Something went wrong!';
+  const renderModalContent = (): ReactElement => {
+    // To prevent the flashing of modal content
+    if (isPairing || state !== PairingState.NOT_PAIRING) {
+      return (
+        <PairingModal
+          errorMessage={errorMessage}
+          isPairing={isPairing}
+          onButtonClick={onButtonClick}
+          partnerPhotoUrl={partnerPhotoUrl}
+          partnerUsername={partnerUsername}
+          state={state}
+        />
+      );
     }
+    return (
+      <LeaderboardModal onClose={(): void => setShowLeaderboardModal(false)} />
+    );
   };
 
-  const getModalBody = (): string | ReactElement<'div'> => {
-    switch (state) {
-      case PairingState.NOT_PAIRING:
-      case PairingState.FINDING_PAIR:
-        return "We're looking for a practice partner for you!";
-      case PairingState.FOUND_PAIR:
-        return (
-          <>
-            <div className="home__modal-partner-title">Your partner is:</div>
-            <div className="home__modal-partner">
-              <Avatar alt={partnerUsername} src={partnerPhotoUrl} />
-              <div>{partnerUsername}</div>
-            </div>
-          </>
-        );
-      case PairingState.CANNOT_FIND_PAIR:
-        return "We couldn't find a partner for you in time. Try again soon!";
-      case PairingState.ERROR:
-        return errorMessage;
-    }
-  };
-
-  const getButtonContent = (): string => {
-    switch (state) {
-      case PairingState.NOT_PAIRING:
-      case PairingState.FINDING_PAIR:
-        return 'Cancel';
-      case PairingState.FOUND_PAIR:
-        return `Redirecting in ${redirectCount}s`;
-      case PairingState.CANNOT_FIND_PAIR:
-      case PairingState.ERROR:
-        return 'Close';
-    }
-  };
+  const isModalVisible = isPairing || showLeaderboardModal;
 
   return (
     <Container>
       <div className="home__top">
-        <Leaderboard {...leaderboardState} />
+        <Leaderboard
+          {...leaderboardState}
+          onHelp={(): void => setShowLeaderboardModal(true)}
+        />
         <PracticePanel
           isDisabled={state !== PairingState.NOT_PAIRING}
           isInRoom={isInRoom}
@@ -237,23 +172,7 @@ const Home: FC = () => {
         />
       </div>
       <PracticeHistory {...historyState} />
-      <Modal className="home__modal" isVisible={isModalVisible}>
-        <Typography className="is-bold" size="large">
-          {getModalTitle()}
-        </Typography>
-        <Typography className="home__modal-instruction" size="regular">
-          {getModalBody()}
-        </Typography>
-        <button
-          className={`border-button ${
-            state === PairingState.FOUND_PAIR ? 'is-success' : 'is-danger'
-          }`}
-          disabled={state === PairingState.FOUND_PAIR}
-          onClick={onButtonClick}
-        >
-          <Typography size="regular">{getButtonContent()}</Typography>
-        </button>
-      </Modal>
+      <Modal isVisible={isModalVisible}>{renderModalContent()}</Modal>
     </Container>
   );
 };
