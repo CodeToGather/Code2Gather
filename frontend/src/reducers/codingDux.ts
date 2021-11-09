@@ -11,6 +11,7 @@ export interface CodingDux {
   isExecutingCode: boolean;
   codeExecutionOutput: string;
   shouldShowOutputPanel: boolean;
+  hasNewExecutionOutput: boolean;
 }
 
 const initialState: CodingDux = {
@@ -19,6 +20,7 @@ const initialState: CodingDux = {
   isExecutingCode: false,
   codeExecutionOutput: '',
   shouldShowOutputPanel: false,
+  hasNewExecutionOutput: false,
 };
 
 const coding = createSlice({
@@ -40,11 +42,16 @@ const coding = createSlice({
       state.isExecutingCode = false;
       state.shouldShowOutputPanel = true;
       state.codeExecutionOutput = action.payload;
+      state.hasNewExecutionOutput = true;
     },
     clearCodeExecutionOutput: (state): void => {
       state.isExecutingCode = false;
       state.codeExecutionOutput = '';
       state.shouldShowOutputPanel = false;
+      state.hasNewExecutionOutput = false;
+    },
+    setHasNewExecutionOutputToFalse: (state): void => {
+      state.hasNewExecutionOutput = false;
     },
     applyChanges: (
       state,
@@ -62,6 +69,7 @@ const coding = createSlice({
       state.isExecutingCode = false;
       state.codeExecutionOutput = '';
       state.shouldShowOutputPanel = false;
+      state.hasNewExecutionOutput = false;
     },
   },
 });
@@ -73,6 +81,7 @@ export const {
   setIsExecutingCodeAsTrue,
   setCodeExecutionOutput,
   clearCodeExecutionOutput,
+  setHasNewExecutionOutputToFalse,
   resetState,
 } = coding.actions;
 

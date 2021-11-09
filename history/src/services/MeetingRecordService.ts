@@ -73,10 +73,40 @@ class MeetingRecordService extends BaseService<
         createdAt: 'desc',
       },
     });
-    // TODO: Add logic to query for question content for these meeting records
     // We reject upon finding any meeting record that the user is not allowed to read
     await Promise.all(meetingRecords.map((m) => this.checkRead(m, user)));
     return meetingRecords;
+  }
+
+  async readPaginatedForInterviewee(
+    intervieweeId: string,
+    page: number,
+    user: User,
+  ): Promise<{ records: MeetingRecord[]; isLastPage: boolean }> {
+    const meetingRecords = await prisma.meetingRecord.findMany({
+      where: {
+        intervieweeId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip: page * 3,
+      take: 3,
+    });
+    // We reject upon finding any meeting record that the user is not allowed to read
+    await Promise.all(meetingRecords.map((m) => this.checkRead(m, user)));
+    const totalNumMeetingRecords = await prisma.meetingRecord.count({
+      where: {
+        intervieweeId,
+      },
+    });
+    const numSkippedRecords = page * 3;
+
+    return {
+      records: meetingRecords,
+      isLastPage:
+        numSkippedRecords + meetingRecords.length >= totalNumMeetingRecords,
+    };
   }
 
   // async update(

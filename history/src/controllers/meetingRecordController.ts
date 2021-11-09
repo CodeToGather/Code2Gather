@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import meetingRecordService from 'services/MeetingRecordService';
-import { ErrorResponse } from 'types/api';
+import { ErrorResponse, PageParams } from 'types/api';
 import { Difficulty, Language } from 'types/crud/enums';
 import { MeetingRecordCreateData } from 'types/crud/meetingRecord';
 import { AuthorizationError } from 'types/error';
@@ -53,6 +53,7 @@ export async function createMeetingRecord(
 
 /**
  * Reads the meeting records of the user, where the user is the interviewee.
+ * This is paginated and requires a page param.
  *
  * This should be triggered by the user themselves, i.e. the auth-resolved
  * UID must be that of the interviewee.
@@ -61,19 +62,30 @@ export async function createMeetingRecord(
  * provided. This may allow e.g. an admin role in the future to be able to
  * read meeting records of other users.
  *
- * @param request No requirement for request format
- * @param response Response with body of type MeetingRecord[] or { error: string }
+ * @param request Request with params page number.
+ * @param response Response with body of type { records: MeetingRecord[],
+ *                 isLastPage: boolean } or { error: string }. Note that
+ *                 isLastPage will be true if page >= last page number.
  */
 export async function readMeetingRecordsForSelf(
-  _request: Request<unknown, unknown, unknown>,
-  response: Response<ErrorResponse | MeetingRecord[]>,
+  request: Request<PageParams, unknown, unknown>,
+  response: Response<
+    ErrorResponse | { records: MeetingRecord[]; isLastPage: boolean }
+  >,
 ): Promise<void> {
   const { user } = response.locals;
+  const { page } = request.params;
+  const parsedPage = parseInt(page);
   try {
-    const meetingRecords = await meetingRecordService.readAllForInterviewee(
-      user.id,
-      user,
-    );
+    if (isNaN(parsedPage)) {
+      throw new Error();
+    }
+    const meetingRecords =
+      await meetingRecordService.readPaginatedForInterviewee(
+        user.id,
+        parsedPage,
+        user,
+      );
     response.status(StatusCodes.OK).json(meetingRecords);
   } catch (error: any) {
     if (error instanceof AuthorizationError) {

@@ -14,6 +14,8 @@ export interface LeaderboardState {
 
 export interface PracticeHistoryState {
   records: MeetingRecord[];
+  page: number;
+  isLastPage: boolean;
   isLoading: boolean;
   isError: boolean;
 }
