@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { match, RouteComponentProps, useHistory } from 'react-router-dom';
+import { match, RouteComponentProps } from 'react-router-dom';
 
 import CodeEditor from 'components/codeEditor';
 import LanguageDropdown from 'components/languageDropdown';
@@ -28,7 +28,6 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
   const { doc, language } = useSelector((state: RootState) => state.coding);
   const guestRoomId = match.params.id;
   const [hasCopied, setHasCopied] = useState(false);
-  const history = useHistory();
 
   useEffect(() => {
     joinCodingService(codingSocket, guestRoomId);
@@ -89,7 +88,7 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
           className="border-button is-danger guest--bottom__leave-button"
           onClick={(): void => {
             leaveCodingService(codingSocket);
-            history.push(ROOT);
+            window.location.href = ROOT;
           }}
         >
           <Typography size="regular">Leave Playground</Typography>

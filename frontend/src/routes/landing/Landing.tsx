@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
 import FadeIn from 'react-fade-in';
-import { useHistory } from 'react-router-dom';
 import { generateSlug } from 'random-word-slugs';
 
 import DemoImage from 'assets/images/demo.png';
@@ -13,7 +12,6 @@ import { useAuth } from 'contexts/AuthContext';
 import './Landing.scss';
 
 const Landing: FC = () => {
-  const history = useHistory();
   const { login } = useAuth();
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [leftFadeComplete, setLeftFadeComplete] = useState(false);
@@ -60,7 +58,7 @@ const Landing: FC = () => {
               disabled={isSigningIn}
               onClick={(): void => {
                 const slug = generateSlug();
-                history.push(`${GUEST}/${slug}`);
+                window.location.href = `${GUEST}/${slug}`;
               }}
             >
               <Typography size="regular">
