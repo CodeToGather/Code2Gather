@@ -26,8 +26,10 @@ RUN yarn build
 FROM nginx:stable-alpine
 
 COPY --from=build /app/build /usr/share/nginx/html
-RUN apk --no-cache add curl
 
-EXPOSE 80
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d
+
+EXPOSE 80 443 3999
 
 CMD ["nginx", "-g", "daemon off;"]
