@@ -13,6 +13,7 @@ import { RootState } from 'reducers/rootReducer';
 import { Difficulty } from 'types/crud/difficulty';
 import roomIdUtils from 'utils/roomIdUtils';
 
+import LeaderboardModal from './modals/LeaderboardModal';
 import PairingModal from './modals/PairingModal';
 import PracticeHistory from './history';
 import Leaderboard from './leaderboard';
@@ -47,6 +48,7 @@ const Home: FC = () => {
     initialPracticeHistoryState,
   );
   const [isPairing, setIsPairing] = useState(false);
+  const [showLeaderboardModal, setShowLeaderboardModal] = useState(false);
   const [isInRoom, setIsInRoom] = useState(false);
   const { pairingSocket } = usePairingSocket();
   const { state, errorMessage } = useSelector(
@@ -149,15 +151,20 @@ const Home: FC = () => {
         />
       );
     }
-    return <div>Back to home...</div>;
+    return (
+      <LeaderboardModal onClose={(): void => setShowLeaderboardModal(false)} />
+    );
   };
 
-  const isModalVisible = isPairing;
+  const isModalVisible = isPairing || showLeaderboardModal;
 
   return (
     <Container>
       <div className="home__top">
-        <Leaderboard {...leaderboardState} />
+        <Leaderboard
+          {...leaderboardState}
+          onHelp={(): void => setShowLeaderboardModal(true)}
+        />
         <PracticePanel
           isDisabled={state !== PairingState.NOT_PAIRING}
           isInRoom={isInRoom}

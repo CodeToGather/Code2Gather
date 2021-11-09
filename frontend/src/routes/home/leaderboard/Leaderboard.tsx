@@ -11,7 +11,9 @@ import LeaderboardRow from './LeaderboardRow';
 import LeaderboardRowSkeleton from './LeaderboardRowSkeleton';
 import './Leaderboard.scss';
 
-type Props = LeaderboardState;
+interface Props extends LeaderboardState {
+  onHelp: () => void;
+}
 
 enum LeaderboardTab {
   DAY,
@@ -34,7 +36,14 @@ const tabs = [
   },
 ];
 
-const Leaderboard: FC<Props> = ({ day, week, month, isLoading, isError }) => {
+const Leaderboard: FC<Props> = ({
+  day,
+  week,
+  month,
+  isLoading,
+  isError,
+  onHelp,
+}) => {
   const [tab, setTab] = useState(LeaderboardTab.DAY);
 
   const getData = (): LeaderboardData[] => {
@@ -89,7 +98,14 @@ const Leaderboard: FC<Props> = ({ day, week, month, isLoading, isError }) => {
   return (
     <div className="leaderboard">
       <Typography className="is-bold leaderboard__title" size="medium">
-        Leaderboard <i className="far fa-question-circle" />
+        Leaderboard{' '}
+        <i
+          className="far fa-question-circle"
+          onClick={onHelp}
+          onKeyDown={onHelp}
+          role="button"
+          tabIndex={-1}
+        />
       </Typography>
       <Tabs onClick={setTab} selected={tab} tabs={tabs} />
       {renderBody()}

@@ -28,7 +28,7 @@
   }
 }
 
-modal-partner {
+.modal-partner {
   align-items: center;
   display: flex;
 
@@ -37,6 +37,20 @@ modal-partner {
   }
 }
 
-modal-partner-title {
+.modal-partner-title {
   margin-bottom: 1rem;
+}
+
+.modal-image {
+  border-radius: 5px;
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.5);
+  height: auto;
+  width: calc(100% - 30px);
+}
+
+.modal-image-container {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+  width: 100%;
 }
