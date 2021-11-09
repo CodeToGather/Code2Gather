@@ -1,5 +1,6 @@
-import { FC } from 'react';
+import { FC, useRef, useState } from 'react';
 import AceEditor from 'react-ace';
+import { Ace } from 'ace-builds';
 
 import { Language } from 'types/crud/language';
 
@@ -29,19 +30,50 @@ const CodeEditor: FC<Props> = ({
   readOnly = false,
   className = '',
 }) => {
+  const [hasJustCopiedLine, setHasJustCopiedLine] = useState(false);
+  const [lineCopied, setLineCopied] = useState('');
+  const [position, setPosition] = useState({ row: 0, column: 0 });
+  const ref = useRef<AceEditor | null>(null);
+
   return (
     <AceEditor
       className={className}
       commands={[
         {
-          name: 'copylinesdown',
+          name: 'customcopylinesdown',
           bindKey: { win: 'Shift-Alt-Down', mac: 'Shift-Option-Down' },
           exec: 'copylinesdown',
         },
         {
-          name: 'copylinesup',
+          name: 'customcopylinesup',
           bindKey: { win: 'Shift-Alt-Up', mac: 'Shift-Option-Up' },
           exec: 'copylinesup',
+        },
+        {
+          name: 'custompaste',
+          bindKey: { win: 'Ctrl-V', mac: 'Cmd-V' },
+          exec: 'paste',
+        },
+        {
+          name: 'customcut',
+          bindKey: { win: 'Ctrl-X', mac: 'Cmd-X' },
+          exec: (editor: Ace.Editor): void => {
+            // eslint-disable-next-line no-console
+            console.log(editor);
+            const selection = editor.getCopyText();
+            if (selection && selection !== '') {
+              setHasJustCopiedLine(false);
+              setLineCopied('');
+              editor.execCommand('cut');
+            } else {
+              setHasJustCopiedLine(true);
+              const value = editor.getValue();
+              const row = editor.getCursorPosition().row;
+              const line = value.split('\n')[row];
+              setLineCopied(line);
+              editor.execCommand('removeline');
+            }
+          },
         },
       ]}
       enableBasicAutocompletion={true}
@@ -51,7 +83,32 @@ const CodeEditor: FC<Props> = ({
       mode={language.toLowerCase()}
       name="code-editor"
       onChange={onChange}
+      onCopy={(text: string): void => {
+        if (text === '') {
+          navigator.clipboard.writeText('');
+          setHasJustCopiedLine(true);
+          const row = position.row;
+          const lines = value.split('\n');
+          setLineCopied(lines[row]);
+        } else {
+          setHasJustCopiedLine(false);
+          setLineCopied('');
+        }
+      }}
+      onCursorChange={(value): void => {
+        setPosition({ row: value.cursor.row, column: value.cursor.column });
+      }}
+      onPaste={(text: string): void => {
+        if ((!text || text === '') && hasJustCopiedLine) {
+          const row = position.row;
+          const lines = value.split('\n');
+          lines.splice(row, 0, lineCopied);
+          onChange(lines.join('\n'));
+          ref?.current?.editor.execCommand('golinedown');
+        }
+      }}
       readOnly={readOnly}
+      ref={ref}
       showPrintMargin={false}
       theme="twilight"
       value={value}
