@@ -1,15 +1,15 @@
 package room_agents
 
 import (
-	"code2gather.com/room/src/infra/db/db_dao"
 	"log"
 
+	"code2gather.com/room/src/agents/room_agents/repository"
 	"code2gather.com/room/src/models"
 )
 
 func GetRoomById(id string) (*models.Room, error) {
-	roomDaoImpl := db_dao.NewRoomDAOImpl()
-	room, err := roomDaoImpl.GetRoomById(id)
+	repo := repository.NewRoomRepositoryImpl()
+	room, err := repo.Get(id)
 	if err != nil {
 		log.Println(err)
 		return nil, err

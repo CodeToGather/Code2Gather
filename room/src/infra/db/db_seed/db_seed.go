@@ -15,15 +15,15 @@ func SeedDB() (err error) {
 	}
 	defer db.CloseDBConnection()
 
-	questionManager := db_dao.NewQuestionDAOImpl()
+	daoimpl := db_dao.NewQuestionDAOImpl()
 
-	err = questionManager.ClearQuestions()
+	err = daoimpl.ClearQuestions()
 	if err != nil {
 		log.Println(err)
 	}
 
 	for _, question := range GetSeedQuestions() {
-		err = questionManager.CreateQuestion(question)
+		err = daoimpl.CreateQuestion(question)
 		if err != nil {
 			log.Fatal(err)
 			return

@@ -1,13 +1,13 @@
 package question_agents
 
 import (
-	"code2gather.com/room/src/infra/db/db_dao"
+	"code2gather.com/room/src/agents/question_agents/repository"
 	"code2gather.com/room/src/models"
 )
 
 func GetQuestionById(id string) (*models.Question, error) {
-	questionDaoImpl := db_dao.NewQuestionDAOImpl()
-	question, err := questionDaoImpl.GetQuestionById(id)
+	repo := repository.NewQuestionRepositoryImpl()
+	question, err := repo.Get(id)
 	if err != nil {
 		return nil, err
 	}

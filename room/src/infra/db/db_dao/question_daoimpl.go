@@ -27,13 +27,7 @@ func (daoi QuestionDAOImpl) GetQuestionById(id string) (models.Question, error) 
 
 }
 
-func (daoi QuestionDAOImpl) GetQuestionsWithDifficulty(difficulty models.QuestionDifficulty) ([]models.Question, error) {
-	var questions []models.Question
-	err := daoi.collection.Find(bson.M{"difficulty": difficulty}).All(&questions)
-	return questions, err
-}
-
-func (daoi RoomDAOImpl) FindQuestions(query bson.M) ([]models.Question, error) {
+func (daoi QuestionDAOImpl) FindQuestions(query bson.M) ([]models.Question, error) {
 	var questions []models.Question
 	err := daoi.collection.Find(query).All(&questions)
 	return questions, err
