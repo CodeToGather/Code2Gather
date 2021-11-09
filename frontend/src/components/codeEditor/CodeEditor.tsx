@@ -62,17 +62,11 @@ const CodeEditor: FC<Props> = ({
           // referencing the original props.
           exec: (editor: Ace.Editor): void => {
             const selection = editor.getCopyText();
-            if (selection && selection !== '') {
-              setHasJustCopiedLine(false);
-              setLineCopied('');
-              editor.execCommand('cut');
-            } else {
-              setHasJustCopiedLine(true);
-              const value = editor.getValue();
-              const row = editor.getCursorPosition().row;
-              const line = value.split('\n')[row];
-              setLineCopied(line);
+            editor.execCommand('copy');
+            if (!selection || selection === '') {
               editor.execCommand('removeline');
+            } else {
+              editor.execCommand('del');
             }
           },
         },
@@ -84,13 +78,14 @@ const CodeEditor: FC<Props> = ({
       name="code-editor"
       onChange={onChange}
       onCopy={(text: string): void => {
-        if (text === '') {
+        if (!text || text === '') {
           navigator.clipboard.writeText('');
           setHasJustCopiedLine(true);
           const row = position.row;
           const lines = value.split('\n');
           setLineCopied(lines[row]);
         } else {
+          navigator.clipboard.writeText(text);
           setHasJustCopiedLine(false);
           setLineCopied('');
         }
