@@ -5,7 +5,7 @@ import {
   createClient,
   createMicrophoneAndCameraTracks,
 } from 'agora-rtc-react';
-import {
+import AgoraRTC, {
   ClientConfig,
   IAgoraRTCRemoteUser,
   ICameraVideoTrack,
@@ -24,6 +24,10 @@ const config: ClientConfig = {
 };
 
 const appId = process.env.REACT_APP_AGORA_APP_ID ?? '';
+
+if (process.env.NODE_ENV !== 'development') {
+  AgoraRTC.setLogLevel(4);
+}
 
 const useClient = createClient(config);
 const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
