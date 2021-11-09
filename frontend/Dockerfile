@@ -2,8 +2,8 @@
 FROM node:14.17-alpine as build
 
 ENV SKIP_PREFLIGHT_CHECK 'true'
-ENV REACT_APP_BACKEND_API http://gateway-service:3000
-ENV REACT_APP_BACKEND_WS_API ws://gateway-service:3000
+ENV REACT_APP_BACKEND_API http://gateway:3000
+ENV REACT_APP_BACKEND_WS_API ws://gateway:3000
 ENV REACT_APP_FIREBASE_API_KEY AIzaSyASaqw4fLp2DYyfmVRfQojpXcvFzlcVKs8
 ENV REACT_APP_FIREBASE_AUTH_DOMAIN code2gather-df5c6.firebaseapp.com
 ENV REACT_APP_FIREBASE_PROJECT_ID code2gather-df5c6
@@ -26,6 +26,7 @@ RUN yarn build
 FROM nginx:stable-alpine
 
 COPY --from=build /app/build /usr/share/nginx/html
+RUN apk --no-cache add curl
 
 EXPOSE 80
 
