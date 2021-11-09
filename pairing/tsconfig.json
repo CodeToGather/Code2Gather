@@ -7,7 +7,8 @@
       "constants/*": ["./constants/*"],
       "routes/*": ["./routes/*"],
       "socket/*": ["./socket/*"],
-      "structures/*": ["./structures/*"]
+      "structures/*": ["./structures/*"],
+      "utils/*": ["./utils/*"]
     },
     "rootDir": "src",
 
