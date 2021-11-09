@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import FadeIn from 'react-fade-in';
 import { useHistory } from 'react-router-dom';
 import { generateSlug } from 'random-word-slugs';
 
@@ -15,6 +16,7 @@ const Landing: FC = () => {
   const history = useHistory();
   const { login } = useAuth();
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [leftFadeComplete, setLeftFadeComplete] = useState(false);
 
   const handleGithubSignIn = async (): Promise<void> => {
     setIsSigningIn(true);
@@ -29,7 +31,12 @@ const Landing: FC = () => {
   return (
     <Container hasBackground={true}>
       <main className="landing">
-        <div className="landing__left">
+        <FadeIn
+          className="landing__left"
+          delay={200}
+          onComplete={(): void => setLeftFadeComplete(true)}
+          transitionDuration={800}
+        >
           <Typography className="is-bold" size="extra-large">
             Mock interviews made easier.
           </Typography>
@@ -61,10 +68,14 @@ const Landing: FC = () => {
               </Typography>
             </button>
           </div>
-        </div>
-        <div className="landing__right">
+        </FadeIn>
+        <FadeIn
+          className="landing__right"
+          transitionDuration={400}
+          visible={leftFadeComplete}
+        >
           <img alt="Code2Gather Demo" src={DemoImage} />
-        </div>
+        </FadeIn>
       </main>
     </Container>
   );
