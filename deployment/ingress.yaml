@@ -27,49 +27,49 @@ spec:
           #   pathType: Prefix
           #   backend:
           #     service:
-          #       name: auth-service
+          #       name: auth
           #       port:
           #         number: 3000
           # - path: /history
           #   pathType: Prefix
           #   backend:
           #     service:
-          #       name: history-service
+          #       name: history
           #       port:
           #         number: 3000
           # - path: /pairing
           #   pathType: Prefix
           #   backend:
           #     service:
-          #       name: pairing-service
+          #       name: pairing
           #       port:
           #         number: 3000
           # - path: /video
           #   pathType: Prefix
           #   backend:
           #     service:
-          #       name: video-service
+          #       name: video
           #       port:
           #         number: 3000
           # - path: /code-executor
           #   pathType: Prefix
           #   backend:
           #     service:
-          #       name: code-executor-service
+          #       name: code-executor
           #       port:
           #         number: 3000
           # - path: /room
           #   pathType: Prefix
           #   backend:
           #     service:
-          #       name: room-service
+          #       name: room
           #       port:
           #         number: 3000
           # - path: /coding
           #   pathType: Prefix
           #   backend:
           #     service:
-          #       name: coding-service
+          #       name: coding
           #       port:
           #         number: 3000
           - path: /
