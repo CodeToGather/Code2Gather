@@ -12,6 +12,10 @@ export interface CodingDux {
   codeExecutionOutput: string;
   shouldShowOutputPanel: boolean;
   hasNewExecutionOutput: boolean;
+  numLinesChangeStart: number;
+  numLinesChange: number;
+  cursorPosition: { row: number; column: number };
+  cachedColumn: number;
 }
 
 const initialState: CodingDux = {
@@ -21,6 +25,10 @@ const initialState: CodingDux = {
   codeExecutionOutput: '',
   shouldShowOutputPanel: false,
   hasNewExecutionOutput: false,
+  numLinesChangeStart: 0,
+  numLinesChange: 0,
+  cursorPosition: { row: 0, column: 0 },
+  cachedColumn: 0,
 };
 
 const coding = createSlice({
@@ -55,13 +63,32 @@ const coding = createSlice({
     },
     applyChanges: (
       state,
-      action: PayloadAction<Automerge.BinaryChange[]>,
+      action: PayloadAction<{
+        changes: Automerge.BinaryChange[];
+        lineChange?: { start: number; change: number };
+      }>,
     ): void => {
       const [newDoc] = Automerge.applyChanges(
         Automerge.clone(state.doc),
-        action.payload,
+        action.payload.changes,
       );
       state.doc = newDoc;
+      if (action.payload.lineChange) {
+        state.numLinesChangeStart = action.payload.lineChange.start;
+        state.numLinesChange = action.payload.lineChange.change;
+        state.cachedColumn = state.cursorPosition.column;
+      }
+    },
+    clearNumLinesChange: (state): void => {
+      state.numLinesChangeStart = 0;
+      state.numLinesChange = 0;
+      state.cachedColumn = 0;
+    },
+    setPosition: (
+      state,
+      action: PayloadAction<{ row: number; column: number }>,
+    ): void => {
+      state.cursorPosition = action.payload;
     },
     resetState: (state): void => {
       state.doc = initDocWithText('');
@@ -82,6 +109,8 @@ export const {
   setCodeExecutionOutput,
   clearCodeExecutionOutput,
   setHasNewExecutionOutputToFalse,
+  setPosition,
+  clearNumLinesChange,
   resetState,
 } = coding.actions;
 

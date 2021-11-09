@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { match, RouteComponentProps } from 'react-router-dom';
 
 import CodeEditor from 'components/codeEditor';
@@ -14,6 +14,7 @@ import {
   leaveCodingService,
   updateCode,
 } from 'lib/codingSocketService';
+import { clearNumLinesChange, setPosition } from 'reducers/codingDux';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 
@@ -25,9 +26,17 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
   match: match<{ id: string }>;
 }) => {
   const { codingSocket } = useCodingSocket();
-  const { doc, language } = useSelector((state: RootState) => state.coding);
+  const {
+    doc,
+    language,
+    numLinesChange,
+    numLinesChangeStart,
+    cachedColumn,
+    cursorPosition,
+  } = useSelector((state: RootState) => state.coding);
   const guestRoomId = match.params.id;
   const [hasCopied, setHasCopied] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     joinCodingService(codingSocket, guestRoomId);
@@ -37,8 +46,11 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
     };
   }, [codingSocket, guestRoomId]);
 
-  const onCodeChange = (code: string): void => {
-    updateCode(codingSocket, doc, code);
+  const onCodeChange = (
+    code: string,
+    lineChange?: { start: number; change: number },
+  ): void => {
+    updateCode(codingSocket, doc, code, lineChange);
   };
 
   const onCopyInviteLink = async (): Promise<void> => {
@@ -78,8 +90,18 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
         </div>
       </div>
       <CodeEditor
+        cachedColumn={cachedColumn}
+        clearNumLinesChange={(): void => {
+          dispatch(clearNumLinesChange());
+        }}
         language={language}
+        numLinesChange={numLinesChange}
+        numLinesChangeStart={numLinesChangeStart}
         onChange={onCodeChange}
+        position={cursorPosition}
+        setPosition={(position: { row: number; column: number }): void => {
+          dispatch(setPosition(position));
+        }}
         value={doc.text.toString()}
         width="100vw"
       />

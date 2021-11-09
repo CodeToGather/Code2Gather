@@ -41,11 +41,12 @@ export const updateCode = (
   socket: Socket,
   doc: Automerge.Doc<TextDoc>,
   code: string,
+  lineChange?: { start: number; change: number },
 ): void => {
   const newDoc = changeTextDoc(doc, code);
   const changes = binaryChangeToBase64String(Automerge.getChanges(doc, newDoc));
   store.dispatch(setDoc(newDoc));
-  socket.emit(REQ_UPDATE_CODE, changes);
+  socket.emit(REQ_UPDATE_CODE, { changes, lineChange });
 };
 
 export const changeLanguage = (socket: Socket, language: Language): void => {
@@ -79,10 +80,16 @@ const joinedRoom = (socket: Socket): void => {
 };
 
 const updatedCode = (socket: Socket): void => {
-  socket.on(RES_UPDATED_CODE, (data: string[]) => {
-    const changes = base64StringToBinaryChange(data);
-    store.dispatch(applyChanges(changes));
-  });
+  socket.on(
+    RES_UPDATED_CODE,
+    (data: {
+      changes: string[];
+      lineChange?: { start: number; change: number };
+    }) => {
+      const changes = base64StringToBinaryChange(data.changes);
+      store.dispatch(applyChanges({ changes, lineChange: data.lineChange }));
+    },
+  );
 };
 
 const changedLanguage = (socket: Socket): void => {

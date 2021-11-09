@@ -14,6 +14,12 @@ export const REQ_UPDATE_CODE = 'res_update_code';
 // From backend: The other person updated the code.
 export const RES_UPDATED_CODE = 'req_updated_code';
 
+// From us: Here's my cursor.
+export const REQ_UPDATE_CURSOR = 'req_update_cursor';
+
+// From backend: The other person's latest cursor position!
+export const RES_UPDATED_CURSOR = 'res_updated_cursor';
+
 // From us: We changed the language.
 export const REQ_CHANGE_LANGUAGE = 'req_change_language';
 

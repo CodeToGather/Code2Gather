@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import AceEditor from 'react-ace';
 import { Ace } from 'ace-builds';
 
@@ -13,12 +13,22 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 
 interface Props {
   language: Language;
-  onChange: (code: string) => void;
+  onChange: (
+    code: string,
+    lineChange?: { start: number; change: number },
+  ) => void;
+  // onCursorChange?: (row: number, column: number) => void;
   value: string;
   width?: string;
   height?: string;
   readOnly?: boolean;
   className?: string;
+  cachedColumn: number;
+  numLinesChange: number;
+  numLinesChangeStart: number;
+  clearNumLinesChange: () => void;
+  position: { row: number; column: number };
+  setPosition: (data: { row: number; column: number }) => void;
 }
 
 const CodeEditor: FC<Props> = ({
@@ -29,11 +39,53 @@ const CodeEditor: FC<Props> = ({
   height,
   readOnly = false,
   className = '',
+  numLinesChange,
+  numLinesChangeStart,
+  clearNumLinesChange,
+  cachedColumn,
+  position,
+  setPosition,
 }) => {
   const [hasJustCopiedLine, setHasJustCopiedLine] = useState(false);
   const [lineCopied, setLineCopied] = useState('');
-  const [position, setPosition] = useState({ row: 0, column: 0 });
   const ref = useRef<AceEditor | null>(null);
+  const [previousNumLines, setPreviousNumLines] = useState(
+    value.split('\n').length,
+  );
+
+  useEffect(() => {
+    if (numLinesChange > 0) {
+      if (numLinesChangeStart < position.row) {
+        ref?.current?.editor.moveCursorTo(
+          position.row + numLinesChange,
+          cachedColumn,
+        );
+      }
+      clearNumLinesChange();
+    }
+  }, [
+    cachedColumn,
+    clearNumLinesChange,
+    numLinesChange,
+    numLinesChangeStart,
+    position.column,
+    position.row,
+  ]);
+
+  const onChangeWrapper = (code: string): void => {
+    const newNumLines = code.split('\n').length;
+    const difference = newNumLines - previousNumLines;
+    let lineChange;
+    // Can be +ve or -nve
+    if (difference !== 0) {
+      lineChange = {
+        start: Math.max(position.row - difference, 0),
+        change: difference,
+      };
+    }
+    onChange(code, lineChange);
+    setPreviousNumLines(newNumLines);
+  };
 
   return (
     <AceEditor
@@ -76,7 +128,7 @@ const CodeEditor: FC<Props> = ({
       height={height}
       mode={language.toLowerCase()}
       name="code-editor"
-      onChange={onChange}
+      onChange={onChangeWrapper}
       onCopy={(text: string): void => {
         if (!text || text === '') {
           navigator.clipboard.writeText('');
@@ -104,6 +156,8 @@ const CodeEditor: FC<Props> = ({
       }}
       readOnly={readOnly}
       ref={ref}
+      // Disable so that we can efficiently compute the line changes
+      setOptions={{ enableMultiselect: false }}
       showPrintMargin={false}
       theme="twilight"
       value={value}
