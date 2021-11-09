@@ -32,6 +32,21 @@ const CodeEditor: FC<Props> = ({
   return (
     <AceEditor
       className={className}
+      commands={[
+        {
+          name: 'copylinesdown',
+          bindKey: { win: 'Shift-Alt-Down', mac: 'Shift-Option-Down' },
+          exec: 'copylinesdown',
+        },
+        {
+          name: 'copylinesup',
+          bindKey: { win: 'Shift-Alt-Up', mac: 'Shift-Option-Up' },
+          exec: 'copylinesup',
+        },
+      ]}
+      enableBasicAutocompletion={true}
+      enableLiveAutocompletion={true}
+      enableSnippets={true}
       height={height}
       mode={language.toLowerCase()}
       name="code-editor"
