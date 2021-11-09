@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, useEffect, useState } from 'react';
 
 import Error from 'components/error';
 import Typography from 'components/typography';
@@ -9,9 +9,22 @@ import PracticeHistoryItem from './PracticeHistoryItem';
 import PracticeHistoryItemSkeleton from './PracticeHistoryItemSkeleton';
 import './PracticeHistory.scss';
 
-type Props = PracticeHistoryState;
+interface Props extends PracticeHistoryState {
+  onSeeMore: () => Promise<void>;
+}
 
-const PracticeHistory: FC<Props> = ({ isLoading, isError, records }) => {
+const PracticeHistory: FC<Props> = ({
+  isLoading,
+  isError,
+  records,
+  isLastPage,
+  onSeeMore,
+}) => {
+  const [isFetching, setIsFetching] = useState(false);
+  useEffect(() => {
+    setIsFetching(false);
+  }, [records]);
+
   const renderBody = (): ReactElement => {
     if (isLoading) {
       return <PracticeHistoryItemSkeleton />;
@@ -32,6 +45,28 @@ const PracticeHistory: FC<Props> = ({ isLoading, isError, records }) => {
         {records.map((record) => (
           <PracticeHistoryItem {...record} key={`record-${record.id}`} />
         ))}
+        <div className="see-more">
+          {isLastPage ? (
+            <Typography className="is-grey" size="regular">
+              No earlier practices to see.
+            </Typography>
+          ) : (
+            <button
+              className="secondary-button"
+              disabled={isFetching}
+              onClick={(): void => {
+                setIsFetching(true);
+                onSeeMore();
+              }}
+            >
+              <Typography size="regular">
+                {isFetching
+                  ? 'Fetching your practices...'
+                  : 'See earlier practices.'}
+              </Typography>
+            </button>
+          )}
+        </div>
       </>
     );
   };

@@ -1,3 +1,6 @@
 import { MeetingRecord } from '../crud/meetingRecord';
 
-export type MeetingRecordResponse = MeetingRecord[];
+export interface MeetingRecordResponse {
+  records: MeetingRecord[];
+  isLastPage: boolean;
+}

@@ -31,7 +31,9 @@ const initialLeaderboardState: LeaderboardState = {
 
 const initialPracticeHistoryState: PracticeHistoryState = {
   records: [],
+  page: 0,
   isLoading: true,
+  isLastPage: true,
   isError: false,
 };
 
@@ -85,9 +87,9 @@ const Home: FC = () => {
 
     const fetchData = async (): Promise<void> => {
       try {
-        const response = await MeetingRecordApi.getMeetingRecords();
+        const response = await MeetingRecordApi.getMeetingRecords(0);
         if (!didCancel) {
-          setHistoryState({ isLoading: false, records: response });
+          setHistoryState({ isLoading: false, ...response });
         }
       } catch (error) {
         if (!didCancel) {
@@ -126,6 +128,21 @@ const Home: FC = () => {
   const onPracticeNow = (difficulty: Difficulty): void => {
     findPair(pairingSocket, difficulty);
     setIsPairing(true);
+  };
+
+  const onLoadMoreRecords = async (): Promise<void> => {
+    if (historyState.isLastPage) {
+      return;
+    }
+    const response = await MeetingRecordApi.getMeetingRecords(
+      historyState.page + 1,
+    );
+    const newRecords = [...historyState.records, ...response.records];
+    setHistoryState({
+      records: newRecords,
+      isLastPage: response.isLastPage,
+      page: historyState.page + 1,
+    });
   };
 
   const onButtonClick = (): void => {
@@ -171,7 +188,7 @@ const Home: FC = () => {
           onPracticeNow={onPracticeNow}
         />
       </div>
-      <PracticeHistory {...historyState} />
+      <PracticeHistory {...historyState} onSeeMore={onLoadMoreRecords} />
       <Modal isVisible={isModalVisible}>{renderModalContent()}</Modal>
     </Container>
   );
