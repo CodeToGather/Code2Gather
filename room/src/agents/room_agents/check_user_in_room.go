@@ -1,9 +1,9 @@
 package room_agents
 
 import (
+	"code2gather.com/room/src/infra/db/db_dao"
 	"log"
 
-	"code2gather.com/room/src/infra/db"
 	"code2gather.com/room/src/models"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -24,7 +24,7 @@ func CheckUserInRoom(uid string) (isInRoom bool, roomId string, err error) {
 }
 
 func getActiveRoomsOfUser(uid string) ([]models.Room, error) {
-	roomDaoImpl := db.NewRoomRepositoryImpl()
+	roomDaoImpl := db_dao.NewRoomDAOImpl()
 	query := bson.M{"$and": []bson.M{{"$or": []bson.M{{"uid1": uid}, {"uid2": uid}}},
 		{"status": bson.M{"$ne": models.Closed}}}}
 	return roomDaoImpl.FindRooms(query)

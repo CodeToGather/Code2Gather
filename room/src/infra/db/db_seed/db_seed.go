@@ -1,6 +1,7 @@
 package db_seed
 
 import (
+	"code2gather.com/room/src/infra/db/db_dao"
 	"log"
 
 	"code2gather.com/room/src/infra/db"
@@ -14,7 +15,7 @@ func SeedDB() (err error) {
 	}
 	defer db.CloseDBConnection()
 
-	questionManager := db.NewQuestionRepositoryImpl()
+	questionManager := db_dao.NewQuestionDAOImpl()
 
 	err = questionManager.ClearQuestions()
 	if err != nil {
