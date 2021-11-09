@@ -17,6 +17,10 @@
 
   &__title {
     margin-bottom: 1rem;
+
+    i:hover {
+      cursor: pointer;
+    }
   }
 
   &__empty {
