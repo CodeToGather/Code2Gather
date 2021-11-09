@@ -12,6 +12,8 @@ import {
   mockTestMeetingRecord,
 } from 'utils/tests';
 
+import { MeetingRecord } from '.prisma/client';
+
 let server: ApiServer;
 let fixtures: Fixtures;
 
@@ -662,44 +664,71 @@ describe('POST /meeting', () => {
   });
 });
 
-describe('GET /meeting', () => {
+describe('GET /meeting/:page', () => {
   beforeEach(async () => {
     await fixtures.reload();
   });
 
   it('should return a single meeting record for user with one meeting record', async () => {
     const response = await request(server.server)
-      .get('/meeting')
+      .get('/meeting/0')
       .set('Authorization', fixtures.userOne.id)
       .send();
     expect(response.status).toBe(StatusCodes.OK);
-    expect(response.body).toEqual(
+    expect(response.body.records).toEqual(
       convertDatesToJson([fixtures.meetingRecordTwoInterviewedOne]),
     );
+    expect(response.body.isLastPage).toBe(true);
   });
 
   it('should return empty array for user with no meeting records', async () => {
     const newUser = await createTestUser();
     const response = await request(server.server)
-      .get('/meeting')
+      .get('/meeting/0')
       .set('Authorization', newUser.id)
       .send();
     expect(response.status).toBe(StatusCodes.OK);
-    expect(response.body).toHaveLength(0);
+    expect(response.body.records).toHaveLength(0);
+    expect(response.body.isLastPage).toBe(true);
   });
 
-  it('should return meeting records in reverse chronological order for user with multiple meeting records', async () => {
-    const newMeetingRecord = await createTestMeetingRecord({
-      intervieweeId: fixtures.userOne.id,
-    });
-    const response = await request(server.server)
-      .get('/meeting')
+  it('should paginate meeting records in reverse chronological order for user with multiple meeting records', async () => {
+    const createdMeetingRecords: MeetingRecord[] = [];
+    for (let i = 0; i < 4; i = i + 1) {
+      createdMeetingRecords.push(
+        await createTestMeetingRecord({
+          intervieweeId: fixtures.userOne.id,
+        }),
+      );
+    }
+    let response = await request(server.server)
+      .get('/meeting/0')
       .set('Authorization', fixtures.userOne.id)
       .send();
     expect(response.status).toBe(StatusCodes.OK);
-    expect(response.body).toHaveLength(2);
-    expect(response.body[0]).toEqual(convertDatesToJson(newMeetingRecord));
-    expect(response.body[1]).toEqual(
+    expect(response.body.records).toHaveLength(3);
+    expect(response.body.isLastPage).toBe(false);
+    expect(response.body.records[0]).toEqual(
+      convertDatesToJson(createdMeetingRecords[3]),
+    );
+    expect(response.body.records[1]).toEqual(
+      convertDatesToJson(createdMeetingRecords[2]),
+    );
+    expect(response.body.records[2]).toEqual(
+      convertDatesToJson(createdMeetingRecords[1]),
+    );
+
+    response = await request(server.server)
+      .get('/meeting/1')
+      .set('Authorization', fixtures.userOne.id)
+      .send();
+    expect(response.status).toBe(StatusCodes.OK);
+    expect(response.body.records).toHaveLength(2);
+    expect(response.body.isLastPage).toBe(true);
+    expect(response.body.records[0]).toEqual(
+      convertDatesToJson(createdMeetingRecords[0]),
+    );
+    expect(response.body.records[1]).toEqual(
       convertDatesToJson(fixtures.meetingRecordTwoInterviewedOne),
     );
   });
