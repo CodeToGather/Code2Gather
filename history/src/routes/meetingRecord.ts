@@ -7,6 +7,6 @@ const router = Router();
 
 router.use(convertUidToUser);
 router.post('/', MeetingRecordController.createMeetingRecord);
-router.get('/', MeetingRecordController.readMeetingRecordsForSelf);
+router.get('/:page(\\d+)', MeetingRecordController.readMeetingRecordsForSelf);
 
 export default router;

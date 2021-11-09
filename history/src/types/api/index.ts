@@ -4,6 +4,10 @@ export interface IdParams {
   id: string;
 }
 
+export interface PageParams {
+  page: string;
+}
+
 export interface UserLocals {
   user: User;
 }

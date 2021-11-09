@@ -9,6 +9,8 @@ import {
   mockTestMeetingRecord,
 } from 'utils/tests';
 
+import { MeetingRecord } from '.prisma/client';
+
 let fixtures: Fixtures;
 
 beforeAll(async () => {
@@ -160,6 +162,10 @@ describe('MeetingRecordService', () => {
   });
 
   describe('readAllForInterviewee', () => {
+    beforeAll(async () => {
+      await fixtures.reload();
+    });
+
     it('user can read their meeting records', async () => {
       const meetingRecords = await meetingRecordService.readAllForInterviewee(
         fixtures.userOne.id,
@@ -202,6 +208,77 @@ describe('MeetingRecordService', () => {
       expect(meetingRecords[1]).toEqual(
         fixtures.meetingRecordTwoInterviewedOne,
       );
+    });
+  });
+
+  describe('readPaginatedForInterviewee', () => {
+    beforeAll(async () => {
+      await fixtures.reload();
+    });
+
+    it('user can read their meeting records in 3s', async () => {
+      const createdMeetingRecords: MeetingRecord[] = [];
+      for (let i = 0; i < 4; i = i + 1) {
+        createdMeetingRecords.push(
+          await createTestMeetingRecord({
+            intervieweeId: fixtures.userOne.id,
+          }),
+        );
+      }
+      let meetingRecords =
+        await meetingRecordService.readPaginatedForInterviewee(
+          fixtures.userOne.id,
+          0,
+          fixtures.userOne,
+        );
+      expect(meetingRecords.records).toHaveLength(3);
+      expect(meetingRecords.isLastPage).toBe(false);
+      expect(meetingRecords.records[0]).toEqual(createdMeetingRecords[3]);
+      expect(meetingRecords.records[1]).toEqual(createdMeetingRecords[2]);
+      expect(meetingRecords.records[2]).toEqual(createdMeetingRecords[1]);
+      meetingRecords = await meetingRecordService.readPaginatedForInterviewee(
+        fixtures.userOne.id,
+        1,
+        fixtures.userOne,
+      );
+      expect(meetingRecords.records).toHaveLength(2);
+      expect(meetingRecords.isLastPage).toBe(true);
+      expect(meetingRecords.records[0]).toEqual(createdMeetingRecords[0]);
+      expect(meetingRecords.records[1]).toEqual(
+        fixtures.meetingRecordTwoInterviewedOne,
+      );
+    });
+
+    it("unrelated user cannot read another user's meeting records", async () => {
+      await expect(
+        meetingRecordService.readPaginatedForInterviewee(
+          fixtures.userOne.id,
+          0,
+          fixtures.userTwo,
+        ),
+      ).rejects.toThrow(AuthorizationError);
+    });
+
+    it('handles when user has no records', async () => {
+      const newUser = await createTestUser();
+      const meetingRecords =
+        await meetingRecordService.readPaginatedForInterviewee(
+          newUser.id,
+          0,
+          newUser,
+        );
+      expect(meetingRecords.records).toHaveLength(0);
+    });
+
+    it('handles reading of page numbers > last page number', async () => {
+      const meetingRecords =
+        await meetingRecordService.readPaginatedForInterviewee(
+          fixtures.userOne.id,
+          100,
+          fixtures.userOne,
+        );
+      expect(meetingRecords.records).toHaveLength(0);
+      expect(meetingRecords.isLastPage).toBe(true);
     });
   });
 });
