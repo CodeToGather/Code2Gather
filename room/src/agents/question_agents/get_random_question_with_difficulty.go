@@ -1,15 +1,17 @@
 package question_agents
 
 import (
+	"gopkg.in/mgo.v2/bson"
 	"math/rand"
 
-	"code2gather.com/room/src/infra/db"
+	"code2gather.com/room/src/agents/question_agents/repository"
 	"code2gather.com/room/src/models"
 )
 
 func GetRandomQuestionsWithDifficulty(difficulty models.QuestionDifficulty) (question1 models.Question, question2 models.Question, err error) {
-	questionDaoImpl := db.NewQuestionRepositoryImpl()
-	allQuestions, err := questionDaoImpl.GetQuestionsWithDifficulty(difficulty)
+	repo := repository.NewQuestionRepositoryImpl()
+
+	allQuestions, err := repo.GetAll(bson.M{"difficulty": difficulty})
 
 	if err != nil {
 		return

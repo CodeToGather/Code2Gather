@@ -82,7 +82,7 @@ func (c *HttpClient) GetWithAuthHeader(path string, authHeader string) ([]byte, 
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Authorization", "Bearer "+authHeader)
+	req.Header.Add("Authorization", authHeader)
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err

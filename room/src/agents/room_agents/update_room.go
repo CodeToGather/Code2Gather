@@ -3,13 +3,13 @@ package room_agents
 import (
 	"log"
 
-	"code2gather.com/room/src/infra/db"
+	"code2gather.com/room/src/agents/room_agents/repository"
 	"code2gather.com/room/src/models"
 )
 
 func UpdateRoom(room *models.Room) error {
-	roomDaoImpl := db.NewRoomRepositoryImpl()
-	err := roomDaoImpl.UpdateRoom(room)
+	repo := repository.NewRoomRepositoryImpl()
+	err := repo.Update(room)
 	if err != nil {
 		log.Println(err)
 	}
