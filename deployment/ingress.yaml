@@ -19,7 +19,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: gateway-service
+                name: gateway
                 port:
                   number: 3000
           # Other services should not be exposed and only available through the gateway
@@ -76,6 +76,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend-service
+                name: frontend
                 port:
                   number: 80

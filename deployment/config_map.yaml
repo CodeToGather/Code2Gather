@@ -6,11 +6,11 @@ metadata:
 data:
   NODE_ENV: development
   PORT: '3000'
-  AUTH_URL: http://auth-service:3000
-  CODE_EXECUTOR_URL: http://code-executor-service:3000
-  CODING_URL: http://coding-service:3000
-  HISTORY_URL: http://history-service:3000
-  PAIRING_URL: http://pairing-service:3000
-  VIDEO_URL: http://video-service:3000
-  ROOM_URL: http://room-service:3000
+  AUTH_URL: http://auth:3000
+  CODE_EXECUTOR_URL: http://code-executor:3000
+  CODING_URL: http://coding:3000
+  HISTORY_URL: http://history:3000
+  PAIRING_URL: http://pairing:3000
+  VIDEO_URL: http://video:3000
+  ROOM_URL: http://room:3000
   JUDGE_URL: http://jh123x.tk:2358
