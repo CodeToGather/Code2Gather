@@ -21,6 +21,18 @@ const App: FC = () => {
     loadAuthenticatedApp();
   }, []);
 
+  useEffect(() => {
+    const handler = (e: KeyboardEvent): void => {
+      if (e.key === 's' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener('keydown', handler, false);
+    return (): void => {
+      document.removeEventListener('keydown', handler);
+    };
+  }, []);
+
   return (
     <Suspense fallback={<Loading />}>
       {/* Renders the appropriate app */}
