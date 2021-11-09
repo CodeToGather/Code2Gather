@@ -1,0 +1,42 @@
+.modal-instruction {
+  margin-bottom: 1.5rem;
+  margin-top: 0.75rem;
+  white-space: pre-wrap;
+}
+
+.modal-buttons {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+
+  &--right {
+    display: flex;
+
+    > button:first-child {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.modal-loading-button-text {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  > div {
+    margin-left: 0.3rem;
+  }
+}
+
+modal-partner {
+  align-items: center;
+  display: flex;
+
+  > * {
+    margin-right: 1rem;
+  }
+}
+
+modal-partner-title {
+  margin-bottom: 1rem;
+}
