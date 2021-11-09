@@ -76,7 +76,6 @@ const CodeEditor: FC<Props> = ({
       ]}
       enableBasicAutocompletion={true}
       enableLiveAutocompletion={true}
-      enableSnippets={true}
       height={height}
       mode={language.toLowerCase()}
       name="code-editor"
