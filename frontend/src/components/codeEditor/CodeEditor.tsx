@@ -58,8 +58,6 @@ const CodeEditor: FC<Props> = ({
           name: 'customcut',
           bindKey: { win: 'Ctrl-X', mac: 'Cmd-X' },
           exec: (editor: Ace.Editor): void => {
-            // eslint-disable-next-line no-console
-            console.log(editor);
             const selection = editor.getCopyText();
             if (selection && selection !== '') {
               setHasJustCopiedLine(false);
