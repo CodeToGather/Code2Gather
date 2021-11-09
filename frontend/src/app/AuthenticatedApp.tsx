@@ -1,26 +1,19 @@
 import { FC } from 'react';
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { HOME, ROOM } from 'constants/routes';
 import Home from 'routes/home';
 import Room from 'routes/room';
 
-const redirectToHome = (): React.ReactNode => <Redirect to={HOME} />;
-
 const AuthenticatedApp: FC = () => {
   return (
-    <Router>
-      <Switch>
-        <Route component={Home} exact={true} path={HOME} />
-        <Route component={Room} exact={true} path={ROOM} />
-        <Route path="/" render={redirectToHome} />
-      </Switch>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Home />} path={HOME} />
+        <Route element={<Room />} path={ROOM} />
+        <Navigate to={HOME} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
