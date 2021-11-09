@@ -15,7 +15,7 @@
     "express": "^4.17.1",
     "helmet": "^4.6.0",
     "morgan": "^1.10.0",
-    "socket.io": "^4.3.1"
+    "socket.io": "^4.3.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
@@ -23,7 +23,7 @@
     "@types/faker": "^5.5.9",
     "@types/jest": "^27.0.2",
     "@types/morgan": "^1.9.3",
-    "@types/node": "^16.11.6",
+    "@types/node": "^16.11.7",
     "cross-env": "^7.0.3",
     "faker": "^5.5.3",
     "jest": "^27.3.1",
