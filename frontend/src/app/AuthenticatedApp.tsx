@@ -23,3 +23,5 @@ const AuthenticatedApp: FC = () => {
     </Router>
   );
 };
+
+export default AuthenticatedApp;
