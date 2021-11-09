@@ -11,7 +11,7 @@
     "db:seed": "go run ./src/infra/db/db_script/main/db_question_seed.go",
     "lint": "gofmt -w .",
     "postinstall": "go mod vendor",
-    "start": "nodemon --exec go run ./src/main.go --signal SIGTERM"
+    "start": "nodemon --watch './**/*.go' --exec go run ./src/main.go --signal SIGTERM"
   },
   "lint-staged": {
     "**/*.go": [

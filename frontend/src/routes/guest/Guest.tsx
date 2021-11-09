@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { match, RouteComponentProps, useHistory } from 'react-router-dom';
 
 import CodeEditor from 'components/codeEditor';
 import LanguageDropdown from 'components/languageDropdown';
@@ -19,30 +19,31 @@ import { Language } from 'types/crud/language';
 
 import './Guest.scss';
 
-const Guest: FC = () => {
+const Guest: FC<RouteComponentProps<{ id: string }>> = ({
+  match,
+}: {
+  match: match<{ id: string }>;
+}) => {
   const { codingSocket } = useCodingSocket();
   const { doc, language } = useSelector((state: RootState) => state.coding);
-  const { id } = useParams();
+  const guestRoomId = match.params.id;
   const [hasCopied, setHasCopied] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
-    if (id == null) {
-      window.location.href = ROOT;
-      return (): void => undefined;
-    }
-    joinCodingService(codingSocket, id);
+    joinCodingService(codingSocket, guestRoomId);
 
     return (): void => {
       leaveCodingService(codingSocket);
     };
-  }, [codingSocket, id]);
+  }, [codingSocket, guestRoomId]);
 
   const onCodeChange = (code: string): void => {
     updateCode(codingSocket, doc, code);
   };
 
   const onCopyInviteLink = async (): Promise<void> => {
-    await navigator.clipboard.writeText(`${SITE_URL}${GUEST}/${id}`);
+    await navigator.clipboard.writeText(`${SITE_URL}${GUEST}/${guestRoomId}`);
     setHasCopied(true);
     setTimeout(() => {
       setHasCopied(false);
