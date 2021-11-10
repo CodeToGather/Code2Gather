@@ -48,7 +48,7 @@ const Help: FC = () => {
           <iframe
             allowFullScreen={true}
             frameBorder="0"
-            src="https://www.youtube.com/embed/5cVotr76mx4"
+            src="https://www.youtube.com/embed/GQCbt3Bls4Y"
             title="Demo Video"
           />
         </div>
