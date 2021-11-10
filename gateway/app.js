@@ -31,8 +31,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 
 // Test route
-app.get('/hello', (_req, res) => {
-  res.json({
+app.get('/', (_req, res) => {
+  res.status(200).json({
     message: 'Hello world',
   });
 });
