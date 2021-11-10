@@ -6,13 +6,18 @@ import './Container.scss';
 
 interface Props {
   hasBackground?: boolean;
+  isNarrow?: boolean;
 }
 
 /**
  * Container that wraps around the given children, giving it padding on the
  * left and right sides, as well as a navbar on top.
  */
-const Container: FC<Props> = ({ hasBackground = false, children }) => {
+const Container: FC<Props> = ({
+  hasBackground = false,
+  isNarrow = false,
+  children,
+}) => {
   const backgroundWrap = (content: ReactElement): ReactElement => {
     if (hasBackground) {
       return (
@@ -28,7 +33,7 @@ const Container: FC<Props> = ({ hasBackground = false, children }) => {
   };
 
   return backgroundWrap(
-    <div className="container">
+    <div className={`container${isNarrow ? ' is-narrow' : ''}`}>
       <Navbar />
       <div>{children}</div>
     </div>,
