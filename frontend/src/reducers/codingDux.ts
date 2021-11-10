@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as Automerge from 'automerge';
 
 import { TextDoc } from 'types/automerge';
+import { CursorInformation } from 'types/automerge/cursor';
 import { Language } from 'types/crud/language';
 import { initDocWithText } from 'utils/automergeUtils';
 
@@ -15,6 +16,7 @@ export interface CodingDux {
   cursorPosition: { row: number; column: number };
   suggestedNextPosition: { row: number; column: number };
   hasSuggestion: boolean;
+  partnerCursor: CursorInformation;
 }
 
 const initialState: CodingDux = {
@@ -27,6 +29,12 @@ const initialState: CodingDux = {
   cursorPosition: { row: 0, column: 0 },
   suggestedNextPosition: { row: 0, column: 0 },
   hasSuggestion: false,
+  partnerCursor: {
+    startRow: 0,
+    startCol: 0,
+    endRow: 0,
+    endCol: 0,
+  },
 };
 
 const coding = createSlice({
@@ -126,6 +134,12 @@ const coding = createSlice({
       }
       state.doc = newDoc;
     },
+    updatePartnerCursor: (
+      state,
+      action: PayloadAction<CursorInformation>,
+    ): void => {
+      state.partnerCursor = action.payload;
+    },
     clearSuggestion: (state): void => {
       state.hasSuggestion = false;
     },
@@ -156,6 +170,7 @@ export const {
   setHasNewExecutionOutputToFalse,
   setPosition,
   clearSuggestion,
+  updatePartnerCursor,
   resetState,
 } = coding.actions;
 

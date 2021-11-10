@@ -1,8 +1,10 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import AceEditor from 'react-ace';
+import AceEditor, { IMarker } from 'react-ace';
 import { Ace } from 'ace-builds';
 
+import { CursorInformation } from 'types/automerge/cursor';
 import { Language } from 'types/crud/language';
+import { emptyFunction } from 'utils/functionUtils';
 
 import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/mode-java';
@@ -11,10 +13,12 @@ import 'ace-builds/src-noconflict/mode-javascript';
 import './theme-twilight';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
+import './CodeEditor.scss';
+
 interface Props {
   language: Language;
   onChange: (code: string) => void;
-  // onCursorChange?: (row: number, column: number) => void;
+  onCursorChange?: (data: CursorInformation) => void;
   value: string;
   width?: string;
   height?: string;
@@ -24,11 +28,13 @@ interface Props {
   suggestedPosition: { row: number; column: number };
   position: { row: number; column: number };
   setPosition: (data: { row: number; column: number }) => void;
+  partnerCursor?: CursorInformation;
 }
 
 const CodeEditor: FC<Props> = ({
   language,
   onChange,
+  onCursorChange = emptyFunction,
   value,
   width,
   height,
@@ -38,6 +44,7 @@ const CodeEditor: FC<Props> = ({
   suggestedPosition,
   position,
   setPosition,
+  partnerCursor,
 }) => {
   const [hasJustCopiedLine, setHasJustCopiedLine] = useState(false);
   const [lineCopied, setLineCopied] = useState('');
@@ -57,6 +64,19 @@ const CodeEditor: FC<Props> = ({
     suggestedPosition.column,
     suggestedPosition.row,
   ]);
+
+  const markers: IMarker[] = [];
+  if (partnerCursor) {
+    const isNotSelection =
+      partnerCursor.startRow === partnerCursor.endRow &&
+      partnerCursor.startCol === partnerCursor.endCol;
+    markers.push({
+      ...partnerCursor,
+      endCol: isNotSelection ? partnerCursor.endCol + 1 : partnerCursor.endCol,
+      className: `marker${isNotSelection ? ' is-single' : ''}`,
+      type: 'text',
+    });
+  }
 
   return (
     <AceEditor
@@ -97,6 +117,7 @@ const CodeEditor: FC<Props> = ({
       enableBasicAutocompletion={true}
       enableLiveAutocompletion={true}
       height={height}
+      markers={markers}
       mode={language.toLowerCase()}
       name="code-editor"
       onChange={onChange}
@@ -115,6 +136,12 @@ const CodeEditor: FC<Props> = ({
       }}
       onCursorChange={(value): void => {
         setPosition({ row: value.cursor.row, column: value.cursor.column });
+        onCursorChange({
+          startRow: value.anchor.row,
+          startCol: value.anchor.column,
+          endRow: value.cursor.row,
+          endCol: value.cursor.column,
+        });
       }}
       onPaste={(text: string): void => {
         if ((!text || text === '') && hasJustCopiedLine) {

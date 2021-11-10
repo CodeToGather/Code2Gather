@@ -83,14 +83,22 @@ const setUpIo = (io: Server): void => {
       socket.to(roomId).emit(RES_UPDATED_CODE, data);
     });
 
-    socket.on(REQ_UPDATE_CURSOR, (data: { column: number; row: number }) => {
-      const roomId = socketIdToRoomId.get(socket.id);
-      if (!roomId) {
-        console.log('Missing room!');
-        return;
-      }
-      socket.to(roomId).emit(RES_UPDATED_CURSOR, data);
-    });
+    socket.on(
+      REQ_UPDATE_CURSOR,
+      (data: {
+        startRow: number;
+        startCol: number;
+        endRow: number;
+        endCol: number;
+      }) => {
+        const roomId = socketIdToRoomId.get(socket.id);
+        if (!roomId) {
+          console.log('Missing room!');
+          return;
+        }
+        socket.to(roomId).emit(RES_UPDATED_CURSOR, data);
+      },
+    );
 
     socket.on(REQ_CHANGE_LANGUAGE, (language: Language) => {
       const roomId = socketIdToRoomId.get(socket.id);

@@ -16,6 +16,7 @@ import {
   joinCodingService,
   leaveCodingService,
   updateCode,
+  updateCursor,
 } from 'lib/codingSocketService';
 import {
   completeQuestion,
@@ -30,7 +31,9 @@ import {
   setShouldClearCode,
 } from 'reducers/roomDux';
 import { RootState } from 'reducers/rootReducer';
+import { CursorInformation } from 'types/automerge/cursor';
 import { Language } from 'types/crud/language';
+import { emptyFunction } from 'utils/functionUtils';
 import { useLocalStorage, useWindowDimensions } from 'utils/hookUtils';
 import roomIdUtils from 'utils/roomIdUtils';
 
@@ -57,6 +60,7 @@ const Room: FC = () => {
     suggestedNextPosition,
     hasSuggestion,
     cursorPosition,
+    partnerCursor,
   } = useSelector((state: RootState) => state.coding);
   const {
     isInterviewer,
@@ -93,7 +97,7 @@ const Room: FC = () => {
     // ALL leave rooms will ultimately lead here.
     if (roomId == null) {
       window.location.href = HOME;
-      return (): void => undefined;
+      return emptyFunction;
     }
     joinCodingService(codingSocket, roomId);
     if (roomSocket.readyState === WebSocket.OPEN) {
@@ -144,6 +148,10 @@ const Room: FC = () => {
 
   const onCodeChange = (code: string): void => {
     updateCode(codingSocket, doc, code);
+  };
+
+  const onCursorChange = (data: CursorInformation): void => {
+    updateCursor(codingSocket, data);
   };
 
   const onExecuteCode = (): void => {
@@ -283,6 +291,8 @@ const Room: FC = () => {
               height={getCodeEditorHeight()}
               language={language}
               onChange={onCodeChange}
+              onCursorChange={onCursorChange}
+              partnerCursor={partnerCursor}
               position={cursorPosition}
               setPosition={(position: {
                 row: number;
