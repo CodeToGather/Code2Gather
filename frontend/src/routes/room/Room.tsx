@@ -23,7 +23,7 @@ import {
   leaveRoomService,
   submitRating,
 } from 'lib/roomSocketService';
-import { clearNumLinesChange, setPosition } from 'reducers/codingDux';
+import { clearSuggestion, setPosition } from 'reducers/codingDux';
 import {
   incrementCheckRoomIdCounter,
   RatingSubmissionState,
@@ -54,10 +54,9 @@ const Room: FC = () => {
     codeExecutionOutput,
     shouldShowOutputPanel,
     hasNewExecutionOutput,
-    numLinesChange,
-    numLinesChangeStart,
+    suggestedNextPosition,
+    hasSuggestion,
     cursorPosition,
-    cachedColumn,
   } = useSelector((state: RootState) => state.coding);
   const {
     isInterviewer,
@@ -277,14 +276,12 @@ const Room: FC = () => {
           </div>
           <div className="room--top-left__editor">
             <CodeEditor
-              cachedColumn={cachedColumn}
-              clearNumLinesChange={(): void => {
-                dispatch(clearNumLinesChange());
+              clearSuggestion={(): void => {
+                dispatch(clearSuggestion());
               }}
+              hasSuggestion={hasSuggestion}
               height={getCodeEditorHeight()}
               language={language}
-              numLinesChange={numLinesChange}
-              numLinesChangeStart={numLinesChangeStart}
               onChange={onCodeChange}
               position={cursorPosition}
               setPosition={(position: {
@@ -293,6 +290,7 @@ const Room: FC = () => {
               }): void => {
                 dispatch(setPosition(position));
               }}
+              suggestedPosition={suggestedNextPosition}
               value={doc.text.toString()}
               width={getCodeEditorWidth()}
             />
