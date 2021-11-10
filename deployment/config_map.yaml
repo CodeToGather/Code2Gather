@@ -4,7 +4,7 @@ metadata:
   name: code2gather-config
   namespace: default
 data:
-  NODE_ENV: development
+  NODE_ENV: production
   PORT: '3000'
   AUTH_URL: http://auth:3000
   CODE_EXECUTOR_URL: http://code-executor:3000
