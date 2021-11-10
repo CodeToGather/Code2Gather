@@ -64,42 +64,41 @@ const setUpIo = (io: Server): void => {
       }
     });
 
+    socket.on(REQ_UPDATE_CODE, (data: string[]) => {
+      const roomId = socketIdToRoomId.get(socket.id);
+      if (!roomId) {
+        console.log('Missing room!');
+        return;
+      }
+      const doc = roomIdToDoc.get(roomId);
+      if (!doc) {
+        console.log('Missing doc!');
+        return;
+      }
+      const [newDoc] = Automerge.applyChanges(
+        Automerge.clone(doc),
+        base64StringToBinaryChange(data),
+      );
+      roomIdToDoc.set(roomId, newDoc);
+      socket.to(roomId).emit(RES_UPDATED_CODE, data);
+    });
+
     socket.on(
-      REQ_UPDATE_CODE,
+      REQ_UPDATE_CURSOR,
       (data: {
-        changes: string[];
-        lineChange?: { start: number; change: number };
+        startRow: number;
+        startCol: number;
+        endRow: number;
+        endCol: number;
       }) => {
         const roomId = socketIdToRoomId.get(socket.id);
         if (!roomId) {
           console.log('Missing room!');
           return;
         }
-        const doc = roomIdToDoc.get(roomId);
-        if (!doc) {
-          console.log('Missing doc!');
-          return;
-        }
-        const [newDoc] = Automerge.applyChanges(
-          Automerge.clone(doc),
-          base64StringToBinaryChange(data.changes),
-        );
-        roomIdToDoc.set(roomId, newDoc);
-        socket.to(roomId).emit(RES_UPDATED_CODE, {
-          changes: data.changes,
-          lineChange: data.lineChange,
-        });
+        socket.to(roomId).emit(RES_UPDATED_CURSOR, data);
       },
     );
-
-    socket.on(REQ_UPDATE_CURSOR, (data: { column: number; row: number }) => {
-      const roomId = socketIdToRoomId.get(socket.id);
-      if (!roomId) {
-        console.log('Missing room!');
-        return;
-      }
-      socket.to(roomId).emit(RES_UPDATED_CURSOR, data);
-    });
 
     socket.on(REQ_CHANGE_LANGUAGE, (language: Language) => {
       const roomId = socketIdToRoomId.get(socket.id);

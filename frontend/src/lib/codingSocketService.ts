@@ -8,11 +8,13 @@ import {
   REQ_JOIN_ROOM,
   REQ_LEAVE_ROOM,
   REQ_UPDATE_CODE,
+  REQ_UPDATE_CURSOR,
   RES_CHANGED_LANGUAGE,
   RES_CODE_OUTPUT,
   RES_EXECUTING_CODE,
   RES_JOINED_ROOM,
   RES_UPDATED_CODE,
+  RES_UPDATED_CURSOR,
 } from 'constants/coding';
 import {
   applyChanges,
@@ -20,8 +22,10 @@ import {
   setDoc,
   setIsExecutingCodeAsTrue,
   setLanguage,
+  updatePartnerCursor,
 } from 'reducers/codingDux';
 import { TextDoc } from 'types/automerge';
+import { CursorInformation } from 'types/automerge/cursor';
 import { Language } from 'types/crud/language';
 import {
   base64StringToBinaryChange,
@@ -41,12 +45,15 @@ export const updateCode = (
   socket: Socket,
   doc: Automerge.Doc<TextDoc>,
   code: string,
-  lineChange?: { start: number; change: number },
 ): void => {
   const newDoc = changeTextDoc(doc, code);
   const changes = binaryChangeToBase64String(Automerge.getChanges(doc, newDoc));
   store.dispatch(setDoc(newDoc));
-  socket.emit(REQ_UPDATE_CODE, { changes, lineChange });
+  socket.emit(REQ_UPDATE_CODE, changes);
+};
+
+export const updateCursor = (socket: Socket, data: CursorInformation): void => {
+  socket.emit(REQ_UPDATE_CURSOR, data);
 };
 
 export const changeLanguage = (socket: Socket, language: Language): void => {
@@ -80,16 +87,16 @@ const joinedRoom = (socket: Socket): void => {
 };
 
 const updatedCode = (socket: Socket): void => {
-  socket.on(
-    RES_UPDATED_CODE,
-    (data: {
-      changes: string[];
-      lineChange?: { start: number; change: number };
-    }) => {
-      const changes = base64StringToBinaryChange(data.changes);
-      store.dispatch(applyChanges({ changes, lineChange: data.lineChange }));
-    },
-  );
+  socket.on(RES_UPDATED_CODE, (data: string[]) => {
+    const changes = base64StringToBinaryChange(data);
+    store.dispatch(applyChanges(changes));
+  });
+};
+
+const updatedCursor = (socket: Socket): void => {
+  socket.on(RES_UPDATED_CURSOR, (data: CursorInformation) => {
+    store.dispatch(updatePartnerCursor(data));
+  });
 };
 
 const changedLanguage = (socket: Socket): void => {
@@ -119,6 +126,7 @@ const executedCodeOutput = (socket: Socket): void => {
 export const initializeSocketForCoding = (socket: Socket): void => {
   joinedRoom(socket);
   updatedCode(socket);
+  updatedCursor(socket);
   changedLanguage(socket);
   executingCode(socket);
   executedCodeOutput(socket);

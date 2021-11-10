@@ -14,7 +14,7 @@ import {
   leaveCodingService,
   updateCode,
 } from 'lib/codingSocketService';
-import { clearNumLinesChange, setPosition } from 'reducers/codingDux';
+import { clearSuggestion, setPosition } from 'reducers/codingDux';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 
@@ -29,9 +29,8 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
   const {
     doc,
     language,
-    numLinesChange,
-    numLinesChangeStart,
-    cachedColumn,
+    hasSuggestion,
+    suggestedNextPosition,
     cursorPosition,
   } = useSelector((state: RootState) => state.coding);
   const guestRoomId = match.params.id;
@@ -46,11 +45,8 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
     };
   }, [codingSocket, guestRoomId]);
 
-  const onCodeChange = (
-    code: string,
-    lineChange?: { start: number; change: number },
-  ): void => {
-    updateCode(codingSocket, doc, code, lineChange);
+  const onCodeChange = (code: string): void => {
+    updateCode(codingSocket, doc, code);
   };
 
   const onCopyInviteLink = async (): Promise<void> => {
@@ -90,18 +86,17 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
         </div>
       </div>
       <CodeEditor
-        cachedColumn={cachedColumn}
-        clearNumLinesChange={(): void => {
-          dispatch(clearNumLinesChange());
+        clearSuggestion={(): void => {
+          dispatch(clearSuggestion());
         }}
+        hasSuggestion={hasSuggestion}
         language={language}
-        numLinesChange={numLinesChange}
-        numLinesChangeStart={numLinesChangeStart}
         onChange={onCodeChange}
         position={cursorPosition}
         setPosition={(position: { row: number; column: number }): void => {
           dispatch(setPosition(position));
         }}
+        suggestedPosition={suggestedNextPosition}
         value={doc.text.toString()}
         width="100vw"
       />

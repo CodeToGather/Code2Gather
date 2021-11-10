@@ -16,6 +16,7 @@ import {
   joinCodingService,
   leaveCodingService,
   updateCode,
+  updateCursor,
 } from 'lib/codingSocketService';
 import {
   completeQuestion,
@@ -23,14 +24,16 @@ import {
   leaveRoomService,
   submitRating,
 } from 'lib/roomSocketService';
-import { clearNumLinesChange, setPosition } from 'reducers/codingDux';
+import { clearSuggestion, setPosition } from 'reducers/codingDux';
 import {
   incrementCheckRoomIdCounter,
   RatingSubmissionState,
   setShouldClearCode,
 } from 'reducers/roomDux';
 import { RootState } from 'reducers/rootReducer';
+import { CursorInformation } from 'types/automerge/cursor';
 import { Language } from 'types/crud/language';
+import { emptyFunction } from 'utils/functionUtils';
 import { useLocalStorage, useWindowDimensions } from 'utils/hookUtils';
 import roomIdUtils from 'utils/roomIdUtils';
 
@@ -54,10 +57,10 @@ const Room: FC = () => {
     codeExecutionOutput,
     shouldShowOutputPanel,
     hasNewExecutionOutput,
-    numLinesChange,
-    numLinesChangeStart,
+    suggestedNextPosition,
+    hasSuggestion,
     cursorPosition,
-    cachedColumn,
+    partnerCursor,
   } = useSelector((state: RootState) => state.coding);
   const {
     isInterviewer,
@@ -94,7 +97,7 @@ const Room: FC = () => {
     // ALL leave rooms will ultimately lead here.
     if (roomId == null) {
       window.location.href = HOME;
-      return (): void => undefined;
+      return emptyFunction;
     }
     joinCodingService(codingSocket, roomId);
     if (roomSocket.readyState === WebSocket.OPEN) {
@@ -145,6 +148,10 @@ const Room: FC = () => {
 
   const onCodeChange = (code: string): void => {
     updateCode(codingSocket, doc, code);
+  };
+
+  const onCursorChange = (data: CursorInformation): void => {
+    updateCursor(codingSocket, data);
   };
 
   const onExecuteCode = (): void => {
@@ -277,15 +284,15 @@ const Room: FC = () => {
           </div>
           <div className="room--top-left__editor">
             <CodeEditor
-              cachedColumn={cachedColumn}
-              clearNumLinesChange={(): void => {
-                dispatch(clearNumLinesChange());
+              clearSuggestion={(): void => {
+                dispatch(clearSuggestion());
               }}
+              hasSuggestion={hasSuggestion}
               height={getCodeEditorHeight()}
               language={language}
-              numLinesChange={numLinesChange}
-              numLinesChangeStart={numLinesChangeStart}
               onChange={onCodeChange}
+              onCursorChange={onCursorChange}
+              partnerCursor={partnerCursor}
               position={cursorPosition}
               setPosition={(position: {
                 row: number;
@@ -293,6 +300,7 @@ const Room: FC = () => {
               }): void => {
                 dispatch(setPosition(position));
               }}
+              suggestedPosition={suggestedNextPosition}
               value={doc.text.toString()}
               width={getCodeEditorWidth()}
             />

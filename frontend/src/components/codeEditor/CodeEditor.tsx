@@ -1,8 +1,10 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import AceEditor from 'react-ace';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import AceEditor, { IMarker } from 'react-ace';
 import { Ace } from 'ace-builds';
 
+import { CursorInformation } from 'types/automerge/cursor';
 import { Language } from 'types/crud/language';
+import { emptyFunction } from 'utils/functionUtils';
 
 import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/mode-java';
@@ -11,81 +13,80 @@ import 'ace-builds/src-noconflict/mode-javascript';
 import './theme-twilight';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
+import './CodeEditor.scss';
+
 interface Props {
   language: Language;
-  onChange: (
-    code: string,
-    lineChange?: { start: number; change: number },
-  ) => void;
-  // onCursorChange?: (row: number, column: number) => void;
+  onChange: (code: string) => void;
+  onCursorChange?: (data: CursorInformation) => void;
   value: string;
   width?: string;
   height?: string;
-  readOnly?: boolean;
   className?: string;
-  cachedColumn: number;
-  numLinesChange: number;
-  numLinesChangeStart: number;
-  clearNumLinesChange: () => void;
+  hasSuggestion: boolean;
+  clearSuggestion: () => void;
+  suggestedPosition: { row: number; column: number };
   position: { row: number; column: number };
   setPosition: (data: { row: number; column: number }) => void;
+  partnerCursor?: CursorInformation;
 }
 
 const CodeEditor: FC<Props> = ({
   language,
   onChange,
+  onCursorChange = emptyFunction,
   value,
   width,
   height,
-  readOnly = false,
   className = '',
-  numLinesChange,
-  numLinesChangeStart,
-  clearNumLinesChange,
-  cachedColumn,
+  hasSuggestion,
+  clearSuggestion,
+  suggestedPosition,
   position,
   setPosition,
+  partnerCursor,
 }) => {
   const [hasJustCopiedLine, setHasJustCopiedLine] = useState(false);
   const [lineCopied, setLineCopied] = useState('');
+  const [markers, setMarkers] = useState<IMarker[]>([]);
   const ref = useRef<AceEditor | null>(null);
-  const [previousNumLines, setPreviousNumLines] = useState(
-    value.split('\n').length,
-  );
 
   useEffect(() => {
-    if (numLinesChange > 0) {
-      if (numLinesChangeStart < position.row) {
-        ref?.current?.editor.moveCursorTo(
-          position.row + numLinesChange,
-          cachedColumn,
-        );
-      }
-      clearNumLinesChange();
+    if (hasSuggestion) {
+      ref?.current?.editor.moveCursorTo(
+        suggestedPosition.row,
+        suggestedPosition.column,
+      );
+      clearSuggestion();
     }
   }, [
-    cachedColumn,
-    clearNumLinesChange,
-    numLinesChange,
-    numLinesChangeStart,
-    position.column,
-    position.row,
+    clearSuggestion,
+    hasSuggestion,
+    suggestedPosition.column,
+    suggestedPosition.row,
   ]);
 
-  const onChangeWrapper = (code: string): void => {
-    const newNumLines = code.split('\n').length;
-    const difference = newNumLines - previousNumLines;
-    let lineChange;
-    // Can be +ve or -nve
-    if (difference !== 0) {
-      lineChange = {
-        start: Math.max(position.row - difference, 0),
-        change: difference,
-      };
+  const updateMarkers = useCallback(() => {
+    if (partnerCursor) {
+      const isNotSelection =
+        partnerCursor.startRow === partnerCursor.endRow &&
+        partnerCursor.startCol === partnerCursor.endCol;
+      setMarkers([
+        {
+          ...partnerCursor,
+          endCol: isNotSelection
+            ? partnerCursor.endCol + 1
+            : partnerCursor.endCol,
+          className: `marker${isNotSelection ? ' is-single' : ''}`,
+          type: 'text',
+        },
+      ]);
     }
-    onChange(code, lineChange);
-    setPreviousNumLines(newNumLines);
-  };
+  }, [partnerCursor]);
+
+  useEffect(() => {
+    updateMarkers();
+  }, [updateMarkers]);
 
   return (
     <AceEditor
@@ -126,9 +127,10 @@ const CodeEditor: FC<Props> = ({
       enableBasicAutocompletion={true}
       enableLiveAutocompletion={true}
       height={height}
+      markers={markers}
       mode={language.toLowerCase()}
       name="code-editor"
-      onChange={onChangeWrapper}
+      onChange={onChange}
       onCopy={(text: string): void => {
         if (!text || text === '') {
           navigator.clipboard.writeText('');
@@ -144,6 +146,12 @@ const CodeEditor: FC<Props> = ({
       }}
       onCursorChange={(value): void => {
         setPosition({ row: value.cursor.row, column: value.cursor.column });
+        onCursorChange({
+          startRow: value.cursor.row,
+          startCol: value.cursor.column,
+          endRow: value.cursor.row,
+          endCol: value.cursor.column,
+        });
       }}
       onPaste={(text: string): void => {
         if ((!text || text === '') && hasJustCopiedLine) {
@@ -154,7 +162,15 @@ const CodeEditor: FC<Props> = ({
           ref?.current?.editor.execCommand('golinedown');
         }
       }}
-      readOnly={readOnly}
+      onSelectionChange={(value): void => {
+        const { anchor, cursor } = value;
+        onCursorChange({
+          startRow: Math.min(anchor.row, cursor.row),
+          startCol: Math.min(anchor.column, cursor.column),
+          endRow: Math.max(cursor.row, anchor.row),
+          endCol: Math.max(cursor.column, anchor.column),
+        });
+      }}
       ref={ref}
       // Disable so that we can efficiently compute the line changes
       setOptions={{ enableMultiselect: false }}
