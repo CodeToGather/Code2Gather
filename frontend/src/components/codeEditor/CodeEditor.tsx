@@ -49,8 +49,6 @@ const CodeEditor: FC<Props> = ({
   const [hasJustCopiedLine, setHasJustCopiedLine] = useState(false);
   const [lineCopied, setLineCopied] = useState('');
   const [markers, setMarkers] = useState<IMarker[]>([]);
-  const [isSelecting, setIsSelecting] = useState(false);
-  const [numLinesSelected, setNumLinesSelected] = useState(0);
   const ref = useRef<AceEditor | null>(null);
 
   useEffect(() => {
@@ -79,18 +77,12 @@ const CodeEditor: FC<Props> = ({
           endCol: isNotSelection
             ? partnerCursor.endCol + 1
             : partnerCursor.endCol,
-          className: `marker${
-            isNotSelection
-              ? ' is-single'
-              : isSelecting
-              ? ` is-selecting-${numLinesSelected}`
-              : ''
-          }`,
+          className: `marker${isNotSelection ? ' is-single' : ''}`,
           type: 'text',
         },
       ]);
     }
-  }, [partnerCursor, isSelecting, numLinesSelected]);
+  }, [partnerCursor]);
 
   useEffect(() => {
     updateMarkers();
@@ -172,17 +164,11 @@ const CodeEditor: FC<Props> = ({
       }}
       onSelectionChange={(value): void => {
         const { anchor, cursor } = value;
-        // eslint-disable-next-line no-console
-        console.log(value);
-        setIsSelecting(
-          anchor.row !== cursor.row || anchor.column !== cursor.column,
-        );
-        setNumLinesSelected(Math.abs(anchor.row - cursor.row));
         onCursorChange({
-          startRow: anchor.row,
-          startCol: anchor.column,
-          endRow: cursor.row,
-          endCol: cursor.column,
+          startRow: Math.min(anchor.row, cursor.row),
+          startCol: Math.min(anchor.column, cursor.column),
+          endRow: Math.max(cursor.row, anchor.row),
+          endCol: Math.max(cursor.column, anchor.column),
         });
       }}
       ref={ref}

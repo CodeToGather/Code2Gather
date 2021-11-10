@@ -20,15 +20,8 @@
   background-color: $code-editor-partner-selection-color;
   position: absolute;
 
-  &:last-of-type,
-  &.is-selecting:nth-last-child(2) {
+  &:last-of-type {
     @include cursor;
-  }
-
-  @for $i from 0 through 50 {
-    &.is-selecting-#{$i}:nth-last-child(#{2 + $i}) {
-      @include cursor;
-    }
   }
 
   &.is-single {
