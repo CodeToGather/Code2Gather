@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: code2gather-ingress
+  name: code2gather-api-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: 'false'
@@ -68,6 +68,6 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: frontend
+                name: gateway
                 port:
-                  number: 80
+                  number: 3000
