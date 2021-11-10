@@ -1,6 +1,6 @@
 import { FC, useLayoutEffect, useRef } from 'react';
 
-import CodeEditor from 'components/codeEditor';
+import ReadOnlyCodeEditor from 'components/codeEditor/ReadOnlyCodeEditor';
 import Typography from 'components/typography';
 import { Language } from 'types/crud/language';
 import { MeetingRecord } from 'types/crud/meetingRecord';
@@ -57,11 +57,9 @@ const PracticeHistoryItem: FC<Props> = (props) => {
               <span className="is-danger">Unsolved</span>
             )}
           </Typography>
-          <CodeEditor
+          <ReadOnlyCodeEditor
             height="300px"
             language={props.language}
-            onChange={(): void => undefined}
-            readOnly={true}
             value={props.codeWritten}
             width="100%"
           />

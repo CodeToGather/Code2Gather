@@ -5,7 +5,7 @@ function createAuthenticationToken(uid) {
     throw new Error();
   }
   const payload = { uid };
-  const token = sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
+  const token = sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
   return token;
 }
 

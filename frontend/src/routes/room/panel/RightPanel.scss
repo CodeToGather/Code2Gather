@@ -71,6 +71,21 @@
     @include media('>desktop') {
       padding-bottom: 10vw;
     }
+
+    ::-webkit-scrollbar {
+      appearance: none;
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: $scrollbar-color;
+      border-radius: 5px;
+      box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+    }
   }
 
   .code-output {

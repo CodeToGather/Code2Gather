@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +16,7 @@ import {
   joinCodingService,
   leaveCodingService,
   updateCode,
+  updateCursor,
 } from 'lib/codingSocketService';
 import {
   completeQuestion,
@@ -24,13 +24,16 @@ import {
   leaveRoomService,
   submitRating,
 } from 'lib/roomSocketService';
+import { clearSuggestion, setPosition } from 'reducers/codingDux';
 import {
   incrementCheckRoomIdCounter,
   RatingSubmissionState,
   setShouldClearCode,
 } from 'reducers/roomDux';
 import { RootState } from 'reducers/rootReducer';
+import { CursorInformation } from 'types/automerge/cursor';
 import { Language } from 'types/crud/language';
+import { emptyFunction } from 'utils/functionUtils';
 import { useLocalStorage, useWindowDimensions } from 'utils/hookUtils';
 import roomIdUtils from 'utils/roomIdUtils';
 
@@ -54,6 +57,10 @@ const Room: FC = () => {
     codeExecutionOutput,
     shouldShowOutputPanel,
     hasNewExecutionOutput,
+    suggestedNextPosition,
+    hasSuggestion,
+    cursorPosition,
+    partnerCursor,
   } = useSelector((state: RootState) => state.coding);
   const {
     isInterviewer,
@@ -80,7 +87,6 @@ const Room: FC = () => {
   const code = doc.text.toString();
 
   const exitRoom = useCallback((): void => {
-    console.log('Exiting room via exitRoom');
     setNotes('');
     leaveCodingService(codingSocket);
     leaveRoomService(roomSocket, roomId!);
@@ -90,16 +96,13 @@ const Room: FC = () => {
     // This is the mechanism that we will use to leave the room
     // ALL leave rooms will ultimately lead here.
     if (roomId == null) {
-      console.log('Room ID is now null.');
       window.location.href = HOME;
-      return (): void => undefined;
+      return emptyFunction;
     }
-    console.log('Joining sockets');
     joinCodingService(codingSocket, roomId);
     if (roomSocket.readyState === WebSocket.OPEN) {
       joinRoomService(roomSocket, roomId);
     }
-    console.log('Joined sockets');
   }, [
     checkRoomIdCounter,
     codingSocket,
@@ -111,28 +114,24 @@ const Room: FC = () => {
   useEffect(() => {
     setShowHelpModal(true);
     if (isInterviewer) {
-      console.log('Is interviewer');
       setIsPanelShown(true);
     }
   }, [isInterviewer]);
 
   useEffect(() => {
     if (shouldShowOutputPanel) {
-      console.log('Showing output panel');
       setIsPanelShown(true);
     }
   }, [shouldShowOutputPanel]);
 
   useEffect(() => {
     if (ratingSubmissionStatus === RatingSubmissionState.SUBMITTED) {
-      console.log('Rating submitted');
       exitRoom();
     }
   }, [exitRoom, ratingSubmissionStatus]);
 
   useEffect(() => {
     if (shouldKickUser) {
-      console.log('Kicking user');
       // We don't leave room because this user did not join the room in the first place
       setNotes('');
       roomIdUtils.removeRoomId();
@@ -149,6 +148,10 @@ const Room: FC = () => {
 
   const onCodeChange = (code: string): void => {
     updateCode(codingSocket, doc, code);
+  };
+
+  const onCursorChange = (data: CursorInformation): void => {
+    updateCursor(codingSocket, data);
   };
 
   const onExecuteCode = (): void => {
@@ -281,9 +284,23 @@ const Room: FC = () => {
           </div>
           <div className="room--top-left__editor">
             <CodeEditor
+              clearSuggestion={(): void => {
+                dispatch(clearSuggestion());
+              }}
+              hasSuggestion={hasSuggestion}
               height={getCodeEditorHeight()}
               language={language}
               onChange={onCodeChange}
+              onCursorChange={onCursorChange}
+              partnerCursor={partnerCursor}
+              position={cursorPosition}
+              setPosition={(position: {
+                row: number;
+                column: number;
+              }): void => {
+                dispatch(setPosition(position));
+              }}
+              suggestedPosition={suggestedNextPosition}
               value={doc.text.toString()}
               width={getCodeEditorWidth()}
             />

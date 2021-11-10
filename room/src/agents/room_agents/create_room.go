@@ -5,7 +5,7 @@ import (
 	"math/rand"
 
 	"code2gather.com/room/src/agents/question_agents"
-	"code2gather.com/room/src/infra/db"
+	"code2gather.com/room/src/agents/room_agents/repository"
 	"code2gather.com/room/src/models"
 )
 
@@ -31,8 +31,8 @@ func CreateRoom(uid1 string, uid2 string, difficulty models.QuestionDifficulty) 
 	newRoom.Qid1 = question1.Id
 	newRoom.Qid2 = question2.Id
 
-	roomDaoImpl := db.NewRoomRepositoryImpl()
-	err = roomDaoImpl.CreateRoom(newRoom)
+	repo := repository.NewRoomRepositoryImpl()
+	err = repo.Add(newRoom)
 	if err != nil {
 		log.Fatal(err)
 		return newRoom, err

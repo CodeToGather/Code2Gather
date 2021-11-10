@@ -8,11 +8,17 @@ import './Home.scss';
 
 interface Props {
   onPracticeNow: (difficulty: Difficulty) => void;
+  onNewToProcess: () => void;
   isDisabled: boolean;
   isInRoom: boolean;
 }
 
-const PracticePanel: FC<Props> = ({ onPracticeNow, isDisabled, isInRoom }) => {
+const PracticePanel: FC<Props> = ({
+  onPracticeNow,
+  isDisabled,
+  isInRoom,
+  onNewToProcess,
+}) => {
   const [difficulty, setDifficulty] = useState<Difficulty | undefined>(
     undefined,
   );
@@ -91,6 +97,7 @@ const PracticePanel: FC<Props> = ({ onPracticeNow, isDisabled, isInRoom }) => {
       <button
         className="secondary-button practice-panel__button new-to-process"
         disabled={isDisabled || isInRoom}
+        onClick={onNewToProcess}
       >
         <Typography size="regular">I&apos;m new to the process.</Typography>
       </button>

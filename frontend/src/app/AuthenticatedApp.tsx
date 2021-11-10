@@ -6,7 +6,8 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import { HOME, ROOM } from 'constants/routes';
+import { HELP, HOME, ROOM } from 'constants/routes';
+import Help from 'routes/help';
 import Home from 'routes/home';
 import Room from 'routes/room';
 
@@ -18,6 +19,7 @@ const AuthenticatedApp: FC = () => {
       <Switch>
         <Route component={Home} exact={true} path={HOME} />
         <Route component={Room} exact={true} path={ROOM} />
+        <Route component={Help} exact={true} path={HELP} />
         <Route path="/" render={redirectToHome} />
       </Switch>
     </Router>

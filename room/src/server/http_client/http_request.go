@@ -15,7 +15,7 @@ func init() {
 }
 
 func GetUserId(token string) (uid string, err error) {
-	resp, err := httpClient.GetWithAuthHeader(AuthBaseUrl+"/auth", token)
+	resp, err := httpClient.GetWithAuthHeader(AuthBaseUrl+"/auth", "Bearer "+token)
 	var responseMessage *models.AuthResponse
 	err = json.Unmarshal(resp, &responseMessage)
 	if err != nil {

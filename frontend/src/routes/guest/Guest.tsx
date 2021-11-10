@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { match, RouteComponentProps, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { match, RouteComponentProps } from 'react-router-dom';
 
 import CodeEditor from 'components/codeEditor';
 import LanguageDropdown from 'components/languageDropdown';
@@ -14,6 +14,7 @@ import {
   leaveCodingService,
   updateCode,
 } from 'lib/codingSocketService';
+import { clearSuggestion, setPosition } from 'reducers/codingDux';
 import { RootState } from 'reducers/rootReducer';
 import { Language } from 'types/crud/language';
 
@@ -25,10 +26,16 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
   match: match<{ id: string }>;
 }) => {
   const { codingSocket } = useCodingSocket();
-  const { doc, language } = useSelector((state: RootState) => state.coding);
+  const {
+    doc,
+    language,
+    hasSuggestion,
+    suggestedNextPosition,
+    cursorPosition,
+  } = useSelector((state: RootState) => state.coding);
   const guestRoomId = match.params.id;
   const [hasCopied, setHasCopied] = useState(false);
-  const history = useHistory();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     joinCodingService(codingSocket, guestRoomId);
@@ -79,8 +86,17 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
         </div>
       </div>
       <CodeEditor
+        clearSuggestion={(): void => {
+          dispatch(clearSuggestion());
+        }}
+        hasSuggestion={hasSuggestion}
         language={language}
         onChange={onCodeChange}
+        position={cursorPosition}
+        setPosition={(position: { row: number; column: number }): void => {
+          dispatch(setPosition(position));
+        }}
+        suggestedPosition={suggestedNextPosition}
         value={doc.text.toString()}
         width="100vw"
       />
@@ -89,7 +105,7 @@ const Guest: FC<RouteComponentProps<{ id: string }>> = ({
           className="border-button is-danger guest--bottom__leave-button"
           onClick={(): void => {
             leaveCodingService(codingSocket);
-            history.push(ROOT);
+            window.location.href = ROOT;
           }}
         >
           <Typography size="regular">Leave Playground</Typography>
