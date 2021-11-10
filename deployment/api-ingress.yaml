@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: code2gather-api-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+    nginx.ingress.kubernetes.io/affinity: 'cookie'
+    nginx.ingress.kubernetes.io/session-cookie-name: 'route'
+    nginx.ingress.kubernetes.io/session-cookie-expires: '172800'
+    nginx.ingress.kubernetes.io/session-cookie-max-age: '172800'
+    nginx.ingress.kubernetes.io/enable-cors: 'true'
+    networking.gke.io/managed-certificates: managed-cert
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: gateway
+                port:
+                  number: 3000
