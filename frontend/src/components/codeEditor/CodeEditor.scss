@@ -30,3 +30,23 @@
     width: 0 !important;
   }
 }
+
+.ace_editor,
+.ace_gutter {
+  background-color: $code-dark-background-color;
+}
+
+.ace_scrollbar::-webkit-scrollbar {
+  appearance: none;
+  width: 10px;
+}
+
+.ace_scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.ace_scrollbar::-webkit-scrollbar-thumb {
+  background-color: $scrollbar-color;
+  border-radius: 5px;
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}

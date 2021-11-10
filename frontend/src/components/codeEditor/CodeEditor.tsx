@@ -173,7 +173,7 @@ const CodeEditor: FC<Props> = ({
       }}
       ref={ref}
       // Disable so that we can efficiently compute the line changes
-      setOptions={{ enableMultiselect: false }}
+      setOptions={{ enableMultiselect: false, showFoldWidgets: false }}
       showPrintMargin={false}
       theme="twilight"
       value={value}

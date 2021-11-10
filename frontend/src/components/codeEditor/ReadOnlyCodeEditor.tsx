@@ -10,6 +10,8 @@ import 'ace-builds/src-noconflict/mode-javascript';
 import './theme-twilight';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
+import './CodeEditor.scss';
+
 interface Props {
   language: Language;
   value: string;
