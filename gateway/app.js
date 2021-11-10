@@ -17,11 +17,7 @@ const {
 const app = express();
 
 const corsOptions = {
-  // TODO: Fix the production URL once deployed
-  origin:
-    process.env.NODE_ENV === 'production'
-      ? /.*placeholder\.placeholder\.app.*/
-      : '*',
+  origin: process.env.NODE_ENV === 'production' ? /.*code2gather\.io.*/ : '*',
 };
 
 app.use(cors(corsOptions));
