@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import AceEditor, { IMarker } from 'react-ace';
 import { Ace } from 'ace-builds';
 
@@ -48,6 +48,9 @@ const CodeEditor: FC<Props> = ({
 }) => {
   const [hasJustCopiedLine, setHasJustCopiedLine] = useState(false);
   const [lineCopied, setLineCopied] = useState('');
+  const [markers, setMarkers] = useState<IMarker[]>([]);
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [numLinesSelected, setNumLinesSelected] = useState(0);
   const ref = useRef<AceEditor | null>(null);
 
   useEffect(() => {
@@ -65,18 +68,33 @@ const CodeEditor: FC<Props> = ({
     suggestedPosition.row,
   ]);
 
-  const markers: IMarker[] = [];
-  if (partnerCursor) {
-    const isNotSelection =
-      partnerCursor.startRow === partnerCursor.endRow &&
-      partnerCursor.startCol === partnerCursor.endCol;
-    markers.push({
-      ...partnerCursor,
-      endCol: isNotSelection ? partnerCursor.endCol + 1 : partnerCursor.endCol,
-      className: `marker${isNotSelection ? ' is-single' : ''}`,
-      type: 'text',
-    });
-  }
+  const updateMarkers = useCallback(() => {
+    if (partnerCursor) {
+      const isNotSelection =
+        partnerCursor.startRow === partnerCursor.endRow &&
+        partnerCursor.startCol === partnerCursor.endCol;
+      setMarkers([
+        {
+          ...partnerCursor,
+          endCol: isNotSelection
+            ? partnerCursor.endCol + 1
+            : partnerCursor.endCol,
+          className: `marker${
+            isNotSelection
+              ? ' is-single'
+              : isSelecting
+              ? ` is-selecting-${numLinesSelected}`
+              : ''
+          }`,
+          type: 'text',
+        },
+      ]);
+    }
+  }, [partnerCursor, isSelecting, numLinesSelected]);
+
+  useEffect(() => {
+    updateMarkers();
+  }, [updateMarkers]);
 
   return (
     <AceEditor
@@ -137,8 +155,8 @@ const CodeEditor: FC<Props> = ({
       onCursorChange={(value): void => {
         setPosition({ row: value.cursor.row, column: value.cursor.column });
         onCursorChange({
-          startRow: value.anchor.row,
-          startCol: value.anchor.column,
+          startRow: value.cursor.row,
+          startCol: value.cursor.column,
           endRow: value.cursor.row,
           endCol: value.cursor.column,
         });
@@ -151,6 +169,21 @@ const CodeEditor: FC<Props> = ({
           onChange(lines.join('\n'));
           ref?.current?.editor.execCommand('golinedown');
         }
+      }}
+      onSelectionChange={(value): void => {
+        const { anchor, cursor } = value;
+        // eslint-disable-next-line no-console
+        console.log(value);
+        setIsSelecting(
+          anchor.row !== cursor.row || anchor.column !== cursor.column,
+        );
+        setNumLinesSelected(Math.abs(anchor.row - cursor.row));
+        onCursorChange({
+          startRow: anchor.row,
+          startCol: anchor.column,
+          endRow: cursor.row,
+          endCol: cursor.column,
+        });
       }}
       ref={ref}
       // Disable so that we can efficiently compute the line changes
