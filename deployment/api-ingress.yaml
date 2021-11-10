@@ -10,60 +10,11 @@ metadata:
     nginx.ingress.kubernetes.io/session-cookie-expires: '172800'
     nginx.ingress.kubernetes.io/session-cookie-max-age: '172800'
     nginx.ingress.kubernetes.io/enable-cors: 'true'
+    networking.gke.io/managed-certificates: managed-cert
 spec:
   rules:
     - http:
         paths:
-          # Other services should not be exposed and only available through the gateway
-          # - path: /auth
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: auth
-          #       port:
-          #         number: 3000
-          # - path: /history
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: history
-          #       port:
-          #         number: 3000
-          # - path: /pairing
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: pairing
-          #       port:
-          #         number: 3000
-          # - path: /video
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: video
-          #       port:
-          #         number: 3000
-          # - path: /code-executor
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: code-executor
-          #       port:
-          #         number: 3000
-          # - path: /room
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: room
-          #       port:
-          #         number: 3000
-          # - path: /coding
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: coding
-          #       port:
-          #         number: 3000
           - path: /*
             pathType: ImplementationSpecific
             backend:
