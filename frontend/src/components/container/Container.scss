@@ -11,6 +11,18 @@
     margin: 0 15%;
   }
 
+  &.is-narrow {
+    @include media('>mobile', '<=tablet') {
+      margin: 0 10%;
+    }
+    @include media('>tablet', '<=desktop') {
+      margin: 0 20%;
+    }
+    @include media('>desktop') {
+      margin: 0 30%;
+    }
+  }
+
   &-background {
     background-image: url('../assets/../../assets/images/curves.png');
     background-position: center;

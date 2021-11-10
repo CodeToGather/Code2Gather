@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import Container from 'components/container';
 import Modal from 'components/modal';
+import { HELP } from 'constants/routes';
 import { usePairingSocket } from 'contexts/PairingSocketContext';
 import LeaderboardApi from 'lib/leaderboardApi';
 import MeetingRecordApi from 'lib/meetingRecordApi';
@@ -185,6 +186,9 @@ const Home: FC = () => {
         <PracticePanel
           isDisabled={state !== PairingState.NOT_PAIRING}
           isInRoom={isInRoom}
+          onNewToProcess={(): void => {
+            window.open(HELP);
+          }}
           onPracticeNow={onPracticeNow}
         />
       </div>
