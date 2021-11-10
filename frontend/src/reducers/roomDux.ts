@@ -118,21 +118,6 @@ const room = createSlice({
     setShouldClearCode: (state, action: PayloadAction<boolean>): void => {
       state.shouldClearCode = action.payload;
     },
-    resetState: (state): void => {
-      state.roomId = '';
-      state.shouldKickUser = false;
-      state.isInterviewer = false;
-      state.question = null;
-      state.partnerUid = '';
-      state.partnerUsername = '';
-      state.partnerPhotoUrl = '';
-      state.partnerHasDisconnected = false;
-      state.partnerHasLeft = false;
-      state.ratingSubmissionStatus = RatingSubmissionState.NOT_SUBMITTING;
-      state.errorMessage = '';
-      state.checkRoomIdCounter = 0;
-      state.shouldClearCode = false;
-    },
   },
 });
 
@@ -149,7 +134,6 @@ export const {
   setRatingSubmissionStatus,
   incrementCheckRoomIdCounter,
   setShouldClearCode,
-  resetState,
 } = room.actions;
 
 export default room.reducer;

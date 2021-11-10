@@ -149,14 +149,6 @@ const coding = createSlice({
     ): void => {
       state.cursorPosition = action.payload;
     },
-    resetState: (state): void => {
-      state.doc = initDocWithText('');
-      state.language = Language.PYTHON;
-      state.isExecutingCode = false;
-      state.codeExecutionOutput = '';
-      state.shouldShowOutputPanel = false;
-      state.hasNewExecutionOutput = false;
-    },
   },
 });
 
@@ -171,7 +163,6 @@ export const {
   setPosition,
   clearSuggestion,
   updatePartnerCursor,
-  resetState,
 } = coding.actions;
 
 export default coding.reducer;
