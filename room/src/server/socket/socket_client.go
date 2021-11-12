@@ -9,7 +9,7 @@ import (
 
 const (
 	// Time allowed to write a message to the peer.
-	writeWait = 10 * time.Second
+	writeWait = 60 * time.Second
 )
 
 type Client struct {
@@ -92,6 +92,7 @@ func (c *Client) write() {
 		select {
 		case message, ok := <-c.send:
 			if !ok {
+				log.Println("Server sends close message")
 				err := c.conn.WriteMessage(websocket.CloseMessage, []byte{})
 				if err != nil {
 					return
