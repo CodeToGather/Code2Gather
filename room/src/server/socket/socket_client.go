@@ -2,8 +2,14 @@ package socket
 
 import (
 	"log"
+	"time"
 
 	"github.com/gorilla/websocket"
+)
+
+const (
+	// Time allowed to write a message to the peer.
+	writeWait = 10 * time.Second
 )
 
 type Client struct {
@@ -63,9 +69,10 @@ func (c *Client) read() {
 	for {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				log.Println(err)
-			}
+			//if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+			//	log.Println(err)
+			//}
+			log.Println(err)
 			break
 		}
 		incomingRequestHandler(c, message)
@@ -91,6 +98,7 @@ func (c *Client) write() {
 				}
 				return
 			}
+			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			w, err := c.conn.NextWriter(websocket.TextMessage)
 			if err != nil {
 				log.Println(err)
@@ -111,6 +119,10 @@ func (c *Client) write() {
 				log.Println(err)
 				return
 			}
+			//case <-ticker.C:
+			//	if err := c.write(websocket.PingMessage, []byte{}); err != nil {
+			//		return
+			//	}
 		}
 	}
 
