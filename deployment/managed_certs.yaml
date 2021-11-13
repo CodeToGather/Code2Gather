@@ -4,5 +4,5 @@ metadata:
   name: managed-cert
 spec:
   domains:
-    - code2gather.io
+    - gcp.code2gather.io
     - api.code2gather.io
