@@ -29,7 +29,7 @@ admin.initializeApp({
 });
 
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' ? /.*code2gather\.io.*/ : '*',
+  origin: '*',
 };
 
 const app = express();

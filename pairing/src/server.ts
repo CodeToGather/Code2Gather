@@ -9,7 +9,7 @@ import routes from './routes';
 import setUpIo from './socket';
 
 const corsOptions: CorsOptions = {
-  origin: process.env.NODE_ENV === 'production' ? /.*code2gather\.io.*/ : '*',
+  origin: '*',
 };
 
 export class ApiServer {

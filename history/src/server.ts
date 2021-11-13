@@ -7,7 +7,7 @@ import morgan from 'morgan';
 import routes from './routes';
 
 export const corsOptions: CorsOptions = {
-  origin: process.env.NODE_ENV === 'production' ? /.*code2gather\.io.*/ : '*',
+  origin: '*',
 };
 
 export class ApiServer {
