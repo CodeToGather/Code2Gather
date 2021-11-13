@@ -18,6 +18,7 @@ networks:
 
 services:
   frontend:
+    image: jh123x/frontend
     container_name: frontend
     build:
       # Context is . because of eslint in root
@@ -47,6 +48,7 @@ services:
       REACT_APP_AGORA_APP_ID: 6e61da63d86d4d96951c2d27054273b1
 
   gateway:
+    image: jh123x/gateway
     container_name: gateway
     build:
       dockerfile: Dockerfile.dev
@@ -64,6 +66,7 @@ services:
       <<: *shared-variables
 
   auth:
+    image: jh123x/auth
     container_name: auth
     build:
       dockerfile: Dockerfile.dev
@@ -84,6 +87,7 @@ services:
       JWT_SECRET: code2gather
 
   coding:
+    image: jh123x/coding
     container_name: coding
     build:
       dockerfile: Dockerfile.dev
@@ -100,6 +104,7 @@ services:
       <<: *shared-variables
 
   code-executor:
+    image: jh123x/code-executor
     container_name: code-executor
     build:
       dockerfile: Dockerfile.dev
@@ -116,6 +121,7 @@ services:
       <<: *shared-variables
 
   history:
+    image: jh123x/history
     container_name: history
     build:
       dockerfile: Dockerfile.dev
@@ -135,6 +141,7 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@db/postgres?connect_timeout=300
 
   pairing:
+    image: jh123x/pairing
     container_name: pairing
     build:
       dockerfile: Dockerfile.dev
@@ -151,6 +158,7 @@ services:
       <<: *shared-variables
 
   room:
+    image: jh123x/room
     container_name: room
     build:
       dockerfile: Dockerfile.dev
@@ -169,6 +177,7 @@ services:
       MONGODB_URL: mongodb://mongo
 
   video:
+    image: jh123x/video
     container_name: video
     build:
       dockerfile: Dockerfile.dev
