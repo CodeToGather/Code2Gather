@@ -1,11 +1,28 @@
-# Code2Gather
+<!-- markdownlint-disable MD033 MD041 -->
+<p align="center"><img src="cover.png" width="40%"/></p>
+
+<h1 align="center">Doodle2Gather</h1>
+
+<p align="center"><img src="https://github.com/CodeToGather/Code2Gather/workflows/Lint/badge.svg" alt="Lint" />&nbsp;<img src="https://github.com/CS3219-SE-Principles-and-Patterns/cs3219-project-ay2122-2122-s1-g32/workflows/Test%20Code%20Executor/badge.svg" alt="Test Code Executor" />&nbsp;<img src="https://github.com/CS3219-SE-Principles-and-Patterns/cs3219-project-ay2122-2122-s1-g32/workflows/Test%20Frontend/badge.svg" alt="Test Frontend" />&nbsp;<img src="https://github.com/CS3219-SE-Principles-and-Patterns/cs3219-project-ay2122-2122-s1-g32/workflows/Test%20History/badge.svg" alt="Test History" /></p>
+
+## Overview
+
+Code2Gather is designed to help programmers to secure internships and jobs by facilitating mock interviews. It allows you to focus on practicing, instead of spending time finding people to practice with.
+
+On our platform, you can simply select a question difficulty that you wish to attempt, and we will match you with a suitable mock interview partner! No need to worry about the questions or channels for feedback - Code2Gather will settle everything for you.
+
+## Team Members
 
 Members of CS3219 Team 32:
 
-- He XinYue
-- Wang Luo
-- Wen Junhua
-- Zhu Hanming
+- [He XinYue](https://github.com/eksinyue)
+- [Wang Luo](https://github.com/Asthenosphere)
+- [Wen Junhua](https://github.com/Jh123x)
+- [Zhu Hanming](https://github.com/zhuhanming)
+
+## Demo Video
+
+<p align="center"><a href="https://youtu.be/GQCbt3Bls4Y"><img width="65%" alt="Code2Gather Demo" src="https://img.youtube.com/vi/GQCbt3Bls4Y/maxresdefault.jpg"></img></a></p>
 
 ## Project Requirements
 
