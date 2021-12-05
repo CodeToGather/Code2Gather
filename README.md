@@ -66,13 +66,13 @@ You can install Go from their [website](https://golang.org/doc/install).
 First, clone this repository:
 
 ```sh
-git clone https://github.com/CS3219-SE-Principles-and-Patterns/cs3219-project-ay2122-2122-s1-g32.git
+git clone https://github.com/CodeToGather/Code2Gather.git
 ```
 
 Then, navigate to the **project root** and install the dependencies:
 
 ```sh
-cd cs3219-project-ay2122-2122-s1-g32
+cd Code2Gather
 yarn install-all
 # Or if your machine cannot cope with the installations being run parallel,
 # you can run `yarn install-all-ci` instead, which does things sequentially
