@@ -6,8 +6,9 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import { GUEST, ROOT } from 'constants/routes';
+import { GUEST, HELP, ROOT } from 'constants/routes';
 import Guest from 'routes/guest';
+import Help from 'routes/help';
 import Landing from 'routes/landing';
 
 const redirectToRoot = (): React.ReactNode => <Redirect to={ROOT} />;
@@ -22,6 +23,7 @@ const UnauthenticatedApp: FC = () => {
           path={`${GUEST}/:id`}
           render={(props): ReactElement<typeof Guest> => <Guest {...props} />}
         />
+        <Route component={Help} exact={true} path={HELP} />
         <Route path="/" render={redirectToRoot} />
       </Switch>
     </Router>
