@@ -1,6 +1,7 @@
 import { FC, lazy, Suspense, useEffect } from 'react';
 
 import { Loading } from 'components/loading';
+import { IS_APP_DISABLED } from 'constants/config';
 import { useUser } from 'contexts/UserContext';
 import { retryPromise } from 'utils/promiseUtils';
 
@@ -36,7 +37,7 @@ const App: FC = () => {
   return (
     <Suspense fallback={<Loading />}>
       {/* Renders the appropriate app */}
-      {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      {user && !IS_APP_DISABLED ? <AuthenticatedApp /> : <UnauthenticatedApp />}
     </Suspense>
   );
 };
