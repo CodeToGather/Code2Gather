@@ -7,11 +7,11 @@ import Container from 'components/container';
 import LoadingAnimation from 'components/loading/LoadingAnimation';
 import Modal from 'components/modal';
 import Typography from 'components/typography';
-import { IS_LOGIN_DISABLED } from 'constants/config';
+import { IS_APP_DISABLED } from 'constants/config';
 import { GUEST } from 'constants/routes';
 import { useAuth } from 'contexts/AuthContext';
 
-import LoginDisabledModal from './LoginDisabledModal';
+import AppDisabledModal from './AppDisabledModal';
 import './Landing.scss';
 
 const Landing: FC = () => {
@@ -21,7 +21,7 @@ const Landing: FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleGithubSignIn = async (): Promise<void> => {
-    if (IS_LOGIN_DISABLED) {
+    if (IS_APP_DISABLED) {
       setIsModalVisible(true);
       return;
     }
@@ -32,6 +32,15 @@ const Landing: FC = () => {
       // TODO: Show error
       setIsSigningIn(false);
     }
+  };
+
+  const handleGuestRoom = (): void => {
+    if (IS_APP_DISABLED) {
+      setIsModalVisible(true);
+      return;
+    }
+    const slug = generateSlug();
+    window.location.href = `${GUEST}/${slug}`;
   };
 
   return (
@@ -64,10 +73,7 @@ const Landing: FC = () => {
             <button
               className="secondary-button"
               disabled={isSigningIn}
-              onClick={(): void => {
-                const slug = generateSlug();
-                window.location.href = `${GUEST}/${slug}`;
-              }}
+              onClick={handleGuestRoom}
             >
               <Typography size="regular">
                 Try playground as guest instead
@@ -83,9 +89,9 @@ const Landing: FC = () => {
           <img alt="Code2Gather Demo" src={DemoImage} />
         </FadeIn>
       </main>
-      {IS_LOGIN_DISABLED && (
-        <Modal isVisible={isModalVisible && IS_LOGIN_DISABLED}>
-          <LoginDisabledModal onClose={(): void => setIsModalVisible(false)} />
+      {IS_APP_DISABLED && (
+        <Modal isVisible={isModalVisible && IS_APP_DISABLED}>
+          <AppDisabledModal onClose={(): void => setIsModalVisible(false)} />
         </Modal>
       )}
     </Container>
