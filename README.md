@@ -1,5 +1,5 @@
 <!-- markdownlint-disable MD033 MD041 -->
-<p align="center"><img src="cover.png" width="40%"/></p>
+<p align="center"><img src="cover.png" width="80%"/></p>
 
 <h1 align="center">Doodle2Gather</h1>
 
