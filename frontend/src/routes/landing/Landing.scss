@@ -118,3 +118,15 @@
     }
   }
 }
+
+.modal-instruction {
+  margin-bottom: 1.5rem;
+  margin-top: 0.75rem;
+  white-space: pre-wrap;
+}
+
+.modal-buttons {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+}

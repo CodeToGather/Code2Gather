@@ -5,18 +5,26 @@ import { generateSlug } from 'random-word-slugs';
 import DemoImage from 'assets/images/demo.png';
 import Container from 'components/container';
 import LoadingAnimation from 'components/loading/LoadingAnimation';
+import Modal from 'components/modal';
 import Typography from 'components/typography';
+import { IS_LOGIN_DISABLED } from 'constants/config';
 import { GUEST } from 'constants/routes';
 import { useAuth } from 'contexts/AuthContext';
 
+import LoginDisabledModal from './LoginDisabledModal';
 import './Landing.scss';
 
 const Landing: FC = () => {
   const { login } = useAuth();
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [leftFadeComplete, setLeftFadeComplete] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleGithubSignIn = async (): Promise<void> => {
+    if (IS_LOGIN_DISABLED) {
+      setIsModalVisible(true);
+      return;
+    }
     setIsSigningIn(true);
     try {
       await login();
@@ -75,6 +83,11 @@ const Landing: FC = () => {
           <img alt="Code2Gather Demo" src={DemoImage} />
         </FadeIn>
       </main>
+      {IS_LOGIN_DISABLED && (
+        <Modal isVisible={isModalVisible && IS_LOGIN_DISABLED}>
+          <LoginDisabledModal onClose={(): void => setIsModalVisible(false)} />
+        </Modal>
+      )}
     </Container>
   );
 };
