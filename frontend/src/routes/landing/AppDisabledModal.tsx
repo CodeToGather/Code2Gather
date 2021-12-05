@@ -7,11 +7,11 @@ interface Props {
   onClose: () => void;
 }
 
-const LoginDisabledModal: FC<Props> = ({ onClose }) => {
+const AppDisabledModal: FC<Props> = ({ onClose }) => {
   return (
     <>
       <Typography className="is-bold" size="large">
-        Login is currently disabled.
+        Code2Gather is currently disabled.
       </Typography>
       <Typography className="modal-instruction" size="regular">
         The application is currently unavailable for usage. This may be due to
@@ -35,4 +35,4 @@ const LoginDisabledModal: FC<Props> = ({ onClose }) => {
   );
 };
 
-export default LoginDisabledModal;
+export default AppDisabledModal;
