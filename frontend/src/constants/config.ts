@@ -1,1 +1,1 @@
-export const IS_LOGIN_DISABLED = true;
+export const IS_APP_DISABLED = true;
