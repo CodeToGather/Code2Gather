@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react';
 
+import { IS_APP_DISABLED } from 'constants/config';
 import { authUserContextRender } from 'utils/testUtils';
 
 import Landing from './Landing';
@@ -34,7 +35,7 @@ test('renders github button that logins via auth context', () => {
   authUserContextRender(<Landing />, { login });
   const githubButtonElement = screen.getByText(/sign in with github/i);
   githubButtonElement.click();
-  expect(hasTriggeredLogin).toBe(true);
+  expect(hasTriggeredLogin).toBe(!IS_APP_DISABLED);
 });
 
 test('renders guest button', () => {
