@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD033 MD041 -->
 <p align="center"><img src="cover.png" width="80%"/></p>
 
-<h1 align="center">Doodle2Gather</h1>
+<h1 align="center">Code2Gather</h1>
 
 <p align="center"><img src="https://github.com/CodeToGather/Code2Gather/workflows/Lint/badge.svg" alt="Lint" />&nbsp;<img src="https://github.com/CS3219-SE-Principles-and-Patterns/cs3219-project-ay2122-2122-s1-g32/workflows/Test%20Code%20Executor/badge.svg" alt="Test Code Executor" />&nbsp;<img src="https://github.com/CS3219-SE-Principles-and-Patterns/cs3219-project-ay2122-2122-s1-g32/workflows/Test%20Frontend/badge.svg" alt="Test Frontend" />&nbsp;<img src="https://github.com/CS3219-SE-Principles-and-Patterns/cs3219-project-ay2122-2122-s1-g32/workflows/Test%20History/badge.svg" alt="Test History" /></p>
 
